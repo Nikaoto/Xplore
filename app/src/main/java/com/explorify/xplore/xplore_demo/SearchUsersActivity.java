@@ -2,9 +2,12 @@ package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -60,8 +64,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     FirebaseDatabase userDB;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.first_layout);
 
         listView = (ListView) findViewById(R.id.resultslist);
@@ -69,6 +73,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
         searchBar = (EditText) findViewById(R.id.search_bar);
         searchBar.setHint(R.string.search_users);
+        searchBar.setOnEditorActionListener(this);
 
         Authorize();
         buildUserBase();
@@ -109,7 +114,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PreLoadData()
     {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
         //tempUserList.clear();
         userList.clear();
         firstLoad = true;
@@ -137,10 +142,11 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     }
                 }
                 else
-                {
                     fnameNotFound = true;
-                    LoadDataWithLastName(lname);
-                }
+
+                Log.println(Log.INFO, "BREJK", "Starting LoadDataWithlastName");
+
+                LoadDataWithLastName(lname);
             }
 
             @Override
@@ -154,31 +160,37 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         lnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     User tempUser;
-                    for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                    {
-                        //tempUser = new User(); //remove thsi if it works fine
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        //tempUser = new User(); //remove this if it works fine
                         tempUser = userSnapshot.getValue(User.class);
                         userList.add(tempUser);
                     }
-                }
-                else
-                {
-                    if(fnameNotFound)
-                    {
-                        //didn't find anything, toast (NOT FOUND)
-                    }
-                    else
-                    {
-                        //done loading, now display data
-                    }
-                }
+                } else if (fnameNotFound)
+                    NothingFound();
+
+                PopulateButtonList();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { requestCancelled = true; }
         });
+    }
+
+    private void PopulateButtonList()
+    {
+        //TODO run a loop here to delete copy users
+        ArrayAdapter<User> adapter = new UserListAdapter(); //change User to UserButtons
+        listView.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void NothingFound()
+    {
+        Toast.makeText(SearchUsersActivity.this, R.string.search_no_results,
+                Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
@@ -235,6 +247,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         }
     }
 
+    private String FirstLetterUpper(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         progressBar.setVisibility(View.VISIBLE);
@@ -250,13 +266,13 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         if(searchQuery.contains(" "))
         {
             String[] parts = searchQuery.split(" ",2);
-            fname_search = parts[0];
-            lname_search = parts[1];
+            fname_search = FirstLetterUpper(parts[0]);
+            lname_search = FirstLetterUpper(parts[1]);
         }
         else
         {
-            fname_search = searchQuery; //this searches in both fname and lname fields in db
-            lname_search = searchQuery;
+            fname_search = FirstLetterUpper(searchQuery); //this searches in both fname and lname fields in db
+            lname_search = fname_search; //performance optimization ;^)
         }
 
         LoadDataWithFullName(fname_search, lname_search);
