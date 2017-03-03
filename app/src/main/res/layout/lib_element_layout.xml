@@ -59,6 +59,7 @@
         <com.explorify.xplore.xplore_demo.ExpandableTextView
             android:id="@+id/lib_fauna"
             android:text="fauna"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
         <com.explorify.xplore.xplore_demo.ExpandableTextView
             android:id="@+id/lib_flora"
             android:text="animals"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
             android:paddingLeft="@dimen/lib_text_padding"
             android:paddingRight="@dimen/lib_text_padding"
@@ -131,6 +133,7 @@
         <com.explorify.xplore.xplore_demo.ExpandableTextView
             android:id="@+id/lib_tags"
             android:text="tags"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
             android:paddingLeft="@dimen/lib_text_padding"
             android:paddingRight="@dimen/lib_text_padding"
