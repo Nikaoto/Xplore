@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.FirebaseApp;
@@ -223,7 +224,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //selected userid = position.
+                    CreateGroupFragment.memberIds.add(currentUser.getId());
+                    Toast.makeText(SearchUsersActivity.this,
+                            "User "+ currentUser.getFname()+" "+currentUser.getLname()+" was added to your group.",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
 

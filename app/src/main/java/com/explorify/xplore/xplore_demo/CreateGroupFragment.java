@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.explorify.xplore.xplore_demo.General.dbManager;
@@ -30,6 +31,7 @@ import static com.explorify.xplore.xplore_demo.General.dbManager;
 public class CreateGroupFragment extends Fragment {
 
     public static int chosenDestId = -1;
+    public static ArrayList<String> memberIds = new ArrayList<>();
     public static DateSetup dateSetup;
 
     final int G_PREFS_CHAR_MAX = 200;
@@ -39,7 +41,7 @@ public class CreateGroupFragment extends Fragment {
 
     private Context context;
 
-    EditText userId_et, groupPrefs_et, extraInfo_et;
+    EditText leaderId_text, groupPrefs_text, extraInfo_text;
     ImageView prefs_help, info_help;
     int experienceAns; // -1 -> not selected, 0 -> no exp, 1-> exp.
     String gPrefs, eInfo;
@@ -111,11 +113,11 @@ public class CreateGroupFragment extends Fragment {
         info_help.setColorFilter(ContextCompat.getColor(context,R.color.colorGrey));
 
         //Texts
-        userId_et = (EditText) myView.findViewById(R.id.userId_editText);
+        leaderId_text= (EditText) myView.findViewById(R.id.userId_editText);
         startDate_text = (TextView) myView.findViewById(R.id.dateStart_text);
         endDate_text = (TextView) myView.findViewById(R.id.dateEnd_text);
-        groupPrefs_et = (EditText) myView.findViewById(R.id.groupPrefs_editText);
-        extraInfo_et = (EditText) myView.findViewById(R.id.extraInfo_editText);
+        groupPrefs_text= (EditText) myView.findViewById(R.id.groupPrefs_editText);
+        extraInfo_text = (EditText) myView.findViewById(R.id.extraInfo_editText);
     }
 
     private void InitClickEvents()
@@ -157,7 +159,8 @@ public class CreateGroupFragment extends Fragment {
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context, SearchUsersActivity.class);
+                context.startActivity(intent);
             }
         });
 
@@ -204,8 +207,8 @@ public class CreateGroupFragment extends Fragment {
 
     private void GatherData()
     {
-        gPrefs = groupPrefs_et.getText().toString();
-        eInfo = extraInfo_et.getText().toString();
+        gPrefs = groupPrefs_text.getText().toString();
+        eInfo = extraInfo_text.getText().toString();
     }
 
     private void ShowHelp(int title, int text, int butt_text, Resources resources)
@@ -226,7 +229,7 @@ public class CreateGroupFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton(R.string.okay, null);
 
-        if(userId_et.getText().length() < 1)
+        if(leaderId_text.getText().length() < 1)
         { //TODO remove this after finishing groupCreation testing
             builder.setMessage("Fill user id pls")
                     .show();
