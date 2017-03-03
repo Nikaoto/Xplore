@@ -1,11 +1,7 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,10 +26,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -116,7 +110,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private void PreLoadData()
     {
         progressBar.setVisibility(View.INVISIBLE);
-        //tempUserList.clear();
+        answerList.clear();
+        userList.clear();
         userList.clear();
         firstLoad = true;
         userCounter = 0;
@@ -138,13 +133,13 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
                     {
                         tempUser = userSnapshot.getValue(User.class);
+                        tempUser.setId(userSnapshot.getKey());
+                        Log.println(Log.INFO, "fname", tempUser.getFname()+" id ="+tempUser.getId());
                         userList.add(tempUser);
                     }
                 }
-                else
+                else if(!dataSnapshot.exists())
                     fnameNotFound = true;
-
-                Log.println(Log.INFO, "BREJK", "Starting LoadDataWithlastName");
 
                 LoadDataWithLastName(lname);
             }
@@ -154,7 +149,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         });
     }
 
-    private void LoadDataWithLastName(final String lname)
+    private void LoadDataWithLastName( final String lname)
     {
         Query lnameQuery = dbRef.orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
         lnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,9 +159,11 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     User tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         tempUser = userSnapshot.getValue(User.class);
+                        tempUser.setId(userSnapshot.getKey());
+                        Log.println(Log.INFO, "lname", tempUser.getFname()+" id ="+tempUser.getId());
                         userList.add(tempUser);
                     }
-                } else if (fnameNotFound)
+                } else if ((!dataSnapshot.exists()) && fnameNotFound)
                     NothingFound();
 
                 PopulateButtonList();
@@ -179,18 +176,26 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PopulateButtonList()
     {
+        for(User user : userList)
+            Log.println(Log.INFO, "fname", user.getFname()+" id ="+user.getId());
+
+        boolean foundDup;
+        //filtering duplicates into answerList
         for(int i = 0; i<userList.size(); i++)
         {
-            for(int j = 0; j<userList.size(); j++)
+            foundDup = false;
+
+            for(int j = i; j<userList.size(); j++)
             {
-                if(i != j && userList.get(j).getId() == userList.get(i).getId())
-                {
-                    userList.remove(j);
+                if(i!= j && userList.get(j).getId().equals(userList.get(i).getId())) {
+                    foundDup = true;
                     break;
                 }
             }
-        }
 
+            if(!foundDup)
+              answerList.add(userList.get(i));
+        }
 
         ArrayAdapter<User> adapter = new UserListAdapter(); //change User to UserButtons
         listView.setAdapter(adapter);
@@ -206,7 +211,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
         public UserListAdapter() {
-            super(SearchUsersActivity.this, R.layout.group_list_item, userList);
+            super(SearchUsersActivity.this, R.layout.group_list_item, answerList);
         }
 
         @NonNull
@@ -217,9 +222,14 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 itemView = getLayoutInflater()
                         .inflate(R.layout.user_list_item, parent, false);
             }
-            final User currentUser = userList.get(position);
+            final User currentUser = answerList.get(position);
 
             //Loading Data///////////////////////////////////////////////////////////////////////
+
+            //Reputation
+            TextView rep_text = (TextView) itemView.findViewById(R.id.user_rep_text_combined);
+            rep_text.setText(currentUser.getReputation() + " " +
+                    getResources().getString(R.string.reputation_caps));
 
             //First Name
             TextView fname_text = (TextView) itemView.findViewById(R.id.user_fname_text);

@@ -10,6 +10,7 @@
     android:scaleType="fitXY"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:layout_width="@dimen/group_list_profile_wh"
     android:layout_height="@dimen/group_list_profile_wh"/>
 
@@ -64,8 +65,8 @@
             android:layout_marginTop="1dp"/>
     </LinearLayout>
 
-    <View style="@style/dashed_divider"
+<!--    <View style="@style/dashed_divider"
         android:layout_marginTop="4dp"
-        android:layout_below="@id/user_profile_image"/>
+        android:layout_below="@id/user_profile_image"/>-->
 
 </RelativeLayout>
