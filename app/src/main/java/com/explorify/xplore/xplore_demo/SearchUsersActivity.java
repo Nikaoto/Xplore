@@ -56,7 +56,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private String searchQuery;
     private boolean firstLoad, requestCancelled, fnameNotFound;
 
-    private ArrayList<User> userList= new ArrayList<>(); //replace with userButtons
+    private ArrayList<User> userList= new ArrayList<>(); //replace with UserButtons
+    private ArrayList<User> answerList= new ArrayList<>(); //replace with UserButtons
 
     DatabaseReference dbRef;
     FirebaseApp userBaseApp;
@@ -178,7 +179,19 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PopulateButtonList()
     {
-        //TODO run a loop here to delete copy users
+        for(int i = 0; i<userList.size(); i++)
+        {
+            for(int j = 0; j<userList.size(); j++)
+            {
+                if(i != j && userList.get(j).getId() == userList.get(i).getId())
+                {
+                    userList.remove(j);
+                    break;
+                }
+            }
+        }
+
+
         ArrayAdapter<User> adapter = new UserListAdapter(); //change User to UserButtons
         listView.setAdapter(adapter);
         progressBar.setVisibility(View.INVISIBLE);
@@ -254,6 +267,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         progressBar.setVisibility(View.VISIBLE);
 
         userList.clear();
+        answerList.clear();
 
         searchQuery = v.getText().toString().toLowerCase();
 
