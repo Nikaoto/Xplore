@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -8,28 +9,18 @@
     android:background="@drawable/profile_picture_border"
     android:scaleType="fitXY"
     android:layout_marginLeft="8dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
     android:layout_width="@dimen/group_list_profile_wh"
     android:layout_height="@dimen/group_list_profile_wh"/>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="@dimen/group_list_profile_wh"
-        android:layout_height="@dimen/group_list_profile_wh"
-        android:id="@+id/groupProgressBar"
-        android:layout_alignTop="@+id/user_profile_image"
-        android:layout_alignLeft="@+id/user_profile_image"
-        android:layout_alignStart="@+id/user_profile_image" />
-
     <LinearLayout
-        android:layout_alignBaseline="@id/user_profile_image"
         android:layout_toRightOf="@id/user_profile_image"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="17dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/group_list_profile_wh">
+        android:layout_height="90dp">
 
         <TextView
             android:id="@+id/user_rep_text_combined"
@@ -40,7 +31,7 @@
             android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorGreyText" />
+            android:textColor="@color/colorGreyText"/>
 
         <TextView
             android:id="@+id/user_fname_text"
@@ -49,7 +40,8 @@
             android:text="First Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
-            android:layout_marginTop="2dp" />
+            android:includeFontPadding="false"
+            android:layout_marginTop="1dp"/>
 
         <TextView
             android:id="@+id/user_lname_text"
@@ -58,7 +50,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
-            android:layout_marginTop="2dp" />
+            android:includeFontPadding="false"
+            android:layout_marginTop="1dp"/>
 
         <TextView
             android:id="@+id/user_age_text"
@@ -67,7 +60,12 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
-            android:layout_marginTop="2dp" />
-
+            android:includeFontPadding="false"
+            android:layout_marginTop="1dp"/>
     </LinearLayout>
+
+    <View style="@style/dashed_divider"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/user_profile_image"/>
+
 </RelativeLayout>

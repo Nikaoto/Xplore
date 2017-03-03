@@ -136,7 +136,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     User tempUser;
                     for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
                     {
-                        //tempUser = new User(); //remove this if it works fine
                         tempUser = userSnapshot.getValue(User.class);
                         userList.add(tempUser);
                     }
@@ -163,7 +162,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 if (dataSnapshot.exists()) {
                     User tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        //tempUser = new User(); //remove this if it works fine
                         tempUser = userSnapshot.getValue(User.class);
                         userList.add(tempUser);
                     }
@@ -220,7 +218,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
             //Age
             TextView age_text = (TextView) itemView.findViewById(R.id.user_age_text);
-            fname_text.setText(getResources().getString(R.string.age) +": "+currentUser.getAge());
+            age_text.setText(getResources().getString(R.string.age) +": "+currentUser.getAge());
 
             //Profile Picture
             final ImageView userImage = (ImageView) itemView.findViewById(R.id.user_profile_image);
@@ -233,7 +231,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     .into(userImage);
 
             //Configuring Clicks
-            userImage.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     CreateGroupFragment.memberIds.add(currentUser.getId());
