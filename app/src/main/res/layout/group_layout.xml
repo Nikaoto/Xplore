@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation = "vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/leader_profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:id="@+id/leader_profile_image"
+                    android:background="@drawable/profile_picture_border"
+                    android:scaleType="fitXY"
+                    android:layout_width="@dimen/group_leader_profile_wh"
+                    android:layout_height="@dimen/group_leader_profile_wh"/>
+
+                <TextView
+                    android:id="@+id/leader_rep_text"
+                    android:text="100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorRepNumGrey"
+                    android:textSize="23sp"
+                    android:layout_below="@id/leader_profile_image"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/leader_rep_label"
+                    android:text="@string/reputation_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_below="@id/leader_rep_text"
+                    android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:fontFamily="monospace" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="@dimen/group_leader_profile_wh"
+                    android:layout_height="@dimen/group_leader_profile_wh"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/groupProgressBar" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/leader_fname_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="21sp"
+                android:layout_toRightOf="@id/leader_profile_layout"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:id="@+id/leader_lname_text"
+                android:text="Last Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="21sp"
+                android:layout_toRightOf="@id/leader_profile_layout"
+                android:layout_below="@id/leader_fname_text"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/leader_age_text"
+                android:text="Age: 23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="21sp"
+                android:layout_toRightOf="@id/leader_profile_layout"
+                android:layout_below="@id/leader_lname_text"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/leader_tel_text"
+                android:text="Tel: 599 42 09 69"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="21sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_toRightOf="@id/leader_profile_layout"
+                android:layout_below="@id/leader_age_text"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="6dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/destination"
+                    android:id="@+id/dest_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/main_text_margin_top"
+                    android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+                <ImageView
+                    android:id="@+id/group_experience_image"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/dest_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/group_reserveButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lib_button_height"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="sans-serif-condensed"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="8"
+            android:textSize="@dimen/lib_button_text_size"
+            android:textAllCaps="true"
+            android:textColor="@color/colorLibText"
+            android:gravity="bottom|left"
+            android:paddingLeft="@dimen/lib_text_padding_left"
+            android:paddingRight="@dimen/lib_text_padding_left"
+            android:paddingBottom="@dimen/lib_button_text_padding_bottom"
+            android:layout_marginTop="@dimen/lib_button_margin_top"
+            android:textStyle="bold" />
+
+        <TextView
+            android:text="@string/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/date_start"
+                android:text="10/02/2017"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="21sp"/>
+
+            <TextView
+                android:id="@+id/date_separator"
+                android:text="-"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/date_start"
+                android:layout_alignBaseline="@+id/date_start"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/date_end"
+                android:text="11/02/2017"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/date_separator"
+                android:layout_alignBaseline="@+id/date_separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="21sp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:text="@string/group_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/member_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+        </android.support.v7.widget.RecyclerView>
+
+        <View style="@style/Divider"/>
+
+        <RelativeLayout
+            android:id="@+id/member_profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/member_fname_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/member_lname_text"
+                android:text="Last Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="3dp"
+                android:layout_below="@id/member_fname_text"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/member_age_text"
+                android:text="Age: 23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="3dp"
+                android:layout_below="@id/member_lname_text"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/member_tel_text"
+                android:text="Tel: 599 42 09 69"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="3dp"
+                android:layout_below="@id/member_age_text"
+                android:layout_alignParentLeft="true"/>
+
+        </RelativeLayout>
+
+        <View style="@style/dashed_divider"/>
+
+        <TextView
+            android:text="@string/group_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        <TextView
+            android:id="@+id/group_prefs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="9dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:text="@string/extra_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        <TextView
+            android:id="@+id/group_extrainfo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="9dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="pic_big_angle">10</integer>
+    <integer name="pic_big_margin">1</integer>
+    <integer name="pic_small_angle">15</integer>
+    <integer name="pic_small_margin">3</integer>
+</resources>

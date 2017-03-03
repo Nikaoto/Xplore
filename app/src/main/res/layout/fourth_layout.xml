@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/party"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/party_textView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="28sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="110dp">
+
+        <ImageView
+            android:id="@+id/join_party"
+            android:src="@drawable/ic_join_party"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/party_button_width"
+            android:layout_height="@dimen/party_button_height" />
+
+        <TextView
+            android:id="@+id/join_textView"
+            android:text = "@string/join_party"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="19sp"
+            android:layout_marginTop="6dp"
+            android:layout_below="@+id/join_party"
+            android:layout_centerInParent="true"
+            android:textAlignment="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginRight="35dp"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:id="@+id/create_party"
+            android:src="@drawable/ic_create_party"
+            android:scaleType="fitXY"
+            android:gravity="center"
+            android:layout_width="@dimen/party_button_width"
+            android:layout_height="@dimen/party_button_height"/>
+
+        <TextView
+            android:id="@+id/create_textView"
+            android:text = "@string/create_party"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="19sp"
+            android:layout_marginTop="6dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/create_party"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+</RelativeLayout>

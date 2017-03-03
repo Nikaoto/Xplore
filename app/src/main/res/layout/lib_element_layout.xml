@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:text="A"
+            android:id="@+id/libButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lib_button_height"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="sans-serif-condensed"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="7"
+            android:textSize="@dimen/lib_button_text_size"
+            android:textAllCaps="true"
+            android:textColor="@color/colorLibText"
+            android:gravity="bottom|left"
+            android:paddingLeft="@dimen/lib_text_padding_left"
+            android:paddingBottom="4dp"
+            android:clickable="false"
+            android:textStyle="normal|bold"/>
+
+        <TextView
+            android:id="@+id/lib_description"
+            android:text="description"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="@dimen/lib_text_padding"
+            android:paddingRight="@dimen/lib_text_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="14sp"
+            android:lineSpacingExtra="3sp"/>
+
+        <View style="@style/dashed_divider"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/lib_fauna_header"
+            android:text="@string/lib_fauna_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <com.explorify.xplore.xplore_demo.ExpandableTextView
+            android:id="@+id/lib_fauna"
+            android:text="fauna"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/lib_text_padding"
+            android:paddingRight="@dimen/lib_text_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:lineSpacingExtra="3sp"/>
+
+        <TextView
+            android:id="@+id/lib_flora_header"
+            android:text="@string/lib_flora_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <com.explorify.xplore.xplore_demo.ExpandableTextView
+            android:id="@+id/lib_flora"
+            android:text="animals"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/lib_text_padding"
+            android:paddingRight="@dimen/lib_text_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:lineSpacingExtra="3sp"/>
+
+        <TextView
+            android:id="@+id/lib_equipment_header"
+            android:text="@string/lib_equip_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <TextView
+            android:id="@+id/lib_equipment"
+            android:text="equipment"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/lib_text_padding"
+            android:paddingRight="@dimen/lib_text_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:lineSpacingExtra="3sp"/>
+
+        <TextView
+            android:id="@+id/lib_tag_header"
+            android:text="@string/lib_tags_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <com.explorify.xplore.xplore_demo.ExpandableTextView
+            android:id="@+id/lib_tags"
+            android:text="tags"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/lib_text_padding"
+            android:paddingRight="@dimen/lib_text_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:lineSpacingExtra="3sp"/>
+
+        <TextView
+            android:id="@+id/lib_difficulty_header"
+            android:text="@string/lib_difficulty_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lib_difficutyBar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:numStars="10"
+            android:stepSize="1"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="2dp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/showOnMapButton"
+            android:text="@string/show_on_map"
+            android:textSize="16sp"
+            app:backgroundTint="@color/colorAccent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

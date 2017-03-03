@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+<ImageView
+    android:id="@+id/user_profile_image"
+    android:background="@drawable/profile_picture_border"
+    android:scaleType="fitXY"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="10dp"
+    android:layout_width="@dimen/group_list_profile_wh"
+    android:layout_height="@dimen/group_list_profile_wh"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/group_list_profile_wh"
+        android:layout_height="@dimen/group_list_profile_wh"
+        android:id="@+id/groupProgressBar"
+        android:layout_alignTop="@+id/user_profile_image"
+        android:layout_alignLeft="@+id/user_profile_image"
+        android:layout_alignStart="@+id/user_profile_image" />
+
+    <LinearLayout
+        android:layout_alignBaseline="@id/user_profile_image"
+        android:layout_toRightOf="@id/user_profile_image"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/group_list_profile_wh">
+
+        <TextView
+            android:id="@+id/user_rep_text_combined"
+            android:text="100 reputation"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textAllCaps="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGreyText" />
+
+        <TextView
+            android:id="@+id/user_fname_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:id="@+id/user_lname_text"
+            android:text="Last Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:id="@+id/user_age_text"
+            android:text="Age: 23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+</RelativeLayout>

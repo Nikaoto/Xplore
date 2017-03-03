@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Xplore Demo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="create_party">შექმენი</string>
+    <string name="join_party">შეუერთდი</string>
+    <string name="party">ჯგუფები</string>
+    <string name="about_header">შესახებ</string>
+    <string name="calendar">კალენდარი</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
+        შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
+        http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
+        \n\nშექმნილია ნიკოლოზ ოთიაშვილის მიერ თავისი გუნდის, Explorify-ს, დახმარებით Golden
+        Byte-ს თვის.
+    </string>
+    <string name="credits">
+        Explorify: \n\t\tნიკოლოზ ოთიაშვილი\n\t\tსულხან პატარიძე\n\t\tგურამ შამათავა
+    </string>
+    <string name="search_hint">მოძებნეთ ტეგები</string>
+    <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
+    <string name="nav_search_title">ძებნა</string>
+    <string name="nav_lib_title">ბიბლიოთეკა</string>
+    <string name="nav_map_title">რუკა</string>
+    <string name="nav_party_title">ჯგუფები</string>
+    <string name="nav_about_title">შესახებ</string>
+    <string name="action_settings">რეგულირება</string>
+    <string name="title_activity_maps">რუკა</string>
+    <string name="nav_description">ეს აპლიკაციის მხოლოდ დემო ვერსიაა.</string>
+    <string name="options_lang">ენა</string>
+    <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
+    <string name="show_on_map">იხილეთ რუკაზე</string>
+    <string name="lib_fauna_header">ფაუნა</string>
+    <string name="lib_flora_header">ფლორა</string>
+    <string name="lib_tags_header">ტეგები</string>
+    <string name="lib_equip_header">აღჭურვილობა</string>
+    <string name="lib_difficulty_header">სირთულე</string>
+    <string name="wifi_connect_dialog">
+        გთხოვთ ჩართოთ ინტერნეტკავშირი რუკების გადმოსაწერად. ეს მხოლოდ ერთჯერადად არის საჭირო.
+    </string>
+    <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
+    <string name="location">ადგილმდებარეობა</string>
+    <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>
+    <string name="please_enable_location">გთხოვთ ჩართოთ ადგილმდებარეობა(Location)</string>
+    <string name="destination">მიმართულება</string>
+    <string name="date">თარიღი</string>
+    <string name="group_members">გუნდის წევრები</string>
+    <string name="group_preferences">სასურველია</string>
+    <string name="extra_info">დამატებით ინფო</string>
+    <string name="loading_groups">იტვირთება ჯგუფები</string>
+    <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
+    <string name="view_group">ჯგუფების ძებნა</string>
+    <string name="reputation_caps">რეპუტაცია</string>
+    <string name="age">ასაკი</string>
+    <string name="tel">ტელ</string>
+    <string name="group_is_experienced">გუნდში ერთი წევრისთვის მაინც ნაცნობია ეს ნაკრძალი</string>
+    <string name="group_not_experienced">გუნდისთვის ეს ნაკრძალი უცნობია</string>
+    <string name="choose_destination">ამოირჩიეთ მიმართულება</string>
+    <string name="invite_members">დაპატიჟე</string>
+    <string name="has_visited_question">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
+    <string name="yes">დიახ</string>
+    <string name="no">არა</string>
+    <string name="done">დასტური</string>
+    <string name="set">ამორჩევა</string>
+    <string name="confirm">დასტური</string>
+    <string name="okay">გასაგებია</string>
+    <string name="date_start">დაწყების თარიღი</string>
+    <string name="date_end">დასასრულის თარიღი</string>
+    <string name="question_choose_reserve">დარწმუნებული ხართ რომ გინდათ ამოირჩიოთ</string>
+    <string name="group_prefs_help">ამ ველში უნდა მიუთითოთ როგორი გუნდის წევრებია თქვენი
+        გუნდისთვის სასურველი.\n\nმაგ: ვინმე, ვინც გამოცდილია და გუნდს არ ჩამორჩება…</string>
+    <string name="extra_info_help">ამ ველში უნდა მიუთითოთ დამატებით ინფორმაცია რაც შეიძლება ახალ
+        გუნდის წევრს გამოადგეს.\n\nმაგ: ნაკრძალამდე მივდივართ ერთად, 11ზე გავდივართ რუსთაველის
+        მეტროდან…</string>
+    <string name="what_is_this">რას ნიშნავს ეს?</string>
+    <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
+        ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
+    <string name="dest_field_incomplete">გთხოვთ, ამოირჩიოთ მიმართულება.</string>
+    <string name="exp_field_incomplete">გთხოვთ, უპასუხოთ დასმულ კითხვას.</string>
+    <string name="date_start_field_incomplete">გთხოვთ, მიუთითოთ დასაწყისის თარიღი.</string>
+    <string name="date_end_field_incomplete">გთხოვთ, მიუთითოთ დასასრულის თარიღი.</string>
+    <string name="text_field_incomplete">გთხოვთ, ფორმა შეავსოთ სრულად.</string>
+    <string name="date_invalid">
+        დასასრულის თარიღი დაწყებამდე ვერ იქნება.\n\nგთხოვთ, შეასწოროთ შეცდომა.
+    </string>
+    <string name="date_past_invalid">
+        დასაწყისის ან დასასრული თარიღი ვერ იქნება წარსულში.\n\nგთხოვთ, შეასწოროთ შეცდომა.
+    </string>
+    <string name="search_users">მოძებნეთ მომხმარებლები</string>
+
+</resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Xplore Demo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="create_party">Cоздавать</string>
+    <string name="join_party">Соединяться</string>
+    <string name="party">Группы</string>
+    <string name="about_header">Информация</string>
+    <string name="calendar">Календарь</string>
+    <string name="cancel">Отмена</string>
+    <string name="about">Это приложение только демо-версия Xplore. Любой элемент приложения может
+        быть изменен.\n\nИнформация и ресурсы о парках и заповедниках получена из
+        http://apa.gov.ge/. Они принадлежат их законныx владельцаx.\n\nПрограмма создана для
+        чемпионат "Золотой Баит".
+    </string>
+    <string name="credits">
+        Explorify: \n\t\tНика Отиашвили\n\t\tCулхан Патаридзе \n\t\tГурам Шаматава
+    </string>
+    <string name="search_hint">Искать Метки</string>
+    <string name="search_groups_hint">Поиск Группы</string>
+    <string name="nav_search_title">Поиск</string>
+    <string name="nav_lib_title">Библиотека</string>
+    <string name="nav_map_title">Карта</string>
+    <string name="nav_party_title">Группы</string>
+    <string name="nav_about_title">Информация</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_maps">Карта</string>
+    <string name="nav_description">Xplore демо-версия.</string>
+    <string name="options_lang">Язык</string>
+    <string name="search_no_results">Результатов не найдено</string>
+    <string name="show_on_map">Показать на карту</string>
+    <string name="lib_fauna_header">Фауна</string>
+    <string name="lib_flora_header">Флора</string>
+    <string name="lib_tags_header">Метки</string>
+    <string name="lib_equip_header">Оборудование</string>
+    <string name="lib_difficulty_header">Трудность</string>
+    <string name="wifi_connect_dialog">Пожалуйстна нодключите к интернетом, чтобы загрузить карты. Вам придётся делать эта только один раз.</string>
+    <string name="unable_to_connect">Невозможно подключиться</string>
+    <string name="location">Местонахождение</string>
+    <string name="enable_location">Включите Местонахождение</string>
+    <string name="please_enable_location">Пожайлуста включите местонахождение(Location)</string>
+    <string name="destination">Направление</string>
+    <string name="date">Дата</string>
+    <string name="group_members">Члены Группы</string>
+    <string name="group_preferences">Предпочтения</string>
+    <string name="extra_info">Дополнительная Инфо</string>
+    <string name="loading_groups">Загрузка Групп</string>
+    <string name="request_cancelled">Запрос Отменено</string>
+    <string name="view_group">Поиск Групп</string>
+    <string name="reputation_caps">РЕПУТАЦИЯ</string>
+    <string name="age">Возраст</string>
+    <string name="tel">Тел</string>
+    <string name="group_is_experienced"></string>
+    <string name="group_not_experienced">Для этой группы местность неизвестно</string>
+    <string name="choose_destination">Выберите Пункт Назначения</string>
+    <string name="invite_members">Приглашать</string>
+    <string name="has_visited_question">Известно ли местность для этой группы?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="done">Создать</string>
+    <string name="set">Выбирать</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="okay">Хорошо</string>
+    <string name="date_start">Дата Начала</string>
+    <string name="date_end">Дата Окончания</string>
+    <string name="question_choose_reserve">Вы уверены, что хотите выбрать</string>
+    <string name="group_prefs_help">Пожалуйста, напишите желаемые характеристики новых членнов
+        группы.\n\nНапример: Тот, кто опытный и не будет отставать…</string>
+    <string name="extra_info_help">Пожалуйста, напишите любую полезную информацию, который
+        одногруппники хотели бы знать.\n\nНапример: Мы отправляемся в 11 утра от станции метро
+        Руставели…</string>
+    <string name="what_is_this">Что это значит?</string>
+    <string name="group_exp_help">X значит что местность неизвестно для этой группы.\n\n
+        ✓ - местность известно по крайней мере для одного человека из группы.</string>
+    <string name="search_users">Naidite Polzovatelei</string>
+</resources>

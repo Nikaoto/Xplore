@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:ems="10"
+        android:id="@+id/search_bar"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="250dp"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:src="@drawable/ic_search"
+        android:id="@+id/imageView2"
+        android:layout_height="24dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp"
+        android:layout_alignTop="@id/search_bar"
+        android:layout_toLeftOf="@id/search_bar"
+        android:layout_toStartOf="@id/search_bar"
+        android:layout_alignBottom="@id/search_bar" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/searchProgressBar"
+        android:layout_alignBaseline="@+id/imageView2"
+        android:layout_toRightOf="@+id/search_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:indeterminate="true"/>
+
+    <View style="@style/green_divider"
+        android:layout_below="@id/search_bar"
+        android:layout_marginTop="4dp"/>
+
+    <ListView
+        android:id="@+id/resultslist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/search_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp">
+    </ListView>
+
+</RelativeLayout>

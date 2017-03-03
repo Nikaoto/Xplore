@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">Xplore Demo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="create_party">Create</string>
+    <string name="join_party">Join</string>
+    <string name="party">Groups</string>
+    <string name="about_header">About</string>
+    <string name="calendar">Calendar</string>
+    <string name="cancel">Cancel</string>
+    <string name="about">This app is a demo version of Xplore. Any element of this application is
+        subject to change.\n\nThe information and resources of parks and reserves is sourced from
+        http://apa.gov.ge/ and they belong to their rightful owners.\n\nCreated by Nika Otiashvili
+        with the help of his team, Explorify, for The Golden Byte challenge.
+    </string>
+    <string name="credits">
+        Explorify: \n\t\tNika Otiashvili\n\t\tSulkhan Pataridze\n\t\tGuram Shamatava
+    </string>
+    <string name="search_hint">Search Tags</string>
+    <string name="search_groups_hint">Search Groups</string>
+    <string name="nav_search_title">Search</string>
+    <string name="nav_lib_title">Library</string>
+    <string name="nav_map_title">Map</string>
+    <string name="nav_party_title">Groups</string>
+    <string name="nav_about_title">About</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="nav_description">This is only a demo version of Xplore.</string>
+    <string name="options_lang">Language</string>
+    <string name="search_no_results">No Results Found</string>
+    <string name="show_on_map">Show on Map</string>
+    <string name="lib_fauna_header">Fauna</string>
+    <string name="lib_flora_header">Flora</string>
+    <string name="lib_tags_header">Tags</string>
+    <string name="lib_equip_header">Equipment</string>
+    <string name="lib_difficulty_header">Difficulty</string>
+    <string name="wifi_connect_dialog">Please turn on mobile network or Wi-Fi in Settings to download maps. This is only required once.</string>
+    <string name="unable_to_connect">Unable to connect</string>
+    <string name="location">Location</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="please_enable_location">Please enable loation</string>
+    <string name="destination">Destination</string>
+    <string name="date">Date</string>
+    <string name="group_members">Group Members</string>
+    <string name="group_preferences">Preferences</string>
+    <string name="extra_info">Extra Info</string>
+    <string name="loading_groups">Loading Groups</string>
+    <string name="request_cancelled">Request Canceled</string>
+    <string name="view_group">View Groups</string>
+    <string name="reputation_caps">REPUTATION</string>
+    <string name="age">Age</string>
+    <string name="tel">Tel</string>
+    <string name="group_is_experienced">The group is familiar with this reserve</string>
+    <string name="group_not_experienced">The group is not familiar with this reserve</string>
+    <string name="choose_destination">Choose Destination</string>
+    <string name="invite_members">Invite</string>
+    <string name="has_visited_question">Is the group familiar with this reserve?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="done">Done</string>
+    <string name="set">Set</string>
+    <string name="confirm">Confirm</string>
+    <string name="okay">Okay</string>
+    <string name="date_start">Start Date</string>
+    <string name="date_end">End Date</string>
+    <string name="question_choose_reserve">Are you sure you want to choose</string>
+    <string name="group_prefs_help">Input any preferences your group has towards other groupmates.\n
+        \nex: Someone who is experienced and won\'t fall behind the team…</string>
+    <string name="extra_info_help">Input any useful information that you think other groupmates
+        would prefer to know.\n\nex: We\'re departing together at 11am from Rustaveli metro station…
+    </string>
+    <string name="what_is_this">What is this?</string>
+    <string name="group_exp_help">X means that the group is not familiar with the reserve.\n\n
+        ✓ - at least one person in the group has been to the reserve.</string>
+    <string name="dest_field_incomplete">Please choose a destination.</string>
+    <string name="exp_field_incomplete">Please answer the question.</string>
+    <string name="date_start_field_incomplete">Please select the starting date of the trip.</string>
+    <string name="date_end_field_incomplete">Please select the ending date of the trip.</string>
+    <string name="text_field_incomplete">Please fully fill out the form.</string>
+    <string name="date_invalid">
+        The end date can\'t be before the starting date.\n\nPlease correct the mistake.
+    </string>
+    <string name="date_past_invalid">
+        The start or end dates can\'t be in the past.\n\nPlease correct the mistake.
+    </string>
+    <string name="search_users">Search Users</string>
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#48c201</color>
+    <color name="colorPrimaryDark">#309f4c</color>
+    <color name="colorAccent">#46d196</color>
+    <color name="colorLibText">#fffefe</color>
+    <color name="colorLibBGTint">#6e3f3e3e</color>
+    <color name="colorLibBGTintClick">#32bcbcbb</color>
+    <color name="colorGreyText">#8c8c8c</color>
+    <color name="colorGreen">#00E500</color>
+    <color name="colorRed">#E50000</color>
+    <color name="colorGrey">#BDBDBD</color>
+    <color name="colorRepNumGrey">#151515</color>
+    <color name="colorDarkGrey">#3F3F3F</color>
+</resources>

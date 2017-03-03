@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User ID: "
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignBaseline="@+id/userId_editText"
+                android:layout_toLeftOf="@+id/userId_editText"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <EditText
+                android:id="@+id/userId_editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:ems="8"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="10dp"
+                android:inputType="text" />
+
+        </RelativeLayout>
+
+        <View style="@style/dashed_divider"
+            android:layout_below="@+id/userId_text"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/chooseReserve_button"
+            android:text="@string/choose_destination"
+            android:textSize="16sp"
+            app:backgroundTint="@color/colorAccent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="@string/destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        <Button
+            android:id="@+id/createGroup_reserveButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lib_button_height"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:text="."
+            android:fontFamily="sans-serif-condensed"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="8"
+            android:textSize="@dimen/lib_button_text_size"
+            android:textAllCaps="true"
+            android:textColor="@color/colorLibText"
+            android:gravity="bottom|left"
+            android:paddingLeft="@dimen/lib_text_padding_left"
+            android:paddingRight="@dimen/lib_text_padding_left"
+            android:paddingBottom="@dimen/lib_button_text_padding_bottom"
+            android:layout_marginTop="@dimen/lib_button_margin_top"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--
+            TODO put date start and end strings in resources
+            -->
+            <TextView
+                android:id="@+id/dateStart_label"
+                android:text="@string/date_start"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/chooseStartDate"
+                android:layout_alignBaseline="@+id/chooseStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <TextView
+                android:id="@+id/dateStart_text"
+                android:layout_below="@id/dateStart_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="11dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20sp"/>
+
+            <Button
+                android:id="@+id/chooseStartDate"
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/dateEnd_label"
+                android:text="@string/date_end"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/chooseEndDate"
+                android:layout_alignBaseline="@+id/chooseEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <TextView
+                android:id="@+id/dateEnd_text"
+                android:layout_below="@id/dateEnd_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="11dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20sp"/>
+
+
+            <Button
+                android:id="@+id/chooseEndDate"
+                android:layout_below="@id/chooseStartDate"
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/group_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toLeftOf="@+id/inviteMembers_button"
+                    android:layout_alignBaseline="@+id/inviteMembers_button"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+                <Button
+                    android:id="@+id/inviteMembers_button"
+                    android:text="@string/invite_members"
+                    android:textSize="15sp"
+                    app:backgroundTint="@color/colorAccent"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    <!--    <android.support.v7.widget.RecyclerView
+            android:id="@+id/createGroup_member_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+        </android.support.v7.widget.RecyclerView>-->
+
+        <View style="@style/Divider"/>
+
+        <TextView
+            android:text="@string/has_visited_question"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:text="@string/yes"
+                android:id="@+id/yes_rb"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:text="@string/no"
+                android:id="@+id/no_rb"
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
+        <View style="@style/dashed_divider"
+            android:layout_marginTop="10dp"/>
+
+        <RelativeLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/createGroup_prefs_text"
+            android:text="@string/group_preferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        <ImageView
+            android:id="@+id/prefs_help"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_help"
+            android:layout_toRightOf="@id/createGroup_prefs_text"
+            android:layout_width="@dimen/ic_help_wh"
+            android:layout_height="@dimen/ic_help_wh" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/groupPrefs_editText"
+            android:padding="7dp"
+            android:gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGrey"
+            android:inputType="textMultiLine"
+            android:background="@drawable/textbox_outline"
+            android:minLines="3"/>
+
+        <RelativeLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/createGroup_extraInfo_text"
+                android:text="@string/extra_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <ImageView
+                android:id="@+id/extraInfo_help"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_help"
+                android:layout_toRightOf="@id/createGroup_extraInfo_text"
+                android:layout_width="@dimen/ic_help_wh"
+                android:layout_height="@dimen/ic_help_wh" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/extraInfo_editText"
+            android:padding="7dp"
+            android:gravity="top"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGrey"
+            android:inputType="textMultiLine"
+            android:background="@drawable/textbox_outline"
+            android:minLines="3"/>
+
+        <Button
+            android:id="@+id/creteGroup_done_button"
+            android:text="@string/done"
+            android:textSize="19sp"
+            app:backgroundTint="@color/colorAccent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>

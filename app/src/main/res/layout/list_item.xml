@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:text="QWERTY"
+        android:id="@+id/resultItem"
+        android:background="@drawable/algeti"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lib_button_height"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif-condensed"
+        android:shadowColor="@android:color/black"
+        android:shadowRadius="8"
+        android:textSize="@dimen/lib_button_text_size"
+        android:textAllCaps="true"
+        android:textColor="@color/colorLibText"
+        android:gravity="bottom|left|center_horizontal"
+        android:paddingLeft="@dimen/lib_text_padding_left"
+        android:paddingBottom="@dimen/lib_button_text_padding_bottom"
+        android:layout_marginTop="@dimen/lib_button_margin_top"
+        android:textStyle="bold" />
+</LinearLayout>
