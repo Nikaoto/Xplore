@@ -2,7 +2,7 @@
 
 This is a repository of the Aplha (demo) version of Xplore, an assistant for hikers.
 
-This repo was created for the sole reason to make backing up and version control easier for me.
+This repo was created for the sole reason of making backups and version control easier for me.
 
 
 ### Requirements
