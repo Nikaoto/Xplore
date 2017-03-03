@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class SecondFragment extends Fragment {
 
-    private int chosenElement;
     private ListView list;
     private int reserveImageRef;//TODO fix layout first (change it to Image)
     private View myView;
@@ -72,8 +71,7 @@ public class SecondFragment extends Fragment {
                 butt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        chosenElement = currentButton.getId();
-                        General.OpenLibFragment(chosenElement, getActivity());
+                        General.OpenLibFragment(currentButton.getId(), getActivity());
                     }
                 });
             }

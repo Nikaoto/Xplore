@@ -34,7 +34,6 @@ public class FirstFragment extends Fragment implements EditText.OnEditorActionLi
     private ArrayList<ReserveButton> answerButtons = new ArrayList<>();
     private ArrayList<ReserveButton> reserveButtons = new ArrayList<>();
     private ProgressBar progressBar;
-    private int chosenElement;
 
     @Nullable
     @Override
@@ -92,8 +91,7 @@ public class FirstFragment extends Fragment implements EditText.OnEditorActionLi
             butt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    chosenElement = currentButton.getId();
-                    General.OpenLibFragment(chosenElement, getActivity());
+                    General.OpenLibFragment(currentButton.getId(), getActivity());
                 }
             });
 
