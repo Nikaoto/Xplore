@@ -22,39 +22,38 @@
         android:layout_below="@id/textOptionsTitle"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
-
         android:id="@+id/textOptionsLang"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp" />
 
-    <Button
+    <ImageView
         android:id="@+id/GeoFlag"
-        android:background="@drawable/flag_geo"
+        android:scaleType="fitXY"
+        android:src="@drawable/flag_geo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@id/textOptionsLang"
-        android:backgroundTintMode="src_over"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp" />
 
-    <Button
+    <ImageView
         android:id="@+id/EngFlag"
-        android:background="@drawable/flag_eng"
+        android:scaleType="fitXY"
+        android:src="@drawable/flag_eng"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@id/textOptionsLang"
-        android:backgroundTintMode="src_over"
         android:layout_alignLeft="@id/GeoFlag"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="100dp" />
 
-    <Button
+    <ImageView
         android:id="@+id/RusFlag"
-        android:background="@drawable/flag_rus"
+        android:scaleType="fitXY"
+        android:src="@drawable/flag_rus"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@id/textOptionsLang"
-        android:backgroundTintMode="src_over"
         android:layout_alignLeft="@id/EngFlag"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="100dp" />

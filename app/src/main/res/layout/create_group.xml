@@ -91,9 +91,6 @@
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <!--
-            TODO put date start and end strings in resources
-            -->
             <TextView
                 android:id="@+id/dateStart_label"
                 android:text="@string/date_start"

@@ -10,30 +10,35 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.widget.TintableCompoundButton;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.Locale;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class OptionsFragment extends Fragment implements View.OnClickListener
 {
 
     View myView;
-    Button GeoButton;
-    Button EngButton;
-    Button RusButton;
-
-    ColorStateList BGTint;
+    ImageView GeoButton;
+    ImageView EngButton;
+    ImageView RusButton;
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor prefEditor;
@@ -42,12 +47,11 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.options_layout, container, false);
-        BGTint = getResources().getColorStateList(R.color.colorLibBGTint);
-        GeoButton = (Button) myView.findViewById(R.id.GeoFlag);
+        GeoButton = (ImageView) myView.findViewById(R.id.GeoFlag);
         GeoButton.setOnClickListener(this);
-        EngButton = (Button) myView.findViewById(R.id.EngFlag);
+        EngButton = (ImageView) myView.findViewById(R.id.EngFlag);
         EngButton.setOnClickListener(this);
-        RusButton = (Button) myView.findViewById(R.id.RusFlag);
+        RusButton = (ImageView) myView.findViewById(R.id.RusFlag);
         RusButton.setOnClickListener(this);
 
         DisableChosenLanguageButton();
@@ -62,21 +66,15 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
 
         if(sharedPrefs.equals("ka"))
         {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//TODO change this
-                GeoButton.setBackgroundTintList(BGTint);
-            }
+            GeoButton.setBackgroundResource(R.drawable.flag_image_border);
 
             GeoButton.setEnabled(false);
             EngButton.setEnabled(true);
             RusButton.setEnabled(true);
-
         }
         else if(sharedPrefs.equals("en"))
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                EngButton.setBackgroundTintList(BGTint);
-            }
+            EngButton.setBackgroundResource(R.drawable.flag_image_border);
 
             GeoButton.setEnabled(true);
             EngButton.setEnabled(false);
@@ -85,9 +83,7 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
 
         else if(sharedPrefs.equals("ru"))
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                RusButton.setBackgroundTintList(BGTint);
-            }
+            RusButton.setBackgroundResource(R.drawable.flag_image_border);
 
             GeoButton.setEnabled(true);
             EngButton.setEnabled(true);
@@ -134,7 +130,6 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
     public void setSystemLocale(Configuration c, Locale l){
         c.setLocale(l);
     }
-
 
     @Override
     public void onClick(View view) {

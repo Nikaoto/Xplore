@@ -3,8 +3,6 @@ package com.explorify.xplore.xplore_demo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompatSideChannelService;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +121,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     int userCounter = 0;
 
     //search lname in db and filter results with fnames (because lname collisions are less frequent)
-    //maybe turn void into arraylsit and stack the results onto userList?
     private void LoadDataWithFullName(final String fname, final String lname, final boolean displayData)
     {
         Query fnameQuery = dbRef.orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
@@ -139,7 +136,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                             tempUser.setId(userSnapshot.getKey());
                             userList.add(tempUser);
                             dataFound = true;
-                            Log.println(Log.INFO, "fname", tempUser.getFname() + " id =" + tempUser.getId());
                         }
                     }
                     if (dataFound && displayData)
@@ -306,8 +302,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         if(searchQuery.contains(" "))
         {
             String[] parts = searchQuery.split(" ",2);
-            //fname_search = FirstLetterUpper(parts[0]);
-            //lname_search = FirstLetterUpper(parts[1]);
             LoadDataWithFullName(FirstLetterUpper(parts[0]), FirstLetterUpper(parts[1]), true);
 
             //TODO add fname search with lname filter (reverse LoadDataWithFullName, in case they type lname first, then fname)
@@ -316,8 +310,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         {
             LoadDataWithTag(FirstLetterUpper(searchQuery), DB_FNAME_TAG, true,
                     FirstLetterUpper(searchQuery), DB_LNAME_TAG);
-            //fname_search = FirstLetterUpper(searchQuery);
-            //lname_search = fname_search; //performance optimization ;^)
         }
         //endif
 
