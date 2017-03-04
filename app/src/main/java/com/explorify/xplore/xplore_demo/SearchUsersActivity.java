@@ -3,6 +3,7 @@ package com.explorify.xplore.xplore_demo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -48,7 +48,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private ListView listView;
     private ProgressBar progressBar;
     private String searchQuery;
-    private boolean firstLoad, requestCancelled, fnameNotFound;
+    private boolean firstLoad, requestCancelled, fnameNotFound, dataFound;
 
     private ArrayList<User> userList= new ArrayList<>(); //replace with UserButtons
     private ArrayList<User> answerList= new ArrayList<>(); //replace with UserButtons
@@ -122,26 +122,34 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     int userCounter = 0;
 
-    private void LoadDataWithFullName(final String fname, final String lname)
+    //search lname in db and filter results with fnames (because lname collisions are less frequent)
+    //maybe turn void into arraylsit and stack the results onto userList?
+    private void LoadDataWithFullName(final String fname, final String lname, final boolean displayData)
     {
-        Query fnameQuery = dbRef.orderByChild(DB_FNAME_TAG).startAt(fname).endAt(fname+"\uf8ff");
+        Query fnameQuery = dbRef.orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
         fnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                dataFound = false;
+                if (dataSnapshot.exists()) {
                     User tempUser;
-                    for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                    {
-                        tempUser = userSnapshot.getValue(User.class);
-                        tempUser.setId(userSnapshot.getKey());
-                        Log.println(Log.INFO, "fname", tempUser.getFname()+" id ="+tempUser.getId());
-                        userList.add(tempUser);
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        if (userSnapshot.getValue(User.class).getFname().toLowerCase().contains(fname.toLowerCase())) {
+                            tempUser = userSnapshot.getValue(User.class);
+                            tempUser.setId(userSnapshot.getKey());
+                            userList.add(tempUser);
+                            dataFound = true;
+                            Log.println(Log.INFO, "fname", tempUser.getFname() + " id =" + tempUser.getId());
+                        }
                     }
+                    if (dataFound && displayData)
+                        PopulateButtonList();
+                    else if (!dataFound)
+                        NothingFound();
                 }
-                else if(!dataSnapshot.exists())
-                    fnameNotFound = true;
-
-                LoadDataWithLastName(lname);
+                else {
+                    NothingFound();
+                }
             }
 
             @Override
@@ -149,24 +157,32 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         });
     }
 
-    private void LoadDataWithLastName( final String lname)
+    private void LoadDataWithTag(final String query, final String tag, final boolean resummon,
+                                 final String query2, final String tag2)
     {
-        Query lnameQuery = dbRef.orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
-        lnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        //if resummon == true, do NOT display data
+        Query dbQuery = dbRef.orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
+        dbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    dataFound = true;
                     User tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         tempUser = userSnapshot.getValue(User.class);
                         tempUser.setId(userSnapshot.getKey());
-                        Log.println(Log.INFO, "lname", tempUser.getFname()+" id ="+tempUser.getId());
                         userList.add(tempUser);
                     }
-                } else if ((!dataSnapshot.exists()) && fnameNotFound)
+                }
+                else if (!resummon && !dataFound)
                     NothingFound();
+                else if(resummon)
+                    dataFound =  false;
 
-                PopulateButtonList();
+                if (resummon)
+                    LoadDataWithTag(query2, tag2, false, null, null);
+                else if (dataFound)
+                    PopulateButtonList();
             }
 
             @Override
@@ -176,8 +192,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PopulateButtonList()
     {
-        for(User user : userList)
-            Log.println(Log.INFO, "fname", user.getFname()+" id ="+user.getId());
+/*        for(User user : userList)
+            Log.println(Log.INFO, "fname", user.getFname()+" id ="+user.getId());*/
 
         boolean foundDup;
         //filtering duplicates into answerList
@@ -268,6 +284,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         }
     }
 
+    //returns given string with the first letter in uppercase
     private String FirstLetterUpper(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
@@ -278,6 +295,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
         userList.clear();
         answerList.clear();
+        dataFound = false;
 
         searchQuery = v.getText().toString().toLowerCase();
 
@@ -288,16 +306,19 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         if(searchQuery.contains(" "))
         {
             String[] parts = searchQuery.split(" ",2);
-            fname_search = FirstLetterUpper(parts[0]);
-            lname_search = FirstLetterUpper(parts[1]);
+            //fname_search = FirstLetterUpper(parts[0]);
+            //lname_search = FirstLetterUpper(parts[1]);
+            LoadDataWithFullName(FirstLetterUpper(parts[0]), FirstLetterUpper(parts[1]), true);
+
+            //TODO add fname search with lname filter (reverse LoadDataWithFullName, in case they type lname first, then fname)
         }
         else
         {
-            fname_search = FirstLetterUpper(searchQuery); //this searches in both fname and lname fields in db
-            lname_search = fname_search; //performance optimization ;^)
+            LoadDataWithTag(FirstLetterUpper(searchQuery), DB_FNAME_TAG, true,
+                    FirstLetterUpper(searchQuery), DB_LNAME_TAG);
+            //fname_search = FirstLetterUpper(searchQuery);
+            //lname_search = fname_search; //performance optimization ;^)
         }
-
-        LoadDataWithFullName(fname_search, lname_search);
         //endif
 
         return false;
