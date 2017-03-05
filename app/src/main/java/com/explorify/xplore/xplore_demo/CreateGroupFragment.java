@@ -1,5 +1,6 @@
 package com.explorify.xplore.xplore_demo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +19,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.Calendar;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 import static com.explorify.xplore.xplore_demo.General.dbManager;
 
@@ -31,7 +40,7 @@ import static com.explorify.xplore.xplore_demo.General.dbManager;
 public class CreateGroupFragment extends Fragment {
 
     public static int chosenDestId = -1;
-    public static ArrayList<String> memberIds = new ArrayList<>();
+    public static ArrayList<User> invitedMembers = new ArrayList<>();
     public static DateSetup dateSetup;
 
     final int G_PREFS_CHAR_MAX = 200;
@@ -39,15 +48,18 @@ public class CreateGroupFragment extends Fragment {
     final int E_INFO_CHAR_MAX = 200;
     final int E_INFO_CHAR_MIN = 2;
 
+    private int selectedMemberPos;
     private Context context;
+    private RelativeLayout memberLayout;
+    private RecyclerView memberRecList;
 
     EditText leaderId_text, groupPrefs_text, extraInfo_text;
     ImageView prefs_help, info_help;
     int experienceAns; // -1 -> not selected, 0 -> no exp, 1-> exp.
     String gPrefs, eInfo;
     User leader;
-    TextView startDate_text, endDate_text;
-    Button chooseButton, reserveButton, inviteButton, doneButton, startDate, endDate;
+    TextView startDate_text, endDate_text, member_fname_text, member_lname_text, member_age_text, member_tel_text;
+    Button chooseButton, reserveButton, inviteButton, uninviteButton, doneButton, startDate, endDate;
     RadioGroup radioGroup;
     View myView;
 
@@ -62,6 +74,7 @@ public class CreateGroupFragment extends Fragment {
 
         InitLayout();
 
+        invitedMembers.clear();
         chosenDestId = -1;
         experienceAns = -1;
 
@@ -93,11 +106,28 @@ public class CreateGroupFragment extends Fragment {
 
     private void InitLayout()
     {
+        //Member List RecyclerView
+        memberRecList = (RecyclerView) myView.findViewById(R.id.createGroup_member_list); //NOTE: uncomment in create_group.xml
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        memberRecList.setHasFixedSize(true);
+        memberRecList.setLayoutManager(layoutManager);
+
+        //Selected Member Info Layout
+        memberLayout = (RelativeLayout) myView.findViewById(R.id.member_profile_layout);
+        memberLayout.setVisibility(View.GONE);
+
+        //Selected Member Stuff
+        member_fname_text = (TextView) myView.findViewById(R.id.member_fname_text);
+        member_lname_text = (TextView) myView.findViewById(R.id.member_lname_text);
+        member_age_text = (TextView) myView.findViewById(R.id.member_age_text);
+        member_tel_text = (TextView) myView.findViewById(R.id.member_tel_text);
+
         //Buttons
         chooseButton = (Button) myView.findViewById(R.id.chooseReserve_button);
         reserveButton = (Button) myView.findViewById(R.id.createGroup_reserveButton);
         doneButton = (Button) myView.findViewById(R.id.creteGroup_done_button);
         inviteButton = (Button) myView.findViewById(R.id.inviteMembers_button);
+        uninviteButton = (Button) myView.findViewById(R.id.uninviteMember_button);
         startDate = (Button) myView.findViewById(R.id.chooseStartDate);
         endDate = (Button) myView.findViewById(R.id.chooseEndDate);
 
@@ -160,7 +190,7 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SearchUsersActivity.class);
-                context.startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -189,7 +219,7 @@ public class CreateGroupFragment extends Fragment {
                 if(CheckFields())
                 {
                     //start post info to firebase
-                    Toast.makeText(getActivity(),"Uploading Data...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -201,6 +231,40 @@ public class CreateGroupFragment extends Fragment {
                     experienceAns = 1;
                 else if(i == R.id.no_rb)
                     experienceAns = 0;
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK)
+        {
+            if(data.getBooleanExtra("member_added", false)) {//checking if members added
+                PopulateMembersList();
+            }
+        }
+    }
+
+    private void PopulateMembersList()
+    {
+        memberRecList.setVisibility(View.VISIBLE);
+        final MemberListAdapter adapter = new MemberListAdapter(context, invitedMembers, memberLayout);
+        memberRecList.setAdapter(adapter);
+
+        uninviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedMemberPos = adapter.GetSelectedMemberPos();
+                Toast.makeText(context, "Member removed: "+invitedMembers.get(selectedMemberPos).getId(), Toast.LENGTH_SHORT).show(); //TODO add strings
+                invitedMembers.remove(selectedMemberPos);
+                adapter.notifyItemRemoved(selectedMemberPos);
+                adapter.notifyItemRangeChanged(selectedMemberPos, invitedMembers.size());
+                adapter.SetSelectedMemberPos(-1);
+                memberLayout.setVisibility(view.GONE);
+                if(invitedMembers.isEmpty())
+                    memberRecList.setVisibility(View.GONE);
+
             }
         });
     }
@@ -226,7 +290,7 @@ public class CreateGroupFragment extends Fragment {
 
     private boolean CheckFields()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.okay, null);
 
         if(leaderId_text.getText().length() < 1)

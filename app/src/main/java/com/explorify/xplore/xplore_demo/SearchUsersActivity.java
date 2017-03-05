@@ -1,6 +1,7 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
@@ -29,6 +30,9 @@ import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
+import static com.explorify.xplore.xplore_demo.CreateGroupFragment.invitedMembers;
+
+
 /**
  * Created by nikao on 3/1/2017.
  */
@@ -38,6 +42,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private final String DB_FNAME_TAG = "fname";
     private final String DB_LNAME_TAG = "lname";
 
+    private boolean memberAdded;
     private String USERBASE_KEY;
     private String USERBASE_APPID;
     private String USERBASE_URL;
@@ -107,6 +112,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PreLoadData()
     {
+        memberAdded = false;
         progressBar.setVisibility(View.INVISIBLE);
         answerList.clear();
         userList.clear();
@@ -269,15 +275,41 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CreateGroupFragment.memberIds.add(currentUser.getId());
-                    Toast.makeText(SearchUsersActivity.this,
-                            "User "+ currentUser.getFname()+" "+currentUser.getLname()+" was added to your group.",
-                            Toast.LENGTH_SHORT).show();
+                    if(UserAlreadyInvited(currentUser))
+                        Toast.makeText(SearchUsersActivity.this, "Already Added m8", //TODO already added string
+                                Toast.LENGTH_SHORT).show();
+                    else {
+                        memberAdded = true;
+                        invitedMembers.add(currentUser);
+                        Toast.makeText(SearchUsersActivity.this,
+                                "User " + currentUser.getFname() + " " + currentUser.getLname() //TODO was added string
+                                        + " was added to your group.",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
             return itemView;
         }
+    }
+
+    public boolean UserAlreadyInvited(User user)
+    {
+        for(User u : invitedMembers)
+        {
+            if(u.getId().equals(user.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("member_added", memberAdded);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+        //super.onBackPressed();
     }
 
     //returns given string with the first letter in uppercase

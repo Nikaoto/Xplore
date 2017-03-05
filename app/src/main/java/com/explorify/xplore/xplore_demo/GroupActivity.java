@@ -2,18 +2,12 @@ package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -318,82 +310,8 @@ public class GroupActivity extends Activity {
     }
 
     private void populateMemberImageList() {
-        MembersListAdapter adapter = new MembersListAdapter(members);
+        MemberListAdapter adapter = new MemberListAdapter(GroupActivity.this, members, memberLayout);
         memberRecList.setAdapter(adapter);
-    }
-
-    public class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MemberViewHolder> {
-
-        private ArrayList<User> users = new ArrayList<>();
-
-        public MembersListAdapter(ArrayList<User> users) {
-            this.users = users;
-        }
-
-        public class MemberViewHolder extends RecyclerView.ViewHolder{
-            TextView rep_txt;
-            ImageView memberImage;
-
-            public MemberViewHolder(View itemView) {
-                super(itemView);
-                rep_txt = (TextView) itemView.findViewById((R.id.member_rep_text));
-                memberImage = (ImageView) itemView.findViewById(R.id.member_profile_image);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return users.size();
-        }
-
-        @Override
-        public MemberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.member_list_item, parent, false);
-            return new MemberViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(MemberViewHolder holder, final int position) {
-            final User currentMember = users.get(position);
-
-            //Loading Member Reputation
-            holder.rep_txt.setText(String.valueOf(currentMember.getReputation()));
-
-            //Loading Member Image
-            Picasso.with(GroupActivity.this)
-                    .load(currentMember.getProfile_picture_ref())
-                    .transform(new RoundedCornersTransformation(
-                            getResources().getInteger(R.integer.pic_small_angle),
-                            getResources().getInteger(R.integer.pic_small_margin)))
-                    .into(holder.memberImage);
-
-            //Configuring Clicks
-            holder.memberImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if(selectedMemberPos == position) {//same member click
-                        memberLayout.setVisibility(View.GONE);
-                        selectedMemberPos = -1;
-                        //divider.animate().translationY(-dividerMoveY);
-                    }
-                    else {//other member click
-
-                        if(selectedMemberPos == -1) {//first click
-                            memberLayout.setVisibility(View.VISIBLE);
-                            //divider.animate().translationY(dividerMoveY);
-                        }
-
-                        selectedMemberPos = position;
-                        member_fname_text.setText(currentMember.getFname());
-                        member_lname_text.setText(currentMember.getLname());
-                        member_age_text.setText(getString(R.string.age) + ": " + currentMember.getAge());
-                        member_tel_text.setText(getString(R.string.tel) + ": " + currentMember.getTel_num());
-                    }
-                }
-            });
-        }
     }
     
     //adds slashes to a date given in int (yyyy.mm.dd) without dots

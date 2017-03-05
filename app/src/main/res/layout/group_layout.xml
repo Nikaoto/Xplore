@@ -274,7 +274,6 @@
                 android:layout_marginTop="3dp"
                 android:layout_below="@id/member_age_text"
                 android:layout_alignParentLeft="true"/>
-
         </RelativeLayout>
 
         <View style="@style/dashed_divider"/>
