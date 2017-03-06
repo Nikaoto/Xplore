@@ -51,8 +51,6 @@
     <string name="reputation_caps">REPUTATION</string>
     <string name="age">Age</string>
     <string name="tel">Tel</string>
-    <string name="group_is_experienced">The group is familiar with this reserve</string>
-    <string name="group_not_experienced">The group is not familiar with this reserve</string>
     <string name="choose_destination">Choose Destination</string>
     <string name="invite_members">Invite</string>
     <string name="has_visited_question">Is the group familiar with this reserve?</string>
@@ -85,5 +83,9 @@
         The start or end dates can\'t be in the past.\n\nPlease correct the mistake.
     </string>
     <string name="search_users">Search Users</string>
-
+    <string name="member_already_added">Member is already in group</string>
+    <string name="user">User</string>
+    <string name="member_added">Member added</string>
+    <string name="member_removed">Member removed</string>
+    <string name="remove">Remove</string>
 </resources>

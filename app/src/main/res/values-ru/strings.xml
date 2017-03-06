@@ -52,8 +52,6 @@
     <string name="reputation_caps">РЕПУТАЦИЯ</string>
     <string name="age">Возраст</string>
     <string name="tel">Тел</string>
-    <string name="group_is_experienced"></string>
-    <string name="group_not_experienced">Для этой группы местность неизвестно</string>
     <string name="choose_destination">Выберите Пункт Назначения</string>
     <string name="invite_members">Приглашать</string>
     <string name="has_visited_question">Известно ли местность для этой группы?</string>
@@ -74,5 +72,21 @@
     <string name="what_is_this">Что это значит?</string>
     <string name="group_exp_help">X значит что местность неизвестно для этой группы.\n\n
         ✓ - местность известно по крайней мере для одного человека из группы.</string>
-    <string name="search_users">Naidite Polzovatelei</string>
+    <string name="search_users">Найдите Пользователей</string>
+    <string name="dest_field_incomplete">Пожалуйста, выберите пункт назначения.</string>
+    <string name="exp_field_incomplete">Пожалуйста, ответьте на вопрос.</string>
+    <string name="date_start_field_incomplete">Пожалуйста, выберите дату начала поездки.</string>
+    <string name="date_end_field_incomplete">Пожалуйста, выберите конечную дату поездки.</string>
+    <string name="text_field_incomplete">Пожалуйста, полностью заполните форму.</string>
+    <string name="date_invalid">
+        Дата окончания не может быть до даты начала.\n\nПожалуйста исправьте ошибку.
+    </string>
+    <string name="date_past_invalid">
+        Дата начала или окончания не может быть в прошлом\n\nПожалуйста исправьте ошибку.
+    </string>
+    <string name="member_already_added">Член уже в группе</string>
+    <string name="user">Пользователь</string>
+    <string name="member_added">Член  добавлен</string>
+    <string name="member_removed">Член удален</string>
+    <string name="remove">Удалить</string>
 </resources>

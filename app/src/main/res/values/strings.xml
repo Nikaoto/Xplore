@@ -54,8 +54,6 @@
     <string name="reputation_caps">რეპუტაცია</string>
     <string name="age">ასაკი</string>
     <string name="tel">ტელ</string>
-    <string name="group_is_experienced">გუნდში ერთი წევრისთვის მაინც ნაცნობია ეს ნაკრძალი</string>
-    <string name="group_not_experienced">გუნდისთვის ეს ნაკრძალი უცნობია</string>
     <string name="choose_destination">ამოირჩიეთ მიმართულება</string>
     <string name="invite_members">დაპატიჟე</string>
     <string name="has_visited_question">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
@@ -88,5 +86,9 @@
         დასაწყისის ან დასასრული თარიღი ვერ იქნება წარსულში.\n\nგთხოვთ, შეასწოროთ შეცდომა.
     </string>
     <string name="search_users">მოძებნეთ მომხმარებლები</string>
-
+    <string name="member_already_added">მომხმარებელი უკვე გუნდშია</string>
+    <string name="user">მომხმარებელი</string>
+    <string name="member_added">გუნდის წევრი დაემატა</string>
+    <string name="member_removed">გუნდის წევრი ამოიშალა</string>
+    <string name="remove">წაშლა</string>
 </resources>

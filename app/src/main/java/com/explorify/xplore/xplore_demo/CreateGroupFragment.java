@@ -256,7 +256,7 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 selectedMemberPos = adapter.GetSelectedMemberPos();
-                Toast.makeText(context, "Member removed: "+invitedMembers.get(selectedMemberPos).getId(), Toast.LENGTH_SHORT).show(); //TODO add strings
+                Toast.makeText(context, R.string.member_removed, Toast.LENGTH_SHORT).show();
                 invitedMembers.remove(selectedMemberPos);
                 adapter.notifyItemRemoved(selectedMemberPos);
                 adapter.notifyItemRangeChanged(selectedMemberPos, invitedMembers.size());
@@ -294,7 +294,7 @@ public class CreateGroupFragment extends Fragment {
         builder.setPositiveButton(R.string.okay, null);
 
         if(leaderId_text.getText().length() < 1)
-        { //TODO remove this after finishing groupCreation testing
+        { //TODO remove this after finishing groupCreation testing & adding user account management
             builder.setMessage("Fill user id pls")
                     .show();
             return false;

@@ -276,14 +276,12 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 @Override
                 public void onClick(View view) {
                     if(UserAlreadyInvited(currentUser))
-                        Toast.makeText(SearchUsersActivity.this, "Already Added m8", //TODO already added string
+                        Toast.makeText(SearchUsersActivity.this, R.string.member_already_added,
                                 Toast.LENGTH_SHORT).show();
                     else {
                         memberAdded = true;
                         invitedMembers.add(currentUser);
-                        Toast.makeText(SearchUsersActivity.this,
-                                "User " + currentUser.getFname() + " " + currentUser.getLname() //TODO was added string
-                                        + " was added to your group.",
+                        Toast.makeText(SearchUsersActivity.this,R.string.member_added,
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -309,7 +307,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         resultIntent.putExtra("member_added", memberAdded);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
-        //super.onBackPressed();
     }
 
     //returns given string with the first letter in uppercase
@@ -330,7 +327,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         //Check here for search types
 
         //if searchtype == name then
-        String fname_search, lname_search;
         if(searchQuery.contains(" "))
         {
             String[] parts = searchQuery.split(" ",2);
