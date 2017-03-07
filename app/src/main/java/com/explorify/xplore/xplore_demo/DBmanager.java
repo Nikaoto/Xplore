@@ -71,7 +71,7 @@ public class DBmanager extends SQLiteOpenHelper {
         myInput.close();
     }
         catch(IOException e){
-            Log.println(Log.ERROR,"errors","COuld not copy db");
+            Log.println(Log.ERROR,"errors","Could not copy db");
         }
     }
 

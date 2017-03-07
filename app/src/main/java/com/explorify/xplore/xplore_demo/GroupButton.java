@@ -1,6 +1,5 @@
 package com.explorify.xplore.xplore_demo;
 
-import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 
 /**

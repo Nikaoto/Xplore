@@ -1,6 +1,5 @@
 package com.explorify.xplore.xplore_demo;
 
-import android.media.Image;
 
 /**
  * Created by nikao on 2/11/2017.

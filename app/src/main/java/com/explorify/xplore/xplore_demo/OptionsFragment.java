@@ -1,36 +1,20 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.Fragment;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.widget.TintableCompoundButton;
 import android.util.DisplayMetrics;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class OptionsFragment extends Fragment implements View.OnClickListener
 {

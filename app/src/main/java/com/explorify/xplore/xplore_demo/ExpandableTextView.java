@@ -1,12 +1,9 @@
 package com.explorify.xplore.xplore_demo;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,8 +174,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) //getting users
                     {
-                        Log.println(Log.INFO, "dataSnapshot: ", "UserSnap key: "+userSnapshot.getKey()+"; leader key: "+tempGroupList.get(leaderCounter).getMember_ids().get(0));
-
                         for(Group group : tempGroupList) //going over every collected group
                         {
                             if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) //checking if leader
@@ -226,18 +223,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             }
         });
 
-    }
-
-    private boolean isUserLeader(String key, ArrayList<Group> glist, Group currGroup)
-    {
-        for(Group group : glist )
-        {
-            if(group.getMember_ids().get(0).equals(key)) {
-                currGroup = group;
-                return true;
-            }
-        }
-        return false;
     }
 
     private void PostLoadData()
