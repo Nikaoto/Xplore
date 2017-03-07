@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 
 public class Group {
-    boolean experienced;
-    long start_date, end_date;
-    String destination_id, group_id, extra_info, group_preferences;
-    ArrayList<String> member_ids;
-    User leader;
+    public boolean experienced;
+    public long start_date, end_date;
+    protected String destination_id, group_id, extra_info, group_preferences;
+    public ArrayList<String> member_ids;
+    public User leader;
 
     public Group()
     {

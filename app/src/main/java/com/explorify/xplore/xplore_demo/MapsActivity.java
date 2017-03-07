@@ -221,7 +221,7 @@ public class MapsActivity extends AppCompatActivity
 
     protected void createNetErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.wifi_connect_dialog)
+        builder.setMessage(R.string.wifi_connect_dialog_maps)
                 .setTitle(R.string.unable_to_connect)
                 .setCancelable(false)
                 .setPositiveButton(R.string.action_settings,

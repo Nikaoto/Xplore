@@ -35,7 +35,13 @@
     <string name="lib_tags_header">Tags</string>
     <string name="lib_equip_header">Equipment</string>
     <string name="lib_difficulty_header">Difficulty</string>
-    <string name="wifi_connect_dialog">Please turn on mobile network or Wi-Fi in Settings to download maps. This is only required once.</string>
+    <string name="wifi_connect_dialog_maps">
+        Please turn on mobile network or Wi-Fi in Settings to download maps. This is only required
+        once.
+    </string>
+    <string name="wifi_connect_dialog">
+        Please turn your mobile network or Wi-Fi on in order to create a group.
+    </string>
     <string name="unable_to_connect">Unable to connect</string>
     <string name="location">Location</string>
     <string name="enable_location">Enable Location</string>

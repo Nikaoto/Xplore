@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private String searchQuery, tempUserImageRef;
     private boolean requestCancelled, firstLoad;
-    private int userCounter;
+    private int leaderCounter;
 
     private View myView;
     private ListView list;
@@ -132,7 +133,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         groupButtons.clear();
         tempUserImageRef = "";
         firstLoad = true;
-        userCounter = 0;
+        leaderCounter = 0;
         requestCancelled = false;
         resultID.clear();
     }
@@ -140,7 +141,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private void LoadData()
     {
         DatabaseReference Ref = groupsRef.getRef();
-        Query query = Ref.orderByChild(JSON_START_DATE_TAG);
+        Query query = Ref.orderByChild(JSON_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -167,42 +168,46 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private void SortLeaderInfo()
     {
         DatabaseReference ref = userDB.getReference().getRef();
-        Query query = ref.orderByKey();
+        Query query = ref.orderByKey(); //TODO user search
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) { //getting users
-                        if(userCounter < dataSnapshot.getChildrenCount() && //checking if finished
-                                userSnapshot.getKey().equals(tempGroupList.get(userCounter)
-                                        .getMember_ids().get(0))){ //check if this user is a leader
-                            //loading leader profile picture url
-                            tempUserImageRef = userSnapshot.getValue(User.class)
-                                    .getProfile_picture_ref();
-                            int tempDestId = Integer.parseInt(tempGroupList.get(userCounter)
-                                    .getDestination_id());
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) //getting users
+                    {
+                        Log.println(Log.INFO, "dataSnapshot: ", "UserSnap key: "+userSnapshot.getKey()+"; leader key: "+tempGroupList.get(leaderCounter).getMember_ids().get(0));
 
-                            //creating the group button
-                            GroupButton tempGroupButton = new GroupButton(
-                                    tempGroupList.get(userCounter).getGroup_id(), //Group ID
-                                    dbManager.getReserveImage( //Reserve Image
-                                            General.getCurrentTable(getActivity()),
-                                            tempDestId,getActivity()
-                                    ),
-                                    tempUserImageRef, //Leader Image URL
-                                    tempDestId, //Reserve ID
-                                    dbManager.getStrFromDB( //Reserve Name
-                                            General.getCurrentTable(getActivity()),
-                                            tempDestId,
-                                            dbManager.getNameColumnName()
-                                    ),
-                                    tempGroupList.get(0).getMember_ids().get(0) //Leader ID
-                            );
+                        for(Group group : tempGroupList) //going over every collected group
+                        {
+                            if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) //checking if leader
+                            {
+                                //loading leader profile picture url
+                                tempUserImageRef = userSnapshot.getValue(User.class)
+                                        .getProfile_picture_ref();
+                                int tempDestId = Integer.parseInt(group
+                                        .getDestination_id());
 
-                            //adding the button to the list
-                            groupButtons.add(tempGroupButton);
+                                //creating the group button
+                                GroupButton tempGroupButton = new GroupButton(
+                                        group.getGroup_id(), //Group ID
+                                        dbManager.getReserveImage( //Reserve Image
+                                                General.getCurrentTable(getActivity()),
+                                                tempDestId,getActivity()
+                                        ),
+                                        tempUserImageRef, //Leader Image URL
+                                        tempDestId, //Reserve ID
+                                        dbManager.getStrFromDB( //Reserve Name
+                                                General.getCurrentTable(getActivity()),
+                                                tempDestId,
+                                                dbManager.getNameColumnName()
+                                        ),
+                                        group.getMember_ids().get(0) //Leader ID
+                                );
 
-                            userCounter++; //next leader
+                                //adding the button to the list
+                                groupButtons.add(tempGroupButton);
+
+                            }
                         }
                     }
                 } else {
@@ -221,6 +226,18 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             }
         });
 
+    }
+
+    private boolean isUserLeader(String key, ArrayList<Group> glist, Group currGroup)
+    {
+        for(Group group : glist )
+        {
+            if(group.getMember_ids().get(0).equals(key)) {
+                currGroup = group;
+                return true;
+            }
+        }
+        return false;
     }
 
     private void PostLoadData()

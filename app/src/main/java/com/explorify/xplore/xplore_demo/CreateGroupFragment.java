@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,13 +27,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.explorify.xplore.xplore_demo.General.dbManager;
 
@@ -63,6 +67,42 @@ public class CreateGroupFragment extends Fragment {
     RadioGroup radioGroup;
     View myView;
 
+    DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
+
+    private class UploadGroup extends Group
+    {
+        public UploadGroup() {
+        }
+
+        public UploadGroup(String group_id, boolean experienced, long start_date, long end_date, String destination_id,
+                           String extra_info, String group_preferences, ArrayList<String> member_ids) {
+            this.group_id = group_id;
+            this.experienced = experienced;
+            this.start_date = start_date;
+            this.end_date = end_date;
+            this.destination_id = destination_id;
+            this.extra_info = extra_info;
+            this.group_preferences = group_preferences;
+            this.member_ids = member_ids;
+        }
+
+        @Exclude
+        public Map<String, Object> toMap()
+        {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("destination_id", this.destination_id);
+            result.put("start_date", this.start_date);
+            result.put("end_date", this.end_date);
+            result.put("experienced", this.experienced);
+            result.put("group_preferences", this.group_preferences);
+            result.put("extra_info", this.extra_info);
+            result.put("member_ids", this.member_ids);
+            return result;
+        }
+
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,12 +127,54 @@ public class CreateGroupFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ApplyDates();
-
-        if(chosenDestId != -1) {
-            reserveButton.setBackground(dbManager.getReserveImage(General.getCurrentTable(context), chosenDestId, context));
-            reserveButton.setText(dbManager.getStrFromDB(General.getCurrentTable(context), chosenDestId, dbManager.getNameColumnName()));
+        if(!isNetConnected())
+        {
+            DisplayNetErrorDialog();
         }
+        else {
+
+            ApplyDates();
+
+            if (chosenDestId != -1) {
+                reserveButton.setBackground(dbManager.getReserveImage(General.getCurrentTable(context), chosenDestId, context));
+                reserveButton.setText(dbManager.getStrFromDB(General.getCurrentTable(context), chosenDestId, dbManager.getNameColumnName()));
+            }
+        }
+    }
+
+    private boolean isNetConnected()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+    }
+
+    private void DisplayNetErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(R.string.wifi_connect_dialog)
+                .setTitle(R.string.unable_to_connect)
+                .setCancelable(false)
+                .setPositiveButton(R.string.action_settings,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                startActivity(i);
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getActivity().onBackPressed(); //close dialog
+                                //go back to 4th fragment
+                                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new FourthFragment()).addToBackStack("4").commit();
+                            }
+                        }
+                );
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void ApplyDates()
@@ -218,8 +300,7 @@ public class CreateGroupFragment extends Fragment {
 
                 if(CheckFields())
                 {
-                    //start post info to firebase
-                    Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show();
+                    UploadGroupData();
                 }
             }
         });
@@ -233,6 +314,40 @@ public class CreateGroupFragment extends Fragment {
                     experienceAns = 0;
             }
         });
+    }
+
+    private UploadGroup CreateGroup(String key)
+    {
+        //get member IDs
+        ArrayList<String> member_ids = new ArrayList<>();
+        member_ids.add(String.valueOf(leaderId_text.getText())); //TODO change with Google Account associate lookup
+        for(int i = 0; i<invitedMembers.size(); i++)
+        {
+            member_ids.add(invitedMembers.get(i).getId());
+        }
+
+        //get experience question
+        boolean exp;
+        if(experienceAns == 0)
+            exp = false;
+        else
+            exp = true;
+
+        return new UploadGroup(key, exp, dateSetup.getStart(), dateSetup.getEnd(), String.valueOf(chosenDestId),
+                eInfo, gPrefs, member_ids);
+    }
+
+    private void UploadGroupData()
+    {
+        Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show();
+        String key = groupsRef.push().getKey();
+        Map<String, Object> groupData = CreateGroup(key).toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/"+key, groupData);
+
+        groupsRef.updateChildren(childUpdates);
+        Toast.makeText(context,"Data Uploaded", Toast.LENGTH_SHORT).show();
     }
 
     @Override

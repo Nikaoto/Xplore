@@ -36,8 +36,11 @@
     <string name="lib_tags_header">ტეგები</string>
     <string name="lib_equip_header">აღჭურვილობა</string>
     <string name="lib_difficulty_header">სირთულე</string>
-    <string name="wifi_connect_dialog">
+    <string name="wifi_connect_dialog_maps">
         გთხოვთ ჩართოთ ინტერნეტკავშირი რუკების გადმოსაწერად. ეს მხოლოდ ერთჯერადად არის საჭირო.
+    </string>
+    <string name="wifi_connect_dialog">
+        გთხოვთ ჩართოთ ინტერნეტკავშირი ახალი გუნდის შესაქმნელად.
     </string>
     <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
     <string name="location">ადგილმდებარეობა</string>

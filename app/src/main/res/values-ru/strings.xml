@@ -36,7 +36,13 @@
     <string name="lib_tags_header">Метки</string>
     <string name="lib_equip_header">Оборудование</string>
     <string name="lib_difficulty_header">Трудность</string>
-    <string name="wifi_connect_dialog">Пожалуйстна нодключите к интернетом, чтобы загрузить карты. Вам придётся делать эта только один раз.</string>
+    <string name="wifi_connect_dialog_maps">
+        Пожалуйстна нодключите к интернетом, чтобы загрузить карты. Вам придётся делать эта только
+        один раз.
+    </string>
+    <string name="wifi_connect_dialog">
+        Пожалуйста, включите Wi-Fi или мобильную сеть чтобы создать группу.
+    </string>
     <string name="unable_to_connect">Невозможно подключиться</string>
     <string name="location">Местонахождение</string>
     <string name="enable_location">Включите Местонахождение</string>

@@ -86,7 +86,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
 
     @Override
     public void onBindViewHolder(MemberViewHolder holder, final int position) {
-        Log.println(Log.INFO,"BREJK", " "+position);
         currentMember = users.get(position);
 
         //Loading Member Reputation
@@ -105,7 +104,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             @Override
             public void onClick(View view) {
                 currentMember = users.get(position);
-                Log.println(Log.INFO,"BREJK", " clicked user "+ currentMember.getFname());
                 if(selectedMemberPos == position) {//same member click
                     memberLayout.setVisibility(View.GONE);
                     selectedMemberPos = -1;
