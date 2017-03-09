@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * Created by Nika on 11/9/2016.
  */
@@ -34,17 +37,45 @@ public class FourthFragment extends Fragment {
         b_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SearchGroupsFragment()).addToBackStack("4").commit();
+                if(isUserSignedIn()) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new SearchGroupsFragment()).addToBackStack("4").commit();
+                }
+                else
+                {
+                    SignIn();
+                }
             }
         });
 
         b_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CreateGroupFragment()).addToBackStack("4").commit();
+                if(isUserSignedIn()) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new CreateGroupFragment()).addToBackStack("4").commit();
+                }
+                else
+                {
+                    SignIn();
+                }
             }
         });
     }
+
+    private boolean isUserSignedIn()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+    private void SignIn()
+    {
+
+    }
+
 }
