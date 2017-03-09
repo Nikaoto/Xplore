@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -104,19 +105,12 @@ public class FourthFragment extends Fragment {
 
         View popupView = getActivity().getLayoutInflater().inflate(R.layout.signin_layout, null);
         popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
+        popupView.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_open));
 
         popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
 
-        popupWindow.setAnimationStyle(R.anim.slide_up);
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
 
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                popupWindow.dismiss();
-                return false;
-            }
-        });
     }
 
 }
