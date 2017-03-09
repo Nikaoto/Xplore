@@ -1,6 +1,8 @@
 package com.explorify.xplore.xplore_demo;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,10 +59,7 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    Intent i = new Intent(getActivity(), SignInActivity.class);
-                    getActivity().startActivity(i);
-
-                    //popSignInMenu(appWidth, appHeight, 0.6, 0.6);
+                    popSignInMenu(appWidth, appHeight, 0.8, 0.6);
                 }
             }
         });
@@ -72,10 +73,7 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    Intent i = new Intent(getActivity(), SignInActivity.class);
-                    getActivity().startActivity(i);
-
-                    //popSignInMenu(appWidth, appHeight, 0.6, 0.6);
+                    popSignInMenu(appWidth, appHeight, 0.8, 0.6);
                 }
             }
         });
@@ -107,7 +105,7 @@ public class FourthFragment extends Fragment {
         int locationX = 0;
         int locationY = 0;
 
-        View popupView = getActivity().getLayoutInflater().inflate(R.layout.signin_layout, null);
+        View popupView = getActivity().getLayoutInflater().inflate(R.layout.pre_signin_layout, null);
         popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
         popupView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_open));
 
@@ -115,7 +113,19 @@ public class FourthFragment extends Fragment {
         popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
 
-        //TODO explain in the popup why the user needs to log in and put a sign in button which starts SignInActivity
+        Button signin_btn = (Button) popupView.findViewById(R.id.signin_button);
+        signin_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Context context = getActivity();
+                    if (General.isNetConnected(context)) {
+                        popupWindow.dismiss();
+                        Intent i = new Intent(context, SignInActivity.class);
+                        context.startActivity(i);
+                    } else
+                        General.groups_DisplayNetErrorDialog(context);
+            }
+        });
 
         General.dimBehind(popupWindow, 0.5f);
     }

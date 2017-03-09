@@ -90,7 +90,7 @@ public class General {
         return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 
-    public static void groups_DisplayNetErrorDialog(final Context context, final Activity activity) {
+    public static void groups_DisplayNetErrorDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.wifi_connect_dialog)
                 .setTitle(R.string.unable_to_connect)
@@ -103,16 +103,7 @@ public class General {
                             }
                         }
                 )
-                .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                activity.onBackPressed(); //close dialog
-                                //go back to 4th fragment
-                                activity.getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new FourthFragment()).addToBackStack("4").commit();
-                            }
-                        }
-                );
+                .setNegativeButton(R.string.cancel,null);
         AlertDialog alert = builder.create();
         alert.show();
     }

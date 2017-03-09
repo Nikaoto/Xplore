@@ -95,5 +95,6 @@
     <string name="member_removed">Member removed</string>
     <string name="remove">Remove</string>
     <string name="authorization">Authorization</string>
-
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
 </resources>

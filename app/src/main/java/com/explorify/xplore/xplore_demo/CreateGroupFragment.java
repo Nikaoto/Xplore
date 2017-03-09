@@ -127,7 +127,7 @@ public class CreateGroupFragment extends Fragment {
 
         if(!General.isNetConnected(context))
         {
-            General.groups_DisplayNetErrorDialog(context, getActivity());
+            General.groups_DisplayNetErrorDialog(context);
         }
         else {
 

@@ -96,4 +96,6 @@
     <string name="member_removed">Член удален</string>
     <string name="remove">Удалить</string>
     <string name="authorization">Авторизация</string>
+    <string name="sign_in">Войти</string>
+    <string name="register">Зарегистрироваться</string>
 </resources>

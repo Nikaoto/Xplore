@@ -95,4 +95,6 @@
     <string name="member_removed">გუნდის წევრი ამოიშალა</string>
     <string name="remove">წაშლა</string>
     <string name="authorization">ავტორიზაცია</string>
+    <string name="sign_in">შესვლა</string>
+    <string name="register">დარეგისტრირება</string>
 </resources>
