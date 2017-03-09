@@ -94,4 +94,5 @@
     <string name="member_added">გუნდის წევრი დაემატა</string>
     <string name="member_removed">გუნდის წევრი ამოიშალა</string>
     <string name="remove">წაშლა</string>
+    <string name="authorization">ავტორიზაცია</string>
 </resources>

@@ -95,4 +95,5 @@
     <string name="member_added">Член  добавлен</string>
     <string name="member_removed">Член удален</string>
     <string name="remove">Удалить</string>
+    <string name="authorization">Авторизация</string>
 </resources>

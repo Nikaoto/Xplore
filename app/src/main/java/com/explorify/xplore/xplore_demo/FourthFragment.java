@@ -26,7 +26,6 @@ public class FourthFragment extends Fragment {
     private View myView;
     private ImageView b_join, b_create;
     private PopupWindow popupWindow;
-    private RelativeLayout relativeLayout;
     int appWidth, appHeight;
 
     @Nullable
@@ -45,7 +44,6 @@ public class FourthFragment extends Fragment {
 
         b_join = (ImageView) myView.findViewById(R.id.join_party);
         b_create = (ImageView) myView.findViewById(R.id.create_party);
-        relativeLayout = (RelativeLayout) myView.findViewById(R.id.signin_relativeLayout);
 
         b_join.setOnClickListener(new View.OnClickListener() {
             @Override
