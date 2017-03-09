@@ -1,6 +1,7 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -54,7 +55,10 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(appWidth, appHeight, 0.6, 0.6);
+                    Intent i = new Intent(getActivity(), SignInActivity.class);
+                    getActivity().startActivity(i);
+
+                    //popSignInMenu(appWidth, appHeight, 0.6, 0.6);
                 }
             }
         });
@@ -68,7 +72,10 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(appWidth, appHeight, 0.6, 0.6);
+                    Intent i = new Intent(getActivity(), SignInActivity.class);
+                    getActivity().startActivity(i);
+
+                    //popSignInMenu(appWidth, appHeight, 0.6, 0.6);
                 }
             }
         });
@@ -107,6 +114,8 @@ public class FourthFragment extends Fragment {
 
         popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
+
+        //TODO explain in the popup why the user needs to log in and put a sign in button which starts SignInActivity
 
         General.dimBehind(popupWindow, 0.5f);
     }
