@@ -88,7 +88,7 @@ public class MapsActivity extends AppCompatActivity
             }
 */
 
-            if(!isNetConnected())
+            if(!General.isNetConnected(MapsActivity.this))
             {
                 createNetErrorDialog();
             }
@@ -139,14 +139,6 @@ public class MapsActivity extends AppCompatActivity
 
     private static int getLocationMode(Context context) {
         return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
-    }
-
-    private boolean isNetConnected()
-    {
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 
     //TODO STOP pestering the user to allow location, if they deny -> show dialog explaining why they should enable it

@@ -1,9 +1,15 @@
 package com.explorify.xplore.xplore_demo;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.SQLException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
@@ -70,5 +76,40 @@ public class General {
     public static int GetDateTime(int year, int month, int day)
     {
         return year*10000 + month*100 + day;
+    }
+
+    public static boolean isNetConnected(Context context)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+    }
+
+    public static void groups_DisplayNetErrorDialog(final Context context, final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(R.string.wifi_connect_dialog)
+                .setTitle(R.string.unable_to_connect)
+                .setCancelable(false)
+                .setPositiveButton(R.string.action_settings,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                context.startActivity(i);
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                activity.onBackPressed(); //close dialog
+                                //go back to 4th fragment
+                                activity.getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new FourthFragment()).addToBackStack("4").commit();
+                            }
+                        }
+                );
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

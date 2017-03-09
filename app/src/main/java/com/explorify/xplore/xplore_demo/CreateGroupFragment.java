@@ -125,9 +125,9 @@ public class CreateGroupFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(!isNetConnected())
+        if(!General.isNetConnected(context))
         {
-            DisplayNetErrorDialog();
+            General.groups_DisplayNetErrorDialog(context, getActivity());
         }
         else {
 
@@ -138,41 +138,6 @@ public class CreateGroupFragment extends Fragment {
                 reserveButton.setText(dbManager.getStrFromDB(General.getCurrentTable(context), chosenDestId, dbManager.getNameColumnName()));
             }
         }
-    }
-
-    private boolean isNetConnected()
-    {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
-    }
-
-    private void DisplayNetErrorDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(R.string.wifi_connect_dialog)
-                .setTitle(R.string.unable_to_connect)
-                .setCancelable(false)
-                .setPositiveButton(R.string.action_settings,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                                startActivity(i);
-                            }
-                        }
-                )
-                .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                getActivity().onBackPressed(); //close dialog
-                                //go back to 4th fragment
-                                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new FourthFragment()).addToBackStack("4").commit();
-                            }
-                        }
-                );
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     private void ApplyDates()

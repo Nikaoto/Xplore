@@ -85,10 +85,16 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
         //TODO check for internet, bring up dialog to enable net, do a net check before loading data
 
-        Authorize();
-        buildUserBase();
-        PreLoadData();
-        LoadData();
+        if(!General.isNetConnected(getActivity()))
+        {
+            General.groups_DisplayNetErrorDialog(getActivity(), getActivity());
+        }
+        else {
+            Authorize();
+            buildUserBase();
+            PreLoadData();
+            LoadData();
+        }
         return myView;
     }
 
