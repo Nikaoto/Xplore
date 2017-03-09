@@ -9,8 +9,12 @@ import android.content.res.Resources;
 import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -111,5 +115,29 @@ public class General {
                 );
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+
+    public static void dimBehind(PopupWindow popupWindow, float dimAmount) {
+        View container;
+        if (popupWindow.getBackground() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent();
+            } else {
+                container = popupWindow.getContentView();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent().getParent();
+            } else {
+                container = (View) popupWindow.getContentView().getParent();
+            }
+        }
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = dimAmount;
+        wm.updateViewLayout(container, p);
     }
 }

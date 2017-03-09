@@ -1,13 +1,11 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -17,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 
 /**
  * Created by Nika on 11/9/2016.
@@ -105,12 +104,12 @@ public class FourthFragment extends Fragment {
 
         View popupView = getActivity().getLayoutInflater().inflate(R.layout.signin_layout, null);
         popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
-        popupView.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_open));
+        popupView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_open));
+
 
         popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
-
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
 
+        General.dimBehind(popupWindow, 0.5f);
     }
-
 }
