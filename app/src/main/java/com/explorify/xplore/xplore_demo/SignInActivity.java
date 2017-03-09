@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class SignInActivity extends Activity {
 
-    Button googleSignIn_b;
+    private Button googleSignIn_b;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
