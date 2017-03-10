@@ -13,4 +13,5 @@
     <color name="colorGrey">#BDBDBD</color>
     <color name="colorRepNumGrey">#151515</color>
     <color name="colorDarkGrey">#3F3F3F</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>
