@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/about_header_text"
-        android:text="@string/about_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="28sp" />
-
-    <TextView
-        android:id="@+id/about_text"
-        android:text="@string/about"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_header_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_centerVertical="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:fontFamily="sans-serif"
-        android:textSize="15sp"
-        android:lineSpacingExtra="2sp" />
+        android:layout_height="match_parent">
 
-    <View style="@style/dashed_divider"
-        android:id="@+id/about_credits_divider"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/about_text" />
+        <TextView
+            android:id="@+id/about_header_text"
+            android:text="@string/about_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="28sp" />
+        <ImageView
+            android:id="@+id/about_banner_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/about_header_text"
+            android:src="@drawable/ic_banner" />
 
-    <TextView
-        android:text="@string/credits"
-        android:layout_marginLeft="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_credits_divider"
-        android:layout_marginTop="10dp"
-        android:id="@+id/credits_text"
-        android:fontFamily="sans-serif"
-        android:textSize="15sp"
-        android:lineSpacingExtra="2sp" />
+        <TextView
+            android:id="@+id/about_text"
+            android:text="@string/about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/about_banner_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:lineSpacingExtra="2sp" />
 
+        <View style="@style/dashed_divider"
+            android:id="@+id/about_credits_divider"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/about_text" />
 
+        <TextView
+            android:text="@string/credits"
+            android:layout_marginLeft="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/about_credits_divider"
+            android:layout_marginTop="10dp"
+            android:id="@+id/credits_text"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:lineSpacingExtra="2sp" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
