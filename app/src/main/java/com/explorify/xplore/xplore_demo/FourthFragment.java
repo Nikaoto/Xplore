@@ -88,13 +88,14 @@ public class FourthFragment extends Fragment {
     }
 
     private boolean isUserSignedIn()
-    {
+    {/*
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             return true;
         } else {
             return false;
-        }
+        }*/
+    return true;
     }
 
     private void popSignInMenu(int appWidth, int appHeight, double xScale, double yScale)

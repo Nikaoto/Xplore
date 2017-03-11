@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity
         InitNavMenuItems();
         setContentView(R.layout.activity_main);
 
+        General.InitDisplayMetrics(this);
+
         //Set initial Fragment
         fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, new FifthFragment()).commit();

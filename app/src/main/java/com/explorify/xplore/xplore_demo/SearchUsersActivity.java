@@ -43,9 +43,11 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private final String DB_LNAME_TAG = "lname";
 
     private boolean memberAdded;
+/*
     private String USERBASE_KEY;
     private String USERBASE_APPID;
     private String USERBASE_URL;
+*/
 
     private EditText searchBar;
     private ListView listView;
@@ -56,10 +58,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private ArrayList<User> userList= new ArrayList<>(); //replace with UserButtons
     private ArrayList<User> answerList= new ArrayList<>(); //replace with UserButtons
 
-    DatabaseReference dbRef;
+/*    DatabaseReference dbRef;
     FirebaseApp userBaseApp;
-    FirebaseOptions userBaseOptions;
-    FirebaseDatabase userDB;
+    FirebaseOptions userBaseOptions;*/
+    DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         searchBar.setOnEditorActionListener(this);
 
         Authorize();
-        buildUserBase();
+        //buildUserBase();
         PreLoadData();
     }
 
@@ -86,7 +88,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 .build();
     }
 
-    private void buildUserBase()
+/*    private void buildUserBase()
     {
         USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
         USERBASE_APPID = getResources().getString(R.string.firebase_appid);
@@ -108,7 +110,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         }
         userBaseApp = FirebaseApp.getInstance("userbase");
         userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }
+    }*/
 
     private void PreLoadData()
     {
@@ -121,7 +123,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         userCounter = 0;
         fnameNotFound = false;
         requestCancelled = false;
-        dbRef = userDB.getReference().getRef();
+        DBref = FirebaseDatabase.getInstance().getReference();
     }
 
     int userCounter = 0;
@@ -129,7 +131,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     //search lname in db and filter results with fnames (because lname collisions are less frequent)
     private void LoadDataWithFullName(final String fname, final String lname, final boolean displayData)
     {
-        Query fnameQuery = dbRef.orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
+        Query fnameQuery = DBref.child("users").orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
         fnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -163,7 +165,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                                  final String query2, final String tag2)
     {
         //if resummon == true, do NOT display data
-        Query dbQuery = dbRef.orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
+        Query dbQuery = DBref.child("users").orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
         dbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -263,7 +265,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
             //Profile Picture
             final ImageView userImage = (ImageView) itemView.findViewById(R.id.user_profile_image);
-            String userImageRef = currentUser.getProfile_picture_ref();
+            String userImageRef = currentUser.getProfile_picture_url();
             Picasso.with(getContext())
                     .load(userImageRef)
                     .transform(new RoundedCornersTransformation(

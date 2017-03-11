@@ -36,11 +36,11 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class GroupActivity extends Activity {
 
-    private String USERBASE_KEY;
+/*    private String USERBASE_KEY;
     private String USERBASE_APPID;
-    private String USERBASE_URL;
+    private String USERBASE_URL;*/
 
-    private String leader_id, leader_image_ref, group_id, reserveName, startDate, endDate;
+    private String leader_id, leader_image_url, group_id, reserveName, startDate, endDate;
     private int reserveID, selectedMemberPos;
     private ImageView leader_image, group_experience_image;
     private Button reserveButton; //TODO CHANGE TO ImageView
@@ -55,11 +55,11 @@ public class GroupActivity extends Activity {
     //private View divider;
     //private float dividerMoveY;
     private ArrayList<User> members = new ArrayList<>();
-
+/*
     FirebaseApp userBaseApp;
     FirebaseOptions userBaseOptions;
-    FirebaseDatabase userDB;
-    DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
+    FirebaseDatabase userDB;*/
+    DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
     Group tempGroup;
     User tempMember;
 
@@ -70,7 +70,7 @@ public class GroupActivity extends Activity {
         setContentView(R.layout.group_layout);
 
         Authorize();
-        buildUserBase();
+        //buildUserBase();
         PreLoadData();
 
         resources = getResources();
@@ -79,7 +79,7 @@ public class GroupActivity extends Activity {
         Intent intent = this.getIntent();
         group_id = intent.getStringExtra("group_id");
         leader_id = intent.getStringExtra("leader_id");
-        leader_image_ref = intent.getStringExtra("leader_image_ref");
+        leader_image_url = intent.getStringExtra("leader_image_url");
         reserveID = intent.getIntExtra("reserve_id",0);
         reserveName = intent.getStringExtra("reserve_name");
 
@@ -170,6 +170,7 @@ public class GroupActivity extends Activity {
                 .build();
     }
 
+/*
     private void buildUserBase()
     {
         USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
@@ -193,6 +194,7 @@ public class GroupActivity extends Activity {
         userBaseApp = FirebaseApp.getInstance("userbase");
         userDB = FirebaseDatabase.getInstance(userBaseApp);
     }
+*/
 
     private void PreLoadData()
     {
@@ -203,7 +205,7 @@ public class GroupActivity extends Activity {
 
     private void LoadGroupData(final String groupId)
     {
-        DatabaseReference Ref = groupsRef.getRef();
+        DatabaseReference Ref = DBref.child("groups").getRef();
         Query query = Ref.child(groupId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -229,7 +231,7 @@ public class GroupActivity extends Activity {
 
     private void GetMemberInfo(final String userId)
     {
-        DatabaseReference ref = userDB.getReference().getRef();
+        DatabaseReference ref = DBref.child("users").getRef();
         Query query = ref.child(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -260,7 +262,7 @@ public class GroupActivity extends Activity {
     {
         progressBar.setVisibility(View.GONE);
         Picasso.with(this)
-                .load(leader_image_ref)
+                .load(leader_image_url)
                 .transform(new RoundedCornersTransformation(
                         getResources().getInteger(R.integer.pic_big_angle),
                         getResources().getInteger(R.integer.pic_big_margin)))

@@ -6,7 +6,7 @@ package com.explorify.xplore.xplore_demo;
  */
 
 public class User {
-    String fname, lname, tel_num, id, profile_picture_ref;
+    String fname, lname, tel_num, id, profile_picture_url;
     int reputation, age;
 
     public User() {
@@ -62,11 +62,11 @@ public class User {
         this.tel_num = tel_num;
     }
 
-    public String getProfile_picture_ref() {
-        return profile_picture_ref;
+    public String getProfile_picture_url() {
+        return profile_picture_url;
     }
 
-    public void setProfile_picture_ref(String profile_picture_ref) {
-        this.profile_picture_ref = profile_picture_ref;
+    public void setProfile_picture_url(String profile_picture_url) {
+        this.profile_picture_url = profile_picture_url;
     }
 }

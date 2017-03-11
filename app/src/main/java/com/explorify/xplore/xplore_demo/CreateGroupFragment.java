@@ -41,7 +41,7 @@ import static com.explorify.xplore.xplore_demo.General.dbManager;
 
 public class CreateGroupFragment extends Fragment {
 
-    public static int chosenDestId = -1;
+    public static int chosenDestId = -1; //TODO remove static
     public static ArrayList<User> invitedMembers = new ArrayList<>();
     public static DateSetup dateSetup;
 
@@ -302,15 +302,15 @@ public class CreateGroupFragment extends Fragment {
 
     private void UploadGroupData()
     {
-        Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show();
-        String key = groupsRef.push().getKey();
+        Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        String key = groupsRef.child("groups").push().getKey();
         Map<String, Object> groupData = CreateGroup(key).toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/"+key, groupData);
+        childUpdates.put("/groups/"+key, groupData);
 
         groupsRef.updateChildren(childUpdates);
-        Toast.makeText(context,"Data Uploaded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
     }
 
     @Override

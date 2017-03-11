@@ -89,7 +89,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
 
         //Loading Member Image
         Picasso.with(context)
-                .load(currentMember.getProfile_picture_ref())
+                .load(currentMember.getProfile_picture_url())
                 .transform(new RoundedCornersTransformation(
                         context.getResources().getInteger(R.integer.pic_small_angle),
                         context.getResources().getInteger(R.integer.pic_small_margin)))

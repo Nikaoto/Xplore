@@ -12,6 +12,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
@@ -26,6 +28,15 @@ import java.util.Calendar;
 public class General {
 
     public static DBmanager dbManager;
+    public static int appWidth, appHeight;
+
+    public static void InitDisplayMetrics(Activity activity)
+    {
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        appWidth = dm.widthPixels;
+        appHeight = dm.heightPixels;
+    }
 
     public static void InitDBManager(Context context) {
         dbManager = new DBmanager(context);

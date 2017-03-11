@@ -1,15 +1,20 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -27,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import static com.explorify.xplore.xplore_demo.General.*;
+
 /**
  * Created by nikao on 3/8/2017.
  */
@@ -39,12 +46,16 @@ public class SignInActivity extends AppCompatActivity {
     private SignInButton googleSignIn_b;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth.AuthStateListener authListener;
+    private View myView;
+    private PopupWindow popupWindow;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_layout);
+        myView = getLayoutInflater().inflate(R.layout.signin_layout, null);
+
 
         Authorize();
 
@@ -55,13 +66,27 @@ public class SignInActivity extends AppCompatActivity {
                 signIn();
             }
         });
-
-
     }
 
     private void signIn() {
+
+        popLoadingBar(0.8, 0.8, this, myView);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void popLoadingBar(double xScale, double yScale, Activity activity, View view)
+    {
+        int popWidth = (int) (appWidth * xScale);
+        int popHeight = (int) (appHeight * yScale);
+
+        View popupView = activity.getLayoutInflater().inflate(R.layout.loading_layout, null);
+
+
+        popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        dimBehind(popupWindow, 0.5f);
     }
 
     private void Authorize()
@@ -128,8 +153,16 @@ public class SignInActivity extends AppCompatActivity {
         auth.removeAuthStateListener(authListener);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popupWindow != null)
+            popupWindow.dismiss();
+    }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d("SIGN IN", "firebaseAuthWithGoogle:" + account.getId());
+        //check if first login, create new account, else continue
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential)

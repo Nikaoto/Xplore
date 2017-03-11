@@ -41,13 +41,13 @@ import static com.explorify.xplore.xplore_demo.General.dbManager;
 
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
 
-    private String USERBASE_KEY;
+/*    private String USERBASE_KEY;
     private String USERBASE_APPID;
-    private String USERBASE_URL;
+    private String USERBASE_URL;*/
 
     private final String JSON_START_DATE_TAG = "start_date";
 
-    private String searchQuery, tempUserImageRef;
+    private String searchQuery, tempUserImageUrl;
     private boolean requestCancelled, firstLoad;
     private int leaderCounter;
 
@@ -61,10 +61,10 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private ArrayList<Group> tempGroupList = new ArrayList<>();
     private Group tempGroup;
 
-    FirebaseApp userBaseApp;
+    /*FirebaseApp userBaseApp;
     FirebaseOptions userBaseOptions;
-    FirebaseDatabase userDB;
-    DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
+    FirebaseDatabase userDB;*/
+    DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
 
 
     @Nullable
@@ -91,7 +91,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         }
         else {
             Authorize();
-            buildUserBase();
+            //buildUserBase();
             PreLoadData();
             LoadData();
         }
@@ -106,7 +106,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                 .build();
     }
 
-    private void buildUserBase()
+/*    private void buildUserBase()
     {
          USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
          USERBASE_APPID = getResources().getString(R.string.firebase_appid);
@@ -128,7 +128,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         }
         userBaseApp = FirebaseApp.getInstance("userbase");
         userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }
+    }*/
 
     private void PreLoadData()
     {
@@ -136,7 +136,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         tempGroup = new Group();
         tempGroupList.clear();
         groupButtons.clear();
-        tempUserImageRef = "";
+        tempUserImageUrl = "";
         firstLoad = true;
         leaderCounter = 0;
         requestCancelled = false;
@@ -145,7 +145,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private void LoadData()
     {
-        DatabaseReference Ref = groupsRef.getRef();
+        DatabaseReference Ref = DBref.child("groups").getRef();
         Query query = Ref.orderByChild(JSON_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -172,7 +172,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private void SortLeaderInfo()
     {
-        DatabaseReference ref = userDB.getReference().getRef();
+        DatabaseReference ref = DBref.child("users").getRef();
         Query query = ref.orderByKey(); //TODO user search
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -185,8 +185,8 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                             if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) //checking if leader
                             {
                                 //loading leader profile picture url
-                                tempUserImageRef = userSnapshot.getValue(User.class)
-                                        .getProfile_picture_ref();
+                                tempUserImageUrl = userSnapshot.getValue(User.class)
+                                        .getProfile_picture_url();
                                 int tempDestId = Integer.parseInt(group
                                         .getDestination_id());
 
@@ -197,7 +197,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                                 General.getCurrentTable(getActivity()),
                                                 tempDestId,getActivity()
                                         ),
-                                        tempUserImageRef, //Leader Image URL
+                                        tempUserImageUrl, //Leader Image URL
                                         tempDestId, //Reserve ID
                                         dbManager.getStrFromDB( //Reserve Name
                                                 General.getCurrentTable(getActivity()),
@@ -267,7 +267,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
             //Loading Leader Image
             final ImageView leaderImage = (ImageView) itemView.findViewById(R.id.leader_image);
-            String leaderImageRef = currentButton.getLeader_image_ref();
+            String leaderImageRef = currentButton.getLeader_image_url();
             Picasso.with(getContext())
                     .load(leaderImageRef)
                     .transform(new RoundedCornersTransformation(
@@ -289,7 +289,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     //Sending data over to intent
                     intent.putExtra("group_id",currentButton.getGroup_id());
                     intent.putExtra("leader_id",currentButton.getLeader_id());
-                    intent.putExtra("leader_image_ref",currentButton.getLeader_image_ref());
+                    intent.putExtra("leader_image_url",currentButton.getLeader_image_url());
                     intent.putExtra("reserve_id",currentButton.getReserve_id());
                     intent.putExtra("reserve_name",currentButton.getName());
 

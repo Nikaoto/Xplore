@@ -9,24 +9,25 @@ import android.graphics.drawable.Drawable;
 public class GroupButton {
     Drawable reserveImage;
     int reserve_id;
-    String name, group_id, leader_image_ref, leader_id;
+    String name, group_id, leader_image_url, leader_id;
 
-    public GroupButton(String group_id, Drawable reserveImage, String leader_image_ref,
+    public GroupButton(String group_id, Drawable reserveImage, String leader_image_url,
                        int reserve_id, String name, String leader_id) {
         this.group_id = group_id;
         this.reserveImage = reserveImage;
-        this.leader_image_ref = leader_image_ref;
+        this.leader_image_url = leader_image_url;
         this.reserve_id = reserve_id;
         this.name = name;
         this.leader_id = leader_id;
     }
 
-    public String getLeader_image_ref() {
-        return leader_image_ref;
+
+    public String getLeader_image_url() {
+        return leader_image_url;
     }
 
-    public void setLeader_image_ref(String leader_image_ref) {
-        this.leader_image_ref = leader_image_ref;
+    public void setLeader_image_url(String leader_image_url) {
+        this.leader_image_url = leader_image_url;
     }
 
     public String getLeader_id() {
