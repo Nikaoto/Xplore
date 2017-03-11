@@ -52,7 +52,7 @@
             android:label="@string/search_users"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".SignInActivity"
+        <activity android:name=".GoogleSignInActivity"
             android:label="@string/authorization"
             android:screenOrientation="portrait"/>
 

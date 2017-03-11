@@ -1,19 +1,14 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -31,14 +26,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.attr.name;
 import static com.explorify.xplore.xplore_demo.General.*;
 
 /**
  * Created by nikao on 3/8/2017.
  */
 
-public class SignInActivity extends AppCompatActivity {
+public class GoogleSignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 2;
 
@@ -48,6 +54,8 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private View myView;
     private PopupWindow popupWindow;
+
+    private DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
 
 
     @Override
@@ -97,10 +105,10 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(SignInActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
+                .enableAutoManage(GoogleSignInActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(SignInActivity.this, "Connection Failed :C", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GoogleSignInActivity.this, "Connection Failed :C", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -113,11 +121,11 @@ public class SignInActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
+                    CheckUserExists(user); //creates use in case it doesn't exist
                     Log.d("SIGN IN", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
-                    Log.d("SIGN IN", "onAuthStateChanged:signed_out");
+                    Log.d("SIGN OUT", "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -132,12 +140,111 @@ public class SignInActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
+                //check if first login, create new account, then auth firebase with google
+
+
+
+                //IF NOT FIRST LOGIN General.currentUserId = account.getIdTOken();
                 firebaseAuthWithGoogle(account);
+                //Log.println(Log.INFO, "BREJK", "User GoogleId is: "+ account.getIdToken());
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
         }
+    }
+
+    private void CheckUserExists(final FirebaseUser firebaseUser)
+    {
+        Query query = DBref.child("users").getRef().orderByKey().equalTo(firebaseUser.getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists())
+                    RegisterNewUser(firebaseUser);
+                Log.println(Log.INFO, "BREJK", "uid: " +firebaseUser.getUid());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+    }
+
+    private void RegisterNewUser(FirebaseUser firebaseUser)
+    { //TODO make new register form, fill stuff in automatically and let user upload stuff...
+        String photoUrl = " ";
+        if(firebaseUser.getPhotoUrl() != null)
+            photoUrl = firebaseUser.getPhotoUrl().toString();
+
+        String fullName = firebaseUser.getDisplayName();
+
+        String[] name = {fullName,"."};
+        if(fullName.contains(" "))
+             name = fullName.split(" ", 2);
+
+        UploadUser user = new UploadUser(name[0], name[1], photoUrl, firebaseUser.getEmail());
+
+        //String key = DBref.child("users").push().getKey(); //TODO maybe bad idea to have Google ID the same as Uid
+
+        Map<String, Object> userData = user.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + firebaseUser.getUid(), userData);
+        Log.println(Log.INFO, "BREJK", "uid: " + firebaseUser.getUid());
+        DBref.updateChildren(childUpdates);
+        Toast.makeText(GoogleSignInActivity.this, "Successfully Registered", Toast.LENGTH_SHORT).show(); //TODO add string resources
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("SIGN IN", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("SIGN IN", "signInWithCredential", task.getException());
+                            Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // ...
+                    }
+                });
+    }
+
+    private class UploadUser extends User
+    {
+        public UploadUser(String fname, String lname, String profile_picture_url, String email) {
+            this.fname = fname;
+            this.lname = lname;
+            this.profile_picture_url = profile_picture_url;
+            this.age = 0;
+            this.tel_num = " ";
+            this.email = email;
+            //this.age = age; //TODO add age field that the user fills
+            //this.tel_num = tel_num; //TODO add tel_num field that the user fills
+            this.reputation = 0; //new user starts with 0 rep
+        }
+
+        @Exclude
+        public Map<String, Object> toMap()
+        {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("fname", this.fname);
+            result.put("lname", this.lname);
+            result.put("profile_picture_url", this.profile_picture_url);
+            result.put("age", this.age);
+            result.put("tel_num", this.tel_num);
+            result.put("reputation", this.reputation);
+            result.put("email", this.email);
+            return result;
+        }
+
     }
 
     @Override
@@ -158,29 +265,5 @@ public class SignInActivity extends AppCompatActivity {
         super.onResume();
         if(popupWindow != null)
             popupWindow.dismiss();
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        Log.d("SIGN IN", "firebaseAuthWithGoogle:" + account.getId());
-        //check if first login, create new account, else continue
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("SIGN IN", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("SIGN IN", "signInWithCredential", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // ...
-                    }
-                });
     }
 }

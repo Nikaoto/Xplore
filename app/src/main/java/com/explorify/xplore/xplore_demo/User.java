@@ -6,12 +6,20 @@ package com.explorify.xplore.xplore_demo;
  */
 
 public class User {
-    String fname, lname, tel_num, id, profile_picture_url;
+    String fname, lname, tel_num, id, profile_picture_url, email;
     int reputation, age;
 
     public User() {
 
         //LEAVE EMPTY
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getAge() {

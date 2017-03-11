@@ -1,6 +1,5 @@
 package com.explorify.xplore.xplore_demo;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 
-import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -88,14 +85,13 @@ public class FourthFragment extends Fragment {
     }
 
     private boolean isUserSignedIn()
-    {/*
+    {//return true;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             return true;
         } else {
             return false;
-        }*/
-    return true;
+        }
     }
 
     private void popSignInMenu(int appWidth, int appHeight, double xScale, double yScale)
@@ -121,7 +117,7 @@ public class FourthFragment extends Fragment {
                     Context context = getActivity();
                     if (General.isNetConnected(context)) {
                         popupWindow.dismiss();
-                        Intent i = new Intent(context, SignInActivity.class);
+                        Intent i = new Intent(context, GoogleSignInActivity.class);
                         context.startActivity(i);
                     } else
                         General.groups_DisplayNetErrorDialog(context);

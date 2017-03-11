@@ -29,6 +29,7 @@ public class General {
 
     public static DBmanager dbManager;
     public static int appWidth, appHeight;
+    public static String currentUserId;
 
     public static void InitDisplayMetrics(Activity activity)
     {

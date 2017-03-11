@@ -145,8 +145,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private void LoadData()
     {
-        DatabaseReference Ref = DBref.child("groups").getRef();
-        Query query = Ref.orderByChild(JSON_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
+        Query query = DBref.child("groups").orderByChild(JSON_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -172,8 +171,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private void SortLeaderInfo()
     {
-        DatabaseReference ref = DBref.child("users").getRef();
-        Query query = ref.orderByKey(); //TODO user search
+        Query query = DBref.child("users").orderByKey(); //TODO user search
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
