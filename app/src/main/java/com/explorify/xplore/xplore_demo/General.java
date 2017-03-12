@@ -18,6 +18,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -27,9 +30,13 @@ import java.util.Calendar;
 
 public class General {
 
+    public static final int JUST_SIGNED_IN = 1;
+    public static final int REGISTERED = 2;
+
     public static DBmanager dbManager;
     public static int appWidth, appHeight;
     public static String currentUserId;
+    public static int accountStatus = 0;
 
     public static void InitDisplayMetrics(Activity activity)
     {
@@ -82,16 +89,26 @@ public class General {
     {
         Calendar calendar = Calendar.getInstance();
 
-        return GetDateTime(
+        return GetDateLong(
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH)+1,
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
     }
 
-    public static int GetDateTime(int year, int month, int day)
+    public static int GetDateLong(int year, int month, int day)
     {
         return year*10000 + month*100 + day;
+    }
+
+    public static boolean isUserSignedIn()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static boolean isNetConnected(Context context)
@@ -102,7 +119,7 @@ public class General {
         return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 
-    public static void groups_DisplayNetErrorDialog(final Context context) {
+    public static void createNetErrorDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.wifi_connect_dialog)
                 .setTitle(R.string.unable_to_connect)

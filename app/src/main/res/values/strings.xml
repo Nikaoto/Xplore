@@ -97,4 +97,5 @@
     <string name="authorization">ავტორიზაცია</string>
     <string name="sign_in">შესვლა</string>
     <string name="register">დარეგისტრირება</string>
+    <string name="choose_date">ამოირჩიეთ თარიღი</string>
 </resources>

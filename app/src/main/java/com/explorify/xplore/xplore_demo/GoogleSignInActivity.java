@@ -47,6 +47,7 @@ import static com.explorify.xplore.xplore_demo.General.*;
 public class GoogleSignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 2;
+    private static final int RC_REGISTER = 3;
 
     private FirebaseAuth auth;
     private SignInButton googleSignIn_b;
@@ -77,7 +78,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-
         popLoadingBar(0.8, 0.8, this, myView);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -115,17 +115,20 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 .build();
 
         auth = FirebaseAuth.getInstance();
-
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
-                    CheckUserExists(user); //creates use in case it doesn't exist
-                    Log.d("SIGN IN", "onAuthStateChanged:signed_in:" + user.getUid());
+                    //Toast.makeText(GoogleSignInActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                    //User signed in
+                    currentUserId = user.getUid();
+                    CheckUserExists(user); //creates user in case it doesn't exist
                 } else {
                     // User is signed out
-                    Log.d("SIGN OUT", "onAuthStateChanged:signed_out");
+                    Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -140,17 +143,18 @@ public class GoogleSignInActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                //check if first login, create new account, then auth firebase with google
-
-
-
-                //IF NOT FIRST LOGIN General.currentUserId = account.getIdTOken();
                 firebaseAuthWithGoogle(account);
-                //Log.println(Log.INFO, "BREJK", "User GoogleId is: "+ account.getIdToken());
+
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
+        }
+        else if(requestCode == RC_REGISTER)
+        {
+            Log.println(Log.INFO, "ASDFGH", "RC REGISTER req code");
+            accountStatus = REGISTERED;
+            finish();
         }
     }
 
@@ -160,40 +164,21 @@ public class GoogleSignInActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists())
-                    RegisterNewUser(firebaseUser);
-                Log.println(Log.INFO, "BREJK", "uid: " +firebaseUser.getUid());
+                if(!dataSnapshot.exists()) {
+                    //Start user registration
+                    RegisterActivity.newUser = firebaseUser;
+                    Intent i = new Intent(GoogleSignInActivity.this, RegisterActivity.class);
+                    startActivityForResult(i, RC_REGISTER);
+                }
+                else {
+                    accountStatus = JUST_SIGNED_IN;
+                    finish();
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-    }
-
-    private void RegisterNewUser(FirebaseUser firebaseUser)
-    { //TODO make new register form, fill stuff in automatically and let user upload stuff...
-        String photoUrl = " ";
-        if(firebaseUser.getPhotoUrl() != null)
-            photoUrl = firebaseUser.getPhotoUrl().toString();
-
-        String fullName = firebaseUser.getDisplayName();
-
-        String[] name = {fullName,"."};
-        if(fullName.contains(" "))
-             name = fullName.split(" ", 2);
-
-        UploadUser user = new UploadUser(name[0], name[1], photoUrl, firebaseUser.getEmail());
-
-        //String key = DBref.child("users").push().getKey(); //TODO maybe bad idea to have Google ID the same as Uid
-
-        Map<String, Object> userData = user.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + firebaseUser.getUid(), userData);
-        Log.println(Log.INFO, "BREJK", "uid: " + firebaseUser.getUid());
-        DBref.updateChildren(childUpdates);
-        Toast.makeText(GoogleSignInActivity.this, "Successfully Registered", Toast.LENGTH_SHORT).show(); //TODO add string resources
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -202,49 +187,20 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("SIGN IN", "signInWithCredential:onComplete:" + task.isSuccessful());
-
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
+
+                        if (task.isSuccessful()) {
+                            //Toast.makeText(GoogleSignInActivity.this, "Authenticated", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
                             Log.w("SIGN IN", "signInWithCredential", task.getException());
                             Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // ...
                     }
                 });
-    }
-
-    private class UploadUser extends User
-    {
-        public UploadUser(String fname, String lname, String profile_picture_url, String email) {
-            this.fname = fname;
-            this.lname = lname;
-            this.profile_picture_url = profile_picture_url;
-            this.age = 0;
-            this.tel_num = " ";
-            this.email = email;
-            //this.age = age; //TODO add age field that the user fills
-            //this.tel_num = tel_num; //TODO add tel_num field that the user fills
-            this.reputation = 0; //new user starts with 0 rep
-        }
-
-        @Exclude
-        public Map<String, Object> toMap()
-        {
-            HashMap<String, Object> result = new HashMap<>();
-            result.put("fname", this.fname);
-            result.put("lname", this.lname);
-            result.put("profile_picture_url", this.profile_picture_url);
-            result.put("age", this.age);
-            result.put("tel_num", this.tel_num);
-            result.put("reputation", this.reputation);
-            result.put("email", this.email);
-            return result;
-        }
-
     }
 
     @Override
@@ -263,7 +219,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(popupWindow != null)
+        if(accountStatus > 0)
             popupWindow.dismiss();
     }
 }

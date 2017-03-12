@@ -7,11 +7,19 @@ package com.explorify.xplore.xplore_demo;
 
 public class User {
     String fname, lname, tel_num, id, profile_picture_url, email;
-    int reputation, age;
-
+    int reputation, birth_date, age;
+//TODO change age to birth date and calculate age every time user info is loaded
     public User() {
 
         //LEAVE EMPTY
+    }
+
+    public int getBirth_date() {
+        return birth_date;
+    }
+
+    public void setBirth_date(int birth_date) {
+        this.birth_date = birth_date;
     }
 
     public String getEmail() {

@@ -54,13 +54,13 @@ public class CalendarActivity extends Activity {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
                 if(dateSetup.isChoice()) {
-                    dateSetup.setStart(General.GetDateTime(year, month+1, day));
+                    dateSetup.setStart(General.GetDateLong(year, month+1, day));
                     dateSetup.setsYear(year);
                     dateSetup.setsMonth(month+1);
                     dateSetup.setsDay(day);
                 }
                 else{
-                    dateSetup.setEnd(General.GetDateTime(year, month+1, day));
+                    dateSetup.setEnd(General.GetDateLong(year, month+1, day));
                     dateSetup.seteYear(year);
                     dateSetup.seteMonth(month+1);
                     dateSetup.seteDay(day);

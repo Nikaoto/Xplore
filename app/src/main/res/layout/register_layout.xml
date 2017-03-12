@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Register"
+            android:textSize="30sp"
+            android:id="@+id/reg_title"
+            android:textColor="@color/colorDarkGrey"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/reg_fname_label"
+            android:text="First Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:layout_alignBaseline="@+id/reg_fname_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/reg_fname_text"
+            android:layout_below="@id/reg_title"
+            android:layout_toRightOf="@id/reg_fname_label"
+            android:inputType="textPersonName|textCapWords"
+
+            android:layout_marginTop="23dp"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:maxLines="1"
+            android:textSize="@dimen/reg_text_size"
+            android:paddingLeft="@dimen/reg_text_padding_left"
+            android:paddingBottom="@dimen/reg_text_padding_top_bot"
+            android:paddingTop="@dimen/reg_text_padding_top_bot" />
+
+        <TextView
+            android:id="@+id/reg_lname_label"
+            android:text="Last Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="@dimen/reg_label_size"
+            android:layout_alignBaseline="@+id/reg_lname_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/reg_lname_text"
+            android:layout_below="@id/reg_fname_text"
+            android:layout_toRightOf="@id/reg_lname_label"
+            android:inputType="textPersonName|textCapWords"
+
+            android:layout_marginTop="@dimen/reg_text_margin_top"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:maxLines="1"
+            android:textSize="@dimen/reg_text_size"
+            android:paddingLeft="@dimen/reg_text_padding_left"
+            android:paddingBottom="@dimen/reg_text_padding_top_bot"
+            android:paddingTop="@dimen/reg_text_padding_top_bot" />
+
+        <TextView
+            android:id="@+id/reg_email_label"
+            android:text="Email"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:layout_alignBaseline="@+id/reg_email_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/reg_email_text"
+            android:layout_below="@id/reg_lname_text"
+            android:layout_toRightOf="@id/reg_email_label"
+            android:inputType="textEmailAddress"
+
+            android:layout_marginTop="@dimen/reg_text_margin_top"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:maxLines="1"
+            android:textSize="@dimen/reg_text_size"
+            android:paddingLeft="@dimen/reg_text_padding_left"
+            android:paddingBottom="@dimen/reg_text_padding_top_bot"
+            android:paddingTop="@dimen/reg_text_padding_top_bot" />
+
+        <TextView
+            android:id="@+id/reg_telnum_label"
+            android:text="Mobile Number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:layout_alignBaseline="@+id/reg_telnum_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/reg_telnum_text"
+            android:layout_below="@id/reg_email_text"
+            android:layout_toRightOf="@id/reg_telnum_label"
+            android:inputType="number"
+
+            android:layout_marginTop="@dimen/reg_text_margin_top"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:maxLines="1"
+            android:textSize="@dimen/reg_text_size"
+            android:paddingLeft="@dimen/reg_text_padding_left"
+            android:paddingBottom="@dimen/reg_text_padding_top_bot"
+            android:paddingTop="@dimen/reg_text_padding_top_bot" />
+
+        <TextView
+            android:id="@+id/reg_birthdate_label"
+            android:text="Birth Date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:layout_alignBaseline="@+id/reg_birthdate_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/reg_birthdate_text"
+            android:layout_below="@id/reg_telnum_text"
+            android:layout_toRightOf="@id/reg_telnum_label"
+            android:textSize="20sp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:minEms="6"
+
+            android:layout_marginTop="@dimen/reg_text_margin_top"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+            android:background="@drawable/edit_text_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <!-- TODO create relativelayout to center this textview below date text-->
+        <TextView
+            android:text="yyyy/mm/dd"
+            android:layout_toRightOf="@id/reg_telnum_label"
+            android:layout_below="@id/reg_birthdate_text"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="@dimen/reg_text_margin_left"
+
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/reg_profile_image_label"
+            android:text="Profile Picture"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/reg_text_margin_top"
+            android:layout_below="@id/reg_birthdate_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/reg_profile_image"
+            android:background="@drawable/profile_picture_border"
+            android:layout_below="@id/reg_profile_image_label"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+
+            android:layout_width="@dimen/group_leader_profile_wh"
+            android:layout_height="@dimen/group_leader_profile_wh" />
+
+        <Button
+            android:id="@+id/reg_done_button"
+            android:text="@string/done"
+            android:textSize="19sp"
+            app:backgroundTint="@color/colorAccent"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/reg_profile_image"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</ScrollView>

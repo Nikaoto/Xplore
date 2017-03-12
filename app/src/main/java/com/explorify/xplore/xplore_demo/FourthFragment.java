@@ -14,9 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import android.widget.Toast;
 
 
 /**
@@ -50,7 +48,7 @@ public class FourthFragment extends Fragment {
         b_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isUserSignedIn()) {
+                if(General.isUserSignedIn()) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new SearchGroupsFragment()).addToBackStack("4").commit();
                 }
@@ -64,7 +62,7 @@ public class FourthFragment extends Fragment {
         b_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isUserSignedIn()) {
+                if(General.isUserSignedIn()) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new CreateGroupFragment()).addToBackStack("4").commit();
                 }
@@ -82,16 +80,6 @@ public class FourthFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         appWidth = dm.widthPixels;
         appHeight = dm.heightPixels;
-    }
-
-    private boolean isUserSignedIn()
-    {//return true;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void popSignInMenu(int appWidth, int appHeight, double xScale, double yScale)
@@ -120,10 +108,25 @@ public class FourthFragment extends Fragment {
                         Intent i = new Intent(context, GoogleSignInActivity.class);
                         context.startActivity(i);
                     } else
-                        General.groups_DisplayNetErrorDialog(context);
+                        General.createNetErrorDialog(context);
             }
         });
 
         General.dimBehind(popupWindow, 0.5f);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(General.accountStatus == General.JUST_SIGNED_IN) {
+            General.accountStatus = 0;
+            Toast.makeText(getActivity(), "Signed In", Toast.LENGTH_SHORT).show(); //TODO string resources
+        }
+        else if(General.accountStatus == General.REGISTERED)
+        {
+            General.accountStatus = 0;
+            Toast.makeText(getActivity(), "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
+        }
     }
 }

@@ -87,7 +87,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
         if(!General.isNetConnected(getActivity()))
         {
-            General.groups_DisplayNetErrorDialog(getActivity());
+            General.createNetErrorDialog(getActivity());
         }
         else {
             Authorize();
