@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.explorify.xplore.xplore_demo.General.currentUserId;
 import static com.explorify.xplore.xplore_demo.General.dbManager;
 
 /**
@@ -55,7 +56,7 @@ public class CreateGroupFragment extends Fragment {
     private RelativeLayout memberLayout;
     private RecyclerView memberRecList;
 
-    EditText leaderId_text, groupPrefs_text, extraInfo_text;
+    EditText groupPrefs_text, extraInfo_text;
     ImageView prefs_help, info_help;
     int experienceAns; // -1 -> not selected, 0 -> no exp, 1-> exp.
     String gPrefs, eInfo;
@@ -69,9 +70,6 @@ public class CreateGroupFragment extends Fragment {
 
     private class UploadGroup extends Group
     {
-        public UploadGroup() {
-        }
-
         public UploadGroup(String group_id, boolean experienced, long start_date, long end_date, String destination_id,
                            String extra_info, String group_preferences, ArrayList<String> member_ids) {
             this.group_id = group_id;
@@ -188,7 +186,6 @@ public class CreateGroupFragment extends Fragment {
         info_help.setColorFilter(ContextCompat.getColor(context,R.color.colorGrey));
 
         //Texts
-        leaderId_text= (EditText) myView.findViewById(R.id.userId_editText);
         startDate_text = (TextView) myView.findViewById(R.id.dateStart_text);
         endDate_text = (TextView) myView.findViewById(R.id.dateEnd_text);
         groupPrefs_text= (EditText) myView.findViewById(R.id.groupPrefs_editText);
@@ -283,7 +280,7 @@ public class CreateGroupFragment extends Fragment {
     {
         //get member IDs
         ArrayList<String> member_ids = new ArrayList<>();
-        member_ids.add(String.valueOf(leaderId_text.getText())); //TODO change with Google Account associate lookup
+        member_ids.add(String.valueOf(currentUserId));
         for(int i = 0; i<invitedMembers.size(); i++)
         {
             member_ids.add(invitedMembers.get(i).getId());
@@ -371,13 +368,7 @@ public class CreateGroupFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.okay, null);
 
-        if(leaderId_text.getText().length() < 1)
-        { //TODO remove this after finishing groupCreation testing & adding user account management
-            builder.setMessage("Fill user id pls")
-                    .show();
-            return false;
-        }
-        else if(chosenDestId == -1) {
+        if(chosenDestId == -1) {
             builder.setMessage(R.string.dest_field_incomplete)
                     .show();
             return false;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,30 +89,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 .build();
     }
 
-/*    private void buildUserBase()
-    {
-        USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
-        USERBASE_APPID = getResources().getString(R.string.firebase_appid);
-        USERBASE_URL = getResources().getString(R.string.user_firebase_url);
-
-        userBaseOptions = new FirebaseOptions.Builder()
-                .setApiKey(USERBASE_KEY)
-                .setApplicationId(USERBASE_APPID)
-                .setDatabaseUrl(USERBASE_URL)
-                .build();
-        try {
-            if (FirebaseApp.getApps(this).get(1).equals(null)) {
-                FirebaseApp.initializeApp(this, userBaseOptions, "userbase");
-            }
-        }
-        catch (IndexOutOfBoundsException e)
-        {
-            FirebaseApp.initializeApp(this, userBaseOptions, "userbase");
-        }
-        userBaseApp = FirebaseApp.getInstance("userbase");
-        userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }*/
-
     private void PreLoadData()
     {
         memberAdded = false;
@@ -128,7 +105,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     int userCounter = 0;
 
-    //search lname in db and filter results with fnames (because lname collisions are less frequent)
+    //search by last names in db (because fname collisions are more frequent) and then filter results with first names
     private void LoadDataWithFullName(final String fname, final String lname, final boolean displayData)
     {
         Query fnameQuery = DBref.child("users").orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
@@ -196,8 +173,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private void PopulateButtonList()
     {
-/*        for(User user : userList)
-            Log.println(Log.INFO, "fname", user.getFname()+" id ="+user.getId());*/
 
         boolean foundDup;
         //filtering duplicates into answerList
@@ -213,8 +188,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                 }
             }
 
-            if(!foundDup)
-              answerList.add(userList.get(i));
+            if(!foundDup && (!(userList.get(i).getId().equals(General.currentUserId)))) {
+                Log.println(Log.INFO, "USERID", "CurrentUserId: "+General.currentUserId+" tempUserId: "+userList.get(i).getId());
+                answerList.add(userList.get(i));
+            }
         }
 
         ArrayAdapter<User> adapter = new UserListAdapter(); //change User to UserButtons
@@ -277,9 +254,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(UserAlreadyInvited(currentUser))
+                    if(UserAlreadyInvited(currentUser)) {
                         Toast.makeText(SearchUsersActivity.this, R.string.member_already_added,
                                 Toast.LENGTH_SHORT).show();
+                    }
                     else {
                         memberAdded = true;
                         invitedMembers.add(currentUser);

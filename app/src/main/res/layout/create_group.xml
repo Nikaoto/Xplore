@@ -9,50 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User ID: "
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignBaseline="@+id/userId_editText"
-                android:layout_toLeftOf="@+id/userId_editText"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-            <EditText
-                android:id="@+id/userId_editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:ems="8"
-                android:maxLines="1"
-                android:selectAllOnFocus="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="40dp"
-                android:layout_marginLeft="10dp"
-                android:inputType="text" />
-
-        </RelativeLayout>
-
-        <View style="@style/dashed_divider"
-            android:layout_below="@+id/userId_text"
-            android:layout_marginTop="12dp" />
-
         <Button
             android:id="@+id/chooseReserve_button"
             android:text="@string/choose_destination"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:layout_width="wrap_content"

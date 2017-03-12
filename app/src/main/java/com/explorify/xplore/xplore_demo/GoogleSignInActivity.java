@@ -152,7 +152,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
         else if(requestCode == RC_REGISTER)
         {
-            Log.println(Log.INFO, "ASDFGH", "RC REGISTER req code");
             accountStatus = REGISTERED;
             finish();
         }

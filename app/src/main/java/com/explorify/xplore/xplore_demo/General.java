@@ -75,7 +75,10 @@ public class General {
 
     public static String getCurrentTable(Context context)
     {
-        return context.getSharedPreferences("lang",0).getString("lang","en");
+        if(context != null)
+            return context.getSharedPreferences("lang",0).getString("lang","en");
+        else
+            return "en";
     }
 
     public static void OpenLibFragment(int resId, Context context)
@@ -105,6 +108,8 @@ public class General {
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            currentUserId = user.getUid();
+            //Try to authenticate with firebase
             return true;
         } else {
             return false;
