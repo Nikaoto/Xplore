@@ -83,8 +83,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         //setting up progressbar
         progressBar = (ProgressBar) myView.findViewById(R.id.searchProgressBar);
 
-        //TODO check for internet, bring up dialog to enable net, do a net check before loading data
-
         if(!General.isNetConnected(getActivity()))
         {
             General.createNetErrorDialog(getActivity());
