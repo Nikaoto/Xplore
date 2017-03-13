@@ -4,8 +4,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_first_layout"
-            android:icon="@drawable/ic_search"
-            android:title="@string/nav_search_title" />
+            android:icon="@drawable/ic_profile"
+            android:title="@string/profile" />
         <item
             android:id="@+id/nav_second_layout"
             android:icon="@drawable/ic_book"

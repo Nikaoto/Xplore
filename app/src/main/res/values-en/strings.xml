@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Xplore Demo</string>
+    <string name="app_name">Xplore</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,6 +9,7 @@
     <string name="about_header">About</string>
     <string name="calendar">Calendar</string>
     <string name="cancel">Cancel</string>
+    <string name="profile">Profile</string>
     <string name="about">This app is a demo version of Xplore. Any element of this application is
         subject to change.\n\nThe information and resources of parks and reserves is sourced from
         http://apa.gov.ge/ and they belong to their rightful owners.\n\nCreated by Nika Otiashvili

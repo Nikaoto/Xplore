@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Xplore Demo</string>
+    <string name="app_name">Xplore</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,6 +9,7 @@
     <string name="about_header">შესახებ</string>
     <string name="calendar">კალენდარი</string>
     <string name="cancel">გაუქმება</string>
+    <string name="profile">პროფილი</string>
     <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
         შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
         http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
