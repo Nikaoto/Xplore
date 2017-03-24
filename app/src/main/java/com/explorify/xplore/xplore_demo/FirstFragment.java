@@ -1,56 +1,64 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Fragment;
-import android.database.SQLException;
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+
+import static com.explorify.xplore.xplore_demo.General.*;
+
 
 /**
  * Created by Nika on 11/9/2016.
  */
 
-public class FirstFragment extends Fragment implements EditText.OnEditorActionListener {
+public class FirstFragment extends Fragment {
 
     private View myView;
-    private ListView list;
-    private EditText searchBar;
-    private String searchQuery;
-    private List<Integer> resultID;
-    private ArrayList<ReserveButton> answerButtons = new ArrayList<>();
-    private ArrayList<ReserveButton> reserveButtons = new ArrayList<>();
+    private ImageView profileImage;
+    private TextView fname, lname, age_text, tel, email;
     private ProgressBar progressBar;
+    private Long tempTimeStamp;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.first_layout, container, false);
-        resultID = new ArrayList<Integer>();//maybe
+        myView = inflater.inflate(R.layout.profile_layout, container, false);
 
-        //setting up listview
-        list = (ListView) myView.findViewById(R.id.resultslist);
+        progressBar = (ProgressBar) myView.findViewById(R.id.imageProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
-        //setting up searchbar
-        searchBar = (EditText) myView.findViewById(R.id.search_bar);
-        searchBar.setHint(R.string.search_hint);
-        searchBar.setOnEditorActionListener(this);
-
-        //setting up progressbar
-        progressBar = (ProgressBar) myView.findViewById(R.id.searchProgressBar);
+        profileImage = (ImageView) myView.findViewById(R.id.user_profile_image);
+        fname = (TextView) myView.findViewById(R.id.user_fname_text);
+        lname = (TextView) myView.findViewById(R.id.user_lname_text);
+        age_text = (TextView) myView.findViewById(R.id.user_age_text);
+        tel = (TextView) myView.findViewById(R.id.user_tel_text);
+        email = (TextView) myView.findViewById(R.id.user_email_text);
 
         return myView;
     }
@@ -59,84 +67,78 @@ public class FirstFragment extends Fragment implements EditText.OnEditorActionLi
     public void onResume() {
         super.onResume();
 
-        //Refresh reserveButtons data
-        General.populateButtonList(reserveButtons, getActivity());
-    }
+        Context context = getActivity();
 
-    private void populateListView() {
-        ArrayAdapter<ReserveButton> adapter = new MyListAdapter();
-        list.setAdapter(adapter);
-    }
-
-    private class MyListAdapter extends ArrayAdapter<ReserveButton> {
-        public MyListAdapter() {
-            super(getActivity(), R.layout.list_item, answerButtons);
+        if(!isNetConnected(context)){
+            createNetErrorDialog(context);
+        }
+        else if (!isUserSignedIn()) {
+            progressBar.setVisibility(View.INVISIBLE);
+            popSignInMenu(0.8, 0.6, false, myView, getActivity());
+        }
+        else{
+            showUserInfo();
         }
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if(itemView == null) {
-                itemView = getActivity().getLayoutInflater().inflate(R.layout.list_item, parent,
-                        false);
-            }
-            final ReserveButton currentButton = answerButtons.get(position);
+    }
 
-            Button butt = (Button) itemView.findViewById(R.id.resultItem);
-            butt.setText(currentButton.getName());
-            butt.setBackground(currentButton.getImage());
+    private void showUserInfo()
+    {
+        //Gets the user info from database and loads them into views
+        //===============
+        final DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
+        Query query = DBref.child("users").orderByKey().equalTo(currentUserId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    User tempUser = new User();
+                    tempUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
 
-            //Configuring Clicks
-            butt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    General.OpenLibFragment(currentButton.getId(), getActivity());
+                    //Loading Image
+                    Picasso.with(getActivity())
+                            .load(tempUser.getProfile_picture_url())
+                            .transform(new RoundedCornersTransformation(
+                                    getResources().getInteger(R.integer.pic_big_angle),
+                                    getResources().getInteger(R.integer.pic_big_margin)))
+                            .into(profileImage);
+
+                    //Loading Texts
+                    fname.setText(tempUser.getFname());
+                    lname.setText(tempUser.getLname());
+
+                    //Update current server time
+                    Map<String, Object> dateValue = new HashMap<>();
+                    dateValue.put("timestamp", ServerValue.TIMESTAMP);
+                    DBref.child("date").setValue(dateValue);
+                    Query query = DBref.child("date").child("timestamp");
+
+                    final User finalTempUser = tempUser;
+
+                    //get server time and calculate age
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            tempTimeStamp = dataSnapshot.getValue(Long.class);
+
+                            //String ageLabel = getString(R.string.age);
+                            age_text.setText(getString(R.string.age) + ": "
+                                    + calculateAge(tempTimeStamp, finalTempUser.getBirth_date()));
+
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+
+                    tel.setText(getString(R.string.tel)+": "+tempUser.getTel_num());
+                    email.setText(tempUser.getEmail());
                 }
-            });
-
-            return itemView;
-        }
-    }
-
-    @Override
-    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-        progressBar.setVisibility(View.VISIBLE);
-
-        //Clear list
-        answerButtons.clear();
-
-        //Getting query
-        searchQuery = textView.getText().toString().toLowerCase();
-
-        //Opening Database
-        try{ General.dbManager.openDataBase(); }
-        catch (SQLException sqle){ throw sqle; }
-
-        //Searching Database
-        resultID = General.dbManager.getIdFromQuery(
-                searchQuery,
-                General.getCurrentTable(getActivity())
-        );
-
-        progressBar.setVisibility(View.GONE);
-
-        //Returning Results
-        if(resultID == null)
-        {
-            Toast.makeText(getActivity().getApplicationContext(), R.string.search_no_results,
-                    Toast.LENGTH_SHORT).show();
-        }
-        else {
-            int index = 0;
-            for (int result : resultID) {
-                //result is the single ID of an answer
-                answerButtons.add(index,reserveButtons.get(result));
-                index ++;
             }
 
-            populateListView();
-        }
-        return false;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }});
     }
 }

@@ -100,4 +100,6 @@
     <string name="sign_in">Войти</string>
     <string name="register">Зарегистрироваться</string>
     <string name="choose_date">Выберите дату</string>
+    <string name="email">Эл. адрес</string>
+
 </resources>

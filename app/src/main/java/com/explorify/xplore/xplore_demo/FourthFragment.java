@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import static com.explorify.xplore.xplore_demo.General.popSignInMenu;
+
 
 /**
  * Created by Nika on 11/9/2016.
@@ -25,8 +27,6 @@ public class FourthFragment extends Fragment {
 
     private View myView;
     private ImageView b_join, b_create;
-    private PopupWindow popupWindow;
-    int appWidth, appHeight;
 
     @Nullable
     @Override
@@ -40,8 +40,6 @@ public class FourthFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        InitDisplayMetrics();
-
         b_join = (ImageView) myView.findViewById(R.id.join_party);
         b_create = (ImageView) myView.findViewById(R.id.create_party);
 
@@ -54,7 +52,7 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(appWidth, appHeight, 0.8, 0.6);
+                    popSignInMenu(0.8, 0.6, true, myView, getActivity());
                 }
             }
         });
@@ -68,51 +66,10 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(appWidth, appHeight, 0.8, 0.6);
+                    popSignInMenu(0.8, 0.6, true, myView, getActivity());
                 }
             }
         });
-    }
-
-    private void InitDisplayMetrics()
-    {
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        appWidth = dm.widthPixels;
-        appHeight = dm.heightPixels;
-    }
-
-    private void popSignInMenu(int appWidth, int appHeight, double xScale, double yScale)
-    {
-        int popWidth = (int) (appWidth * xScale);
-        int popHeight = (int) (appHeight * yScale);
-
-        int locationX = 0;
-        int locationY = 0;
-
-        View popupView = getActivity().getLayoutInflater().inflate(R.layout.pre_signin_layout, null);
-        popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
-        popupView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_open));
-
-
-        popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
-        popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
-
-        Button signin_btn = (Button) popupView.findViewById(R.id.signin_button);
-        signin_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    Context context = getActivity();
-                    if (General.isNetConnected(context)) {
-                        popupWindow.dismiss();
-                        Intent i = new Intent(context, GoogleSignInActivity.class);
-                        context.startActivity(i);
-                    } else
-                        General.createNetErrorDialog(context);
-            }
-        });
-
-        General.dimBehind(popupWindow, 0.5f);
     }
 
     @Override

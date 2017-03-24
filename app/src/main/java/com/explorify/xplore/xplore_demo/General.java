@@ -13,9 +13,12 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by nikao on 2/24/2017.
@@ -30,13 +34,15 @@ import java.util.Calendar;
 
 public class General {
 
+    //==== Account status stuff ===
     public static final int JUST_SIGNED_IN = 1;
     public static final int REGISTERED = 2;
+    public static int accountStatus = 0;
+    //=================
 
     public static DBmanager dbManager;
     public static int appWidth, appHeight;
     public static String currentUserId;
-    public static int accountStatus = 0;
 
     public static void InitDisplayMetrics(Activity activity)
     {
@@ -116,6 +122,30 @@ public class General {
         }
     }
 
+    public static int calculateAge(Long tempTimeStamp, int birthDate)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(tempTimeStamp));
+        String bDate = String.valueOf(birthDate);
+
+        int bYear = Integer.valueOf(bDate.substring(0,4));
+        int bMonth = Integer.valueOf(bDate.substring(4,6));
+        int bDay = Integer.valueOf(bDate.substring(6));
+
+        int nowYear = cal.get(Calendar.YEAR);
+        int nowMonth = cal.get(Calendar.MONTH) + 1;
+        int nowDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        //Calculating age
+        int tempAge = nowYear - bYear;
+        if(bMonth > nowMonth)
+            tempAge++;
+        else if(bMonth == nowMonth && bDay >= nowDay)
+            tempAge++;
+
+        return tempAge;
+    }
+
     public static boolean isNetConnected(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -164,5 +194,37 @@ public class General {
         p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         p.dimAmount = dimAmount;
         wm.updateViewLayout(container, p);
+    }
+
+    public static void popSignInMenu(double xScale, double yScale, boolean dismissOnOutsideClick, View myView, final Activity activity)
+    {
+        int popWidth = (int) (appWidth * xScale);
+        int popHeight = (int) (appHeight * yScale);
+
+        int locationX = 0;
+        int locationY = 0;
+
+        View popupView = activity.getLayoutInflater().inflate(R.layout.pre_signin_layout, null);
+        popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
+        popupView.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.slide_down_open));
+
+        final PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
+        popupWindow.setOutsideTouchable(dismissOnOutsideClick);
+        popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
+
+        Button signin_btn = (Button) popupView.findViewById(R.id.signin_button);
+        signin_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (General.isNetConnected(activity)) {
+                    popupWindow.dismiss();
+                    Intent i = new Intent(activity, GoogleSignInActivity.class); //TODO change into SignInActivity
+                    activity.startActivity(i);
+                } else
+                    createNetErrorDialog(activity);
+            }
+        });
+
+        dimBehind(popupWindow, 0.5f);
     }
 }

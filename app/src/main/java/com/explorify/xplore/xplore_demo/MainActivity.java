@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         InitPreferences();
+        General.InitDisplayMetrics(this);
         General.InitDBManager(this);
         InitNavMenuItems();
         setContentView(R.layout.activity_main);
