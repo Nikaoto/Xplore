@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,10 +29,12 @@ import java.util.List;
  * Created by Nika on 11/9/2016.
  */
 
-public class SecondFragment extends Fragment {
+public class SecondFragment extends Fragment implements TextView.OnEditorActionListener {
+
+
+    public static boolean needRefresh = false;
 
     private View myView;
-    private boolean first = true;
     private ListView list;
     private EditText searchBar;
     private List<Integer> resultIDs = new ArrayList<>();
@@ -50,38 +54,48 @@ public class SecondFragment extends Fragment {
 
         //setting up searchbar
         searchBar = (EditText) myView.findViewById(R.id.search_bar);
+        searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_hint);
         searchBar.setSelectAllOnFocus(true);
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchListItems(charSequence.toString().toLowerCase());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        searchBar.setOnEditorActionListener(this);
 
         return myView;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+        searchListItems(textView.getText().toString().toLowerCase());
+
+        return false;
+    }
+
+    //Sets up reserveButtons, refreshes data and preloads data, then displays it
+    private void InitDataLists()
+    {
+        //Load all reserveButtons from DB
         General.populateButtonList(reserveButtons, context);
 
-        if(first) {
-            first = false;
-            answerButtons.addAll(reserveButtons);
-            populateListView();
+        //Clear answer list
+        answerButtons.clear();
+
+        //Push all reserveButtons to answers
+        answerButtons.addAll(reserveButtons);
+
+        populateListView();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Check if language was changed and data needs refreshing
+        if (needRefresh) {
+            needRefresh = false;
+            InitDataLists();
         }
+
     }
 
     private void populateListView() {
@@ -90,6 +104,8 @@ public class SecondFragment extends Fragment {
         ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
         list.setAdapter(adapter);
     }
+
+
 
     private class MyListAdapter extends ArrayAdapter<ReserveButton> {
         public MyListAdapter() {
@@ -122,13 +138,6 @@ public class SecondFragment extends Fragment {
         }
     }
 
-    //hides the sotft keyboard
-    public void HideKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-    }
-
     //Searches DB for query
     private void searchListItems(String query) {
         answerButtons.clear();
@@ -154,6 +163,19 @@ public class SecondFragment extends Fragment {
 
             populateListView();
         }
+    }
+
+    //hides the sotft keyboard
+    public void HideKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        InitDataLists();
     }
 
 }

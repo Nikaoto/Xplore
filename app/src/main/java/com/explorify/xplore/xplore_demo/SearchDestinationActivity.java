@@ -45,6 +45,7 @@ public class SearchDestinationActivity extends Activity {
 
         //setting up searchbar
         searchBar = (EditText) findViewById(R.id.search_bar);
+        searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_hint);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override

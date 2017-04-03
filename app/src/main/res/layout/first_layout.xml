@@ -3,15 +3,13 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <EditText
-        android:ems="10"
         android:id="@+id/search_bar"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_height="@dimen/search_bar_height"
         android:selectAllOnFocus="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="250dp"
         android:hint="@string/search_hint"
-        android:inputType="text"
+        android:maxLines="1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

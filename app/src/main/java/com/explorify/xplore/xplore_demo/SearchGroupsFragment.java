@@ -77,6 +77,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
         //setting up searchbar
         searchBar = (EditText) myView.findViewById(R.id.search_bar);
+        searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_groups_hint);
         searchBar.setOnEditorActionListener(this);
 

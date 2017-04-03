@@ -18,7 +18,6 @@ import java.util.Locale;
 
 public class OptionsFragment extends Fragment implements View.OnClickListener
 {
-
     View myView;
     ImageView GeoButton;
     ImageView EngButton;

@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
     public static void RefreshApplication(Context context) { //TODO COMMENT AFTER adding recreate() to optionsFragment
         //Refresh nav items
-        navigationView.getMenu().getItem(0).setTitle(R.string.nav_search_title);
+        navigationView.getMenu().getItem(0).setTitle(R.string.nav_profile_title);
         navigationView.getMenu().getItem(1).setTitle(R.string.nav_lib_title);
         navigationView.getMenu().getItem(2).setTitle(R.string.nav_map_title);
         navigationView.getMenu().getItem(3).setTitle(R.string.nav_party_title);

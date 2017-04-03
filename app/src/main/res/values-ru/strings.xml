@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Xplore</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="create_party">Cоздавать</string>
@@ -21,7 +20,7 @@
     </string>
     <string name="search_hint">Искать Метки</string>
     <string name="search_groups_hint">Поиск Группы</string>
-    <string name="nav_search_title">Поиск</string>
+    <string name="nav_profile_title">Профиль</string>
     <string name="nav_lib_title">Библиотека</string>
     <string name="nav_map_title">Карта</string>
     <string name="nav_party_title">Группы</string>
