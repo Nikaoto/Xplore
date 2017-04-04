@@ -146,6 +146,8 @@ public class DBmanager extends SQLiteOpenHelper {
     {
         List<Integer> answers = new ArrayList<Integer>();
 
+        //TODO add categorized search
+        //TODO add all tags search
         //Use string query to search for reserves and output IDs
         Cursor cursor = reserveDataBase.rawQuery("SELECT _id FROM "+table+" WHERE "+NAME_COLUMN_NAME+" LIKE '%"+query+"%' " +
                 "or "+FLORA_COLUMN_NAME+" LIKE '%"+query+"%' " +
