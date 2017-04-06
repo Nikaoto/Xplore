@@ -253,15 +253,15 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         {
+            super.onBackPressed();
             ThirdFragment.MAPS_CLOSED = true;
             ThirdFragment.FIRST_TIME = false;
-            showReserve = false;
             if(reserveMarker != null)
                 reserveMarker.remove();
-            if (MainActivity.fm.getBackStackEntryCount()>0) {
+            if (MainActivity.fm.getBackStackEntryCount()>0 && !showReserve) {
                 MainActivity.manageBackStack();
             }
-            super.onBackPressed();
+            showReserve = false;
         }
     }
 
