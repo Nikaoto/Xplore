@@ -91,18 +91,16 @@ public class FirstFragment extends Fragment {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if(dataSnapshot.exists() && getActivity() !=null) {
                     User tempUser = new User();
                     tempUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
-
-                    //Loading Image
-                    Picasso.with(getActivity())
-                            .load(tempUser.getProfile_picture_url())
-                            .transform(new RoundedCornersTransformation(
-                                    getResources().getInteger(R.integer.pic_big_angle),
-                                    getResources().getInteger(R.integer.pic_big_margin)))
-                            .into(profileImage);
-
+                        //Loading Image
+                        Picasso.with(getActivity())
+                                .load(tempUser.getProfile_picture_url())
+                                .transform(new RoundedCornersTransformation(
+                                        getResources().getInteger(R.integer.pic_big_angle),
+                                        getResources().getInteger(R.integer.pic_big_margin)))
+                                .into(profileImage);
                     //Loading Texts
                     fname.setText(tempUser.getFname());
                     lname.setText(tempUser.getLname());
