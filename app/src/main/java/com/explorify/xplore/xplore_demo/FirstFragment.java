@@ -41,7 +41,7 @@ public class FirstFragment extends Fragment {
 
     private View myView;
     private ImageView profileImage;
-    private TextView fname, lname, age_text, tel, email;
+    private TextView rep_text, fname, lname, age_text, tel, email;
     private ProgressBar progressBar;
     private Long tempTimeStamp;
 
@@ -54,6 +54,7 @@ public class FirstFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         profileImage = (ImageView) myView.findViewById(R.id.user_profile_image);
+        rep_text = (TextView) myView.findViewById(R.id.user_rep_text);
         fname = (TextView) myView.findViewById(R.id.user_fname_text);
         lname = (TextView) myView.findViewById(R.id.user_lname_text);
         age_text = (TextView) myView.findViewById(R.id.user_age_text);
@@ -104,6 +105,7 @@ public class FirstFragment extends Fragment {
                     //Loading Texts
                     fname.setText(tempUser.getFname());
                     lname.setText(tempUser.getLname());
+                    rep_text.setText(String.valueOf(tempUser.getReputation()));
 
                     //Update current server time
                     Map<String, Object> dateValue = new HashMap<>();
