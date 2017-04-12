@@ -3,12 +3,9 @@ package com.explorify.xplore.xplore_demo;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +36,6 @@ import java.util.Map;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 import static com.explorify.xplore.xplore_demo.General.*;
-import static com.explorify.xplore.xplore_demo.GoogleSignInActivity.*;
 import static com.explorify.xplore.xplore_demo.GoogleSignInActivity.googleApiClient;
 
 
@@ -81,9 +74,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         LogOutBtn = (Button) myView.findViewById(R.id.log_out_btn);
         LogOutBtn.setOnClickListener(this);
 
-        if(accountStatus == 0)
-            LogOutBtn.setEnabled(false);
-
         return myView;
     }
 
@@ -96,7 +86,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         }
         else
             googleApiClient.connect();
-
 
         //Get Auth Instance
         auth = FirebaseAuth.getInstance();
@@ -119,9 +108,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         Context context = getActivity();
-
-        if(accountStatus != 0)
-            LogOutBtn.setEnabled(true);
 
         if(!isNetConnected(context)){
             createNetErrorDialog(context);
@@ -214,6 +200,10 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
 
                     tel.setText(getString(R.string.tel)+": "+tempUser.getTel_num());
                     email.setText(tempUser.getEmail());
+
+                    CheckAccountStatus();
+                    if(accountStatus !=0)
+                        LogOutBtn.setEnabled(true);
                 }
             }
 
@@ -221,6 +211,15 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
             public void onCancelled(DatabaseError databaseError) {
 
             }});
+    }
+
+    //TODO add this in General
+    private void CheckAccountStatus()
+    {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+            accountStatus = JUST_SIGNED_IN;
+        else
+            accountStatus = 0;
     }
 
     @Override

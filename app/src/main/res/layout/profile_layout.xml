@@ -106,6 +106,7 @@
             android:id="@+id/log_out_btn"
             android:text="@string/log_out"
 
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:backgroundTint = "@color/colorAccent"
