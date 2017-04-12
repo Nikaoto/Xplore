@@ -7,10 +7,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.SQLException;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -210,8 +218,18 @@ public class General {
         popupView.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.slide_down_open));
 
         final PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
-        popupWindow.setOutsideTouchable(dismissOnOutsideClick);
+
+        if(dismissOnOutsideClick)
+            popupWindow.setOutsideTouchable(true);
+        else
+        {
+            popupWindow.setFocusable(false);
+            popupWindow.setOutsideTouchable(false);
+        }
+
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
+
+        dimBehind(popupWindow, 0.65f);
 
         Button signin_btn = (Button) popupView.findViewById(R.id.signin_button);
         signin_btn.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +243,5 @@ public class General {
                     createNetErrorDialog(activity);
             }
         });
-
-        dimBehind(popupWindow, 0.5f);
     }
 }

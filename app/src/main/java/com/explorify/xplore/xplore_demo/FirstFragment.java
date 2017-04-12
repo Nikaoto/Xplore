@@ -81,6 +81,9 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         LogOutBtn = (Button) myView.findViewById(R.id.log_out_btn);
         LogOutBtn.setOnClickListener(this);
 
+        if(accountStatus == 0)
+            LogOutBtn.setEnabled(false);
+
         return myView;
     }
 
@@ -116,6 +119,9 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         Context context = getActivity();
+
+        if(accountStatus != 0)
+            LogOutBtn.setEnabled(true);
 
         if(!isNetConnected(context)){
             createNetErrorDialog(context);

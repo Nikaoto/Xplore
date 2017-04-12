@@ -93,7 +93,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        dimBehind(popupWindow, 0.5f);
+        dimBehind(popupWindow, 0.65f); //ajuk
     }
 
     private void Authorize()
