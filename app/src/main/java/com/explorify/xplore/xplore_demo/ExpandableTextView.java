@@ -11,7 +11,7 @@ import android.widget.TextView;
  * Created by nikao on 2/22/2017.
  */
 
-public class ExpandableTextView extends TextView {
+public class ExpandableTextView extends android.support.v7.widget.AppCompatTextView {
     private static final int DEFAULT_TRIM_LENGTH = 120;
     private static final String ELLIPSIS = ".....";
 

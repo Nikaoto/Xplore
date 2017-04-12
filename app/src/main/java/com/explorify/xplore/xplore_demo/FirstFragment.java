@@ -1,19 +1,32 @@
 package com.explorify.xplore.xplore_demo;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,32 +36,36 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 import static com.explorify.xplore.xplore_demo.General.*;
+import static com.explorify.xplore.xplore_demo.GoogleSignInActivity.*;
+import static com.explorify.xplore.xplore_demo.GoogleSignInActivity.googleApiClient;
 
 
 /**
  * Created by Nika on 11/9/2016.
  */
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements View.OnClickListener {
 
     private View myView;
     private ImageView profileImage;
     private TextView rep_text, fname, lname, age_text, tel, email;
     private ProgressBar progressBar;
+    private Button LogOutBtn;
     private Long tempTimeStamp;
+    private FirebaseAuth auth;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.profile_layout, container, false);
+
+        Authorize();
 
         progressBar = (ProgressBar) myView.findViewById(R.id.imageProgressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -61,7 +78,37 @@ public class FirstFragment extends Fragment {
         tel = (TextView) myView.findViewById(R.id.user_tel_text);
         email = (TextView) myView.findViewById(R.id.user_email_text);
 
+        LogOutBtn = (Button) myView.findViewById(R.id.log_out_btn);
+        LogOutBtn.setOnClickListener(this);
+
         return myView;
+    }
+
+    private void Authorize()
+    {
+        //Connect Google Api
+        if(googleApiClient == null) {
+            googleApiClient = BuildGoogleApiClient();
+            googleApiClient.connect();
+        }
+        else
+            googleApiClient.connect();
+
+
+        //Get Auth Instance
+        auth = FirebaseAuth.getInstance();
+    }
+
+    private GoogleApiClient BuildGoogleApiClient()
+    {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        return new GoogleApiClient.Builder(getActivity().getApplicationContext())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     @Override
@@ -80,7 +127,35 @@ public class FirstFragment extends Fragment {
         else{
             showUserInfo();
         }
+    }
 
+    @Override
+    public void onClick(View view) { //Log Out
+        LogOut();
+    }
+
+    //TODO this is a hack. Create SignInActivity and use LogIn() and LogOut() from that activity
+    public void LogOut() {
+        auth.signOut();
+        Auth.GoogleSignInApi.signOut(GoogleSignInActivity.googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if(status.isSuccess() && accountStatus > 0 ) {
+                            currentUserId = "";
+                            accountStatus = 0;
+                            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+
+                            //Refresh Fragment
+                            Fragment currentFragment = FirstFragment.this;
+                            FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+                            fragTransaction.detach(currentFragment);
+                            fragTransaction.attach(currentFragment);
+                            fragTransaction.commit();
+                        }
+                    }
+                }
+        );
     }
 
     private void showUserInfo()
@@ -140,5 +215,17 @@ public class FirstFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }});
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 }

@@ -100,4 +100,5 @@
     <string name="register">დარეგისტრირება</string>
     <string name="choose_date">ამოირჩიეთ თარიღი</string>
     <string name="email">ელ-პოსტა</string>
+    <string name="log_out">გამოსვლა</string>
 </resources>

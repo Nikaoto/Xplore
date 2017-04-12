@@ -50,7 +50,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private SignInButton googleSignIn_b;
-    private GoogleApiClient googleApiClient;
+    public static GoogleApiClient googleApiClient;
     private FirebaseAuth.AuthStateListener authListener;
     private View myView;
     private PopupWindow popupWindow;
@@ -104,12 +104,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(GoogleSignInActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(GoogleSignInActivity.this, "Connection Failed :C", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -217,7 +211,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(accountStatus > 0)
+        if(accountStatus > 0) //If Logged in
             popupWindow.dismiss();
     }
 }
