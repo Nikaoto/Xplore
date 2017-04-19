@@ -40,6 +40,7 @@ import static com.explorify.xplore.xplore_demo.GoogleSignInActivity.googleApiCli
 
 
 /**
+ * TODO RENAME TO PROFILE FRAGMENT
  * Created by Nika on 11/9/2016.
  */
 
@@ -80,18 +81,16 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
     private void Authorize()
     {
         //Connect Google Api
-        if(googleApiClient == null) {
+        if(googleApiClient == null)
             googleApiClient = BuildGoogleApiClient();
-            googleApiClient.connect();
-        }
-        else
-            googleApiClient.connect();
+
+        googleApiClient.connect();
 
         //Get Auth Instance
         auth = FirebaseAuth.getInstance();
     }
 
-    private GoogleApiClient BuildGoogleApiClient()
+    private GoogleApiClient BuildGoogleApiClient() //TODO make this public static in General
     {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -121,39 +120,12 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View view) { //Log Out
-        LogOut();
-    }
-
-    //TODO this is a hack. Create SignInActivity and use LogIn() and LogOut() from that activity
-    public void LogOut() {
-        auth.signOut();
-        Auth.GoogleSignInApi.signOut(GoogleSignInActivity.googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        if(status.isSuccess() && accountStatus > 0 ) {
-                            currentUserId = "";
-                            accountStatus = 0;
-                            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
-
-                            //Refresh Fragment
-                            Fragment currentFragment = FirstFragment.this;
-                            FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
-                            fragTransaction.detach(currentFragment);
-                            fragTransaction.attach(currentFragment);
-                            fragTransaction.commit();
-                        }
-                    }
-                }
-        );
-    }
-
     private void showUserInfo()
     {
         //Gets the user info from database and loads them into views
         //===============
+        CheckAccountStatus();
+
         final DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
         Query query = DBref.child("users").orderByKey().equalTo(currentUserId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -201,7 +173,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                     tel.setText(getString(R.string.tel)+": "+tempUser.getTel_num());
                     email.setText(tempUser.getEmail());
 
-                    CheckAccountStatus();
                     if(accountStatus !=0)
                         LogOutBtn.setEnabled(true);
                 }
@@ -213,11 +184,41 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
             }});
     }
 
+    @Override
+    public void onClick(View view) { //Log Out
+        LogOut();
+    }
+
+    //TODO this is a hack. Create SignInActivity and use LogIn() and LogOut() from that activity
+    public void LogOut() {
+        auth.signOut();
+        Auth.GoogleSignInApi.signOut(GoogleSignInActivity.googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if(status.isSuccess() && accountStatus > 0 ) {
+                            currentUserId = "";
+                            accountStatus = 0;
+                            Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
+
+                            //Refresh Fragment
+                            Fragment currentFragment = FirstFragment.this;
+                            FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+                            fragTransaction.detach(currentFragment);
+                            fragTransaction.attach(currentFragment);
+                            fragTransaction.commit();
+                        }
+                    }
+                }
+        );
+    }
+
+
     //TODO add this in General
     private void CheckAccountStatus()
     {
         if(FirebaseAuth.getInstance().getCurrentUser() != null)
-            accountStatus = JUST_SIGNED_IN;
+            accountStatus = SIGNED_IN;
         else
             accountStatus = 0;
     }

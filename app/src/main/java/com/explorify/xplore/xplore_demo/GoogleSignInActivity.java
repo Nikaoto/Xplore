@@ -163,7 +163,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     startActivityForResult(i, RC_REGISTER);
                 }
                 else {
-                    accountStatus = JUST_SIGNED_IN;
+                    accountStatus = SIGNED_IN;
                     finish();
                 }
             }

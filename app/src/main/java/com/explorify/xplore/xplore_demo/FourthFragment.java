@@ -76,14 +76,11 @@ public class FourthFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(General.accountStatus == General.JUST_SIGNED_IN) {
-            General.accountStatus = 0;
+        /*if(General.accountStatus == General.SIGNED_IN) {
             Toast.makeText(getActivity(), "Signed In", Toast.LENGTH_SHORT).show(); //TODO string resources
-        }
-        else if(General.accountStatus == General.REGISTERED)
-        {
-            General.accountStatus = 0;
+        }*/
+
+        if(General.accountStatus == General.REGISTERED)
             Toast.makeText(getActivity(), "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
-        }
     }
 }

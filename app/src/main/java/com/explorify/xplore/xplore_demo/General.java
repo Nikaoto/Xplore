@@ -7,18 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.SQLException;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -28,8 +20,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -44,7 +34,7 @@ import java.util.Date;
 public class General {
 
     //==== Account status stuff ===
-    public static final int JUST_SIGNED_IN = 1;
+    public static final int SIGNED_IN = 1;
     public static final int REGISTERED = 2;
     public static int accountStatus = 0;
     //=================
