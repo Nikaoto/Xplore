@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'xplore_alias'
             keyPassword 'QwertY!234%'
-            storeFile file('E:/Documents/Xplore Documents/Development/xplore.jks')
+            storeFile file('E:/Documents/Xplore Documents/Development/Keystores/xplore.jks')
             storePassword 'QwertY!234%'
         }
     }
