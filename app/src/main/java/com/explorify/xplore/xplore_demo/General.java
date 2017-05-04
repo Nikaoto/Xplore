@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -209,19 +210,20 @@ public class General {
 
         final PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
 
-        if(dismissOnOutsideClick)
+/*        if(dismissOnOutsideClick)
             popupWindow.setOutsideTouchable(true);
         else
         {
             popupWindow.setFocusable(false);
             popupWindow.setOutsideTouchable(false);
-        }
+        }*/
 
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
 
         dimBehind(popupWindow, 0.65f);
 
-        Button signin_btn = (Button) popupView.findViewById(R.id.signin_button);
+        //Sign-in Button Config
+        Button signin_btn = (Button) popupView.findViewById(R.id.signin_btn);
         signin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -231,6 +233,16 @@ public class General {
                     activity.startActivity(i);
                 } else
                     createNetErrorDialog(activity);
+            }
+        });
+
+        //No sign-in textview config
+        TextView no_signin_tw = (TextView) popupView.findViewById(R.id.no_signin_tw);
+        no_signin_tw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                MainActivity.manageBackStack();
             }
         });
     }

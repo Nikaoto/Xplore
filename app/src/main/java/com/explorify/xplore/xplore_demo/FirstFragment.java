@@ -113,7 +113,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
         }
         else if (!isUserSignedIn()) {
             progressBar.setVisibility(View.INVISIBLE);
-            popSignInMenu(0.8, 0.6, false, myView, getActivity());
+            popSignInMenu(0.8, 0.6, true, myView, getActivity());
         }
         else{
             showUserInfo();
