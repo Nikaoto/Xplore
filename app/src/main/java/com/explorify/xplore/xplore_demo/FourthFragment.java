@@ -52,7 +52,7 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(0.8, 0.6, true, myView, getActivity());
+                    popSignInMenu(0.8, 0.6, myView, getActivity());
                 }
             }
         });
@@ -66,7 +66,7 @@ public class FourthFragment extends Fragment {
                 }
                 else
                 {
-                    popSignInMenu(0.8, 0.6, true, myView, getActivity());
+                    popSignInMenu(0.8, 0.6, myView, getActivity());
                 }
             }
         });

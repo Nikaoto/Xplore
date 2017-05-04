@@ -196,7 +196,7 @@ public class General {
         wm.updateViewLayout(container, p);
     }
 
-    public static void popSignInMenu(double xScale, double yScale, boolean dismissOnOutsideClick, View myView, final Activity activity)
+    public static void popSignInMenu(double xScale, double yScale, View myView, final Activity activity)
     {
         int popWidth = (int) (appWidth * xScale);
         int popHeight = (int) (appHeight * yScale);
@@ -210,13 +210,17 @@ public class General {
 
         final PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
 
-/*        if(dismissOnOutsideClick)
-            popupWindow.setOutsideTouchable(true);
-        else
-        {
-            popupWindow.setFocusable(false);
-            popupWindow.setOutsideTouchable(false);
-        }*/
+        //Disables dismissal on outside touch
+        popupWindow.setFocusable(false);
+        popupWindow.setOutsideTouchable(false);
+
+        //Goes back if dismissed
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                MainActivity.manageBackStack();
+            }
+        });
 
         popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
 
