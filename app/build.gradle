@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'XploreAlias'
-            keyPassword 'Xplore69'
-            storeFile file('C:/Users/nikao/.android/xplore.keystore')
-            storePassword 'Xplore69'
+            keyAlias 'xplore_alias'
+            keyPassword 'QwertY!234%'
+            storeFile file('E:/Documents/Xplore Documents/Development/xplore.jks')
+            storePassword 'QwertY!234%'
         }
     }
     compileSdkVersion 25
@@ -35,10 +35,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    compile 'com.google.maps.android:android-maps-utils:0.4'
     compile 'com.google.firebase:firebase-auth:10.2.0'
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.code.gson:gson:2.8.0'
