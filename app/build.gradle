@@ -12,7 +12,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "com.explorify.xplore.xplore_demo"
+        applicationId "com.explorify.xplore.xplore"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
