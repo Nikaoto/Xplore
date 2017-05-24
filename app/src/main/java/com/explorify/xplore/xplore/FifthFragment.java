@@ -15,7 +15,6 @@ public class FifthFragment extends Fragment {
 
     View myView;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

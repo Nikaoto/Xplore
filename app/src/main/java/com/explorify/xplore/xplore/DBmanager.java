@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ import java.util.List;
  * Created by nikao on 1/15/2017.
  */
 
-public class DBmanager extends SQLiteOpenHelper {
+class DBmanager extends SQLiteOpenHelper {
 
     //Name of the database that will be created
     private static String DB_NAME = "reserveDB.db";
@@ -46,36 +48,25 @@ public class DBmanager extends SQLiteOpenHelper {
     private final String LATITUDE_COLUMN_NAME = "latitude";
     private final String LONGITUDE_COLUMN_NAME = "longitude";
 
-    public DBmanager(Context context) {
+    DBmanager(Context context) {
         super(context,DB_NAME, null,1);
         this.myContext = context;
     }
 
 //    Copies the database of reserves from the assets folder to android's
 //    default database path (so other classes can later read it)
-    public void createDataBase() {
+    void createDataBase() {
         this.getReadableDatabase();
-        try{
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        OutputStream myOutput = new FileOutputStream(DB_PATH);
 
-        //transfer bytes from the inputfile to the outputfile
-        byte[] buffer = new byte[1024];
-        int length;
-        while((length = myInput.read(buffer))>0)
-            myOutput.write(buffer,0,length);
-
-        //close the streams
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
-    }
-        catch(IOException e){
-            Log.println(Log.ERROR,"errors","Could not copy db");
+        try {
+            new CopyBytes(myContext.getAssets().open(DB_NAME), DB_PATH);
+        }
+        catch (IOException e){
+            Log.println(Log.ERROR, "errors", "Could not copy data");
         }
     }
 
-    public double getDoubleFromDB(String table, int id, String column)
+    double getDoubleFromDB(String table, int id, String column)
     {
         //Use element ID to find string data
         Cursor cursor = reserveDataBase.rawQuery("SELECT "+column+" FROM "+table+" WHERE _id="+String.valueOf(id),null);
@@ -84,7 +75,7 @@ public class DBmanager extends SQLiteOpenHelper {
         return cursor.getDouble(0);
     }
 
-    public int getIntFromDB(String table, int id, String column)
+    int getIntFromDB(String table, int id, String column)
     {
         //Use element ID to find string data
         Cursor cursor = reserveDataBase.rawQuery("SELECT "+column+" FROM "+table+" WHERE _id="+String.valueOf(id),null);
@@ -93,7 +84,7 @@ public class DBmanager extends SQLiteOpenHelper {
         return cursor.getInt(0);
     }
 
-    public String getStrFromDB(String table, int id, String column)
+    String getStrFromDB(String table, int id, String column)
     {
         //Use element ID to find integer data
         Cursor cursor = reserveDataBase.rawQuery("SELECT "+column+" FROM "+table+" WHERE _id="+String.valueOf(id),null);
@@ -102,12 +93,12 @@ public class DBmanager extends SQLiteOpenHelper {
         return cursor.getString(0);
     }
 
-    public LatLng getLatLngFromDB(String table, int id)
+    LatLng getLatLngFromDB(String table, int id)
     {
         return new LatLng(getDoubleFromDB(table,id,LATITUDE_COLUMN_NAME),getDoubleFromDB(table,id,LONGITUDE_COLUMN_NAME));
     }
 
-    public Reserve getReserve(int id, Context context)
+    Reserve getReserve(int id, Context context)
     {
         String table = General.getCurrentTable(context);
         Reserve res = new Reserve();
@@ -128,7 +119,7 @@ public class DBmanager extends SQLiteOpenHelper {
         return res;
     }
 
-    public Drawable getReserveImage(String table, int id, Context context)
+    Drawable getReserveImage(String table, int id, Context context)
     {
         openDataBase();
 
@@ -142,7 +133,7 @@ public class DBmanager extends SQLiteOpenHelper {
             return resources.getDrawable(tempImageId);
     }
 
-    public List<Integer> getIdFromQuery(String query, String table)
+    List<Integer> getIdFromQuery(String query, String table)
     {
         List<Integer> answers = new ArrayList<Integer>();
 
@@ -171,7 +162,7 @@ public class DBmanager extends SQLiteOpenHelper {
     }
 
 
-    public void openDataBase() throws SQLException
+    void openDataBase() throws SQLException
     {
         this.close();
         reserveDataBase = this.getReadableDatabase();
@@ -195,12 +186,12 @@ public class DBmanager extends SQLiteOpenHelper {
 
     }
 
-    public String getImageColumnName()
+    String getImageColumnName()
     {
         return IMAGE_COLUMN_NAME;
     }
 
-    public String getNameColumnName()
+    String getNameColumnName()
     {
         return NAME_COLUMN_NAME;
     }
