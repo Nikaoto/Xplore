@@ -54,9 +54,6 @@ public class General {
 
     public static void InitDBManager(Context context) {
         dbManager = new DBmanager(context);
-
-        //try creating DB
-        dbManager.createDataBase();
     }
 
     public static void populateButtonList(ArrayList<ReserveButton> reserveButtons, Context context)
@@ -69,6 +66,8 @@ public class General {
 
         reserveButtons.clear();
 
+        //Getting each resID separately
+        //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
         for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
         {
             int resid = resources.getIdentifier(dbManager.getStrFromDB(table, i, dbManager.getImageColumnName()),"drawable","com.explorify.xplore.xplore");

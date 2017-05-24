@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nikao on 1/15/2017.
@@ -51,18 +53,30 @@ class DBmanager extends SQLiteOpenHelper {
     DBmanager(Context context) {
         super(context,DB_NAME, null,1);
         this.myContext = context;
+
+        //Creating database
+        reserveDataBase = getReadableDatabase();
+        //Copying Data
+        try { new CopyBytes(myContext.getAssets().open(DB_NAME), DB_PATH); }
+        catch (IOException e){ Log.println(Log.ERROR, "errors", "Could not copy data"); }
     }
 
-//    Copies the database of reserves from the assets folder to android's
-//    default database path (so other classes can later read it)
-    void createDataBase() {
-        this.getReadableDatabase();
-
+    //TODO revamp this getThingFromDB crap! use try catch and finally to close cursors properly (just like in getStrFromDB)
+    //TODO just do "getItem" and return different types
+    String getStrFromDB(String table, int id, String column)
+    {
+        //Use element ID to find integer data
+        Cursor cursor = reserveDataBase.rawQuery("SELECT "+column+" FROM "+table+" WHERE _id="+String.valueOf(id),null);
         try {
-            new CopyBytes(myContext.getAssets().open(DB_NAME), DB_PATH);
+            cursor.moveToNext();
+            return cursor.getString(0);
         }
-        catch (IOException e){
-            Log.println(Log.ERROR, "errors", "Could not copy data");
+        catch (Exception e){
+            Log.println(Log.ERROR, "errors", "Could not load String from cursor");
+            return ""; //TODO add default failed return value
+        }
+        finally {
+            cursor.close();
         }
     }
 
@@ -82,15 +96,6 @@ class DBmanager extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
         return cursor.getInt(0);
-    }
-
-    String getStrFromDB(String table, int id, String column)
-    {
-        //Use element ID to find integer data
-        Cursor cursor = reserveDataBase.rawQuery("SELECT "+column+" FROM "+table+" WHERE _id="+String.valueOf(id),null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        return cursor.getString(0);
     }
 
     LatLng getLatLngFromDB(String table, int id)
@@ -119,6 +124,7 @@ class DBmanager extends SQLiteOpenHelper {
         return res;
     }
 
+    @SuppressWarnings("deprecation")
     Drawable getReserveImage(String table, int id, Context context)
     {
         openDataBase();
@@ -177,14 +183,10 @@ class DBmanager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-    }
+    public void onCreate(SQLiteDatabase sqLiteDatabase) { }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) { }
 
     String getImageColumnName()
     {
