@@ -32,11 +32,11 @@ class DBmanager extends SQLiteOpenHelper {
     //Name of the database that will be created
     private static String DB_NAME = "reserveDB.db";
 
-    //Path of the database that will be created
-    private static String DB_PATH = "/data/data/com.explorify.xplore.xplore/databases/"+DB_NAME;
-
     private SQLiteDatabase reserveDataBase;
     private final Context myContext;
+
+    //Path of the database that will be created
+    private String DB_PATH;
 
     //Column names of the 'reserveDB' database
     private final String NAME_COLUMN_NAME = "name";
@@ -53,6 +53,9 @@ class DBmanager extends SQLiteOpenHelper {
     DBmanager(Context context) {
         super(context,DB_NAME, null,1);
         this.myContext = context;
+
+        //Setting database path
+        DB_PATH = myContext.getString(R.string.databases_path)+DB_NAME;
 
         //Creating database
         reserveDataBase = getReadableDatabase();
