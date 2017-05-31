@@ -153,8 +153,15 @@ public class GoogleSignInActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
                     //Start user registration
-                    RegisterActivity.newUser = firebaseUser;
                     Intent i = new Intent(GoogleSignInActivity.this, RegisterActivity.class);
+                    i.putExtra("userId", firebaseUser.getUid());
+                    i.putExtra("fullName", firebaseUser.getDisplayName());
+                    i.putExtra("email", firebaseUser.getEmail());
+
+                    if (firebaseUser.getPhotoUrl() != null)
+                        i.putExtra("photoUrl", firebaseUser.getPhotoUrl().toString());
+                    else
+                        i.putExtra("photoUrl", "");
                     startActivityForResult(i, RC_REGISTER);
                 }
                 else {

@@ -11,7 +11,7 @@
 
         <Button
             android:text="A"
-            android:id="@+id/libButton"
+            android:id="@+id/headerButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lib_button_height"
             android:textAppearance="@style/TextAppearance.AppCompat"
@@ -30,7 +30,7 @@
             android:textStyle="normal|bold"/>
 
         <TextView
-            android:id="@+id/lib_description"
+            android:id="@+id/descriptionTextView"
             android:text="description"
             android:layout_marginTop="10dp"
             android:paddingLeft="@dimen/lib_text_padding"
@@ -46,7 +46,7 @@
             android:layout_marginBottom="5dp"/>
 
         <TextView
-            android:id="@+id/lib_fauna_header"
+            android:id="@+id/faunaHeaderTextView"
             android:text="@string/lib_fauna_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <com.explorify.xplore.xplore.ExpandableTextView
-            android:id="@+id/lib_fauna"
+            android:id="@+id/faunaTextView"
             android:text="fauna"
             android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
@@ -71,7 +71,7 @@
             android:lineSpacingExtra="3sp"/>
 
         <TextView
-            android:id="@+id/lib_flora_header"
+            android:id="@+id/floraHeaderTextView"
             android:text="@string/lib_flora_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <com.explorify.xplore.xplore.ExpandableTextView
-            android:id="@+id/lib_flora"
+            android:id="@+id/floraTextView"
             android:text="animals"
             android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
@@ -96,7 +96,7 @@
             android:lineSpacingExtra="3sp"/>
 
         <TextView
-            android:id="@+id/lib_equipment_header"
+            android:id="@+id/equipmentHeaderTextView"
             android:text="@string/lib_equip_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <TextView
-            android:id="@+id/lib_equipment"
+            android:id="@+id/equipmentTextView"
             android:text="equipment"
             android:layout_marginTop="5dp"
             android:paddingLeft="@dimen/lib_text_padding"
@@ -120,7 +120,7 @@
             android:lineSpacingExtra="3sp"/>
 
         <TextView
-            android:id="@+id/lib_tag_header"
+            android:id="@+id/tagsHeaderTextView"
             android:text="@string/lib_tags_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <com.explorify.xplore.xplore.ExpandableTextView
-            android:id="@+id/lib_tags"
+            android:id="@+id/tagsTextView"
             android:text="tags"
             android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="5dp"
@@ -145,7 +145,7 @@
             android:lineSpacingExtra="3sp"/>
 
         <TextView
-            android:id="@+id/lib_difficulty_header"
+            android:id="@+id/difficultyHeaderTextView"
             android:text="@string/lib_difficulty_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -156,9 +156,9 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <RatingBar
+            android:id="@+id/difficultyRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lib_difficutyBar"
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:numStars="10"
             android:stepSize="1"
@@ -167,7 +167,7 @@
             android:layout_marginTop="2dp" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/showOnMapButton"
+            android:id="@+id/showonmapButton"
             android:text="@string/show_on_map"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"

@@ -40,7 +40,6 @@ public class General {
     public static int accountStatus = 0;
     //=================
 
-    public static DBmanager dbManager;
     public static int appWidth, appHeight;
     public static String currentUserId;
 
@@ -50,32 +49,6 @@ public class General {
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         appWidth = dm.widthPixels;
         appHeight = dm.heightPixels;
-    }
-
-    public static void InitDBManager(Context context) {
-        dbManager = new DBmanager(context);
-    }
-
-    public static void populateButtonList(ArrayList<ReserveButton> reserveButtons, Context context)
-    {
-        String table = getCurrentTable(context);
-        Resources resources = context.getResources();
-
-        try { dbManager.openDataBase(); }
-        catch (SQLException sqle){ throw sqle; }
-
-        reserveButtons.clear();
-
-        //Getting each resID separately
-        //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
-        for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
-        {
-            int resid = resources.getIdentifier(dbManager.getStrFromDB(table, i, dbManager.getImageColumnName()),"drawable","com.explorify.xplore.xplore");
-            reserveButtons.add (
-                    new ReserveButton(i, ContextCompat.getDrawable(context, resid),
-                            dbManager.getStrFromDB(table, i, dbManager.getNameColumnName()))
-            );
-        }
     }
 
     public static String getCurrentTable(Context context)
@@ -88,8 +61,8 @@ public class General {
 
     public static void OpenLibFragment(int resId, Context context)
     {
-        Intent intent= new Intent(context,LibFragment.class);
-        intent.putExtra("chosen_element",resId);
+        Intent intent= new Intent(context, LibFragment.class);
+        intent.putExtra("chosen_element", resId);
         context.startActivity(intent);
     }
 

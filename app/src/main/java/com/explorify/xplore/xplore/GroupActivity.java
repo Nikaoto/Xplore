@@ -2,6 +2,7 @@ package com.explorify.xplore.xplore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -250,9 +251,15 @@ public class GroupActivity extends Activity {
 
     private void ApplyReserveData()
     {
+        //TODO change this so it doesn't open database again and again
+        Context context = GroupActivity.this;
+        //TODO convert this to java and skip the other crap arguments
+        DBManager dbManager = new DBManager(context, "reserveDB.db", General.getCurrentTable(context));
+        dbManager.openDataBase();
+
         reserveButton.setText(reserveName);
-        reserveButton.setBackground(General.dbManager.getReserveImage(
-                General.getCurrentTable(GroupActivity.this),reserveID, this)
+        reserveButton.setBackground(dbManager.getImage(
+                reserveID, this, General.getCurrentTable(context))
         );
     }
 

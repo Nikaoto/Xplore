@@ -4,4 +4,5 @@
     <integer name="pic_big_margin">1</integer>
     <integer name="pic_small_angle">15</integer>
     <integer name="pic_small_margin">3</integer>
+    <integer name="limit_age">16</integer>
 </resources>

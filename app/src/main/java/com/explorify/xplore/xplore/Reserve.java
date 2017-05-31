@@ -15,108 +15,121 @@ public class Reserve {
     private LatLng location;
     private Drawable drawable;
 
-    public Reserve()
-    {
-        //TODO make this an actual focken constructor :^)
-    }
-
-    public Drawable getDrawable() {
-        return drawable;
-    }
-
-    public void setDrawable(Drawable drawable) {
+    //Primary Constructor
+    Reserve(int id, int difficulty, String name, String description, String flora, String fauna,
+            String equipment, String extratags, LatLng location, Drawable drawable) {
+        this.id = id;
+        this.difficulty = difficulty;
+        this.name = name;
+        this.description = description;
+        this.flora = flora;
+        this.fauna = fauna;
+        this.equipment = equipment;
+        this.extratags = extratags;
+        this.location = location;
         this.drawable = drawable;
     }
 
-    public int getId()
+    //Secondary Constructor
+    Reserve(){ }
+
+    Drawable getDrawable() {
+        return drawable;
+    }
+
+    void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
+    }
+
+    int getId()
     {
         return id;
     }
 
-    public int getDifficulty()
+    int getDifficulty()
     {
         return difficulty;
     }
 
-    public String getName()
+    String getName()
     {
         return name;
     }
 
-    public String getDescription()
+    String getDescription()
     {
         return description;
     }
 
-    public String getEquipment()
+    String getEquipment()
     {
         return equipment;
     }
 
-    public String getFlora()
+    String getFlora()
     {
         return flora;
     }
 
-    public String getFauna()
+    String getFauna()
     {
         return fauna;
     }
 
-    public String getExtratags()
+    String getExtratags()
     {
         return extratags;
     }
 
-    public String getImage() { return image; }
+    String getImage() { return image; }
 
-    public LatLng getLocation() {
+    LatLng getLocation() {
         return location;
     }
 
-    public void setId(int _id)
+    void setId(int _id)
     {
         this.id = _id;
     }
 
-    public void setDifficulty(int _difficulty)
+    void setDifficulty(int _difficulty)
     {
         this.difficulty = _difficulty;
     }
 
-    public void setName(String _name)
+    void setName(String _name)
     {
         this.name = _name;
     }
 
-    public void setDescription(String _description)
+    void setDescription(String _description)
     {
         this.description = _description;
     }
 
-    public void setEquipment(String _equipment)
+    void setEquipment(String _equipment)
     {
         this.equipment = _equipment;
     }
 
-    public void setFlora(String _flora)
+    void setFlora(String _flora)
     {
         this.flora = _flora;
     }
 
-    public void setFauna(String _fauna)
+    void setFauna(String _fauna)
     {
         this.fauna = _fauna;
     }
 
-    public void setExtratags(String _extratags)
+    void setExtratags(String _extratags)
     {
         this.extratags = _extratags;
     }
 
-    public void setImage(String _image) { this.image  = _image; }
+    void setImage(String _image) { this.image  = _image; }
 
-    public void setLocation(LatLng location) {
+    void setLocation(LatLng location) {
         this.location = location;
     }
 }

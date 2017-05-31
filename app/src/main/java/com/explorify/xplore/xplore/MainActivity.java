@@ -38,9 +38,10 @@ public class MainActivity extends AppCompatActivity
     public static FragmentManager fm;
     public static int[] navMenuItems = new int[6];
     public static int previousNavItemId;
-    public static NavigationView navigationView;
     public static Menu menu;
     public static final int RESERVE_NUM = 9;
+
+    public static NavigationView navigationView;
 
 
     private SharedPreferences.Editor prefEditor;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         InitPreferences();
         General.InitDisplayMetrics(this);
-        General.InitDBManager(this);
         InitNavMenuItems();
         setContentView(R.layout.activity_main);
 

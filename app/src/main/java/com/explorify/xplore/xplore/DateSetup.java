@@ -11,94 +11,93 @@ public class DateSetup {
     boolean confirmedS, confirmedE;
     long start, end; //full ints
 
-    public DateSetup() {
-    }
+    DateSetup() { }
 
-    public long getStart() {
+    long getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    void setStart(long start) {
         this.start = start;
     }
 
-    public long getEnd() {
+    long getEnd() {
         return end;
     }
 
-    public void setEnd(long end) {
+    void setEnd(long end) {
         this.end = end;
     }
 
-    public boolean isChoice() {
+    boolean isChoice() {
         return choice;
     }
 
-    public void setChoice(boolean choice) {
+    void setChoice(boolean choice) {
         this.choice = choice;
     }
 
-    public int getsYear() {
+    int getsYear() {
         return sYear;
     }
 
-    public void setsYear(int sYear) {
+    void setsYear(int sYear) {
         this.sYear = sYear;
     }
 
-    public int getsMonth() {
+    int getsMonth() {
         return sMonth;
     }
 
-    public void setsMonth(int sMonth) {
+    void setsMonth(int sMonth) {
         this.sMonth = sMonth;
     }
 
-    public int getsDay() {
+    int getsDay() {
         return sDay;
     }
 
-    public void setsDay(int sDay) {
+    void setsDay(int sDay) {
         this.sDay = sDay;
     }
 
-    public int geteYear() {
+    int geteYear() {
         return eYear;
     }
 
-    public void seteYear(int eYear) {
+    void seteYear(int eYear) {
         this.eYear = eYear;
     }
 
-    public int geteMonth() {
+    int geteMonth() {
         return eMonth;
     }
 
-    public void seteMonth(int eMonth) {
+    void seteMonth(int eMonth) {
         this.eMonth = eMonth;
     }
 
-    public int geteDay() {
+    int geteDay() {
         return eDay;
     }
 
-    public void seteDay(int eDay) {
+    void seteDay(int eDay) {
         this.eDay = eDay;
     }
 
-    public boolean isConfirmedS() {
+    boolean isConfirmedS() {
         return confirmedS;
     }
 
-    public void setConfirmedS(boolean confirmedS) {
+    void setConfirmedS(boolean confirmedS) {
         this.confirmedS = confirmedS;
     }
 
-    public boolean isConfirmedE() {
+    boolean isConfirmedE() {
         return confirmedE;
     }
 
-    public void setConfirmedE(boolean confirmedE) {
+    void setConfirmedE(boolean confirmedE) {
         this.confirmedE = confirmedE;
     }
 }

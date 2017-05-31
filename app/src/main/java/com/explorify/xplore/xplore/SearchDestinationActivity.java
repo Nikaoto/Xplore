@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -35,6 +38,9 @@ public class SearchDestinationActivity extends Activity {
     private ArrayList<ReserveButton> answerButtons = new ArrayList<>();
     private ArrayList<ReserveButton> reserveButtons = new ArrayList<>();
 
+    DBManager dbManager;
+    String table;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,11 @@ public class SearchDestinationActivity extends Activity {
 
         //setting up the listview
         list = (ListView) findViewById(R.id.resultslist);
+
+        //TODO convert this to java and skip the other crap arguments
+        dbManager = new DBManager(this, "reserveDB.db", General.getCurrentTable(this));
+        dbManager.openDataBase();
+        table = General.getCurrentTable(this);
 
         //setting up searchbar
         searchBar = (EditText) findViewById(R.id.search_bar);
@@ -70,12 +81,34 @@ public class SearchDestinationActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        General.populateButtonList(reserveButtons, this);
+        populateButtonList(reserveButtons, this);
 
         if(first) {
             first = false;
             answerButtons.addAll(reserveButtons);
             populateListView();
+        }
+    }
+
+    //TODO after converting to kotlin, do this asynchronously
+    private void populateButtonList(ArrayList<ReserveButton> reserveButtons, Context context)
+    {
+        String table = General.getCurrentTable(context);
+        Resources resources = context.getResources();
+
+        reserveButtons.clear();
+
+        //Getting each resID separately
+        //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
+        for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
+        {
+            //TODO the "image" and "name" column names have to be changed, remove hardcode
+            //TODO omg change this
+            int resid = resources.getIdentifier(dbManager.getStr(i, "image", table),"drawable","com.explorify.xplore.xplore");
+            reserveButtons.add (
+                    new ReserveButton(i, ContextCompat.getDrawable(context, resid),
+                            dbManager.getStr(i, "name", table))
+            );
         }
     }
 
@@ -143,12 +176,9 @@ public class SearchDestinationActivity extends Activity {
 
     private void searchListItems(String query) {
         answerButtons.clear();
-        //Opening Database
-        try{ General.dbManager.openDataBase(); }
-        catch (SQLException sqle){ throw sqle; }
 
         //Searching Database
-        resultIDs = General.dbManager.getIdFromQuery(query,General.getCurrentTable(this));
+        resultIDs = dbManager.getIdFromQuery(query,table);
 
         //Returning Results
         if(resultIDs == null)

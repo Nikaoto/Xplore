@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.explorify.xplore.xplore.General.currentUserId;
-import static com.explorify.xplore.xplore.General.dbManager;
 
 /**
  * Created by nikao on 2/18/2017.
@@ -61,6 +60,9 @@ public class CreateGroupFragment extends Fragment {
     Button chooseButton, reserveButton, inviteButton, uninviteButton, doneButton, startDate, endDate;
     RadioGroup radioGroup;
     View myView;
+
+    DBManager dbManager;
+    String table;
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
 
@@ -102,6 +104,7 @@ public class CreateGroupFragment extends Fragment {
 
         context = getActivity();
 
+        //TODO move this stuff to onViewCreated
         dateSetup = new DateSetup();
 
         InitLayout();
@@ -127,9 +130,9 @@ public class CreateGroupFragment extends Fragment {
 
             ApplyDates();
 
-            if (chosenDestId != -1) {
-                reserveButton.setBackground(dbManager.getReserveImage(General.getCurrentTable(context), chosenDestId, context));
-                reserveButton.setText(dbManager.getStrFromDB(General.getCurrentTable(context), chosenDestId, dbManager.getNameColumnName()));
+            if (chosenDestId != -1) { //TODO remove hardcodes here and table arguments
+                reserveButton.setBackground(dbManager.getImage(chosenDestId, context, table));
+                reserveButton.setText(dbManager.getStr(chosenDestId, "name", table));
             }
         }
     }
@@ -405,5 +408,15 @@ public class CreateGroupFragment extends Fragment {
         }
         else
             return true;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //TODO convert this to java and skip the other crap arguments
+        dbManager = new DBManager(getActivity(), "reserveDB.db", General.getCurrentTable(getActivity()));
+        dbManager.openDataBase();
+        table = General.getCurrentTable(getActivity());
     }
 }

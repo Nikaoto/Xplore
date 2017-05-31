@@ -31,8 +31,6 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-import static com.explorify.xplore.xplore.General.dbManager;
-
 /**
  * Created by nikao on 2/8/2017.
  */
@@ -166,8 +164,14 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         });
     }
 
+    //TODO when user is searching for groups and presses back, getActivity() will throw NPE. Fix that ONLY after converting this to kotlin
     private void SortLeaderInfo()
     {
+        //TODO convert this to java and skip the other crap arguments
+        final String table = General.getCurrentTable(getActivity());
+        final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", table);
+        dbManager.openDataBase();
+
         Query query = DBref.child("users").orderByKey(); //TODO user search
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -179,6 +183,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                         {
                             if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) //checking if leader
                             {
+                                //TODO change database calls
                                 //loading leader profile picture url
                                 tempUserImageUrl = userSnapshot.getValue(User.class)
                                         .getProfile_picture_url();
@@ -188,16 +193,14 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 //creating the group button
                                 GroupButton tempGroupButton = new GroupButton(
                                         group.getGroup_id(), //Group ID
-                                        dbManager.getReserveImage( //Reserve Image
-                                                General.getCurrentTable(getActivity()),
-                                                tempDestId,getActivity()
+                                        dbManager.getImage( //Reserve Image
+                                                tempDestId, getActivity(), table
                                         ),
                                         tempUserImageUrl, //Leader Image URL
                                         tempDestId, //Reserve ID
-                                        dbManager.getStrFromDB( //Reserve Name
-                                                General.getCurrentTable(getActivity()),
+                                        dbManager.getStr( //Reserve Name
                                                 tempDestId,
-                                                dbManager.getNameColumnName()
+                                                "name", table //TODO remove hardcode
                                         ),
                                         group.getMember_ids().get(0) //Leader ID
                                 );
