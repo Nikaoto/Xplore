@@ -34,7 +34,7 @@
                 android:text="First Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/fnameEditText"
+                android:layout_alignBaseline="@+id/fnameEditText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
                 android:layout_marginTop="23dp"/>
@@ -68,7 +68,7 @@
                 android:text="Last Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="@dimen/reg_label_size"
-                android:layout_alignBaseline="@id/lnameEditText"
+                android:layout_alignBaseline="@+id/lnameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -101,7 +101,7 @@
                 android:text="Email"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
-                android:layout_alignBaseline="@id/emailEditText"
+                android:layout_alignBaseline="@+id/emailEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -168,7 +168,7 @@
                 android:text="Birth Date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
-                android:layout_alignBaseline="@id/bdateTextView"
+                android:layout_alignBaseline="@+id/bdateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
