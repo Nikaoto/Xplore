@@ -38,15 +38,16 @@ Here's a small snippet of code from *build.gradle* which lists every library use
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    compile 'com.google.maps.android:android-maps-utils:0.4'
+    compile 'com.google.firebase:firebase-auth:10.2.0'
     compile 'com.google.firebase:firebase-database:10.0.1'
-    compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'jp.wasabeef:picasso-transformations:2.1.0'
     testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 	}
 
 	apply plugin: 'com.google.gms.google-services'
