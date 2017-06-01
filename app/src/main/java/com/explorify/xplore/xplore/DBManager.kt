@@ -26,7 +26,7 @@ import java.util.HashMap
  */
 
 internal class DBManager(private val mContext: Context, private val DB_NAME: String = "reserveDB.db",
-                         private val TABLE: String = General.getCurrentTable(mContext))
+                         private val TABLE: String = General.DB_TABLE)
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
     //Path of the database that will be created

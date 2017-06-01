@@ -12,11 +12,11 @@
     <string name="profile">Профиль</string>
     <string name="about">Это приложение только демо-версия Xplore. Любой элемент приложения может
         быть изменен.\n\nИнформация и ресурсы о парках и заповедниках получена из
-        http://apa.gov.ge/. Они принадлежат их законныx владельцаx.\n\nПрограмма создана для
-        чемпионат "Золотой Баит".
+        http://apa.gov.ge/. Они принадлежат их законныx владельцаx.
     </string>
     <string name="credits">
-        Explorify: \n\t\tНика Отиашвили\n\t\tCулхан Патаридзе \n\t\tГурам Шаматава
+        The Xplore Team: \n\t\tНиколоз Отиашвили\n\t\tТио Габуния\n\t\tАчико Церетели\n\t\t
+        Сандро Мосашвили\n\t\tВека Какабадзе
     </string>
     <string name="search_hint">Искать Метки</string>
     <string name="search_groups_hint">Поиск Группы</string>

@@ -99,7 +99,7 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
         //res.updateConfiguration(conf, dm);
         MainActivity.RefreshApplication(getActivity());
         DisableChosenLanguageButton();
-        MainActivity.manageBackStack();
+        MainActivity.manageBackStack(getFragmentManager());
         //getActivity().recreate();
     }
 

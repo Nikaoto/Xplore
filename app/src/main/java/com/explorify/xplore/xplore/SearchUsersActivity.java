@@ -65,7 +65,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_layout);
+        setContentView(R.layout.search_layout);
 
         listView = (ListView) findViewById(R.id.resultslist);
         progressBar = (ProgressBar) findViewById(R.id.searchProgressBar);

@@ -12,11 +12,11 @@
     <string name="profile">Profile</string>
     <string name="about">This app is a demo version of Xplore. Any element of this application is
         subject to change.\n\nThe information and resources of parks and reserves is sourced from
-        http://apa.gov.ge/ and they belong to their rightful owners.\n\nCreated by Nika Otiashvili
-        with the help of his team, Explorify, for The Golden Byte challenge.
+        http://apa.gov.ge/ and they belong to their rightful owners.
     </string>
     <string name="credits">
-        Explorify: \n\t\tNika Otiashvili\n\t\tSulkhan Pataridze\n\t\tGuram Shamatava
+        The Xplore Team: \n\t\tNikoloz Otiashvili\n\t\tTio Gabunia\n\t\tAchiko Tsereteli\n\t\t
+        Sandro Mosashvili\n\t\tBeka Kakabadze
     </string>
     <string name="search_hint">Search Tags</string>
     <string name="search_groups_hint">Search Groups</string>

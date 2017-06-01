@@ -42,6 +42,7 @@ public class General {
 
     public static int appWidth, appHeight;
     public static String currentUserId;
+    public static String DB_TABLE; //The language table to use from database
 
     public static void InitDisplayMetrics(Activity activity)
     {
@@ -51,12 +52,12 @@ public class General {
         appHeight = dm.heightPixels;
     }
 
-    public static String getCurrentTable(Context context)
+    public static void setCurrentTable(Context context)
     {
         if(context != null)
-            return context.getSharedPreferences("lang",0).getString("lang","en");
+            DB_TABLE = context.getSharedPreferences("lang",0).getString("lang","en");
         else
-            return "en";
+            DB_TABLE = "en";
     }
 
     public static void OpenLibFragment(int resId, Context context)
@@ -190,7 +191,7 @@ public class General {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                MainActivity.manageBackStack();
+                MainActivity.manageBackStack(activity.getFragmentManager());
             }
         });
 
@@ -218,7 +219,7 @@ public class General {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                MainActivity.manageBackStack();
+                MainActivity.manageBackStack(activity.getFragmentManager());
             }
         });
     }

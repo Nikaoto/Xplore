@@ -5,10 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,20 +37,18 @@ public class SearchDestinationActivity extends Activity {
     private ArrayList<ReserveButton> reserveButtons = new ArrayList<>();
 
     DBManager dbManager;
-    String table;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_layout);
+        setContentView(R.layout.search_layout);
 
         //setting up the listview
         list = (ListView) findViewById(R.id.resultslist);
 
         //TODO convert this to java and skip the other crap arguments
-        dbManager = new DBManager(this, "reserveDB.db", General.getCurrentTable(this));
+        dbManager = new DBManager(this, "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
-        table = General.getCurrentTable(this);
 
         //setting up searchbar
         searchBar = (EditText) findViewById(R.id.search_bar);
@@ -93,7 +89,7 @@ public class SearchDestinationActivity extends Activity {
     //TODO after converting to kotlin, do this asynchronously
     private void populateButtonList(ArrayList<ReserveButton> reserveButtons, Context context)
     {
-        String table = General.getCurrentTable(context);
+        String table = General.DB_TABLE;
         Resources resources = context.getResources();
 
         reserveButtons.clear();
@@ -178,7 +174,7 @@ public class SearchDestinationActivity extends Activity {
         answerButtons.clear();
 
         //Searching Database
-        resultIDs = dbManager.getIdFromQuery(query,table);
+        resultIDs = dbManager.getIdFromQuery(query, General.DB_TABLE);
 
         //Returning Results
         if(resultIDs == null)
@@ -192,7 +188,6 @@ public class SearchDestinationActivity extends Activity {
                 answerButtons.add(index,reserveButtons.get(result));
                 index ++;
             }
-
             populateListView();
         }
     }

@@ -2,9 +2,7 @@ package com.explorify.xplore.xplore;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,42 +28,40 @@ import java.util.List;
 
 public class SecondFragment extends Fragment implements TextView.OnEditorActionListener {
 
-
-    public static boolean needRefresh = false;
-
-    private View myView;
+    private boolean needRefresh = false;
     private ListView list;
-    private EditText searchBar;
     private List<Integer> resultIDs = new ArrayList<>();
-    private Context context;
     private ArrayList<ReserveButton> answerButtons = new ArrayList<>();
     private ArrayList<ReserveButton> reserveButtons = new ArrayList<>();
     private DBManager dbManager;
+    private View myView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.first_layout, container, false);
+        myView = inflater.inflate(R.layout.search_layout, container, false);
+        return myView;
+    }
 
-        //TODO move this stuff to onViewCreated
-        context = getActivity();
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         //TODO convert this to java and skip the other crap arguments
-        dbManager = new DBManager(context, "reserveDB.db", General.getCurrentTable(context));
+        dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
         //setting up the listview
         list = (ListView) myView.findViewById(R.id.resultslist);
 
         //setting up searchbar
-        searchBar = (EditText) myView.findViewById(R.id.search_bar);
+        EditText searchBar = (EditText) myView.findViewById(R.id.search_bar);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_hint);
         searchBar.setSelectAllOnFocus(true);
         searchBar.setOnEditorActionListener(this);
 
-        return myView;
+        InitDataLists();
     }
 
     @Override
@@ -80,7 +76,7 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
     private void InitDataLists()
     {
         //Load all reserveButtons from DB
-        populateButtonList(reserveButtons, context);
+        populateButtonList(reserveButtons);
 
         //Clear answer list
         answerButtons.clear();
@@ -91,31 +87,15 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
         populateListView();
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //Check if language was changed and data needs refreshing
-        if (needRefresh) {
-            needRefresh = false;
-            InitDataLists();
-        }
-
-    }
-
     private void populateListView() {
-
         //creating list
         ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
         list.setAdapter(adapter);
     }
 
-
-
     private class MyListAdapter extends ArrayAdapter<ReserveButton> {
         public MyListAdapter() {
-            super(context, R.layout.list_item, answerButtons);
+            super(getActivity(), R.layout.list_item, answerButtons);
         }
 
         @NonNull
@@ -146,10 +126,10 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
     }
 
     //TODO after converting to kotlin, do this asynchronously
-    private void populateButtonList(ArrayList<ReserveButton> reserveButtons, Context context)
+    private void populateButtonList(ArrayList<ReserveButton> reserveButtons)
     {
-        String table = General.getCurrentTable(context);
-        Resources resources = context.getResources();
+        String table = General.DB_TABLE;
+        Resources resources = getActivity().getResources();
 
         reserveButtons.clear();
 
@@ -161,9 +141,20 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
             //TODO omg change this
             int resid = resources.getIdentifier(dbManager.getStr(i, "image", table),"drawable","com.explorify.xplore.xplore");
             reserveButtons.add (
-                    new ReserveButton(i, ContextCompat.getDrawable(context, resid),
+                    new ReserveButton(i, ContextCompat.getDrawable(getActivity(), resid),
                             dbManager.getStr(i, "name", table))
             );
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Check if language was changed and data needs refreshing
+        if (needRefresh) {
+            needRefresh = false;
+            InitDataLists();
         }
     }
 
@@ -173,12 +164,12 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
 
         //Searching Database
         //TODO do getCurrentTable once on a private String for fucks sake (or do it in DBManager once on init)
-        resultIDs = dbManager.getIdFromQuery(query, General.getCurrentTable(context));
+        resultIDs = dbManager.getIdFromQuery(query, General.DB_TABLE);
 
         //Returning Results
         if(resultIDs == null)
         {
-            Toast.makeText(context, R.string.search_no_results , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.search_no_results , Toast.LENGTH_SHORT).show();
         }
         else {
             int index = 0;
@@ -195,15 +186,7 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
     //hides the sotft keyboard
     public void HideKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager)
-                context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
     }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        InitDataLists();
-    }
-
 }

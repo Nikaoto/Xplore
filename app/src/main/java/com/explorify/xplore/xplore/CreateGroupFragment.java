@@ -60,9 +60,7 @@ public class CreateGroupFragment extends Fragment {
     Button chooseButton, reserveButton, inviteButton, uninviteButton, doneButton, startDate, endDate;
     RadioGroup radioGroup;
     View myView;
-
     DBManager dbManager;
-    String table;
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
 
@@ -131,8 +129,8 @@ public class CreateGroupFragment extends Fragment {
             ApplyDates();
 
             if (chosenDestId != -1) { //TODO remove hardcodes here and table arguments
-                reserveButton.setBackground(dbManager.getImage(chosenDestId, context, table));
-                reserveButton.setText(dbManager.getStr(chosenDestId, "name", table));
+                reserveButton.setBackground(dbManager.getImage(chosenDestId, context, General.DB_TABLE));
+                reserveButton.setText(dbManager.getStr(chosenDestId, "name", General.DB_TABLE));
             }
         }
     }
@@ -415,8 +413,7 @@ public class CreateGroupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //TODO convert this to java and skip the other crap arguments
-        dbManager = new DBManager(getActivity(), "reserveDB.db", General.getCurrentTable(getActivity()));
+        dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
-        table = General.getCurrentTable(getActivity());
     }
 }

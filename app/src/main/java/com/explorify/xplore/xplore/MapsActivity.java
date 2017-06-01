@@ -256,8 +256,8 @@ public class MapsActivity extends AppCompatActivity
             ThirdFragment.FIRST_TIME = false;
             if(reserveMarker != null)
                 reserveMarker.remove();
-            if (MainActivity.fm.getBackStackEntryCount()>0 && !showReserve) {
-                MainActivity.manageBackStack();
+            if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
+                MainActivity.manageBackStack(getFragmentManager());
             }
             showReserve = false;
         }

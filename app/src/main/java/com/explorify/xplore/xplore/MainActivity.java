@@ -1,5 +1,6 @@
 package com.explorify.xplore.xplore;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
 
-    public static FragmentManager fm;
+    private FragmentManager fm;
     public static int[] navMenuItems = new int[6];
     public static int previousNavItemId;
     public static Menu menu;
@@ -56,10 +57,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         InitPreferences();
-        General.InitDisplayMetrics(this);
+        General.setCurrentTable(this);
         InitNavMenuItems();
         setContentView(R.layout.activity_main);
-
         General.InitDisplayMetrics(this);
 
         //Set initial Fragment
@@ -174,8 +174,8 @@ public class MainActivity extends AppCompatActivity
         //No call for super(). Bug on API Level > 11.
     }
 
-    public static void manageBackStack() {
-        fm.popBackStack();
+    public static void manageBackStack(FragmentManager fm) { //TODO if this fails, turn back fm static
+         fm.popBackStack();
         if (fm.getBackStackEntryCount() > 1) {
             FragmentManager.BackStackEntry bse = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 2);
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (fm.getBackStackEntryCount() > 0) {
-            manageBackStack();
+            manageBackStack(this.getFragmentManager());
         } else {
             super.onBackPressed();
         }

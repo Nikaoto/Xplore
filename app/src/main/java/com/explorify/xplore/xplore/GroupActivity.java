@@ -254,12 +254,12 @@ public class GroupActivity extends Activity {
         //TODO change this so it doesn't open database again and again
         Context context = GroupActivity.this;
         //TODO convert this to java and skip the other crap arguments
-        DBManager dbManager = new DBManager(context, "reserveDB.db", General.getCurrentTable(context));
+        DBManager dbManager = new DBManager(context, "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
         reserveButton.setText(reserveName);
         reserveButton.setBackground(dbManager.getImage(
-                reserveID, this, General.getCurrentTable(context))
+                reserveID, this, General.DB_TABLE)
         );
     }
 

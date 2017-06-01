@@ -66,7 +66,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.first_layout, container, false);
+        myView = inflater.inflate(R.layout.search_layout, container, false);
 
         //setting up listview
         list = (ListView) myView.findViewById(R.id.resultslist);
@@ -168,8 +168,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private void SortLeaderInfo()
     {
         //TODO convert this to java and skip the other crap arguments
-        final String table = General.getCurrentTable(getActivity());
-        final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", table);
+        final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
         Query query = DBref.child("users").orderByKey(); //TODO user search
@@ -194,13 +193,13 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 GroupButton tempGroupButton = new GroupButton(
                                         group.getGroup_id(), //Group ID
                                         dbManager.getImage( //Reserve Image
-                                                tempDestId, getActivity(), table
+                                                tempDestId, getActivity(), General.DB_TABLE
                                         ),
                                         tempUserImageUrl, //Leader Image URL
                                         tempDestId, //Reserve ID
                                         dbManager.getStr( //Reserve Name
                                                 tempDestId,
-                                                "name", table //TODO remove hardcode
+                                                "name", General.DB_TABLE //TODO remove hardcode
                                         ),
                                         group.getMember_ids().get(0) //Leader ID
                                 );
