@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -36,15 +38,14 @@ public class MainActivity extends AppCompatActivity
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
 
-    private FragmentManager fm;
     public static int[] navMenuItems = new int[6];
     public static int previousNavItemId;
     public static Menu menu;
     public static final int RESERVE_NUM = 9;
 
-    public static NavigationView navigationView;
-
-
+    private int backstackEntryCount = 1;
+    private NavigationView navigationView;
+    private FragmentManager fm;
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences prefs;
     /**
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        InitPreferences();
+        InitPreferences(this);
         General.setCurrentTable(this);
         InitNavMenuItems();
         setContentView(R.layout.activity_main);
@@ -65,6 +66,32 @@ public class MainActivity extends AppCompatActivity
         //Set initial Fragment
         fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, new FifthFragment()).commit();
+
+        //Check for back presses and manage backstack automatically
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int entryCount = fm.getBackStackEntryCount();
+                //if entry removed (back pressed, fragment closed)
+                if(backstackEntryCount > entryCount){
+                    Log.println(Log.INFO, "backstack", "Back was pressed");
+                    if (entryCount > 0) {
+                        Log.println(Log.INFO, "backstack", "entrycount > 1");
+                        FragmentManager.BackStackEntry lastEntry = fm.getBackStackEntryAt(entryCount - 1);
+                        try {
+                            previousNavItemId = navMenuItems[Integer.parseInt(lastEntry.getName())];
+                        } catch (NumberFormatException | NullPointerException n) {
+                            previousNavItemId = R.id.nav_fifth_layout;
+                        }
+                    } else {
+                        //if the BSE count is 0 that means only 1 fragment was selected
+                        previousNavItemId = R.id.nav_fifth_layout;
+                    }
+                    navigationView.setCheckedItem(previousNavItemId);
+                }
+                backstackEntryCount = entryCount;
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_fifth_layout);
@@ -124,25 +151,8 @@ public class MainActivity extends AppCompatActivity
         navMenuItems[5] = R.id.nav_fifth_layout;
     }
 
-    public static void RefreshApplication(Context context) { //TODO COMMENT AFTER adding recreate() to optionsFragment
-        //Refresh nav items
-        navigationView.getMenu().getItem(0).setTitle(R.string.nav_profile_title);
-        navigationView.getMenu().getItem(1).setTitle(R.string.nav_lib_title);
-        navigationView.getMenu().getItem(2).setTitle(R.string.nav_map_title);
-        navigationView.getMenu().getItem(3).setTitle(R.string.nav_party_title);
-        navigationView.getMenu().getItem(4).setTitle(R.string.nav_about_title);
-
-        //Refresh navigation header
-        TextView tw = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_app_description);
-        tw.setText(R.string.nav_description);
-
-        //Refresh options button
-        MenuItem mi = menu.findItem(R.id.action_settings);
-        mi.setTitle(R.string.action_settings);
-    }
-
     //Initializes prefrences
-    private void InitPreferences() {
+    private void InitPreferences(Context context) {
         prefs = getSharedPreferences("lang", 0);
 
         //if the pref is not found (means it's the first bootup)
@@ -165,8 +175,17 @@ public class MainActivity extends AppCompatActivity
         else {
             //User gets here after switching language for the first time ever
             //Setting the locale to match prefrences
-            ChangeLocale(prefs.getString("lang", ENGLISH_LANG_CODE));
+            ChangeLocale(prefs.getString("lang", ENGLISH_LANG_CODE), context);
         }
+    }
+
+    private void ChangeLocale(String language_code, Context context) { //TODO change this later
+        Resources res = MainActivity.this.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(language_code.toLowerCase());
+        res.updateConfiguration(conf, dm);
+        General.setCurrentTable(context);
     }
 
     @Override
@@ -174,31 +193,13 @@ public class MainActivity extends AppCompatActivity
         //No call for super(). Bug on API Level > 11.
     }
 
-    public static void manageBackStack(FragmentManager fm) { //TODO if this fails, turn back fm static
-         fm.popBackStack();
-        if (fm.getBackStackEntryCount() > 1) {
-            FragmentManager.BackStackEntry bse = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 2);
-
-            try {
-                previousNavItemId = navMenuItems[Integer.parseInt(bse.getName())];
-            } catch (NumberFormatException | NullPointerException n) {
-                previousNavItemId = R.id.nav_fifth_layout;
-            }
-        } else {
-            //BSE = BackStackEntry
-            //if the BSE count is 1 that means the app was just launched, so I just highlight the start page
-            previousNavItemId = R.id.nav_fifth_layout;
-        }
-        navigationView.setCheckedItem(previousNavItemId);
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (fm.getBackStackEntryCount() > 0) {
-            manageBackStack(this.getFragmentManager());
+        /*} else if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();*/
         } else {
             super.onBackPressed();
         }
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         HideKeyboard();
         if (id == R.id.action_settings) {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new OptionsFragment()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new OptionsFragment()).addToBackStack(null).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -253,15 +254,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void ChangeLocale(String language_code) { //TODO change this later
-        Resources res = MainActivity.this.getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = new Locale(language_code.toLowerCase());
-        res.updateConfiguration(conf, dm);
-    }
-
-    //hides the sotft keyboard
+    //Hides the sotft keyboard
     public void HideKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);

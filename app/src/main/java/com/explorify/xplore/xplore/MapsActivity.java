@@ -257,7 +257,7 @@ public class MapsActivity extends AppCompatActivity
             if(reserveMarker != null)
                 reserveMarker.remove();
             if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
-                MainActivity.manageBackStack(getFragmentManager());
+                getFragmentManager().popBackStack();
             }
             showReserve = false;
         }

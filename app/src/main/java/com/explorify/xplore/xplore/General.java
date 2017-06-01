@@ -190,8 +190,8 @@ public class General {
         //Goes back if dismissed
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onDismiss() {
-                MainActivity.manageBackStack(activity.getFragmentManager());
+            public void onDismiss() { //TODO change group fragment, this makes it back when dismissed
+                activity.getFragmentManager().popBackStack();
             }
         });
 
@@ -219,7 +219,6 @@ public class General {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                MainActivity.manageBackStack(activity.getFragmentManager());
             }
         });
     }

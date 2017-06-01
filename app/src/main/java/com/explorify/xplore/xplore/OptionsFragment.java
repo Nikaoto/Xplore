@@ -2,6 +2,7 @@ package com.explorify.xplore.xplore;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -42,12 +43,12 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
         return myView;
     }
 
-    // change this into a list after adding 5+ languages
+    //TODO change this to list
     public void DisableChosenLanguageButton()
     {
         String sharedPrefs = getActivity().getSharedPreferences("lang",0).getString("lang","en");
 
-        if(sharedPrefs.equals("ka"))
+        if(sharedPrefs.equals("ka")) //TODO replace this with switch block
         {
             GeoButton.setBackgroundResource(R.drawable.flag_image_border);
 
@@ -89,23 +90,21 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
         Locale locale = new Locale(preferences.getString("lang",MainActivity.ENGLISH_LANG_CODE));
         Locale.setDefault(locale);
 
-       /* if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //TODO enable this when out of alpha
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //TODO enable this when out of alpha
             setSystemLocale(config, locale);
+        } else {
+            setSystemLocaleLegacy(config, locale, res, dm);
         }
-        else {*/
-            setSystemLocaleLegacy(config,locale, res, dm);
-        //}
-        //conf.locale = new Locale(preferences.getString("lang", MainActivity.ENGLISH_LANG_CODE));
-        //res.updateConfiguration(conf, dm);
-        MainActivity.RefreshApplication(getActivity());
+
         DisableChosenLanguageButton();
-        MainActivity.manageBackStack(getFragmentManager());
-        //getActivity().recreate();
+        getFragmentManager().popBackStack();
+        getActivity().recreate();
     }
+
 
     @SuppressWarnings("deprecation")
     public void setSystemLocaleLegacy(Configuration c, Locale l, Resources r, DisplayMetrics d){
-        c.locale = l; //TODO createConfigurationContext after API 16 gets ooooold
+        c.locale = l;
         r.updateConfiguration(c,d);
     }
 
