@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,8 @@ import java.util.List;
 
 public class SearchDestinationActivity extends Activity {
 
+    private static final int CHOSEN_DEST_DEFAULT_VAL = -1;
+    private int chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
     private boolean first = true;
     private ListView list;
     private EditText searchBar;
@@ -98,18 +101,16 @@ public class SearchDestinationActivity extends Activity {
         //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
         for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
         {
-            //TODO the "image" and "name" column names have to be changed, remove hardcode
-            //TODO omg change this
-            int resid = resources.getIdentifier(dbManager.getStr(i, "image", table),"drawable","com.explorify.xplore.xplore");
+            //TODO change this with convertFromDrawableNameToId
+            int resid = resources.getIdentifier(dbManager.getStr(i, DBManager.ColumnNames.getIMAGE(), table),"drawable","com.explorify.xplore.xplore");
             reserveButtons.add (
                     new ReserveButton(i, ContextCompat.getDrawable(context, resid),
-                            dbManager.getStr(i, "name", table))
+                            dbManager.getStr(i, DBManager.ColumnNames.getNAME(), table))
             );
         }
     }
 
     private void populateListView() {
-
         //creating list
         ArrayAdapter<ReserveButton> adapter = new MyListAdapter();
         list.setAdapter(adapter);
@@ -137,14 +138,14 @@ public class SearchDestinationActivity extends Activity {
             butt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    HideKeyboard();
+                    General.HideKeyboard(SearchDestinationActivity.this);
                     AlertDialog.Builder builder = new AlertDialog.Builder(SearchDestinationActivity.this);
                     builder.setMessage(getResources().getString(R.string.question_choose_reserve)+" "+currentButton.getName()+"?")
                             .setTitle(currentButton.getName())
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    CreateGroupFragment.chosenDestId = currentButton.getId();
+                                    chosenDestId = currentButton.getId();
                                     onBackPressed();
                                 }
                             })
@@ -160,14 +161,16 @@ public class SearchDestinationActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-    }
+        Intent resultIntent = new Intent();
+        if(chosenDestId == CHOSEN_DEST_DEFAULT_VAL){
+            setResult(Activity.RESULT_CANCELED);
+        }
+        else {
+            resultIntent.putExtra("chosen_destination_id", chosenDestId);
+            setResult(Activity.RESULT_OK, resultIntent);
+        }
+        finish();
 
-    //hides the sotft keyboard
-    public void HideKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     private void searchListItems(String query) {

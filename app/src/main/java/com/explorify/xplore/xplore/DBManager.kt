@@ -1,8 +1,6 @@
 package com.explorify.xplore.xplore
 
 import android.content.Context
-import android.content.res.Resources
-import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -12,14 +10,8 @@ import android.util.Log
 
 import com.google.android.gms.maps.model.LatLng
 
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.util.ArrayList
-import java.util.HashMap
 
 /**
  * Created by nikao on 1/15/2017.
@@ -32,21 +24,21 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
     //Path of the database that will be created
     private val DB_PATH = "/data/data/${mContext.packageName}/databases/$DB_NAME"
 
-    //Column names of the database
-    private val ID_COLUMN_NAME = "id"
-    private val NAME_COLUMN_NAME = "name"
-    private val DESCRIPTION_COLUMN_NAME = "description"
-    private val DIFFICULTY_COLUMN_NAME = "difficulty"
-    private val FLORA_COLUMN_NAME = "flora"
-    private val FAUNA_COLUMN_NAME = "fauna"
-    private val EQUIPMENT_COLUMN_NAME = "equipment"
-    private val EXTRATAGS_COLUMN_NAME = "extratags"
-    private val IMAGE_COLUMN_NAME = "image"
-    private val LATITUDE_COLUMN_NAME = "latitude"
-    private val LONGITUDE_COLUMN_NAME = "longitude"
+    companion object ColumnNames {
+        val ID = "id"
+        val NAME = "name"
+        val DESCRIPTION = "description"
+        val DIFFICULTY = "difficulty"
+        val FLORA = "flora"
+        val FAUNA = "fauna"
+        val EQUIPMENT = "equipment"
+        val EXTRATAGS = "extratags"
+        val IMAGE = "image"
+        val LATITUDE = "latitude"
+        val LONGITUDE = "longitude"
+    }
 
     private val rowCount: Int
-
     private var DataBase: SQLiteDatabase
 
     init {
@@ -67,7 +59,7 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
     fun SQLiteDatabase.doQuery(q: String) = this.rawQuery(q,null)
 
     fun initRowCount(table: String = TABLE): Int {
-        val cursor = DataBase.doQuery("SELECT $ID_COLUMN_NAME FROM $table")
+        val cursor = DataBase.doQuery("SELECT $ID FROM $table")
         try{
             cursor.moveToLast()
             return cursor.getInt(0)
@@ -85,22 +77,22 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
     //Assembles and returns Reserve object from Database by Id
     fun getReserve(id: Int, context: Context = mContext, table: String = TABLE) =
             Reserve(
-                id,                                         //Id
-                getInt(id, DIFFICULTY_COLUMN_NAME, table),  //Difficulty
-                getStr(id, NAME_COLUMN_NAME, table),        //Name
-                getStr(id, DESCRIPTION_COLUMN_NAME, table), //Description
-                getStr(id, FLORA_COLUMN_NAME, table),       //Flora
-                getStr(id, FAUNA_COLUMN_NAME, table),       //Fauna
-                getStr(id, EQUIPMENT_COLUMN_NAME, table),   //Equipment
-                getStr(id, EXTRATAGS_COLUMN_NAME, table),   //Extratags
-                getLatLng(id, table),                       //Location
-                getImage(id, context, table)                //Drawable
+                id,                             //Id
+                getInt(id, DIFFICULTY, table),  //Difficulty
+                getStr(id, NAME, table),        //Name
+                getStr(id, DESCRIPTION, table), //Description
+                getStr(id, FLORA, table),       //Flora
+                getStr(id, FAUNA, table),       //Fauna
+                getStr(id, EQUIPMENT, table),   //Equipment
+                getStr(id, EXTRATAGS, table),   //Extratags
+                getLatLng(id, table),           //Location
+                getImage(id, context, table)    //Drawable
             )
 
 
     //Finds a String by Id in Database and returns it
     fun getStr(id: Int, column: String, table: String = TABLE): String {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID_COLUMN_NAME = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
         try {
             cursor.moveToNext()
             return cursor.getString(0)
@@ -116,7 +108,7 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
 
     //Finds a Double by Id in Database and returns it
     fun getDouble(id: Int, column: String, table: String = TABLE): Double {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID_COLUMN_NAME = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
         try{
             cursor.moveToFirst()
             return cursor.getDouble(0)
@@ -132,7 +124,7 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
 
     //Finds an Integer by Id in Database and returns it
     fun getInt(id: Int, column: String, table: String = TABLE): Int {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID_COLUMN_NAME = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
         try {
             cursor.moveToFirst()
             return cursor.getInt(0)
@@ -149,8 +141,8 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
     //Finds Lat and Lng Doubles by Id and returns a new LatLng
     fun getLatLng(id: Int, table: String = TABLE) =
             LatLng(
-                getDouble(id, LATITUDE_COLUMN_NAME, table),
-                getDouble(id, LONGITUDE_COLUMN_NAME, table))
+                getDouble(id, LATITUDE, table),
+                getDouble(id, LONGITUDE, table))
 
 
     //Gets the resource ID of the drawable with specified name
@@ -160,7 +152,7 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
     //Finds image name in Database by Id, finds its corresponding drawable and returns the drawable
     @Suppress("DEPRECATION")
     fun getImage(id: Int, context: Context = mContext, table: String = TABLE): Drawable {
-        val tempImageId = convertFromDrawableNameToId(getStr(id, IMAGE_COLUMN_NAME, table), context)
+        val tempImageId = convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return context.resources.getDrawable(tempImageId, context.theme)
@@ -175,12 +167,12 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
         //TODO add categorized search
         //TODO add all tags search
         //Use string query to search for reserves and output IDs
-        val cursor = DataBase.doQuery("SELECT $ID_COLUMN_NAME FROM $table WHERE $NAME_COLUMN_NAME"+
+        val cursor = DataBase.doQuery("SELECT $ID FROM $table WHERE $NAME"+
                 " LIKE '%$query%'"+
-                " or $FLORA_COLUMN_NAME LIKE '%$query%'"+
-                " or $FAUNA_COLUMN_NAME LIKE '%$query%'"+
-                " or $EXTRATAGS_COLUMN_NAME LIKE '%$query%'"+
-                " or $EQUIPMENT_COLUMN_NAME LIKE '%$query%'")
+                " or $FLORA LIKE '%$query%'"+
+                " or $FAUNA LIKE '%$query%'"+
+                " or $EXTRATAGS LIKE '%$query%'"+
+                " or $EQUIPMENT LIKE '%$query%'")
 
         try {
             if (cursor.moveToFirst()) {

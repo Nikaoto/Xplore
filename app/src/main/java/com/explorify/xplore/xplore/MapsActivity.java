@@ -268,9 +268,7 @@ public class MapsActivity extends AppCompatActivity
         try {
             KmlLayer kmlLayer = new KmlLayer(mMap, R.raw.testeroni, getApplicationContext());
             kmlLayer.addLayerToMap();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

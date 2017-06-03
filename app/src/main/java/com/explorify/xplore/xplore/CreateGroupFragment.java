@@ -37,14 +37,23 @@ import static com.explorify.xplore.xplore.General.currentUserId;
 
 public class CreateGroupFragment extends Fragment {
 
-    public static int chosenDestId = -1; //TODO remove static
+
     public static ArrayList<User> invitedMembers = new ArrayList<>();
     public static DateSetup dateSetup;
 
-    final int G_PREFS_CHAR_MAX = 200;
-    final int G_PREFS_CHAR_MIN = 2;
-    final int E_INFO_CHAR_MAX = 200;
-    final int E_INFO_CHAR_MIN = 2;
+    private static final int SEARCH_DESTINATION_ACODE = 1;
+    private static final int INVITE_USERS_ACODE = 4;
+    private static final int CHOSEN_DEST_DEFAULT_VAL = -1;
+    private static final int EXPERIENCE_ANS_DEFAULT_VAL = -1;
+    private static final int EXPERIENCE_ANS_NO_EXP = 0;
+    private static final int EXPERIENCE_ANS_YES_EXP = 1;
+    private static final int G_PREFS_CHAR_MAX = 200;
+    private static final int G_PREFS_CHAR_MIN = 5; //TODO add selection if user doesn't have prefs
+    private static final int E_INFO_CHAR_MAX = 200;
+    private static final int E_INFO_CHAR_MIN = 5;
+
+    private int chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
+    private int experienceAns = EXPERIENCE_ANS_DEFAULT_VAL;
 
     private int selectedMemberPos;
     private Context context;
@@ -53,7 +62,6 @@ public class CreateGroupFragment extends Fragment {
 
     EditText groupPrefs_text, extraInfo_text;
     ImageView prefs_help, info_help;
-    int experienceAns; // -1 -> not selected, 0 -> no exp, 1-> exp.
     String gPrefs, eInfo;
     User leader;
     TextView startDate_text, endDate_text, member_fname_text, member_lname_text, member_age_text, member_tel_text;
@@ -108,8 +116,8 @@ public class CreateGroupFragment extends Fragment {
         InitLayout();
 
         invitedMembers.clear();
-        chosenDestId = -1;
-        experienceAns = -1;
+        chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
+        experienceAns = EXPERIENCE_ANS_DEFAULT_VAL;
 
         InitClickEvents();
 
@@ -128,15 +136,14 @@ public class CreateGroupFragment extends Fragment {
 
             ApplyDates();
 
-            if (chosenDestId != -1) { //TODO remove hardcodes here and table arguments
+            if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) { //TODO remove table arguments after converting to kotlin
                 reserveButton.setBackground(dbManager.getImage(chosenDestId, context, General.DB_TABLE));
-                reserveButton.setText(dbManager.getStr(chosenDestId, "name", General.DB_TABLE));
+                reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
             }
         }
     }
 
-    private void ApplyDates()
-    {
+    private void ApplyDates() {
         if(dateSetup.isConfirmedS())
             startDate_text.setText(dateSetup.getsYear()+"/"+dateSetup.getsMonth()+"/"+dateSetup.getsDay());
 
@@ -144,8 +151,7 @@ public class CreateGroupFragment extends Fragment {
             endDate_text.setText(dateSetup.geteYear()+"/"+dateSetup.geteMonth()+"/"+dateSetup.geteDay());
     }
 
-    private void InitLayout()
-    {
+    private void InitLayout() {
         //Member List RecyclerView
         memberRecList = (RecyclerView) myView.findViewById(R.id.createGroup_member_list); //NOTE: uncomment in create_group.xml
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
@@ -195,14 +201,14 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SearchDestinationActivity.class);
-                context.startActivity(intent);
+                startActivityForResult(intent, SEARCH_DESTINATION_ACODE);
             }
         });
 
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(chosenDestId != -1)
+                if(chosenDestId != CHOSEN_DEST_DEFAULT_VAL)
                     General.OpenLibFragment(chosenDestId, context);
             }
         });
@@ -229,7 +235,7 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SearchUsersActivity.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, INVITE_USERS_ACODE);
             }
         });
 
@@ -252,11 +258,8 @@ public class CreateGroupFragment extends Fragment {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 GatherData();
-
-                if(CheckFields())
-                {
+                if(CheckFields()) {
                     UploadGroupData();
                 }
             }
@@ -266,9 +269,9 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if(i == R.id.yes_rb)
-                    experienceAns = 1;
+                    experienceAns = EXPERIENCE_ANS_YES_EXP;
                 else if(i == R.id.no_rb)
-                    experienceAns = 0;
+                    experienceAns = EXPERIENCE_ANS_NO_EXP;
             }
         });
     }
@@ -284,11 +287,7 @@ public class CreateGroupFragment extends Fragment {
         }
 
         //get experience question
-        boolean exp;
-        if(experienceAns == 0)
-            exp = false;
-        else
-            exp = true;
+        final boolean exp = (experienceAns != EXPERIENCE_ANS_NO_EXP);
 
         return new UploadGroup(key, exp, dateSetup.getStart(), dateSetup.getEnd(), String.valueOf(chosenDestId),
                 eInfo, gPrefs, member_ids);
@@ -310,10 +309,15 @@ public class CreateGroupFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK)
-        {
-            if(data.getBooleanExtra("member_added", false)) {//checking if members added
-                PopulateMembersList();
+        if (requestCode == SEARCH_DESTINATION_ACODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT_VAL);
+            }
+        } else if (requestCode == INVITE_USERS_ACODE) {
+            if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
+                if (data.getBooleanExtra("member_added", false)) {//checking if members added
+                    PopulateMembersList();
+                }
             }
         }
     }
@@ -365,7 +369,7 @@ public class CreateGroupFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.okay, null);
 
-        if(chosenDestId == -1) {
+        if(chosenDestId == CHOSEN_DEST_DEFAULT_VAL) {
             builder.setMessage(R.string.dest_field_incomplete)
                     .show();
             return false;
@@ -380,8 +384,7 @@ public class CreateGroupFragment extends Fragment {
                     .show();
             return false;
         }
-        else if(dateSetup.getStart() > dateSetup.getEnd())
-        {
+        else if(dateSetup.getStart() > dateSetup.getEnd()) {
             builder.setMessage(R.string.date_invalid)
                     .show();
             return false;
@@ -392,8 +395,7 @@ public class CreateGroupFragment extends Fragment {
                     .show();
             return false;
         }
-        else if(experienceAns == -1)
-        {
+        else if(experienceAns == EXPERIENCE_ANS_DEFAULT_VAL) {
             builder.setMessage(R.string.exp_field_incomplete)
                     .show();
             return false;

@@ -199,7 +199,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                         tempDestId, //Reserve ID
                                         dbManager.getStr( //Reserve Name
                                                 tempDestId,
-                                                "name", General.DB_TABLE //TODO remove hardcode
+                                                DBManager.ColumnNames.getNAME(), General.DB_TABLE
                                         ),
                                         group.getMember_ids().get(0) //Leader ID
                                 );

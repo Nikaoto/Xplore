@@ -74,9 +74,7 @@ public class MainActivity extends AppCompatActivity
                 int entryCount = fm.getBackStackEntryCount();
                 //if entry removed (back pressed, fragment closed)
                 if(backstackEntryCount > entryCount){
-                    Log.println(Log.INFO, "backstack", "Back was pressed");
                     if (entryCount > 0) {
-                        Log.println(Log.INFO, "backstack", "entrycount > 1");
                         FragmentManager.BackStackEntry lastEntry = fm.getBackStackEntryAt(entryCount - 1);
                         try {
                             previousNavItemId = navMenuItems[Integer.parseInt(lastEntry.getName())];
@@ -117,13 +115,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                HideKeyboard();
+                General.HideKeyboard(MainActivity.this);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                HideKeyboard();
+                General.HideKeyboard(MainActivity.this);
             }
         };
 
@@ -216,7 +214,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        HideKeyboard();
+        General.HideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
             fm.beginTransaction().replace(R.id.fragment_container, new OptionsFragment()).addToBackStack(null).commit();
             return true;
@@ -252,13 +250,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    //Hides the sotft keyboard
-    public void HideKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     /**

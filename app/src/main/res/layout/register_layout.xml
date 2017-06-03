@@ -54,7 +54,6 @@
                 android:paddingLeft="@dimen/reg_text_padding_left"
                 android:paddingBottom="@dimen/reg_text_padding_top_bot"
                 android:paddingTop="@dimen/reg_text_padding_top_bot"/>
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -87,7 +86,6 @@
                 android:paddingLeft="@dimen/reg_text_padding_left"
                 android:paddingBottom="@dimen/reg_text_padding_top_bot"
                 android:paddingTop="@dimen/reg_text_padding_top_bot" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -121,7 +119,6 @@
                 android:paddingLeft="@dimen/reg_text_padding_left"
                 android:paddingBottom="@dimen/reg_text_padding_top_bot"
                 android:paddingTop="@dimen/reg_text_padding_top_bot" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -154,7 +151,6 @@
                 android:paddingLeft="@dimen/reg_text_padding_left"
                 android:paddingBottom="@dimen/reg_text_padding_top_bot"
                 android:paddingTop="@dimen/reg_text_padding_top_bot" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -195,7 +191,6 @@
                 android:layout_alignLeft="@id/bdateTextView"
                 android:layout_marginLeft="@dimen/reg_text_margin_left"
                 android:textSize="15sp" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -222,7 +217,6 @@
 
                 android:layout_width="@dimen/group_leader_profile_wh"
                 android:layout_height="@dimen/group_leader_profile_wh" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -230,22 +224,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/doneButton"
-            android:text="@string/done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="19sp"
-            app:backgroundTint="@color/colorAccent"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="15dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
-
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/doneButton"
+                android:text="@string/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
         </RelativeLayout>
-
     </LinearLayout>
-
 </ScrollView>

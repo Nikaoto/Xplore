@@ -10,13 +10,16 @@ import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Debug;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -119,9 +122,21 @@ public class General {
         return tempAge;
     }
 
+    public static void HideKeyboard(Activity context) {
+        try {
+            InputMethodManager inputMethodManager = (InputMethodManager)
+                    context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
+        }
+        catch (NullPointerException e){
+            Log.println(Log.ERROR, "keyboard", "getWindowToken() in HideKeyboard threw a NPE");
+        }
+    }
+
     public static boolean isNetConnected(Context context)
     {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
@@ -190,7 +205,7 @@ public class General {
         //Goes back if dismissed
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onDismiss() { //TODO change group fragment, this makes it back when dismissed
+            public void onDismiss() { //TODO change group fragment, this does OnBackPressed() and goes back when dismissed
                 activity.getFragmentManager().popBackStack();
             }
         });

@@ -28,7 +28,6 @@ import java.util.List;
 
 public class SecondFragment extends Fragment implements TextView.OnEditorActionListener {
 
-    private boolean needRefresh = false;
     private ListView list;
     private List<Integer> resultIDs = new ArrayList<>();
     private ArrayList<ReserveButton> answerButtons = new ArrayList<>();
@@ -61,20 +60,6 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
         searchBar.setSelectAllOnFocus(true);
         searchBar.setOnEditorActionListener(this);
 
-        InitDataLists();
-    }
-
-    @Override
-    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-
-        searchListItems(textView.getText().toString().toLowerCase());
-
-        return false;
-    }
-
-    //Sets up reserveButtons, refreshes data and preloads data, then displays it
-    private void InitDataLists()
-    {
         //Load all reserveButtons from DB
         populateButtonList(reserveButtons);
 
@@ -84,13 +69,17 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
         //Push all reserveButtons to answers
         answerButtons.addAll(reserveButtons);
 
-        populateListView();
-    }
-
-    private void populateListView() {
-        //creating list
+        //Setting adapter
         ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+        searchListItems(textView.getText().toString().toLowerCase());
+
+        return false;
     }
 
     private class MyListAdapter extends ArrayAdapter<ReserveButton> {
@@ -115,7 +104,7 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
             butt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    HideKeyboard();
+                    General.HideKeyboard(getActivity());
                     //TODO afrer changing LibFragment from FragmentActivity to Fragment, use fragmentmanager to replace fragment_containter here
                     General.OpenLibFragment(currentButton.getId(), getActivity());
                 }
@@ -137,24 +126,12 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
         //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
         for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
         {
-            //TODO the "image" and "name" column names have to be changed, remove hardcode
             //TODO omg change this
-            int resid = resources.getIdentifier(dbManager.getStr(i, "image", table),"drawable","com.explorify.xplore.xplore");
+            int resid = resources.getIdentifier(dbManager.getStr(i, DBManager.ColumnNames.getIMAGE(), table),"drawable","com.explorify.xplore.xplore");
             reserveButtons.add (
                     new ReserveButton(i, ContextCompat.getDrawable(getActivity(), resid),
-                            dbManager.getStr(i, "name", table))
+                            dbManager.getStr(i, DBManager.ColumnNames.getNAME(), table))
             );
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //Check if language was changed and data needs refreshing
-        if (needRefresh) {
-            needRefresh = false;
-            InitDataLists();
         }
     }
 
@@ -179,14 +156,9 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
                 index ++;
             }
 
-            populateListView();
+            //Setting adapter
+            ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
+            list.setAdapter(adapter);
         }
-    }
-
-    //hides the sotft keyboard
-    public void HideKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
     }
 }
