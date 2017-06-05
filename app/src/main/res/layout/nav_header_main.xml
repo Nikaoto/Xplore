@@ -44,7 +44,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:textSize="13sp"
-        android:shadowColor="@color/cast_expanded_controller_background_color"
+        android:shadowColor="@color/Black"
         android:text="@string/nav_description"/>
 
 </RelativeLayout>

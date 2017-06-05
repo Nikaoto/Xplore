@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reserveCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_list_entry_margin">
+<!--
+ TODO determine layout_height and change wrap_content with the size
+-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/reserveImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reserve_image_height"
+            android:layout_marginLeft="@dimen/reserve_cardview_int_margin"
+            android:layout_marginRight="@dimen/reserve_cardview_int_margin"
+            android:layout_marginTop="@dimen/reserve_cardview_int_margin" />
+
+        <ImageView
+            android:id="@+id/reserveIconImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignRight="@id/reserveImageView"
+            android:layout_below="@id/reserveImageView"
+            android:layout_marginTop="@dimen/reserve_cardview_int_margin" />
+
+        <TextView
+            android:id="@+id/reserveNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/reserveImageView"
+            android:layout_margin="@dimen/reserve_cardview_int_margin"
+            android:layout_toLeftOf="@id/reserveIconImageView"
+            android:textAllCaps="true"
+            android:textSize="21sp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
