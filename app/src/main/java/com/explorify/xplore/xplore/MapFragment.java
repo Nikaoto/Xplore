@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * Created by Nika on 11/9/2016.
  */
 
-public class ThirdFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     View myView;
     public static boolean MAPS_CLOSED;

@@ -23,7 +23,7 @@ class LibFragment() : FragmentActivity() {
     }
 
     override fun onResume() {
-        if (ThirdFragment.MAPS_CLOSED) {
+        if (MapFragment.MAPS_CLOSED) {
             fragmentManager.popBackStack()
         }
         super.onResume()
@@ -40,7 +40,7 @@ class LibFragment() : FragmentActivity() {
         difficultyRatingBar.rating = reserve.difficulty.toFloat()
 
         showonmapButton.setOnClickListener() {
-            ThirdFragment.MAPS_CLOSED = false
+            MapFragment.MAPS_CLOSED = false
             val intent = Intent(mActivity, MapsActivity::class.java)
             intent.putExtra("show_reserve", true)
             intent.putExtra("reserve_name", reserve.name)

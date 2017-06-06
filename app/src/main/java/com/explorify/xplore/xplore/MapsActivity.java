@@ -36,10 +36,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.kml.KmlLayer;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 //TODO also implement OnConnectionFailedListener
@@ -252,8 +248,8 @@ public class MapsActivity extends AppCompatActivity
     public void onBackPressed() {
         {
             super.onBackPressed();
-            ThirdFragment.MAPS_CLOSED = true;
-            ThirdFragment.FIRST_TIME = false;
+            MapFragment.MAPS_CLOSED = true;
+            MapFragment.FIRST_TIME = false;
             if(reserveMarker != null)
                 reserveMarker.remove();
             if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct

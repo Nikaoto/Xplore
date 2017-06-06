@@ -40,11 +40,10 @@ import static com.explorify.xplore.xplore.GoogleSignInActivity.googleApiClient;
 
 
 /**
- * TODO RENAME TO PROFILE FRAGMENT
  * Created by Nika on 11/9/2016.
  */
 
-public class FirstFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private View myView;
     private ImageView profileImage;
@@ -202,7 +201,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener {
                             Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
 
                             //Refresh Fragment
-                            Fragment currentFragment = FirstFragment.this;
+                            Fragment currentFragment = ProfileFragment.this;
                             FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
                             fragTransaction.detach(currentFragment);
                             fragTransaction.attach(currentFragment);

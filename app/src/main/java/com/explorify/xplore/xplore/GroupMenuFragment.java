@@ -16,7 +16,7 @@ import static com.explorify.xplore.xplore.General.popSignInMenu;
  * Created by Nika on 11/9/2016.
  */
 
-public class FourthFragment extends Fragment {
+public class GroupMenuFragment extends Fragment {
 
     private View myView;
     private ImageView b_join, b_create;
@@ -24,7 +24,7 @@ public class FourthFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.fourth_layout, container, false);
+        myView = inflater.inflate(R.layout.group_menu_layout, container, false);
         return myView;
     }
 

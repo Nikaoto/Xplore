@@ -6,13 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Debug;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,7 +24,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -193,7 +189,7 @@ public class General {
         int locationY = 0;
 
         View popupView = activity.getLayoutInflater().inflate(R.layout.pre_signin_layout, null);
-        popupView.setBackgroundResource(R.drawable.mr_dialog_material_background_light);
+        popupView.setBackgroundResource(R.drawable.popup_fade_background);
         popupView.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.slide_down_open));
 
         final PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);

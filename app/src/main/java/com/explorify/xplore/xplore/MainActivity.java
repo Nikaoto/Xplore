@@ -1,15 +1,12 @@
 package com.explorify.xplore.xplore;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,13 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Locale;
@@ -65,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         //Set initial Fragment
         fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container, new FifthFragment()).commit();
+        fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
 
         //Check for back presses and manage backstack automatically
         fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -106,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             }
         });*/
 
-        ThirdFragment.MAPS_CLOSED = false;
+        MapFragment.MAPS_CLOSED = false;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -128,9 +118,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -237,54 +224,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_first_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new FirstFragment()).addToBackStack("1").commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).addToBackStack("1").commit();
         } else if (id == R.id.nav_second_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new SecondFragment()).addToBackStack("2").commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new LibraryFragment()).addToBackStack("2").commit();
         } else if (id == R.id.nav_third_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new ThirdFragment()).addToBackStack("3").commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new MapFragment()).addToBackStack("3").commit();
         } else if (id == R.id.nav_fourth_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new FourthFragment()).addToBackStack("4").commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new GroupMenuFragment()).addToBackStack("4").commit();
         } else if (id == R.id.nav_fifth_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new FifthFragment()).addToBackStack("5").commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).addToBackStack("5").commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 }

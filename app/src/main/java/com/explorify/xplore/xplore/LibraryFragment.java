@@ -1,7 +1,6 @@
 package com.explorify.xplore.xplore;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +24,7 @@ import java.util.List;
  * Created by Nika on 11/9/2016.
  */
 
-public class SecondFragment extends Fragment implements TextView.OnEditorActionListener {
+public class LibraryFragment extends Fragment implements TextView.OnEditorActionListener {
 
     private ListView list;
     private List<Integer> resultIDs = new ArrayList<>();
@@ -70,7 +68,7 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
         answerButtons.addAll(reserveButtons);
 
         //Setting adapter
-        ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
+        ArrayAdapter<ReserveButton> adapter = new LibraryFragment.MyListAdapter();
         list.setAdapter(adapter);
     }
 
@@ -157,7 +155,7 @@ public class SecondFragment extends Fragment implements TextView.OnEditorActionL
             }
 
             //Setting adapter
-            ArrayAdapter<ReserveButton> adapter = new SecondFragment.MyListAdapter();
+            ArrayAdapter<ReserveButton> adapter = new LibraryFragment.MyListAdapter();
             list.setAdapter(adapter);
         }
     }
