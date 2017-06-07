@@ -137,7 +137,7 @@ public class CreateGroupFragment extends Fragment {
             ApplyDates();
 
             if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) { //TODO remove table arguments after converting to kotlin
-                reserveButton.setBackground(dbManager.getImage(chosenDestId, context, General.DB_TABLE));
+                reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, context, General.DB_TABLE));
                 reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
             }
         }
@@ -209,7 +209,7 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(chosenDestId != CHOSEN_DEST_DEFAULT_VAL)
-                    General.openLibFragment(chosenDestId, context);
+                    General.openReserveInfoFragment(chosenDestId, context);
             }
         });
 

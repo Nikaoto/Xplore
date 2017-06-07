@@ -3,7 +3,6 @@ package com.explorify.xplore.xplore
 import android.app.Activity
 import android.app.Fragment
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.KeyEvent
@@ -25,8 +24,8 @@ import kotlinx.android.synthetic.main.search_layout2.searchEditText
 class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
     private var resultIDs: List<Int>? = ArrayList()
-    private val answerButtons = ArrayList<ReserveButton>()
-    private val reserveButtons = ArrayList<ReserveButton>()
+    private val answerCards = ArrayList<ReserveCard>()
+    private val reserveCards = ArrayList<ReserveCard>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_layout2, container, false)
@@ -48,20 +47,20 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         searchEditText.setOnEditorActionListener(this)
 
         //Clear answer list
-        answerButtons.clear()
+        answerCards.clear()
 
-        //Load all reserveButtons from DB
-        populateButtonList(reserveButtons, dbManager)
+        //Load all reserveCards from DB
+        populateCardList(reserveCards, dbManager)
 
-        displayResults(reserveButtons)
+        displayResults(reserveCards)
     }
 
-    fun displayResults(results: List<ReserveButton>) {
+    fun displayResults(results: List<ReserveCard>) {
         //Setting adapter
         resultsRV.adapter = RVadapter(results, activity)
     }
 
-    class RVadapter(val results: List<ReserveButton>, val activity: Activity) : RecyclerView.Adapter<RVadapter.ResultViewHolder>(){
+    class RVadapter(val results: List<ReserveCard>, val activity: Activity) : RecyclerView.Adapter<RVadapter.ResultViewHolder>(){
 
         class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             internal val reserveName: TextView
@@ -83,10 +82,10 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
         override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
             holder.reserveName.setText(results[position].name)
-            holder.reserveImage.setImageDrawable(results[position].image)
+            holder.reserveImage.setImageResource(results[position].imageId)
             holder.itemView.setOnClickListener {
                 General.HideKeyboard(activity)
-                General.openLibFragment(results[position].id, activity)
+                General.openReserveInfoFragment(results[position].id, activity)
             }
         }
 
@@ -96,44 +95,16 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
         override fun getItemCount(): Int = results.size
     }
-/*
-    private inner class MyListAdapter : ArrayAdapter<ReserveButton>(activity, R.layout.list_item, answerButtons) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            var itemView = convertView
-            if (itemView == null) {
-                itemView = activity.layoutInflater.inflate(R.layout.list_item, parent, false)
-            }
-            val currentButton = answerButtons[position]
-
-            val butt = itemView!!.findViewById(R.id.resultItem) as Button
-            butt.text = currentButton.name
-            butt.background = currentButton.image
-
-            //Configuring Clicks
-            butt.setOnClickListener {
-                General.HideKeyboard(activity)
-                General.openLibFragment(currentButton.id, activity)
-            }
-
-            return itemView
-        }
-    }*/
-
-    //TODO change this in dbManager to just return all buttons instead of the loop here
-    private fun populateButtonList(reserveButtons: ArrayList<ReserveButton>, dbManager: DBManager) {
+    //TODO change this in dbManager to just return all cards instead of the loop here
+    private fun populateCardList(reserveCards: ArrayList<ReserveCard>, dbManager: DBManager) {
         val table = General.DB_TABLE
-        reserveButtons.clear()
+        reserveCards.clear()
 
         Thread(Runnable {
             //Getting each resID separately
             for (i in 0..MainActivity.RESERVE_NUM - 1) {
-                val resid = dbManager.getImageId(i)
-                reserveButtons.add(
-                        ReserveButton(i,
-                                ContextCompat.getDrawable(activity, resid),
-                                dbManager.getStr(i, DBManager.NAME, table))
-                )
+                reserveCards.add(dbManager.getReserveCard(i))
                 resultsRV.post { resultsRV.adapter.notifyDataSetChanged() }
             }
         }).start()
@@ -150,10 +121,9 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
     //Searches DB for query
     private fun searchListItems(query: String, dbManager: DBManager) {
-        answerButtons.clear()
+        answerCards.clear()
 
         //Searching Database
-        //TODO do getCurrentTable once on a private String for fucks sake (or do it in DBManager once on init)
         resultIDs = dbManager.getIdFromQuery(query, General.DB_TABLE)
 
         //Returning Results
@@ -163,12 +133,12 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
             var index = 0
             for (result in resultIDs!!) {
                 //result is the single ID of an answer
-                answerButtons.add(index, reserveButtons[result])
+                answerCards.add(index, reserveCards[result])
                 index++
             }
 
             //Setting adapter
-            resultsRV.adapter = RVadapter(answerButtons, activity)
+            resultsRV.adapter = RVadapter(answerCards, activity)
         }
     }
 }

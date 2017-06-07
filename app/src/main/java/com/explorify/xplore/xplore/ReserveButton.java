@@ -1,19 +1,16 @@
 package com.explorify.xplore.xplore;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by nikao on 1/20/2017.
  */
 
 public class ReserveButton {
-    private int id;
-    private Drawable image;
+    private int id, imageId;
     private String name;
 
-    public ReserveButton(int id, Drawable image, String name) {
+    public ReserveButton(int id, int imageId, String name) {
         this.id = id;
-        this.image = image;
+        this.imageId = imageId;
         this.name = name;
     }
 
@@ -25,12 +22,12 @@ public class ReserveButton {
         this.id = id;
     }
 
-    public Drawable getImage() {
-        return image;
+    public int getImageId() {
+        return imageId;
     }
 
-    public void setImage(Drawable image) {
-        this.image = image;
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 
     public String getName() {

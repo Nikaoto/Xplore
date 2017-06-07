@@ -1,7 +1,5 @@
 package com.explorify.xplore.xplore;
 
-import android.graphics.drawable.Drawable;
-
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -9,15 +7,14 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class Reserve {
-    private int id;
+    private int id, imageId;
     private int difficulty; //scale of 1 to 10 lower means easier
-    private String name, description, flora, fauna, equipment, image, extratags;
+    private String name, description, flora, fauna, equipment, extratags;
     private LatLng location;
-    private Drawable drawable;
 
     //Primary Constructor
     Reserve(int id, int difficulty, String name, String description, String flora, String fauna,
-            String equipment, String extratags, LatLng location, Drawable drawable) {
+            String equipment, String extratags, LatLng location, int imageId) {
         this.id = id;
         this.difficulty = difficulty;
         this.name = name;
@@ -27,19 +24,11 @@ public class Reserve {
         this.equipment = equipment;
         this.extratags = extratags;
         this.location = location;
-        this.drawable = drawable;
+        this.imageId = imageId;
     }
 
     //Secondary Constructor
     Reserve(){ }
-
-    Drawable getDrawable() {
-        return drawable;
-    }
-
-    void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
-    }
 
     int getId()
     {
@@ -80,8 +69,6 @@ public class Reserve {
     {
         return extratags;
     }
-
-    String getImage() { return image; }
 
     LatLng getLocation() {
         return location;
@@ -127,9 +114,15 @@ public class Reserve {
         this.extratags = _extratags;
     }
 
-    void setImage(String _image) { this.image  = _image; }
-
     void setLocation(LatLng location) {
         this.location = location;
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 }

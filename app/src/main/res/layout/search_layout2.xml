@@ -8,7 +8,9 @@
         android:layout_height="@dimen/search_ic_wh"
         android:src="@drawable/ic_search_black_36dp"
         android:scaleType="fitCenter"
-        android:layout_margin="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"/>
 
@@ -17,7 +19,9 @@
         android:id="@+id/progressBar"
         android:layout_width="@dimen/search_ic_wh"
         android:layout_height="@dimen/search_ic_wh"
-        android:layout_margin="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:visibility="invisible"
@@ -27,7 +31,7 @@
         android:id="@+id/searchEditText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="19sp"
+        android:textSize="16sp"
         android:selectAllOnFocus="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:hint="@string/search_hint"
@@ -38,7 +42,7 @@
 
     <View style="@style/green_divider"
         android:layout_below="@id/searchEditText"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="3dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/resultsRV"

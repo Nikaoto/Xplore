@@ -101,10 +101,9 @@ public class SearchDestinationActivity extends Activity {
         //TODO this is utter shit, put the loop inside of DBManager so it doesn't create and destroy a goddamn cursor every time we need a string from DB
         for(int i = 0; i < MainActivity.RESERVE_NUM; i++)
         {
-            //TODO change this with convertFromDrawableNameToId
-            int resid = resources.getIdentifier(dbManager.getStr(i, DBManager.ColumnNames.getIMAGE(), table),"drawable","com.explorify.xplore.xplore");
             reserveButtons.add (
-                    new ReserveButton(i, ContextCompat.getDrawable(context, resid),
+                    new ReserveButton(i,
+                            dbManager.getImageId(i, context, table),
                             dbManager.getStr(i, DBManager.ColumnNames.getNAME(), table))
             );
         }
@@ -132,7 +131,7 @@ public class SearchDestinationActivity extends Activity {
 
             Button butt = (Button) itemView.findViewById(R.id.resultItem);
             butt.setText(currentButton.getName());
-            butt.setBackground(currentButton.getImage());
+            butt.setBackgroundResource(currentButton.getImageId());
 
             //Configuring Clicks
             butt.setOnClickListener(new View.OnClickListener() {

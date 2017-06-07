@@ -1,11 +1,10 @@
 package com.explorify.xplore.xplore
 
 import android.content.Context
+import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.Log
 
 import com.google.android.gms.maps.model.LatLng
@@ -17,7 +16,8 @@ import java.util.ArrayList
  * Created by nikao on 1/15/2017.
  */
 
-internal class DBManager(private val mContext: Context, private val DB_NAME: String = "reserveDB.db",
+internal class DBManager(private val mContext: Context,
+                         DB_NAME: String = "reserveDB.db",
                          private val TABLE: String = General.DB_TABLE)
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
@@ -43,11 +43,14 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
 
     init {
         //Creating database
-        DataBase = readableDatabase //openDataBase()?
+        DataBase = readableDatabase
 
         //Copy DB data
-        try { CopyBytes(mContext.assets.open(DB_NAME), DB_PATH) }
-        catch (e: IOException) { Log.println(Log.ERROR, "errors", "Could not copy data") }
+        try {
+            CopyBytes(mContext.assets.open(DB_NAME), DB_PATH)
+        } catch (e: IOException) {
+            Log.println(Log.ERROR, "errors", "Could not copy data")
+        }
 
         openDataBase()
         rowCount = initRowCount()
@@ -55,40 +58,77 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
 
     }
 
-    //Custom extension so writing "null" every time becomes unnecessary
-    fun SQLiteDatabase.doQuery(q: String) = this.rawQuery(q,null)
-
     fun initRowCount(table: String = TABLE): Int {
         val cursor = DataBase.doQuery("SELECT $ID FROM $table")
-        try{
+        try {
             cursor.moveToLast()
             return cursor.getInt(0)
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Log.println(Log.ERROR, "errors", "initRowCount failed")
             return 0
-        }
-        finally {
+        } finally {
             cursor.close()
         }
     }
 
+    //Gets the resource ID of the drawable with specified name
+    fun convertFromDrawableNameToId(drawableName: String, context: Context = mContext) =
+            context.resources.getIdentifier(drawableName, "drawable", context.packageName)
 
-    //Assembles and returns Reserve object from Database by Id
-    fun getReserve(id: Int, context: Context = mContext, table: String = TABLE) =
-            Reserve(
-                id,                             //Id
-                getInt(id, DIFFICULTY, table),  //Difficulty
-                getStr(id, NAME, table),        //Name
-                getStr(id, DESCRIPTION, table), //Description
-                getStr(id, FLORA, table),       //Flora
-                getStr(id, FAUNA, table),       //Fauna
-                getStr(id, EQUIPMENT, table),   //Equipment
-                getStr(id, EXTRATAGS, table),   //Extratags
-                getLatLng(id, table),           //Location
-                getImage(id, context, table)    //Drawable
+    //Custom extension of cursor that gets the imageId from it
+    fun Cursor.getImageId(context: Context = mContext) =
+            convertFromDrawableNameToId(this.getString(this.getColumnIndex(IMAGE)), context)
+
+    //Custom extension so writing "null" every time becomes unnecessary
+    fun SQLiteDatabase.doQuery(q: String) = this.rawQuery(q, null)
+
+    //Assembles and returns Reserve object from Database by Id (FASTER)
+    fun getReserve(id: Int, table: String = TABLE): Reserve {
+        val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
+        try {
+            cursor.moveToNext()
+            return Reserve(
+                    cursor.getInt(cursor.getColumnIndex(ID)),
+                    cursor.getInt(cursor.getColumnIndex(DIFFICULTY)),
+                    cursor.getString(cursor.getColumnIndex(NAME)),
+                    cursor.getString(cursor.getColumnIndex(DESCRIPTION)),
+                    cursor.getString(cursor.getColumnIndex(FLORA)),
+                    cursor.getString(cursor.getColumnIndex(FAUNA)),
+                    cursor.getString(cursor.getColumnIndex(EQUIPMENT)),
+                    cursor.getString(cursor.getColumnIndex(EXTRATAGS)),
+                    LatLng(cursor.getDouble(cursor.getColumnIndex(LATITUDE)),
+                            cursor.getDouble(cursor.getColumnIndex(LONGITUDE))),
+                    cursor.getImageId()
             )
+        } catch (e: Exception) {
+            Log.println(Log.ERROR, "database", "Could not load Reserve from cursor")
+            return Reserve()
+        } finally {
+            cursor.close()
+        }
+    }
 
+    fun getReserveCard(id: Int, table: String = TABLE): ReserveCard {
+        val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
+        try{
+            cursor.moveToNext()
+            return ReserveCard(
+                    id,
+                    cursor.getString(cursor.getColumnIndex(NAME)),
+                    convertFromDrawableNameToId(cursor.getString(cursor.getColumnIndex(IMAGE))
+                    )//TODO icon id
+            )
+        } catch (e: Exception){
+            Log.println(Log.ERROR, "database", "Could not load ReserveCard from cursor")
+            return ReserveCard()
+        } finally {
+            cursor.close()
+        }
+    }
+
+    fun getAllReserveCards() {
+        //TODO do this
+    }
 
     //Finds a String by Id in Database and returns it
     fun getStr(id: Int, column: String, table: String = TABLE): String {
@@ -145,11 +185,8 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
                 getDouble(id, LONGITUDE, table))
 
 
-    //Gets the resource ID of the drawable with specified name
-    fun convertFromDrawableNameToId(drawableName: String, context: Context = mContext) =
-            context.resources.getIdentifier(drawableName, "drawable", context.packageName)
 
-    //Finds image name in Database by Id, finds its corresponding drawable and returns the drawable
+/*    //Finds image name in Database by Id, finds its corresponding drawable and returns the drawable
     @Suppress("DEPRECATION")
     fun getImage(id: Int, context: Context = mContext, table: String = TABLE): Drawable {
         val tempImageId = convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
@@ -158,10 +195,10 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
             return context.resources.getDrawable(tempImageId, context.theme)
         else
             return context.resources.getDrawable(tempImageId)
-    }
+    }*/
 
     fun getImageId(id: Int, context: Context = mContext, table: String = TABLE): Int =
-            convertFromDrawableNameToId(getStr(id, IMAGE, table))
+            convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
 
     //Finds the Id of an entry by every field in Database and returns it
     fun getIdFromQuery(query: String, table: String): List<Int>? {

@@ -192,7 +192,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 //creating the group button
                                 GroupButton tempGroupButton = new GroupButton(
                                         group.getGroup_id(), //Group ID
-                                        dbManager.getImage( //Reserve Image
+                                        dbManager.getImageId( //Reserve Image
                                                 tempDestId, getActivity(), General.DB_TABLE
                                         ),
                                         tempUserImageUrl, //Leader Image URL
@@ -274,7 +274,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
             //Loading Reserve Background
             ImageView reserveImage = (ImageView) itemView.findViewById(R.id.resultGroupImage);
-            reserveImage.setImageDrawable(currentButton.getImage());
+            reserveImage.setImageResource(currentButton.getImageId());
 
             //Configuring Clicks
             reserveImage.setOnClickListener(new View.OnClickListener() {

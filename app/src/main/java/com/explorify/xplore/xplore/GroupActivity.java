@@ -127,7 +127,7 @@ public class GroupActivity extends Activity {
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                General.openLibFragment(reserveID, GroupActivity.this);
+                General.openReserveInfoFragment(reserveID, GroupActivity.this);
             }
         });
 
@@ -258,7 +258,7 @@ public class GroupActivity extends Activity {
         dbManager.openDataBase();
 
         reserveButton.setText(reserveName);
-        reserveButton.setBackground(dbManager.getImage(
+        reserveButton.setBackgroundResource(dbManager.getImageId(
                 reserveID, this, General.DB_TABLE)
         );
     }

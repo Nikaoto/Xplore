@@ -19,18 +19,27 @@ class ReserveInfoFragment() : FragmentActivity() {
         setContentView(R.layout.reserve_info)
 
         //Sets up Layout acording to info from chosen Reserve
-        setupLayout(LoadReserve(intent.getIntExtra("chosen_element", 0)))
+        val chosenReserve = intent.getIntExtra("chosen_element", 0)
+        setupLayout(LoadReserve(chosenReserve))
+    }
+
+    //Loads reserve from database by Id and returns it
+    private fun LoadReserve(resId: Int): Reserve {
+        val dbManager = DBManager(this)
+        dbManager.openDataBase()
+        //Getting reserve info from DB
+        return dbManager.getReserve(resId)
     }
 
     override fun onResume() {
+        super.onResume()
         if (MapFragment.MAPS_CLOSED) {
             fragmentManager.popBackStack()
         }
-        super.onResume()
     }
 
     fun setupLayout(reserve: Reserve) {
-        headerButton.background = reserve.drawable
+        headerButton.setBackgroundResource(reserve.imageId)
         headerButton.text = reserve.name
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna
@@ -48,13 +57,5 @@ class ReserveInfoFragment() : FragmentActivity() {
             intent.putExtra("reserve_longitude", reserve.location.longitude)
             mActivity.startActivity(intent)
         }
-    }
-
-    //Loads reserve from database by Id and returns it
-    private fun LoadReserve(resId: Int): Reserve {
-        val dbManager = DBManager(this)
-        dbManager.openDataBase()
-        //Getting reserve info from DB
-        return dbManager.getReserve(resId)
     }
 }

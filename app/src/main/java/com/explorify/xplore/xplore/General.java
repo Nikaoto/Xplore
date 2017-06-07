@@ -59,7 +59,7 @@ public class General {
             DB_TABLE = "en";
     }
 
-    public static void openLibFragment(int resId, Context context)
+    public static void openReserveInfoFragment(int resId, Context context)
     {
         Intent intent= new Intent(context, ReserveInfoFragment.class);
         intent.putExtra("chosen_element", resId);
