@@ -47,14 +47,14 @@ public class SearchDestinationActivity extends Activity {
         setContentView(R.layout.search_layout);
 
         //setting up the listview
-        list = (ListView) findViewById(R.id.resultslist);
+        list = (ListView) findViewById(R.id.resultsListView);
 
         //TODO convert this to java and skip the other crap arguments
         dbManager = new DBManager(this, "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
         //setting up searchbar
-        searchBar = (EditText) findViewById(R.id.search_bar);
+        searchBar = (EditText) findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_hint);
         searchBar.addTextChangedListener(new TextWatcher() {

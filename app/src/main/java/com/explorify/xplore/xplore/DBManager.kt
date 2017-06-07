@@ -160,6 +160,9 @@ internal class DBManager(private val mContext: Context, private val DB_NAME: Str
             return context.resources.getDrawable(tempImageId)
     }
 
+    fun getImageId(id: Int, context: Context = mContext, table: String = TABLE): Int =
+            convertFromDrawableNameToId(getStr(id, IMAGE, table))
+
     //Finds the Id of an entry by every field in Database and returns it
     fun getIdFromQuery(query: String, table: String): List<Int>? {
         val answers = ArrayList<Int>()

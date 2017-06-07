@@ -127,7 +127,7 @@ public class GroupActivity extends Activity {
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                General.OpenLibFragment(reserveID, GroupActivity.this);
+                General.openLibFragment(reserveID, GroupActivity.this);
             }
         });
 

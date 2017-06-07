@@ -209,7 +209,7 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(chosenDestId != CHOSEN_DEST_DEFAULT_VAL)
-                    General.OpenLibFragment(chosenDestId, context);
+                    General.openLibFragment(chosenDestId, context);
             }
         });
 

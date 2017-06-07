@@ -67,10 +67,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
 
-        listView = (ListView) findViewById(R.id.resultslist);
+        listView = (ListView) findViewById(R.id.resultsListView);
         progressBar = (ProgressBar) findViewById(R.id.searchProgressBar);
 
-        searchBar = (EditText) findViewById(R.id.search_bar);
+        searchBar = (EditText) findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_users);
         searchBar.setOnEditorActionListener(this);

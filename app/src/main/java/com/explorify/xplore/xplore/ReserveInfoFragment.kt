@@ -4,19 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 
-import kotlinx.android.synthetic.main.lib_element_layout.*
+import kotlinx.android.synthetic.main.reserve_info.*
 
 /**
  * Created by nikao on 11/16/2016.
  */
 
-class LibFragment() : FragmentActivity() {
+class ReserveInfoFragment() : FragmentActivity() {
 
     internal val mActivity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.lib_element_layout)
+        setContentView(R.layout.reserve_info)
 
         //Sets up Layout acording to info from chosen Reserve
         setupLayout(LoadReserve(intent.getIntExtra("chosen_element", 0)))

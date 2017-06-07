@@ -13,6 +13,7 @@
 
         <ImageView
             android:id="@+id/reserveImageView"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="@dimen/reserve_image_height"
             android:layout_marginLeft="@dimen/reserve_cardview_int_margin"

@@ -69,10 +69,10 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         myView = inflater.inflate(R.layout.search_layout, container, false);
 
         //setting up listview
-        list = (ListView) myView.findViewById(R.id.resultslist);
+        list = (ListView) myView.findViewById(R.id.resultsListView);
 
         //setting up searchbar
-        searchBar = (EditText) myView.findViewById(R.id.search_bar);
+        searchBar = (EditText) myView.findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_groups_hint);
         searchBar.setOnEditorActionListener(this);
