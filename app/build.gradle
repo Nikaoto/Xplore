@@ -52,6 +52,9 @@ dependencies {
     //Maps
     compile 'com.google.maps.android:android-maps-utils:0.4'
 
+    //Material Search Bar
+    //compile 'com.github.mancj:MaterialSearchBar:0.7'
+
     //Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'jp.wasabeef:picasso-transformations:2.1.0'

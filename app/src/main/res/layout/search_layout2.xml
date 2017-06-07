@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/searchIconImageView"
-        android:layout_width="@dimen/search_ic_wh"
-        android:layout_height="@dimen/search_ic_wh"
-        android:src="@drawable/ic_search_black_36dp"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"/>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
-        android:id="@+id/progressBar"
-        android:layout_width="@dimen/search_ic_wh"
-        android:layout_height="@dimen/search_ic_wh"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:visibility="invisible"
-        android:indeterminate="true"/>
-
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_height="wrap_content"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:textSize="16sp"
-        android:selectAllOnFocus="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:hint="@string/search_hint"
-        android:maxLines="1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/searchIconImageView"
-        android:layout_toLeftOf="@id/progressBar"/>
+        android:layout_height="38dp">
+
+        <ImageView
+            android:id="@+id/searchIconImageView"
+            android:layout_width="@dimen/search_ic_wh"
+            android:layout_height="@dimen/search_ic_wh"
+            android:src="@drawable/ic_search_black_36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentLeft="true"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/search_ic_wh"
+            android:layout_height="@dimen/search_ic_wh"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:indeterminate="true"/>
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:selectAllOnFocus="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:hint="@string/search_hint"
+            android:maxLines="1"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/searchIconImageView"
+            android:layout_toLeftOf="@id/progressBar"/>
+    </RelativeLayout>
 
     <View style="@style/green_divider"
-        android:layout_below="@id/searchEditText"
         android:layout_marginTop="3dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/resultsRV"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/searchEditText">
-    </android.support.v7.widget.RecyclerView>
+        android:orientation="vertical"></android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+</LinearLayout>

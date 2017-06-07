@@ -25,7 +25,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
     private var resultIDs: List<Int>? = ArrayList()
     private val answerCards = ArrayList<ReserveCard>()
-    private val reserveCards = ArrayList<ReserveCard>()
+    private var reserveCards = ArrayList<ReserveCard>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_layout2, container, false)
@@ -50,8 +50,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         answerCards.clear()
 
         //Load all reserveCards from DB
-        populateCardList(reserveCards, dbManager)
-
+        reserveCards = dbManager.getAllReserveCards()
         displayResults(reserveCards)
     }
 

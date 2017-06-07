@@ -86,7 +86,7 @@ internal class DBManager(private val mContext: Context,
     fun getReserve(id: Int, table: String = TABLE): Reserve {
         val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
         try {
-            cursor.moveToNext()
+            cursor.moveToFirst()
             return Reserve(
                     cursor.getInt(cursor.getColumnIndex(ID)),
                     cursor.getInt(cursor.getColumnIndex(DIFFICULTY)),
@@ -111,7 +111,7 @@ internal class DBManager(private val mContext: Context,
     fun getReserveCard(id: Int, table: String = TABLE): ReserveCard {
         val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
         try{
-            cursor.moveToNext()
+            cursor.moveToFirst()
             return ReserveCard(
                     id,
                     cursor.getString(cursor.getColumnIndex(NAME)),
@@ -126,8 +126,32 @@ internal class DBManager(private val mContext: Context,
         }
     }
 
-    fun getAllReserveCards() {
-        //TODO do this
+    //Load all reserveCards from DB
+    fun getAllReserveCards(table: String = TABLE): ArrayList<ReserveCard> {
+        val results = ArrayList<ReserveCard>(rowCount)
+        val cursor = DataBase.doQuery("SELECT * FROM $table")
+        try{
+            if(cursor.moveToFirst()){
+                var index = 0
+                do {
+                    results.add(
+                        ReserveCard(
+                                index,
+                                cursor.getString(cursor.getColumnIndex(NAME)),
+                                convertFromDrawableNameToId(cursor.getString(cursor.getColumnIndex(IMAGE)))
+                                //TODO icon id
+                        )
+                    )
+                    index++
+                } while (cursor.moveToNext())
+            }
+            return results
+        } catch (e: Exception){
+            Log.println(Log.ERROR, "database", "Could not load ReserveCards from cursor")
+            return results
+        } finally {
+            cursor.close()
+        }
     }
 
     //Finds a String by Id in Database and returns it
