@@ -23,22 +23,26 @@ internal class DBManager(private val mContext: Context,
 
     //Path of the database that will be created
     private val DB_PATH = "/data/data/${mContext.packageName}/databases/$DB_NAME"
+    val GENERAL_TABLE = "general"
 
     companion object ColumnNames {
         val ID = "id"
         val NAME = "name"
-        val DESCRIPTION = "description"
         val DIFFICULTY = "difficulty"
         val FLORA = "flora"
         val FAUNA = "fauna"
         val EQUIPMENT = "equipment"
         val EXTRATAGS = "extratags"
+
+        //General Table
+        val TYPE = "type"
+        val DESCRIPTION = "description"
         val IMAGE = "image"
         val LATITUDE = "latitude"
         val LONGITUDE = "longitude"
     }
 
-    private val rowCount: Int
+    val rowCount: Int
     private var DataBase: SQLiteDatabase
 
     init {
@@ -71,13 +75,18 @@ internal class DBManager(private val mContext: Context,
         }
     }
 
+    //Shorter getData extension functions
+    fun Cursor.getStr(column: String) = this.getString(this.getColumnIndex(column))
+    fun Cursor.getInt(column: String) = this.getInt(this.getColumnIndex(column))
+    fun Cursor.getDouble(column: String) = this.getDouble(this.getColumnIndex(column))
+
     //Gets the resource ID of the drawable with specified name
     fun convertFromDrawableNameToId(drawableName: String, context: Context = mContext) =
             context.resources.getIdentifier(drawableName, "drawable", context.packageName)
 
     //Custom extension of cursor that gets the imageId from it
     fun Cursor.getImageId(context: Context = mContext) =
-            convertFromDrawableNameToId(this.getString(this.getColumnIndex(IMAGE)), context)
+            convertFromDrawableNameToId(this.getStr(IMAGE), context)
 
     //Custom extension so writing "null" every time becomes unnecessary
     fun SQLiteDatabase.doQuery(q: String) = this.rawQuery(q, null)
@@ -85,65 +94,72 @@ internal class DBManager(private val mContext: Context,
     //Assembles and returns Reserve object from Database by Id (FASTER)
     fun getReserve(id: Int, table: String = TABLE): Reserve {
         val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
+        val gcursor = DataBase.doQuery("SELECT * FROM $GENERAL_TABLE WHERE $ID = $id")
         try {
             cursor.moveToFirst()
+            gcursor.moveToFirst()
+
             return Reserve(
-                    cursor.getInt(cursor.getColumnIndex(ID)),
-                    cursor.getInt(cursor.getColumnIndex(DIFFICULTY)),
-                    cursor.getString(cursor.getColumnIndex(NAME)),
-                    cursor.getString(cursor.getColumnIndex(DESCRIPTION)),
-                    cursor.getString(cursor.getColumnIndex(FLORA)),
-                    cursor.getString(cursor.getColumnIndex(FAUNA)),
-                    cursor.getString(cursor.getColumnIndex(EQUIPMENT)),
-                    cursor.getString(cursor.getColumnIndex(EXTRATAGS)),
-                    LatLng(cursor.getDouble(cursor.getColumnIndex(LATITUDE)),
-                            cursor.getDouble(cursor.getColumnIndex(LONGITUDE))),
-                    cursor.getImageId()
+                    cursor.getInt(ID),
+                    gcursor.getInt(DIFFICULTY),
+                    cursor.getStr(NAME),
+                    cursor.getStr(DESCRIPTION),
+                    cursor.getStr(FLORA),
+                    cursor.getStr(FAUNA),
+                    cursor.getStr(EQUIPMENT),
+                    cursor.getStr(EXTRATAGS),
+                    LatLng(gcursor.getDouble(LATITUDE),
+                           gcursor.getDouble(LONGITUDE)),
+                    gcursor.getImageId()
             )
         } catch (e: Exception) {
             Log.println(Log.ERROR, "database", "Could not load Reserve from cursor")
             return Reserve()
         } finally {
             cursor.close()
+            gcursor.close()
         }
     }
 
     fun getReserveCard(id: Int, table: String = TABLE): ReserveCard {
-        val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT $NAME FROM $table WHERE $ID = $id")
+        val gcursor = DataBase.doQuery("SELECT $IMAGE, $TYPE FROM $GENERAL_TABLE WHERE $ID = $id")
         try{
             cursor.moveToFirst()
+            gcursor.moveToFirst()
             return ReserveCard(
                     id,
-                    cursor.getString(cursor.getColumnIndex(NAME)),
-                    convertFromDrawableNameToId(cursor.getString(cursor.getColumnIndex(IMAGE))
-                    )//TODO icon id
-            )
+                    cursor.getStr(NAME),
+                    gcursor.getImageId(),
+                    gcursor.getInt(TYPE))
         } catch (e: Exception){
             Log.println(Log.ERROR, "database", "Could not load ReserveCard from cursor")
             return ReserveCard()
         } finally {
             cursor.close()
+            gcursor.close()
         }
     }
 
     //Load all reserveCards from DB
     fun getAllReserveCards(table: String = TABLE): ArrayList<ReserveCard> {
         val results = ArrayList<ReserveCard>(rowCount)
-        val cursor = DataBase.doQuery("SELECT * FROM $table")
+        val cursor = DataBase.doQuery("SELECT $NAME FROM $table")
+        val gcursor = DataBase.doQuery("SELECT $IMAGE, $TYPE FROM $GENERAL_TABLE")
         try{
-            if(cursor.moveToFirst()){
+            if(cursor.moveToFirst() && gcursor.moveToFirst()){
                 var index = 0
                 do {
                     results.add(
-                        ReserveCard(
-                                index,
-                                cursor.getString(cursor.getColumnIndex(NAME)),
-                                convertFromDrawableNameToId(cursor.getString(cursor.getColumnIndex(IMAGE)))
-                                //TODO icon id
-                        )
+                            ReserveCard(
+                                    index,
+                                    cursor.getStr(NAME),
+                                    gcursor.getImageId(),
+                                    gcursor.getInt(TYPE)
+                            )
                     )
                     index++
-                } while (cursor.moveToNext())
+                } while (cursor.moveToNext() && gcursor.moveToNext())
             }
             return results
         } catch (e: Exception){
@@ -151,6 +167,7 @@ internal class DBManager(private val mContext: Context,
             return results
         } finally {
             cursor.close()
+            gcursor.close()
         }
     }
 
@@ -259,7 +276,6 @@ internal class DBManager(private val mContext: Context,
 
     @Throws(SQLException::class)
     fun openDataBase() {
-        this.close()
         DataBase = this.readableDatabase
     }
 

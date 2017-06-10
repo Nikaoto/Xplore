@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,7 +51,7 @@ public class MapsActivity extends AppCompatActivity
     Marker currLocationMarker;
     Marker reserveMarker;
     SharedPreferences prefs;
-    Button KMLButton;
+    ImageButton KMLButton;
 
     protected GoogleApiClient googleApiClient;
     protected LocationRequest locationRequest;
@@ -87,7 +88,7 @@ public class MapsActivity extends AppCompatActivity
                 createNetErrorDialog();
             }
         }
-        KMLButton = (Button) findViewById(R.id.KMLButton);
+        KMLButton = (ImageButton) findViewById(R.id.KMLButton);
         KMLButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

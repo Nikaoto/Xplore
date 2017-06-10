@@ -31,6 +31,7 @@
     <string name="options_lang">ენა</string>
     <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
     <string name="show_on_map">იხილეთ რუკაზე</string>
+    <string name="lib_description_header">აღწერა</string>
     <string name="lib_fauna_header">ფაუნა</string>
     <string name="lib_flora_header">ფლორა</string>
     <string name="lib_tags_header">ტეგები</string>

@@ -1,8 +1,5 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -35,4 +32,39 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/colorAccent</item>
     </style>
+
+    <style name="InfoCardViewHeader">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/colorDialect</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <style name="InfoCardViewTextView">
+        <item name="android:textColor">@color/colorGreyText</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:lineSpacingExtra">6dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ReserveInfoCardView">
+        <item name="android:layout_marginLeft">9dp</item>
+        <item name="android:layout_marginRight">9dp</item>
+        <item name="android:layout_marginTop">7dp</item>
+        <item name="android:layout_marginBottom">7dp</item>
+        <item name="contentPaddingLeft">12dp</item>
+        <item name="contentPaddingRight">12dp</item>
+        <item name="contentPaddingBottom">12dp</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="ReserveTitleTextAppearance">
+        <item name="android:shadowColor">@color/Black</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">6</item>
+    </style>
+
 </resources>

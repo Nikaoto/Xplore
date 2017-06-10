@@ -2,22 +2,30 @@ package com.explorify.xplore.xplore
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentActivity
+import android.support.v4.view.ViewCompat
 
-import kotlinx.android.synthetic.main.reserve_info.*
+import kotlinx.android.synthetic.main.reserve_info2.*
 
 /**
  * Created by nikao on 11/16/2016.
  */
 
-class ReserveInfoFragment() : FragmentActivity() {
+class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedListener {
 
-    internal val mActivity = this
+    private val IMAGE_SHOW_PERCENT = 45
+    private val mActivity = this
+    private var maxScrollSize = 0
+    private var isImageHidden = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.reserve_info)
+        setContentView(R.layout.reserve_info2)
 
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        appBar.addOnOffsetChangedListener(this)
         //Sets up Layout acording to info from chosen Reserve
         val chosenReserve = intent.getIntExtra("chosen_element", 0)
         setupLayout(LoadReserve(chosenReserve))
@@ -31,6 +39,24 @@ class ReserveInfoFragment() : FragmentActivity() {
         return dbManager.getReserve(resId)
     }
 
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        if(maxScrollSize == 0)
+            maxScrollSize = appBarLayout.totalScrollRange
+
+        val currentScrollPercentage = (Math.abs(verticalOffset)) * 100 / maxScrollSize
+
+        if(currentScrollPercentage >= IMAGE_SHOW_PERCENT)
+            if(!isImageHidden){
+                isImageHidden = true
+                ViewCompat.animate(reserveIconFAB).scaleY(0f).scaleX(0f).start()
+            }
+        if(currentScrollPercentage < IMAGE_SHOW_PERCENT)
+            if(isImageHidden){
+                isImageHidden = false
+                ViewCompat.animate(reserveIconFAB).scaleY(1f).scaleX(1f).start()
+            }
+    }
+
     override fun onResume() {
         super.onResume()
         if (MapFragment.MAPS_CLOSED) {
@@ -39,8 +65,8 @@ class ReserveInfoFragment() : FragmentActivity() {
     }
 
     fun setupLayout(reserve: Reserve) {
-        headerButton.setBackgroundResource(reserve.imageId)
-        headerButton.text = reserve.name
+        collapsingToolbar.setTitle(reserve.name)
+        reserveImageView.setBackgroundResource(reserve.imageId)
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna
         floraTextView.text = reserve.flora

@@ -8,8 +8,8 @@ class ReserveCard(
         val id: Int,
         val name: String,
         val imageId: Int,
-        val iconId: Int = 0
+        val iconId: Int
 ) {
     //Empty constructor
-    constructor() : this(-1, "", -1)
+    constructor() : this(-1, "", -1, -1)
 }
