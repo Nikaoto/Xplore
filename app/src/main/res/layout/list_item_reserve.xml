@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/reserveCardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="160dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp"
@@ -24,21 +24,21 @@
 
         <ImageView
             android:id="@+id/reserveIconImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignRight="@id/reserveImageView"
-            android:layout_below="@id/reserveImageView"
-            android:layout_marginTop="10dp" />
+            android:layout_alignParentBottom="true"/>
 
         <TextView
             android:id="@+id/reserveNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/reserveImageView"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="@dimen/reserve_cardview_int_margin"
             android:layout_toLeftOf="@id/reserveIconImageView"
+            android:layout_below="@id/reserveImageView"
+            android:layout_marginRight="@dimen/reserve_cardview_int_margin"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="2dp"
             android:textAllCaps="true"
             android:fontFamily="sans-serif-medium"
             android:textSize="21sp" />

@@ -24,17 +24,17 @@ import kotlinx.android.synthetic.main.search_layout2.progressBar
 
 class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
-    private var resultIDs: List<Int>? = ArrayList()
-    private val answerCards = ArrayList<ReserveCard>()
     private val dbManager: DBManager by lazy { DBManager(activity) }
-    private val reserveCards by lazy { dbManager.getAllReserveCards() }
-    private var firstLoad = true
+    private val answerCards = ArrayList<ReserveCard>()
+    private val iconList = arrayListOf<Int>(
+            R.drawable.ic_tent_grey600_36dp,
+            R.drawable.ic_nature_people_grey600_36dp,
+            R.drawable.ic_castle_grey600_36dp,
+            R.drawable.ic_paw_grey600_36dp
+    )
 
-
-
-    //TODO wait for nav bar animation to close, then start loading
-
-
+    private var reserveCards = ArrayList<ReserveCard>()
+    private var resultIDs: List<Int>? = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_layout2, container, false)
@@ -43,9 +43,13 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        firstDisplayData()
     }
 
     fun init(){
+        //Starting the loading animation
+        progressBar.visibility = View.VISIBLE
+
         //setting up searchbar
         searchEditText.setSingleLine(true)
         searchEditText.setHint(R.string.search_hint)
@@ -57,35 +61,29 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
         //Setting layoutmanager
         resultsRV.layoutManager = LinearLayoutManager(activity)
+    }
 
-        //Starting the loading animation
-        //progressBar.visibility = View.VISIBLE
+    override fun onResume() {
+        super.onResume()
     }
 
     fun firstDisplayData()
     {
         dbManager.openDataBase()
 
-        //Creating adapter
-        val adapter = RVadapter(reserveCards, activity)
-        resultsRV.adapter = adapter
-
-/*        //Load all reserveCards dynamically
-        Thread(Runnable {
-            resultsRV.post { adapter.notifyDataSetChanged() }
-            progressBar.post { progressBar.visibility = View.INVISIBLE }
-        }).start()*/
+        //Load all reserveCards in a separate thread
+          Thread(Runnable {
+              //Loading data
+              reserveCards = dbManager.getAllReserveCards()
+              //Creating & setting adapter
+              val adapter = RVadapter(reserveCards, activity, iconList)
+              resultsRV.post { resultsRV.adapter = adapter }
+              progressBar.post { progressBar.visibility = View.INVISIBLE }
+        }).start()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(firstLoad){
-            firstLoad = false
-            firstDisplayData()
-        }
-    }
-
-    class RVadapter(val results: List<ReserveCard>, val activity: Activity) : RecyclerView.Adapter<RVadapter.ResultViewHolder>(){
+    class RVadapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
+        : RecyclerView.Adapter<RVadapter.ResultViewHolder>(){
 
         class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             internal val reserveName: TextView
@@ -108,7 +106,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
             holder.reserveName.setText(results[position].name)
             holder.reserveImage.setImageResource(results[position].imageId)
-            //holder.reserveImage.setImageResource(results[position].iconId)
+            holder.reserveIcon.setImageResource(icons[results[position].iconId])
             holder.itemView.setOnClickListener {
                 General.HideKeyboard(activity)
                 General.openReserveInfoFragment(results[position].id, activity)
@@ -163,7 +161,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
             }
 
             //Setting adapter
-            resultsRV.adapter = RVadapter(answerCards, activity)
+            resultsRV.adapter = RVadapter(answerCards, activity, iconList)
         }
     }
 }

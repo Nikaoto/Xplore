@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.FragmentManager;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,9 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Locale;
 
@@ -29,22 +27,17 @@ public class MainActivity extends AppCompatActivity
     public static final String ENGLISH_LANG_CODE = "en";
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
+    public static final int RESERVE_NUM = 9; //TODO change to dbManager.getRowCount()
 
-    public static int[] navMenuItems = new int[6];
-    public static int previousNavItemId;
-    public static Menu menu;
-    public static final int RESERVE_NUM = 9;
-
+    private DrawerLayout drawer;
+    private int[] navMenuItems = new int[6];
+    private int previousNavItemId;
     private int backstackEntryCount = 1;
     private NavigationView navigationView;
     private FragmentManager fm;
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences prefs;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    private Menu menu; //TODO check if this is needed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +93,8 @@ public class MainActivity extends AppCompatActivity
 
         MapFragment.MAPS_CLOSED = false;
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -221,22 +215,40 @@ public class MainActivity extends AppCompatActivity
         return c;
     }*/
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_first_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).addToBackStack("1").commit();
-        } else if (id == R.id.nav_second_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new LibraryFragment()).addToBackStack("2").commit();
-        } else if (id == R.id.nav_third_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new MapFragment()).addToBackStack("3").commit();
-        } else if (id == R.id.nav_fourth_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new GroupMenuFragment()).addToBackStack("4").commit();
-        } else if (id == R.id.nav_fifth_layout) {
-            fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).addToBackStack("5").commit();
+
+        //TODO change the nav item names
+        switch (id){
+            case R.id.nav_first_layout : {
+                fm.beginTransaction().replace(R.id.fragment_container, new ProfileFragment())
+                        .addToBackStack("1").commit();
+                break;
+            }
+            case R.id.nav_second_layout : {
+                fm.beginTransaction().replace(R.id.fragment_container, new LibraryFragment())
+                        .addToBackStack("2").commit();
+                break;
+            }
+            case R.id.nav_third_layout : {
+                fm.beginTransaction().replace(R.id.fragment_container, new MapFragment())
+                        .addToBackStack("3").commit();
+                break;
+            }
+            case R.id.nav_fourth_layout : {
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, new GroupMenuFragment())
+                        .addToBackStack("4").commit();
+                break;
+            }
+            case R.id.nav_fifth_layout : {
+                fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment())
+                        .addToBackStack("4").commit();
+                break;
+            }
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        getFragmentManager().executePendingTransactions();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

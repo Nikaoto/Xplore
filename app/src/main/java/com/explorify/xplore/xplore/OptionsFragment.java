@@ -97,7 +97,6 @@ public class OptionsFragment extends Fragment implements View.OnClickListener
         }
 
         DisableChosenLanguageButton();
-        getFragmentManager().popBackStack();
         getActivity().recreate();
     }
 

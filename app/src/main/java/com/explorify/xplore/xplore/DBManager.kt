@@ -110,8 +110,8 @@ internal class DBManager(private val mContext: Context,
                     cursor.getStr(EXTRATAGS),
                     LatLng(gcursor.getDouble(LATITUDE),
                            gcursor.getDouble(LONGITUDE)),
-                    gcursor.getImageId()
-            )
+                    gcursor.getImageId(),
+                    gcursor.getInt(TYPE))
         } catch (e: Exception) {
             Log.println(Log.ERROR, "database", "Could not load Reserve from cursor")
             return Reserve()

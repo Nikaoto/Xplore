@@ -7,14 +7,14 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class Reserve {
-    private int id, imageId;
+    private int id, imageId, iconId;
     private int difficulty; //scale of 1 to 10 lower means easier
     private String name, description, flora, fauna, equipment, extratags;
     private LatLng location;
 
     //Primary Constructor
     Reserve(int id, int difficulty, String name, String description, String flora, String fauna,
-            String equipment, String extratags, LatLng location, int imageId) {
+            String equipment, String extratags, LatLng location, int imageId, int iconId) {
         this.id = id;
         this.difficulty = difficulty;
         this.name = name;
@@ -25,10 +25,19 @@ public class Reserve {
         this.extratags = extratags;
         this.location = location;
         this.imageId = imageId;
+        this.iconId = iconId;
     }
 
     //Secondary Constructor
     Reserve(){ }
+
+    public int getIconId() {
+        return iconId;
+    }
+
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
+    }
 
     int getId()
     {
