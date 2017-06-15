@@ -29,18 +29,23 @@ import kotlinx.android.synthetic.main.register_layout.*
 
 class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
+    private val ageRestriction: Int = 16
+
     private var bYear: Int = 0
     private var bMonth: Int = 0
+
     private var bDay: Int = 0
-    private var tempTimeStamp: Long? = null
+    private var tempTimeStamp: Long = 0
+
+    init {
+        getServerEpoch()
+    }
 
     internal val DBref = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_layout)
-
-        getServerEpoch()
 
         //Getting User info from SignInActivity
         val userId = intent.getStringExtra("userId")
@@ -56,10 +61,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Birth date selector
         bdateTextView.setOnClickListener {
             //Creating new DialogFragment
-            val fragment = DatePickerFragment()
+            val fragment = com.explorify.xplore.xplore.DatePickerDialogFragment(this, tempTimeStamp, ageRestriction)
             fragment.show(fragmentManager, "datePicker")
         }
-
         //TODO CHOOSE GALLERY IMAGE OR TAKE PHOTO
         //TODO AI check for face in photo?
         if(userProfilePicUrl != "") {
@@ -77,7 +81,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 addUserEntryToDataBase(
                         UploadUser(userId, fnameEditText.str(), lnameEditText.str(),
                                 numEditText.str(), userEmail,
-                                General.GetDateLong(bYear, bMonth, bDay), userProfilePicUrl)
+                                General.getDateLong(bYear, bMonth, bDay), userProfilePicUrl)
                 )
             }
         }
@@ -92,16 +96,16 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
             //int nowDay = cal.get(Calendar.DAY_OF_MONTH);
 
             //Checking if age is OK
-            val minAge = resources.getInteger(R.integer.limit_age)
 
-            if (nowYear - year >= minAge) {
+            if (nowYear - year >= ageRestriction) {
                 bYear = year
-                bMonth = month + 1
+                bMonth = month
                 bDay = day
 
                 bdateTextView.text = "$bYear/$bMonth/$bDay"
             } else
-                Toast.makeText(this@RegisterActivity, "You must be of age $minAge to use Xplore",
+                Toast.makeText(this@RegisterActivity,
+                        "You must be of age $ageRestriction to use Xplore",
                         Toast.LENGTH_SHORT).show() //TODO string resources
         } else
             General.createNetErrorDialog(this@RegisterActivity)
@@ -154,7 +158,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun getServerEpoch() {
+     fun getServerEpoch() {
         val ref = FirebaseDatabase.getInstance().reference
         val dateValue = HashMap<String, Any>()
         dateValue.put("timestamp", ServerValue.TIMESTAMP)
@@ -164,8 +168,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 tempTimeStamp = dataSnapshot.getValue(Long::class.java)
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
+            override fun onCancelled(databaseError: DatabaseError) { }
         })
     }
 

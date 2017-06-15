@@ -2,8 +2,8 @@ package com.explorify.xplore.xplore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -22,10 +23,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,12 +43,12 @@ import static com.explorify.xplore.xplore.General.currentUserId;
  * Created by nikao on 2/18/2017.
  */
 
-public class CreateGroupFragment extends Fragment {
+public class CreateGroupFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
 
     public static ArrayList<User> invitedMembers = new ArrayList<>();
-    public static DateSetup dateSetup;
 
+    //Limits and restrictions to fields
     private static final int SEARCH_DESTINATION_ACODE = 1;
     private static final int INVITE_USERS_ACODE = 4;
     private static final int CHOSEN_DEST_DEFAULT_VAL = -1;
@@ -55,14 +63,25 @@ public class CreateGroupFragment extends Fragment {
     private int chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
     private int experienceAns = EXPERIENCE_ANS_DEFAULT_VAL;
 
+    //Variables for finding out which date user is selecting (start / end)
+    private static String SELECTION_NONE = "";
+    private static String SELECTION_START = "start";
+    private static String SELECTION_END = "end";
+    private String selectingDate = SELECTION_NONE;
+
+
+    //TODO Make a new class for holding the date after switching to UNIX time
+    private Long globalTimeStamp = 0L;
+    private int sYear = 0, sMonth, sDay, eYear = 0, eMonth, eDay;
+
+
     private int selectedMemberPos;
-    private Context context;
     private RelativeLayout memberLayout;
     private RecyclerView memberRecList;
 
     EditText groupPrefs_text, extraInfo_text;
     ImageView prefs_help, info_help;
-    String gPrefs, eInfo;
+    String groupPrefs, extraInfo;
     User leader;
     TextView startDate_text, endDate_text, member_fname_text, member_lname_text, member_age_text, member_tel_text;
     Button chooseButton, reserveButton, inviteButton, uninviteButton, doneButton, startDate, endDate;
@@ -74,8 +93,9 @@ public class CreateGroupFragment extends Fragment {
 
     private class UploadGroup extends Group
     {
-        public UploadGroup(String group_id, boolean experienced, long start_date, long end_date, String destination_id,
-                           String extra_info, String group_preferences, ArrayList<String> member_ids) {
+        public UploadGroup(String group_id, boolean experienced, long start_date, long end_date,
+                           String destination_id, String extra_info, String group_preferences,
+                           ArrayList<String> member_ids) {
             this.group_id = group_id;
             this.experienced = experienced;
             this.start_date = start_date;
@@ -99,7 +119,6 @@ public class CreateGroupFragment extends Fragment {
             result.put("member_ids", this.member_ids);
             return result;
         }
-
     }
 
 
@@ -108,10 +127,9 @@ public class CreateGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.create_group,container,false);
 
-        context = getActivity();
+        getServerEpoch();
 
         //TODO move this stuff to onViewCreated
-        dateSetup = new DateSetup();
 
         InitLayout();
 
@@ -124,37 +142,59 @@ public class CreateGroupFragment extends Fragment {
         return myView;
     }
 
+    private void getServerEpoch() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        HashMap<String, Map<String, String>> dateValue = new HashMap<>();
+        dateValue.put("timestamp", ServerValue.TIMESTAMP);
+        ref.child("date").setValue(dateValue);
+        ref.child("date").child("timestamp").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        globalTimeStamp = dataSnapshot.getValue(Long.class);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        if(!General.isNetConnected(context))
-        {
-            General.createNetErrorDialog(context);
+        if(!General.isNetConnected(getActivity())) {
+            General.createNetErrorDialog(getActivity());
         }
-        else {
-
-            ApplyDates();
-
-            if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) { //TODO remove table arguments after converting to kotlin
-                reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, context, General.DB_TABLE));
-                reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
-            }
+        else if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) {//TODO remove table arguments after converting to kotlin
+            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), General.DB_TABLE));
+            reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
         }
     }
 
-    private void ApplyDates() {
-        if(dateSetup.isConfirmedS())
-            startDate_text.setText(dateSetup.getsYear()+"/"+dateSetup.getsMonth()+"/"+dateSetup.getsDay());
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        if(General.isNetConnected(getActivity())) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(globalTimeStamp));
 
-        if(dateSetup.isConfirmedE())
-            endDate_text.setText(dateSetup.geteYear()+"/"+dateSetup.geteMonth()+"/"+dateSetup.geteDay());
+            if(selectingDate.equals(SELECTION_START)){
+                selectingDate = SELECTION_NONE;
+                sYear = year; sMonth = month; sDay = day;
+                startDate_text.setText(sYear+"/"+sMonth+"/"+sDay);
+            }
+            else if(selectingDate.equals(SELECTION_END)){
+                selectingDate = SELECTION_NONE;
+                eYear = year; eMonth = month; eDay = day;
+                endDate_text.setText(eYear+"/"+eMonth+"/"+eDay);
+            }
+        } else General.createNetErrorDialog(getActivity());
     }
 
     private void InitLayout() {
         //Member List RecyclerView
         memberRecList = (RecyclerView) myView.findViewById(R.id.createGroup_member_list); //NOTE: uncomment in create_group.xml
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         memberRecList.setHasFixedSize(true);
         memberRecList.setLayoutManager(layoutManager);
 
@@ -185,8 +225,8 @@ public class CreateGroupFragment extends Fragment {
         info_help = (ImageView) myView.findViewById(R.id.extraInfo_help);
 
         //Tint Images
-        prefs_help.setColorFilter(ContextCompat.getColor(context,R.color.colorGrey));
-        info_help.setColorFilter(ContextCompat.getColor(context,R.color.colorGrey));
+        prefs_help.setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorGrey));
+        info_help.setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorGrey));
 
         //Texts
         startDate_text = (TextView) myView.findViewById(R.id.dateStart_text);
@@ -200,7 +240,7 @@ public class CreateGroupFragment extends Fragment {
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,SearchDestinationActivity.class);
+                Intent intent = new Intent(getActivity(),SearchDestinationActivity.class);
                 startActivityForResult(intent, SEARCH_DESTINATION_ACODE);
             }
         });
@@ -209,32 +249,36 @@ public class CreateGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(chosenDestId != CHOSEN_DEST_DEFAULT_VAL)
-                    General.openReserveInfoFragment(chosenDestId, context);
+                    General.openReserveInfoFragment(chosenDestId, getActivity());
             }
         });
 
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateSetup.setChoice(true);
-                Intent intent = new Intent(context,CalendarActivity.class);
-                context.startActivity(intent);
+                if(globalTimeStamp != 0L) {
+                    selectingDate = SELECTION_START;
+                    new DatePickerDialogFragment(CreateGroupFragment.this, globalTimeStamp, 0)
+                            .show(getFragmentManager(), "startDate");
+                }
             }
         });
 
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateSetup.setChoice(false);
-                Intent intent = new Intent(context,CalendarActivity.class);
-                context.startActivity(intent);
+                if(globalTimeStamp != 0L) {
+                    selectingDate = SELECTION_END;
+                    new DatePickerDialogFragment(CreateGroupFragment.this, globalTimeStamp, 0)
+                            .show(getFragmentManager(), "endDate");
+                }
             }
         });
 
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, SearchUsersActivity.class);
+                Intent intent = new Intent(getActivity(), SearchUsersActivity.class);
                 startActivityForResult(intent, INVITE_USERS_ACODE);
             }
         });
@@ -278,24 +322,31 @@ public class CreateGroupFragment extends Fragment {
 
     private UploadGroup CreateGroup(String key)
     {
-        //get member IDs
+        //getting member IDs
         ArrayList<String> member_ids = new ArrayList<>();
         member_ids.add(String.valueOf(currentUserId));
-        for(int i = 0; i<invitedMembers.size(); i++)
-        {
+
+        for(int i = 0; i<invitedMembers.size(); i++) {
             member_ids.add(invitedMembers.get(i).getId());
         }
 
         //get experience question
         final boolean exp = (experienceAns != EXPERIENCE_ANS_NO_EXP);
 
-        return new UploadGroup(key, exp, dateSetup.getStart(), dateSetup.getEnd(), String.valueOf(chosenDestId),
-                eInfo, gPrefs, member_ids);
+        return new UploadGroup(
+                key,    //Firebase Unique Group Key
+                exp,    //Group Experienced Boolean
+                General.getDateLong(sYear, sMonth, sDay),   //Start Date
+                General.getDateLong(eYear, eMonth, eDay),   //End Date
+                String.valueOf(chosenDestId),     //Chosen Destination Id
+                extraInfo,     //Group Extra Info
+                groupPrefs,    //Group Preferences
+                member_ids);   //Group Member Ids
     }
 
     private void UploadGroupData()
     {
-        Toast.makeText(context,"Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        Toast.makeText(getActivity(),"Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
         String key = groupsRef.child("groups").push().getKey();
         Map<String, Object> groupData = CreateGroup(key).toMap();
 
@@ -303,7 +354,7 @@ public class CreateGroupFragment extends Fragment {
         childUpdates.put("/groups/"+key, groupData);
 
         groupsRef.updateChildren(childUpdates);
-        Toast.makeText(context,"Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        Toast.makeText(getActivity(),"Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
     }
 
     @Override
@@ -325,14 +376,14 @@ public class CreateGroupFragment extends Fragment {
     private void PopulateMembersList()
     {
         memberRecList.setVisibility(View.VISIBLE);
-        final MemberListAdapter adapter = new MemberListAdapter(context, invitedMembers, memberLayout);
+        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers, memberLayout);
         memberRecList.setAdapter(adapter);
 
         uninviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedMemberPos = adapter.GetSelectedMemberPos();
-                Toast.makeText(context, R.string.member_removed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.member_removed, Toast.LENGTH_SHORT).show();
                 invitedMembers.remove(selectedMemberPos);
                 adapter.notifyItemRemoved(selectedMemberPos);
                 adapter.notifyItemRangeChanged(selectedMemberPos, invitedMembers.size());
@@ -347,13 +398,13 @@ public class CreateGroupFragment extends Fragment {
 
     private void GatherData()
     {
-        gPrefs = groupPrefs_text.getText().toString();
-        eInfo = extraInfo_text.getText().toString();
+        groupPrefs = groupPrefs_text.getText().toString();
+        extraInfo = extraInfo_text.getText().toString();
     }
 
     private void ShowHelp(int title, int text, int butt_text, Resources resources)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage(resources.getString(text))
                 .setTitle(resources.getString(title))
@@ -366,7 +417,7 @@ public class CreateGroupFragment extends Fragment {
 
     private boolean CheckFields()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton(R.string.okay, null);
 
         if(chosenDestId == CHOSEN_DEST_DEFAULT_VAL) {
@@ -374,24 +425,18 @@ public class CreateGroupFragment extends Fragment {
                     .show();
             return false;
         }
-        else if(!dateSetup.confirmedS) {
+        else if(sYear == 0) {
             builder.setMessage(R.string.date_start_field_incomplete)
                     .show();
             return false;
         }
-        else if(!dateSetup.confirmedE) {
+        else if(eYear == 0) {
             builder.setMessage(R.string.date_end_field_incomplete)
                     .show();
             return false;
         }
-        else if(dateSetup.getStart() > dateSetup.getEnd()) {
+        else if(General.getDateLong(sYear, sMonth, sDay) > General.getDateLong(eYear, eMonth, eDay)){
             builder.setMessage(R.string.date_invalid)
-                    .show();
-            return false;
-        }
-        else if(dateSetup.getStart() < General.GetCurrentDate()
-                || dateSetup.getEnd() < General.GetCurrentDate()){
-            builder.setMessage(R.string.date_past_invalid)
                     .show();
             return false;
         }
@@ -400,14 +445,19 @@ public class CreateGroupFragment extends Fragment {
                     .show();
             return false;
         }
-        else if( gPrefs.length() < G_PREFS_CHAR_MIN || gPrefs.length() > G_PREFS_CHAR_MAX
-                || eInfo.length() < E_INFO_CHAR_MIN || eInfo.length() > E_INFO_CHAR_MAX) {
+        else if( groupPrefs.length() < G_PREFS_CHAR_MIN || groupPrefs.length() > G_PREFS_CHAR_MAX
+                || extraInfo.length() < E_INFO_CHAR_MIN || extraInfo.length() > E_INFO_CHAR_MAX) {
          builder.setMessage(R.string.text_field_incomplete)
                  .show();
             return false;
+        } else {
+            if(General.getDateLong(sYear, sMonth, sDay) < General.getDateLong(globalTimeStamp) ||
+                    General.getDateLong(eYear, eMonth, eDay) < General.getDateLong(globalTimeStamp)) {
+                builder.setMessage(R.string.date_past_invalid).show();
+                return false;
+            } else
+                return true;
         }
-        else
-            return true;
     }
 
     @Override

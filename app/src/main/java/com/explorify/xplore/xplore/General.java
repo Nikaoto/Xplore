@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -67,20 +65,20 @@ public class General {
         context.startActivity(intent);
     }
 
-    public static int GetCurrentDate()
-    {
-        Calendar calendar = Calendar.getInstance();
-
-        return GetDateLong(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH)+1,
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
+    //TODO remove this after switching to UNIX time
+    public static int getDateLong(int year, int month, int day) {
+        return year*10000 + month*100 + day;
     }
 
-    public static int GetDateLong(int year, int month, int day)
-    {
-        return year*10000 + month*100 + day;
+    //TODO remove this after switching to UNIX time
+    public static int getDateLong(Long timeStamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(timeStamp));
+        int y = calendar.get(Calendar.YEAR);
+        int m = calendar.get(Calendar.MONTH) + 1;
+        int d = calendar.get(Calendar.DAY_OF_MONTH);
+
+        return getDateLong(y, m, d);
     }
 
     public static boolean isUserSignedIn()

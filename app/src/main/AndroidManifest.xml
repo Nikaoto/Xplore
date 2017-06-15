@@ -41,9 +41,6 @@
             android:label="@string/view_group"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.explorify.xplore.xplore.CalendarActivity"
-            android:label="@string/calendar" />
-
         <activity android:name="com.explorify.xplore.xplore.SearchDestinationActivity"
             android:label="@string/choose_destination"
             android:screenOrientation="portrait" />
