@@ -18,7 +18,8 @@
         The Xplore Team: \n\t\tნიკოლოზ ოთიაშვილი\n\t\tთიო გაბუნია\n\t\tაჩიკო წერეთელი\n\t\tსანდრო
         მოსაშვილი\n\t\tბექა კაკაბაძე
     </string>
-    <string name="search_hint">მოძებნეთ ტეგები</string>
+    <string name="search_tags_hint">მოძებნეთ ტეგები</string>
+    <string name="search_name_hint">მოძებნეთ სახელით</string>
     <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
     <string name="nav_profile_title">პროფილი</string>
     <string name="nav_lib_title">ბიბლიოთეკა</string>

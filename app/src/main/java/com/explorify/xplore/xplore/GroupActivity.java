@@ -259,7 +259,7 @@ public class GroupActivity extends Activity {
 
         reserveButton.setText(reserveName);
         reserveButton.setBackgroundResource(dbManager.getImageId(
-                reserveID, this, General.DB_TABLE)
+                reserveID, this, dbManager.getGENERAL_TABLE())
         );
     }
 

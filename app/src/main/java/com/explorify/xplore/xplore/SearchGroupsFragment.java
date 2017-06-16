@@ -193,7 +193,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 GroupButton tempGroupButton = new GroupButton(
                                         group.getGroup_id(), //Group ID
                                         dbManager.getImageId( //Reserve Image
-                                                tempDestId, getActivity(), General.DB_TABLE
+                                                tempDestId, getActivity(), dbManager.getGENERAL_TABLE()
                                         ),
                                         tempUserImageUrl, //Leader Image URL
                                         tempDestId, //Reserve ID

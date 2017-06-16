@@ -18,7 +18,8 @@
         The Xplore Team: \n\t\tNikoloz Otiashvili\n\t\tTio Gabunia\n\t\tAchiko Tsereteli\n\t\tSandro
         Mosashvili\n\t\tBeka Kakabadze
     </string>
-    <string name="search_hint">Search Tags</string>
+    <string name="search_tags_hint">Search Tags</string>
+    <string name="search_name_hint">Search by name</string>
     <string name="search_groups_hint">Search Groups</string>
     <string name="nav_profile_title">Profile</string>
     <string name="nav_lib_title">Library</string>

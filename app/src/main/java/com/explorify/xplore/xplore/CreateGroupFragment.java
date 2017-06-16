@@ -167,7 +167,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             General.createNetErrorDialog(getActivity());
         }
         else if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) {//TODO remove table arguments after converting to kotlin
-            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), General.DB_TABLE));
+            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
         }
     }

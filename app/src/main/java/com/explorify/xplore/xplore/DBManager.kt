@@ -242,11 +242,10 @@ internal class DBManager(private val mContext: Context,
             convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
 
     //Finds the Id of an entry by every field in Database and returns it
-    fun getIdFromQuery(query: String, table: String): List<Int>? {
+    fun getIdFromQuery(query: String, table: String): List<Int> {
         val answers = ArrayList<Int>()
 
         //TODO add categorized search
-        //TODO add all tags search
         //Use string query to search for reserves and output IDs
         val cursor = DataBase.doQuery("SELECT $ID FROM $table WHERE $NAME"+
                 " LIKE '%$query%'"+
@@ -260,26 +259,45 @@ internal class DBManager(private val mContext: Context,
                 do {
                     answers.add(cursor.getInt(0))
                 } while (cursor.moveToNext())
-                return answers
             }
-            else return null
         }
         catch (e: Exception){
             Log.println(Log.ERROR, "database", "getIdFromQuery failed")
-            return null
         }
         finally {
             cursor.close()
+            return answers
         }
     }
 
+    //Searching for reserve IDs by name
+    fun getIdFromName(nameQuery: String, table: String = TABLE): List<Int> {
+        val answers = ArrayList<Int>()
+
+        //Searching the database by names
+        val cursor = DataBase.doQuery("SELECT $ID FROM $table WHERE $NAME LIKE '%$nameQuery%'")
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    answers.add(cursor.getInt(0))
+                } while (cursor.moveToNext())
+            }
+        }
+        catch (e: Exception){
+            Log.println(Log.ERROR, "database", "getIdFromName failed")
+        }
+        finally {
+            cursor.close()
+            return answers
+        }
+    }
 
     @Throws(SQLException::class)
     fun openDataBase() {
         DataBase = this.readableDatabase
     }
 
-    override fun onCreate(sqLiteDatabase: SQLiteDatabase) {}
+    override fun onCreate(sqLiteDatabase: SQLiteDatabase) { }
 
-    override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) {}
+    override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) { }
 }

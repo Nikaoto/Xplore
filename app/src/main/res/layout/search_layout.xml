@@ -8,7 +8,7 @@
         android:selectAllOnFocus="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="250dp"
-        android:hint="@string/search_hint"
+        android:hint="@string/search_tags_hint"
         android:maxLines="1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

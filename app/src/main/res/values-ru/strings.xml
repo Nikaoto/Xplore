@@ -18,7 +18,8 @@
         The Xplore Team: \n\t\tНиколоз Отиашвили\n\t\tТио Габуния\n\t\tАчико Церетели\n\t\tСандро
         Мосашвили\n\t\tБека Какабадзе
     </string>
-    <string name="search_hint">Искать Метки</string>
+    <string name="search_tags_hint">Искать Метки</string>
+    <string name="search_name_hint">Поиск по названию</string>
     <string name="search_groups_hint">Поиск Группы</string>
     <string name="nav_profile_title">Профиль</string>
     <string name="nav_lib_title">Библиотека</string>
