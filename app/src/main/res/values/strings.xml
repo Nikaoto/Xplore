@@ -55,9 +55,10 @@
     <string name="extra_info">დამატებით ინფო</string>
     <string name="loading_groups">იტვირთება ჯგუფები</string>
     <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
-    <string name="view_group">ჯგუფების ძებნა</string>
-    <string name="reputation_caps">რეპუტაცია</string>
+    <string name="view_group">ჯგუფების ნახვა</string>
+    <string name="reputation">რეპუტაცია</string>
     <string name="age">ასაკი</string>
+    <string name="birth_date">დაბადების თარიღი</string>
     <string name="tel">ტელ</string>
     <string name="choose_destination">ამოირჩიეთ მიმართულება</string>
     <string name="invite_members">დაპატიჟე</string>

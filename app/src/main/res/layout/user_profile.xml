@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/userProfileLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:background="@drawable/profile_picture_border"
+            android:layout_width="@dimen/group_leader_profile_wh"
+            android:layout_height="@dimen/group_leader_profile_wh"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/repTextView"
+            android:text="-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRepNumGrey"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="23sp"
+            android:layout_below="@id/profileImageView"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/repLabelTextView"
+            android:text="@string/reputation"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_below="@id/repTextView"
+            android:layout_centerHorizontal="true"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/imageProgressBar"
+            android:layout_width="@dimen/group_leader_profile_wh"
+            android:layout_height="@dimen/group_leader_profile_wh"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="21sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/birthDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="21sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/telTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="21sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="21sp"
+        android:layout_marginTop="6dp" />
+
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp">
+
+        <Button
+            android:id="@+id/logOutButton"
+            android:text="@string/log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            app:backgroundTint = "@color/colorAccent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="15dp"
+            android:textSize="20sp"
+            android:textAllCaps="true"/>
+
+    </RelativeLayout>
+</LinearLayout>

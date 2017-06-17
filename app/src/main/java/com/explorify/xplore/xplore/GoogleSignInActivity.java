@@ -43,9 +43,9 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 2;
     private static final int RC_REGISTER = 3;
 
+    public static GoogleApiClient googleApiClient;
     private FirebaseAuth auth;
     private SignInButton googleSignIn_b;
-    public static GoogleApiClient googleApiClient;
     private FirebaseAuth.AuthStateListener authListener;
     private View myView;
     private PopupWindow popupWindow;

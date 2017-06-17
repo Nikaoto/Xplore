@@ -27,15 +27,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by nikao on 2/24/2017.
+ * Created by Nika on 2/24/2017.
  */
 
 public class General {
 
+    //TODO create User Singleton object
+
     //==== Account status stuff ===
     public static final int SIGNED_IN = 1;
     public static final int REGISTERED = 2;
-    public static int accountStatus = 0;
+    public static final int NOT_SIGNED_IN = 0;
+    public static int accountStatus = NOT_SIGNED_IN;
     //=================
 
     public static int appWidth, appHeight;
@@ -93,25 +96,30 @@ public class General {
         }
     }
 
-    public static int calculateAge(Long tempTimeStamp, int birthDate)
+    //Returns the age of a person
+    public static int calculateAge(Long timeStamp, String birthDate)
     {
+        //Check if format is correct
+        if(birthDate.length() != 8)
+            return 0;
+
+        //Getting birth date
+        int bYear = Integer.valueOf(birthDate.substring(0,4));
+        int bMonth = Integer.valueOf(birthDate.substring(4,6));
+        int bDay = Integer.valueOf(birthDate.substring(6));
+
+        //Getting current date
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(tempTimeStamp));
-        String bDate = String.valueOf(birthDate);
-
-        int bYear = Integer.valueOf(bDate.substring(0,4));
-        int bMonth = Integer.valueOf(bDate.substring(4,6));
-        int bDay = Integer.valueOf(bDate.substring(6));
-
+        cal.setTime(new Date(timeStamp));
         int nowYear = cal.get(Calendar.YEAR);
         int nowMonth = cal.get(Calendar.MONTH) + 1;
         int nowDay = cal.get(Calendar.DAY_OF_MONTH);
 
         //Calculating age
         int tempAge = nowYear - bYear;
-        if(bMonth > nowMonth)
+        if(bMonth < nowMonth)
             tempAge++;
-        else if(bMonth == nowMonth && bDay >= nowDay)
+        else if(bMonth == nowMonth && bDay <= nowDay)
             tempAge++;
 
         return tempAge;
@@ -122,14 +130,12 @@ public class General {
             InputMethodManager inputMethodManager = (InputMethodManager)
                     context.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e){
             Log.println(Log.ERROR, "keyboard", "getWindowToken() in HideKeyboard threw a NPE");
         }
     }
 
-    public static boolean isNetConnected(Context context)
-    {
+    public static boolean isNetConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -156,7 +162,7 @@ public class General {
     }
 
 
-    public static void dimBehind(PopupWindow popupWindow, float dimAmount) {
+    static void dimBehind(PopupWindow popupWindow, float dimAmount) {
         View container;
         if (popupWindow.getBackground() == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -179,7 +185,7 @@ public class General {
         wm.updateViewLayout(container, p);
     }
 
-    public static void popSignInMenu(double xScale, double yScale, View myView, final Activity activity)
+    public static void popSignInMenu(double xScale, double yScale, View parent, final Activity activity)
     {
         int popWidth = (int) (appWidth * xScale);
         int popHeight = (int) (appHeight * yScale);
@@ -205,7 +211,7 @@ public class General {
             }
         });
 
-        popupWindow.showAtLocation(myView, Gravity.CENTER, locationX, locationY);
+        popupWindow.showAtLocation(parent, Gravity.CENTER, locationX, locationY);
 
         dimBehind(popupWindow, 0.65f);
 

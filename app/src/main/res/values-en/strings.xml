@@ -57,8 +57,9 @@
     <string name="loading_groups">Loading Groups</string>
     <string name="request_cancelled">Request Canceled</string>
     <string name="view_group">View Groups</string>
-    <string name="reputation_caps">REPUTATION</string>
+    <string name="reputation">Reputation</string>
     <string name="age">Age</string>
+    <string name="birth_date">Birth date</string>
     <string name="tel">Tel</string>
     <string name="choose_destination">Choose Destination</string>
     <string name="invite_members">Invite</string>

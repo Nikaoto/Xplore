@@ -225,7 +225,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             //Reputation
             TextView rep_text = (TextView) itemView.findViewById(R.id.user_rep_text_combined);
             rep_text.setText(currentUser.getReputation() + " " +
-                    getResources().getString(R.string.reputation_caps));
+                    getResources().getString(R.string.reputation));
 
             //First Name
             TextView fname_text = (TextView) itemView.findViewById(R.id.user_fname_text);

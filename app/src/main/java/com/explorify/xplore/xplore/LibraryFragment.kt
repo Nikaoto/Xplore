@@ -33,9 +33,8 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
     )
     private var resultIDs: List<Int> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.search_layout2, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
+         = inflater.inflate(R.layout.search_layout2, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -14,10 +14,8 @@ import java.util.ArrayList
  * Created by Nika on 6/16/2017.
  */
 
-class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>,
-                                     val activity: Activity,
-                                     val icons: ArrayList<Int>)
-    : RecyclerView.Adapter<ReserveCardRecyclerViewAdapter.ResultViewHolder>(){
+class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
+    : RecyclerView.Adapter<ReserveCardRecyclerViewAdapter.ResultViewHolder>() {
 
     class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         internal val reserveName: TextView

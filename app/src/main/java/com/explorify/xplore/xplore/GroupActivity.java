@@ -293,14 +293,14 @@ public class GroupActivity extends Activity {
         }
 
         group_experience_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
-                builder.setTitle(R.string.what_is_this)
-                            .setMessage(R.string.group_exp_help)
-                            .setPositiveButton(R.string.okay, null);
-                builder.show();
-            }
+              @Override
+              public void onClick(View v) {
+                  AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
+                  builder.setTitle(R.string.what_is_this)
+                          .setMessage(R.string.group_exp_help)
+                          .setPositiveButton(R.string.okay, null);
+                  builder.show();
+              }
         });
 
         startDate = BufferDate(tempGroup.getStart_date());

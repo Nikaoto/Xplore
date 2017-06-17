@@ -89,15 +89,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
         if (General.isNetConnected(this@RegisterActivity)) {
-            val cal = Calendar.getInstance()
-            cal.time = Date(tempTimeStamp!!)
-            val nowYear = cal.get(Calendar.YEAR)
-            //int nowMonth = cal.get(Calendar.MONTH);
-            //int nowDay = cal.get(Calendar.DAY_OF_MONTH);
-
             //Checking if age is OK
 
-            if (nowYear - year >= ageRestriction) {
+            if (General.calculateAge(tempTimeStamp, "$year$month$day") >= ageRestriction) {
                 bYear = year
                 bMonth = month
                 bDay = day
@@ -184,7 +178,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
             name = fullName.split(" ".toRegex(), 2).toTypedArray()
 
         return name[i]
-        }
+    }
 
     fun EditText.str() = this.text.toString() //TODO take this to general
 }

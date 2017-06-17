@@ -56,9 +56,10 @@
     <string name="extra_info">Дополнительная Инфо</string>
     <string name="loading_groups">Загрузка Групп</string>
     <string name="request_cancelled">Запрос Отменено</string>
-    <string name="view_group">Поиск Групп</string>
-    <string name="reputation_caps">РЕПУТАЦИЯ</string>
+    <string name="view_group">Просмотр Групп</string>
+    <string name="reputation">Репутация</string>
     <string name="age">Возраст</string>
+    <string name="birth_date">Дата рождения</string>
     <string name="tel">Тел</string>
     <string name="choose_destination">Выберите Пункт Назначения</string>
     <string name="invite_members">Приглашать</string>
