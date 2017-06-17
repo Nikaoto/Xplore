@@ -16,11 +16,11 @@ import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 
-import java.util.Calendar
-import java.util.Date
 import java.util.HashMap
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import com.explorify.xplore.xplore.TimeManager.Companion.globalTimeStamp
+import com.explorify.xplore.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -35,10 +35,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var bMonth: Int = 0
 
     private var bDay: Int = 0
-    private var tempTimeStamp: Long = 0
 
     init {
-        getServerEpoch()
+        refreshGlobalTimeStamp()
     }
 
     internal val DBref = FirebaseDatabase.getInstance().reference
@@ -61,7 +60,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Birth date selector
         bdateTextView.setOnClickListener {
             //Creating new DialogFragment
-            val fragment = com.explorify.xplore.xplore.DatePickerDialogFragment(this, tempTimeStamp, ageRestriction)
+            val fragment = com.explorify.xplore.xplore.DatePickerDialogFragment(this, globalTimeStamp, ageRestriction)
             fragment.show(fragmentManager, "datePicker")
         }
         //TODO CHOOSE GALLERY IMAGE OR TAKE PHOTO
@@ -91,7 +90,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         if (General.isNetConnected(this@RegisterActivity)) {
             //Checking if age is OK
 
-            if (General.calculateAge(tempTimeStamp, "$year$month$day") >= ageRestriction) {
+            if (General.calculateAge(globalTimeStamp, "$year$month$day") >= ageRestriction) {
                 bYear = year
                 bMonth = month
                 bDay = day
@@ -150,20 +149,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
             result.put("email", this.email)
             return result
         }
-    }
-
-     fun getServerEpoch() {
-        val ref = FirebaseDatabase.getInstance().reference
-        val dateValue = HashMap<String, Any>()
-        dateValue.put("timestamp", ServerValue.TIMESTAMP)
-        ref.child("date").setValue(dateValue)
-        val query = ref.child("date").child("timestamp")
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                tempTimeStamp = dataSnapshot.getValue(Long::class.java)
-            }
-            override fun onCancelled(databaseError: DatabaseError) { }
-        })
     }
 
     private fun checkFields(): Boolean {

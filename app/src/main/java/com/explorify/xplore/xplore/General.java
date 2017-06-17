@@ -32,7 +32,7 @@ import java.util.Date;
 
 public class General {
 
-    //TODO create User Singleton object
+    //TODO create current User Singleton object
 
     //==== Account status stuff ===
     public static final int SIGNED_IN = 1;
@@ -100,8 +100,9 @@ public class General {
     public static int calculateAge(Long timeStamp, String birthDate)
     {
         //Check if format is correct
-        if(birthDate.length() != 8)
+        if(birthDate.length() != 8) {
             return 0;
+        }
 
         //Getting birth date
         int bYear = Integer.valueOf(birthDate.substring(0,4));
@@ -117,12 +118,29 @@ public class General {
 
         //Calculating age
         int tempAge = nowYear - bYear;
-        if(bMonth < nowMonth)
+        if(nowMonth > bMonth)
             tempAge++;
-        else if(bMonth == nowMonth && bDay <= nowDay)
+        else if(nowMonth == bMonth && nowDay >= bDay)
             tempAge++;
+        else
+            tempAge--;
 
         return tempAge;
+    }
+
+    //The same, but takes integer as birth date instead
+    public static int calculateAge(Long timeStamp, int birthDate) {
+        return calculateAge(timeStamp, String.valueOf(birthDate));
+    }
+
+    public static String putSlashesInDate(int date) {
+        String temp = String.valueOf(date);
+
+        //Checking if format is correct
+        if(temp.length() != 8)
+            return "";
+
+        return temp.substring(0, 4) + "/" + temp.substring(4, 6) + "/" + temp.substring(6);
     }
 
     public static void HideKeyboard(Activity context) {
@@ -160,7 +178,6 @@ public class General {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
 
     static void dimBehind(PopupWindow popupWindow, float dimAmount) {
         View container;

@@ -23,13 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,7 +67,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
 
     //TODO Make a new class for holding the date after switching to UNIX time
-    private Long globalTimeStamp = 0L;
     private int sYear = 0, sMonth, sDay, eYear = 0, eMonth, eDay;
 
 
@@ -127,7 +122,8 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.create_group,container,false);
 
-        getServerEpoch();
+        //Refreshing server timeStamp
+        TimeManager.Companion.refreshGlobalTimeStamp();
 
         //TODO move this stuff to onViewCreated
 
@@ -140,23 +136,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         InitClickEvents();
 
         return myView;
-    }
-
-    private void getServerEpoch() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        HashMap<String, Map<String, String>> dateValue = new HashMap<>();
-        dateValue.put("timestamp", ServerValue.TIMESTAMP);
-        ref.child("date").setValue(dateValue);
-        ref.child("date").child("timestamp").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        globalTimeStamp = dataSnapshot.getValue(Long.class);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) { }
-                });
     }
 
     @Override
@@ -176,7 +155,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     public void onDateSet(DatePicker view, int year, int month, int day) {
         if(General.isNetConnected(getActivity())) {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date(globalTimeStamp));
+            cal.setTime(new Date(TimeManager.Companion.getGlobalTimeStamp()));
 
             if(selectingDate.equals(SELECTION_START)){
                 selectingDate = SELECTION_NONE;
@@ -256,9 +235,9 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(globalTimeStamp != 0L) {
+                if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_START;
-                    new DatePickerDialogFragment(CreateGroupFragment.this, globalTimeStamp, 0)
+                    new DatePickerDialogFragment(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "startDate");
                 }
             }
@@ -267,9 +246,9 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(globalTimeStamp != 0L) {
+                if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_END;
-                    new DatePickerDialogFragment(CreateGroupFragment.this, globalTimeStamp, 0)
+                    new DatePickerDialogFragment(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "endDate");
                 }
             }
@@ -451,8 +430,8 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
                  .show();
             return false;
         } else {
-            if(General.getDateLong(sYear, sMonth, sDay) < General.getDateLong(globalTimeStamp) ||
-                    General.getDateLong(eYear, eMonth, eDay) < General.getDateLong(globalTimeStamp)) {
+            if(General.getDateLong(sYear, sMonth, sDay) < General.getDateLong(TimeManager.Companion.getGlobalTimeStamp()) ||
+                    General.getDateLong(eYear, eMonth, eDay) < General.getDateLong(TimeManager.Companion.getGlobalTimeStamp())) {
                 builder.setMessage(R.string.date_past_invalid).show();
                 return false;
             } else

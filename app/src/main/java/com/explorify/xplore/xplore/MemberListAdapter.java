@@ -28,10 +28,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
 
     private int selectedMemberPos;
     private User currentMember;
-    private TextView member_fname_text;
-    private TextView member_lname_text;
-    private TextView member_age_text;
-    private TextView member_tel_text;
+    private TextView member_fname_text, member_lname_text, member_age_text, member_tel_text;
 
     public MemberListAdapter(Context context, ArrayList<User> users, RelativeLayout memberLayout){
         this.context = context;
@@ -115,7 +112,8 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
                     selectedMemberPos = position;
                     member_fname_text.setText(currentMember.getFname());
                     member_lname_text.setText(currentMember.getLname());
-                    member_age_text.setText(context.getString(R.string.age) + ": " + currentMember.getAge());
+                    member_age_text.setText(context.getString(R.string.age) + ": " +
+                            General.calculateAge(TimeManager.Companion.getGlobalTimeStamp(), currentMember.getBirth_date()));
                     member_tel_text.setText(context.getString(R.string.tel) + ": " + currentMember.getTel_num());
                 }
             }

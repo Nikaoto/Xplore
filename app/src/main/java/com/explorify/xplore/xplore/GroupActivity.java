@@ -274,7 +274,8 @@ public class GroupActivity extends Activity {
                 .into(leader_image);
         leader_fname_text.setText(members.get(0).getFname());
         leader_lname_text.setText(members.get(0).getLname());
-        leader_age_text.setText(getString(R.string.age)+": "+members.get(0).getAge());
+        leader_age_text.setText(getString(R.string.age) + ": " +
+                General.calculateAge(TimeManager.Companion.getGlobalTimeStamp(), members.get(0).getBirth_date()));
         leader_tel_text.setText(getString(R.string.tel)+": "+members.get(0).getTel_num());
         leader_rep_text.setText(String.valueOf(members.get(0).getReputation()));
 

@@ -2,6 +2,7 @@ package com.explorify.xplore.xplore
 
 import android.app.Fragment
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -120,7 +121,7 @@ class ProfileFragment : Fragment() {
                     nameTextView.text = "${tempUser.getFname()} ${tempUser.getLname()}"
                     repTextView.text = tempUser.getReputation().toString()
                     birthDateTextView.text =
-                            "${getString(R.string.birth_date)}: ${tempUser.getBirth_date()}"
+                            "${getString(R.string.birth_date)}: ${General.putSlashesInDate(tempUser.getBirth_date())}"
                     telTextView.text = "${getString(R.string.tel)}: ${tempUser.getTel_num()}"
                     emailTextView.text = tempUser.getEmail()
 

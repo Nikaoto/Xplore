@@ -206,7 +206,7 @@
 
             <TextView
                 android:id="@+id/member_age_text"
-                android:text="Age: 23"
+                android:text="Birth date: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"

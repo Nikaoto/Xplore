@@ -68,6 +68,8 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.search_layout, container, false);
 
+        TimeManager.Companion.refreshGlobalTimeStamp();
+
         //setting up listview
         list = (ListView) myView.findViewById(R.id.resultsListView);
 

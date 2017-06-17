@@ -67,6 +67,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
 
+        TimeManager.Companion.refreshGlobalTimeStamp();
+
         listView = (ListView) findViewById(R.id.resultsListView);
         progressBar = (ProgressBar) findViewById(R.id.searchProgressBar);
 
@@ -237,7 +239,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
             //Age
             TextView age_text = (TextView) itemView.findViewById(R.id.user_age_text);
-            age_text.setText(getResources().getString(R.string.age) +": "+currentUser.getAge());
+            age_text.setText(getResources().getString(R.string.age) +": "+
+                    General.calculateAge(TimeManager.Companion.getGlobalTimeStamp(), currentUser.getBirth_date()));
 
             //Profile Picture
             final ImageView userImage = (ImageView) itemView.findViewById(R.id.user_profile_image);
@@ -256,8 +259,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     if(UserAlreadyInvited(currentUser)) {
                         Toast.makeText(SearchUsersActivity.this, R.string.member_already_added,
                                 Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         memberAdded = true;
                         invitedMembers.add(currentUser);
                         Toast.makeText(SearchUsersActivity.this,R.string.member_added,
@@ -290,6 +292,9 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     //returns given string with the first letter in uppercase
     private String FirstLetterUpper(String str) {
+        if(str.length() == 0)
+            return str.toUpperCase();
+
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
