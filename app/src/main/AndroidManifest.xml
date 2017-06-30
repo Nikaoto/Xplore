@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.explorify.xplore.xplore">
+    package="com.xplore">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.explorify.xplore.xplore.MainActivity"
+            android:name="com.xplore.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -30,30 +30,30 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="com.explorify.xplore.xplore.MapsActivity"
+        <activity android:name="com.xplore.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
-        <activity android:name="com.explorify.xplore.xplore.ReserveInfoFragment"
+        <activity android:name="com.xplore.ReserveInfoFragment"
             android:label="@string/nav_lib_title"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.explorify.xplore.xplore.GroupActivity"
+        <activity android:name="com.xplore.GroupActivity"
             android:label="@string/view_group"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.explorify.xplore.xplore.SearchDestinationActivity"
+        <activity android:name="com.xplore.SearchDestinationActivity"
             android:label="@string/choose_destination"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.explorify.xplore.xplore.SearchUsersActivity"
+        <activity android:name="com.xplore.SearchUsersActivity"
             android:label="@string/search_users"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.explorify.xplore.xplore.GoogleSignInActivity"
+        <activity android:name="com.xplore.GoogleSignInActivity"
             android:label="@string/authorization"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.explorify.xplore.xplore.RegisterActivity"
+        <activity android:name="com.xplore.RegisterActivity"
             android:label="@string/register"
             android:screenOrientation="portrait"/>
 

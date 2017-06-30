@@ -9,7 +9,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.explorify.xplore.xplore.MapsActivity" />
+        tools:context="com.xplore.MapsActivity" />
 
     <ImageButton
         android:id="@+id/KMLButton"

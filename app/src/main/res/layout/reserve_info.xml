@@ -56,7 +56,7 @@
             android:layout_marginTop="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <com.explorify.xplore.xplore.ExpandableTextView
+        <com.xplore.ExpandableTextView
             android:id="@+id/faunaTextView"
             android:text="fauna"
             android:background="?android:attr/selectableItemBackground"
@@ -81,7 +81,7 @@
             android:layout_marginTop="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <com.explorify.xplore.xplore.ExpandableTextView
+        <com.xplore.ExpandableTextView
             android:id="@+id/floraTextView"
             android:text="animals"
             android:background="?android:attr/selectableItemBackground"
@@ -130,7 +130,7 @@
             android:layout_marginTop="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <com.explorify.xplore.xplore.ExpandableTextView
+        <com.xplore.ExpandableTextView
             android:id="@+id/tagsTextView"
             android:text="tags"
             android:background="?android:attr/selectableItemBackground"
