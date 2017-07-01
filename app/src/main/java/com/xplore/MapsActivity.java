@@ -88,13 +88,13 @@ public class MapsActivity extends AppCompatActivity
             }
         }
         KMLButton = (ImageButton) findViewById(R.id.KMLButton);
-        KMLButton.setEnabled(true); //TODO change this
-        KMLButton.setOnClickListener(new View.OnClickListener() {
+        /*KMLButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoadKML();
-            }
+            }//TODO uncomment this and do smart loading
         });
+        */
         InitMap();
     }
 
