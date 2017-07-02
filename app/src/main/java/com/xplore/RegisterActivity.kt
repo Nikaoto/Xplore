@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.register_layout.*
 
 class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
+    //TODO add age restriction constant to resources
     private val ageRestriction: Int = 16
 
     private var bYear: Int = 0

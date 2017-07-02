@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.reserve_list_item.*
 class GroupActivity : Activity() {
 
     private var group_id: String = ""
-    private var reserveName: String =""
     private var reserveID: Int = 0
     private var memberCount: Int = 0
 

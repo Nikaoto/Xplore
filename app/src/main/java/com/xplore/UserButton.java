@@ -1,7 +1,7 @@
 package com.xplore;
 
 /**
- * Created by Nika on 3/1/2017.
+ * Created by Nikaoto on 3/1/2017.
  */
 
 public class UserButton {

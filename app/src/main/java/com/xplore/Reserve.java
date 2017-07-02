@@ -3,7 +3,7 @@ package com.xplore;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by nikao on 1/15/2017.
+ * Created by Nikaoto on 1/15/2017.
  */
 
 public class Reserve {

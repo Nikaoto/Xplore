@@ -1,7 +1,7 @@
 package com.xplore
 
 /**
- * Created by Nika on 6/7/2017.
+ * Created by Nikaoto on 6/7/2017.
  */
 
 class ReserveCard(
