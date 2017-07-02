@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.list_item_reserve.view.*
+import kotlinx.android.synthetic.main.reserve_list_item.view.*
 import java.util.ArrayList
 
 /**
@@ -32,7 +32,7 @@ class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>, val activit
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
             ResultViewHolder(
                     LayoutInflater.from(parent.context)
-                            .inflate(R.layout.list_item_reserve, parent, false)
+                            .inflate(R.layout.reserve_list_item, parent, false)
             )
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {

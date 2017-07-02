@@ -15,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.list_item_reserve.view.*
+import kotlinx.android.synthetic.main.reserve_list_item.view.*
 import kotlinx.android.synthetic.main.search_layout2.*
 
 import java.util.ArrayList
@@ -36,12 +36,6 @@ class SearchDestinationActivity : Activity() {
 
     private var reserveCards = ArrayList<ReserveCard>()
     private val answerCards = ArrayList<ReserveCard>()
-    private val iconList = arrayListOf<Int>(
-            R.drawable.ic_tent_grey600_36dp,
-            R.drawable.ic_nature_people_grey600_36dp,
-            R.drawable.ic_castle_grey600_36dp,
-            R.drawable.ic_paw_grey600_36dp
-    )
 
     private var resultIDs: List<Int> = ArrayList()
 
@@ -88,7 +82,7 @@ class SearchDestinationActivity : Activity() {
             reserveCards = dbManager.getAllReserveCards()
             answerCards.addAll(reserveCards)
             //Creating & setting adapter
-            val adapter = RVAdapter(answerCards, this, iconList)
+            val adapter = RVAdapter(answerCards, this, ReserveIcons.grey)
             resultsRV.post { resultsRV.adapter = adapter }
             progressBar.post { progressBar.visibility = View.INVISIBLE }
         }).start()
@@ -132,7 +126,7 @@ class SearchDestinationActivity : Activity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
                 ResultViewHolder(
                         LayoutInflater.from(parent.context)
-                                .inflate(R.layout.list_item_reserve, parent, false)
+                                .inflate(R.layout.reserve_list_item, parent, false)
                 )
 
         override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {

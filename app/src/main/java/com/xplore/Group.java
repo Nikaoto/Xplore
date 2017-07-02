@@ -11,7 +11,6 @@ public class Group {
     public long start_date, end_date;
     protected String destination_id, group_id, extra_info, group_preferences;
     public ArrayList<String> member_ids;
-    public User leader;
 
     public Group()
     {
@@ -74,40 +73,8 @@ public class Group {
         this.member_ids = member_ids;
     }
 
-    public User getLeader() {
-        return leader;
-    }
-
-    public void setLeader(User leader) {
-        this.leader = leader;
-    }
-
     public String getDestination_id() {
         return destination_id;
-    }
-
-    public String getLeader_fname() {
-        return leader.fname;
-    }
-
-    public String getLeader_lname() {
-        return leader.lname;
-    }
-
-    public String getLeader_num() {
-        return leader.tel_num;
-    }
-
-    public void setLeader_fname(String leader_fname) {
-        this.leader.fname = leader_fname;
-    }
-
-    public void setLeader_lname(String leaderlnaume) {
-        this.leader.lname = leaderlnaume;
-    }
-
-    public void setLeader_num(String leader_num) {
-        this.leader.tel_num = leader_num;
     }
 
     public void setDestination_id(String destination_id) {

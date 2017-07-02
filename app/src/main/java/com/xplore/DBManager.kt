@@ -51,7 +51,7 @@ internal class DBManager(private val mContext: Context,
 
         //Copy DB data
         try {
-            CopyBytes(mContext.assets.open(DB_NAME), DB_PATH)
+            CopyBytes.copy(mContext.assets.open(DB_NAME), DB_PATH)
         } catch (e: IOException) {
             Log.println(Log.ERROR, "errors", "Could not copy data")
         }

@@ -11,47 +11,39 @@ import java.io.OutputStream
  * This class is meant for copying data byte by byte
  */
 
-internal class CopyBytes {
+//A Kotlin object (singleton) that handles the copying with mulitple different arguments
+object CopyBytes {
     @Throws(IOException::class)
-    private fun transferBytes(input: InputStream, output: OutputStream) {
-        //Creating byte array for data copying
+    fun copy(input: InputStream, output: OutputStream) {
+
+        //Creating byte array
         val buffer = ByteArray(1024)
-        var length: Int
+        var length = input.read(buffer)
 
         //Transferring data
-        do {
-            length = input.read(buffer)
-            if(length < 0) break
+        while(length != -1) {
             output.write(buffer, 0, length)
+            length = input.read(buffer)
         }
-        while (length > 0)
 
-        //Finalizing data transfer
+        //Finalizing
         output.flush()
         output.close()
         input.close()
     }
 
-    @Throws(IOException::class)
-    constructor(input: InputStream, output: OutputStream) {
-        transferBytes(input, output)
+    //In - String, Out - Stream
+    fun copy(input: String, output: OutputStream) {
+        copy(FileInputStream(input), output)
     }
 
-    //when input is stream and output is string
-    @Throws(IOException::class)
-    constructor(input: InputStream, outputPath: String) {
-        CopyBytes(input, FileOutputStream(outputPath))
+    //In - Stream, Out - String
+    fun copy(input: InputStream, output: String) {
+        copy(input, FileOutputStream(output))
     }
 
-    //when input is string and output is stream
-    @Throws(IOException::class)
-    constructor(inputPath: String, output: OutputStream) {
-        CopyBytes(FileInputStream(inputPath), output)
-    }
-
-    //when input and output are both strings
-    @Throws(IOException::class)
-    constructor(inputPath: String, outputPath: String) {
-        CopyBytes(FileInputStream(inputPath), FileOutputStream(outputPath))
+    //In - String, Out - String
+    fun copy(input: String, output: String) {
+        copy(FileInputStream(input), FileOutputStream(output))
     }
 }

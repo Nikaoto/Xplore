@@ -19,13 +19,6 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
     private var maxScrollSize = 0
     private var isImageHidden = false
 
-    private val iconList = arrayListOf<Int>(
-            R.drawable.ic_tent_black_48dp,
-            R.drawable.ic_nature_people_black_48dp,
-            R.drawable.ic_castle_black_48dp,
-            R.drawable.ic_paw_black_48dp
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reserve_info2)
@@ -74,7 +67,7 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
     fun setupLayout(reserve: Reserve) {
         collapsingToolbar.setTitle(reserve.name)
         reserveImageView.setBackgroundResource(reserve.imageId)
-        reserveIconFAB.setImageResource(iconList[reserve.iconId])
+        reserveIconFAB.setImageResource(ReserveIcons.black[reserve.iconId])
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna
         floraTextView.text = reserve.flora

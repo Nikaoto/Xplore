@@ -17,7 +17,7 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 /**
- * Created by nikao on 3/4/2017.
+ * Created by Nikaoto on 3/4/2017.
  */
 
 public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.MemberViewHolder> {
@@ -36,10 +36,10 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         this.memberLayout = memberLayout;
 
         selectedMemberPos = -1;
-        member_fname_text = (TextView) memberLayout.findViewById(R.id.member_fname_text);
-        member_lname_text = (TextView) memberLayout.findViewById(R.id.member_lname_text);
-        member_age_text = (TextView) memberLayout.findViewById(R.id.member_age_text);
-        member_tel_text = (TextView) memberLayout.findViewById(R.id.member_tel_text);
+        member_fname_text = (TextView) memberLayout.findViewById(R.id.selectedMemberFnameTextView);
+        member_lname_text = (TextView) memberLayout.findViewById(R.id.selectedMemberLnameTextView);
+        member_age_text = (TextView) memberLayout.findViewById(R.id.selectedMemberAgeTextView);
+        member_tel_text = (TextView) memberLayout.findViewById(R.id.selectedMemberTelTextView);
     }
 
     public class MemberViewHolder extends RecyclerView.ViewHolder{

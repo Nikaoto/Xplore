@@ -37,10 +37,6 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
 
-/*    private String USERBASE_KEY;
-    private String USERBASE_APPID;
-    private String USERBASE_URL;*/
-
     private final String JSON_START_DATE_TAG = "start_date";
 
     private String searchQuery, tempUserImageUrl;
@@ -56,10 +52,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private ArrayList<GroupButton> groupButtons = new ArrayList<>(); //changed to ArrayList from List (roll back if errors ensue)
     private ArrayList<Group> tempGroupList = new ArrayList<>();
     private Group tempGroup;
-
-    /*FirebaseApp userBaseApp;
-    FirebaseOptions userBaseOptions;
-    FirebaseDatabase userDB;*/
     DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
 
 
@@ -103,29 +95,29 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                 .build();
     }
 
-/*    private void buildUserBase()
+    /*
+    IN CASE WE'RE USING A SECOND FIREBASE DATABASE FOR USERS
+    private void buildUserBase()
     {
-         USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
-         USERBASE_APPID = getResources().getString(R.string.firebase_appid);
-         USERBASE_URL = getResources().getString(R.string.user_firebase_url);
+    USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
+    USERBASE_APPID = getResources().getString(R.string.firebase_appid);
+    USERBASE_URL = getResources().getString(R.string.user_firebase_url);
+    userBaseOptions = new FirebaseOptions.Builder()
+    .setApiKey(USERBASE_KEY)
+    .setApplicationId(USERBASE_APPID)
+    .setDatabaseUrl(USERBASE_URL)
+    .build();
+    try {
+    if (FirebaseApp.getApps(getActivity()).get(1).equals(null)) {
+    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
+    } catch (IndexOutOfBoundsException e) {
+    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
+    }
+    userBaseApp = FirebaseApp.getInstance("userbase");
+    userDB = FirebaseDatabase.getInstance(userBaseApp);
+    }
 
-        userBaseOptions = new FirebaseOptions.Builder()
-                .setApiKey(USERBASE_KEY)
-                .setApplicationId(USERBASE_APPID)
-                .setDatabaseUrl(USERBASE_URL)
-                .build();
-        try {
-            if (FirebaseApp.getApps(getActivity()).get(1).equals(null)) {
-                FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-            }
-        }
-        catch (IndexOutOfBoundsException e)
-        {
-            FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-        }
-        userBaseApp = FirebaseApp.getInstance("userbase");
-        userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }*/
+    */
 
     private void PreLoadData()
     {
@@ -149,7 +141,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     //creating the temporary group
                     tempGroup = new Group();
-                    tempGroup.leader = new User();
                     tempGroup = snapshot.getValue(Group.class);
                     tempGroup.setGroup_id(snapshot.getKey());
 
@@ -202,9 +193,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                         dbManager.getStr( //Reserve Name
                                                 tempDestId,
                                                 DBManager.ColumnNames.getNAME(), General.DB_TABLE
-                                        ),
-                                        group.getMember_ids().get(0) //Leader ID
-                                );
+                                        ));
 
                                 //adding the button to the list
                                 groupButtons.add(tempGroupButton);
@@ -287,10 +276,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
                     //Sending data over to intent
                     intent.putExtra("group_id",currentButton.getGroup_id());
-                    intent.putExtra("leader_id",currentButton.getLeader_id());
-                    intent.putExtra("leader_image_url",currentButton.getLeader_image_url());
                     intent.putExtra("reserve_id",currentButton.getReserve_id());
-                    intent.putExtra("reserve_name",currentButton.getName());
 
                     //Starting intent
                     getActivity().startActivity(intent);

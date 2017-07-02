@@ -25,12 +25,6 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
 
     private val answerCards = ArrayList<ReserveCard>()
     private var reserveCards = ArrayList<ReserveCard>()
-    private val iconList = arrayListOf<Int>(
-            R.drawable.ic_tent_grey600_36dp,
-            R.drawable.ic_nature_people_grey600_36dp,
-            R.drawable.ic_castle_grey600_36dp,
-            R.drawable.ic_paw_grey600_36dp
-    )
     private var resultIDs: List<Int> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
@@ -69,7 +63,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
               reserveCards = dbManager.getAllReserveCards()
               answerCards.addAll(reserveCards)
               //Creating & setting adapter
-              val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, iconList)
+              val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, ReserveIcons.grey)
               resultsRV.post { resultsRV.adapter = adapter }
               progressBar.post { progressBar.visibility = View.INVISIBLE }
         }).start()

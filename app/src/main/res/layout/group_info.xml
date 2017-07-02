@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/leader_profile_layout"
+                android:id="@+id/leaderProfileLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -25,88 +25,87 @@
                 android:layout_marginBottom="12dp">
 
                 <ImageView
-                    android:id="@+id/leader_profile_image"
+                    android:id="@+id/leaderImageView"
                     android:background="@drawable/profile_picture_border"
                     android:scaleType="fitXY"
                     android:layout_width="@dimen/group_leader_profile_wh"
                     android:layout_height="@dimen/group_leader_profile_wh"/>
 
                 <TextView
-                    android:id="@+id/leader_rep_text"
-                    android:text="100"
+                    android:id="@+id/leaderRepTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorRepNumGrey"
                     android:textSize="23sp"
-                    android:layout_below="@id/leader_profile_image"
+                    android:layout_below="@id/leaderImageView"
                     android:layout_centerInParent="true"/>
 
                 <TextView
-                    android:id="@+id/leader_rep_label"
+                    android:id="@+id/leaderRepLabel"
                     android:text="@string/reputation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:layout_below="@id/leader_rep_text"
+                    android:layout_below="@id/leaderRepTextView"
                     android:layout_centerInParent="true"
-                    android:textStyle="bold"
-                    android:fontFamily="monospace" />
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif-medium" />
 
                 <ProgressBar
+                    android:id="@+id/groupProgressBar"
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="@dimen/group_leader_profile_wh"
                     android:layout_height="@dimen/group_leader_profile_wh"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/groupProgressBar" />
+                    android:layout_alignParentStart="true" />
 
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/leader_fname_text"
+                android:id="@+id/leaderFnameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="First Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="21sp"
-                android:layout_toRightOf="@id/leader_profile_layout"
+                android:layout_toRightOf="@id/leaderProfileLayout"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="15dp" />
 
             <TextView
-                android:id="@+id/leader_lname_text"
+                android:id="@+id/leaderLnameTextView"
                 android:text="Last Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="21sp"
-                android:layout_toRightOf="@id/leader_profile_layout"
-                android:layout_below="@id/leader_fname_text"
+                android:layout_toRightOf="@id/leaderProfileLayout"
+                android:layout_below="@id/leaderFnameTextView"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="6dp" />
 
             <TextView
-                android:id="@+id/leader_age_text"
+                android:id="@+id/leaderAgeTextView"
                 android:text="Age: 23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="21sp"
-                android:layout_toRightOf="@id/leader_profile_layout"
-                android:layout_below="@id/leader_lname_text"
+                android:layout_toRightOf="@id/leaderProfileLayout"
+                android:layout_below="@id/leaderLnameTextView"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="6dp" />
 
             <TextView
-                android:id="@+id/leader_tel_text"
+                android:id="@+id/leaderTelTextView"
                 android:text="Tel: 599 42 09 69"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="21sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:layout_toRightOf="@id/leader_profile_layout"
-                android:layout_below="@id/leader_age_text"
+                android:textColor="@color/colorDarkGrey"
+                android:layout_toRightOf="@id/leaderProfileLayout"
+                android:layout_below="@id/leaderAgeTextView"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="6dp" />
         </RelativeLayout>
@@ -116,43 +115,27 @@
             android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/destinationLabel"
                     android:text="@string/destination"
-                    android:id="@+id/dest_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/main_text_margin_top"
-                    android:textAppearance="@style/TextAppearance.AppCompat"/>
+                    android:textColor="@color/Black"/>
 
                 <ImageView
-                    android:id="@+id/group_experience_image"
+                    android:id="@+id/groupExpImageView"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@id/dest_text"
+                    android:layout_toRightOf="@id/destinationLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp" />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/group_reserveButton"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lib_button_height"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:fontFamily="sans-serif-condensed"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="8"
-            android:textSize="@dimen/lib_button_text_size"
-            android:textAllCaps="true"
-            android:textColor="@color/colorLibText"
-            android:gravity="bottom|left"
-            android:paddingLeft="@dimen/lib_text_padding_left"
-            android:paddingRight="@dimen/lib_text_padding_left"
-            android:paddingBottom="@dimen/lib_button_text_padding_bottom"
-            android:layout_marginTop="@dimen/lib_button_margin_top"
-            android:textStyle="bold" />
+        <include layout="@layout/reserve_list_item"/>
 
         <TextView
             android:text="@string/date"
@@ -162,57 +145,56 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/main_text_margin_top"
-            android:textAppearance="@style/TextAppearance.AppCompat"/>
+            android:textColor="@color/Black"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/date_start"
+                android:id="@+id/startDateTextView"
                 android:text="10/02/2017"
+                android:textColor="@color/colorDarkGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="5dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="21sp"/>
 
             <TextView
-                android:id="@+id/date_separator"
+                android:id="@+id/dateSeparatorTextView"
                 android:text="-"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/date_start"
-                android:layout_alignBaseline="@+id/date_start"
+                android:layout_toRightOf="@+id/startDateTextView"
+                android:layout_alignBaseline="@+id/startDateTextView"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="22sp"/>
 
             <TextView
-                android:id="@+id/date_end"
+                android:id="@+id/endDateTextView"
                 android:text="11/02/2017"
+                android:textColor="@color/colorDarkGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/date_separator"
-                android:layout_alignBaseline="@+id/date_separator"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_toRightOf="@+id/dateSeparatorTextView"
+                android:layout_alignBaseline="@+id/dateSeparatorTextView"
                 android:textSize="21sp"/>
         </RelativeLayout>
 
         <TextView
             android:text="@string/group_members"
+            android:textColor="@color/Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            android:layout_marginTop="@dimen/main_text_margin_top"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/member_list"
+            android:id="@+id/membersRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
@@ -221,18 +203,19 @@
         <View style="@style/Divider"/>
 
         <RelativeLayout
-            android:id="@+id/member_profile_layout"
+            android:id="@+id/selectedMemberProfileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp">
 
             <TextView
-                android:id="@+id/member_fname_text"
+                android:id="@+id/selectedMemberFnameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="First Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="18sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="5dp"
@@ -240,39 +223,39 @@
                 android:layout_alignParentLeft="true" />
 
             <TextView
-                android:id="@+id/member_lname_text"
+                android:id="@+id/selectedMemberLnameTextView"
                 android:text="Last Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="18sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="3dp"
-                android:layout_below="@id/member_fname_text"
+                android:layout_below="@id/selectedMemberFnameTextView"
                 android:layout_alignParentLeft="true" />
 
             <TextView
-                android:id="@+id/member_age_text"
+                android:id="@+id/selectedMemberAgeTextView"
                 android:text="Birth date: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="18sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="3dp"
-                android:layout_below="@id/member_lname_text"
+                android:layout_below="@id/selectedMemberLnameTextView"
                 android:layout_alignParentLeft="true"/>
 
             <TextView
-                android:id="@+id/member_tel_text"
+                android:id="@+id/selectedMemberTelTextView"
                 android:text="Tel: 599 42 09 69"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorDarkGrey"
                 android:textSize="18sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="3dp"
-                android:layout_below="@id/member_age_text"
+                android:layout_below="@id/selectedMemberAgeTextView"
                 android:layout_alignParentLeft="true"/>
         </RelativeLayout>
 
@@ -280,41 +263,41 @@
 
         <TextView
             android:text="@string/group_preferences"
+            android:textColor="@color/Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"
-            android:textAppearance="@style/TextAppearance.AppCompat"/>
+            android:layout_marginTop="@dimen/main_text_margin_top"/>
 
         <TextView
-            android:id="@+id/group_prefs_text"
+            android:id="@+id/groupPrefsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorDarkGrey"
             android:layout_marginTop="2dp"
             android:layout_marginLeft="9dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="15sp"/>
 
         <TextView
             android:text="@string/extra_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/Black"
             android:layout_marginLeft="5dp"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"
-            android:textAppearance="@style/TextAppearance.AppCompat"/>
+            android:layout_marginTop="@dimen/main_text_margin_top"/>
 
         <TextView
-            android:id="@+id/group_extrainfo_text"
+            android:id="@+id/groupExtraInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorDarkGrey"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="9dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="15sp"/>
 
     </LinearLayout>
