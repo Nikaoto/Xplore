@@ -44,20 +44,22 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     public static ArrayList<User> invitedMembers = new ArrayList<>();
 
+    //Activity Codes
+    private static final int SEARCH_DESTINATION_ACTIVITY_CODE = 1;
+    private static final int INVITE_USERS_ACTIVITY_CODE = 4;
     //Limits and restrictions to fields
-    private static final int SEARCH_DESTINATION_ACODE = 1;
-    private static final int INVITE_USERS_ACODE = 4;
-    private static final int CHOSEN_DEST_DEFAULT_VAL = -1;
-    private static final int EXPERIENCE_ANS_DEFAULT_VAL = -1;
-    private static final int EXPERIENCE_ANS_NO_EXP = 0;
-    private static final int EXPERIENCE_ANS_YES_EXP = 1;
+    private static final int CHOSEN_DEST_DEFAULT = -1;
+    private static final int EXPERIENCE_ANS_DEFAULT = -1;
+    private static final int EXPERIENCE_ANS_NO = 0;
+    private static final int EXPERIENCE_ANS_YES = 1;
     private static final int G_PREFS_CHAR_MAX = 200;
-    private static final int G_PREFS_CHAR_MIN = 5; //TODO add selection if user doesn't have prefs
+    private static final int G_PREFS_CHAR_MIN = 0; //TODO add selection if user doesn't have prefs
     private static final int E_INFO_CHAR_MAX = 200;
     private static final int E_INFO_CHAR_MIN = 5;
 
-    private int chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
-    private int experienceAns = EXPERIENCE_ANS_DEFAULT_VAL;
+    //Setting chosen answer and destination to default
+    private int chosenDestId = CHOSEN_DEST_DEFAULT;
+    private int experienceAns = EXPERIENCE_ANS_DEFAULT;
 
     //Variables for finding out which date user is selecting (start / end)
     private static String SELECTION_NONE = "";
@@ -68,7 +70,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     //TODO Make a new class for holding the date after switching to UNIX time
     private int sYear = 0, sMonth, sDay, eYear = 0, eMonth, eDay;
-
 
     private int selectedMemberPos;
     private RelativeLayout memberLayout;
@@ -130,8 +131,8 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         InitLayout();
 
         invitedMembers.clear();
-        chosenDestId = CHOSEN_DEST_DEFAULT_VAL;
-        experienceAns = EXPERIENCE_ANS_DEFAULT_VAL;
+        chosenDestId = CHOSEN_DEST_DEFAULT;
+        experienceAns = EXPERIENCE_ANS_DEFAULT;
 
         InitClickEvents();
 
@@ -145,7 +146,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         }
-        else if (chosenDestId != CHOSEN_DEST_DEFAULT_VAL) {//TODO remove table arguments after converting to kotlin
+        else if (chosenDestId != CHOSEN_DEST_DEFAULT) {//TODO remove table arguments after converting to kotlin
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
         }
@@ -220,14 +221,14 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),SearchDestinationActivity.class);
-                startActivityForResult(intent, SEARCH_DESTINATION_ACODE);
+                startActivityForResult(intent, SEARCH_DESTINATION_ACTIVITY_CODE);
             }
         });
 
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(chosenDestId != CHOSEN_DEST_DEFAULT_VAL)
+                if(chosenDestId != CHOSEN_DEST_DEFAULT)
                     General.openReserveInfoFragment(chosenDestId, getActivity());
             }
         });
@@ -258,7 +259,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SearchUsersActivity.class);
-                startActivityForResult(intent, INVITE_USERS_ACODE);
+                startActivityForResult(intent, INVITE_USERS_ACTIVITY_CODE);
             }
         });
 
@@ -292,9 +293,9 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if(i == R.id.yes_rb)
-                    experienceAns = EXPERIENCE_ANS_YES_EXP;
+                    experienceAns = EXPERIENCE_ANS_YES;
                 else if(i == R.id.no_rb)
-                    experienceAns = EXPERIENCE_ANS_NO_EXP;
+                    experienceAns = EXPERIENCE_ANS_NO;
             }
         });
     }
@@ -310,7 +311,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         }
 
         //get experience question
-        final boolean exp = (experienceAns != EXPERIENCE_ANS_NO_EXP);
+        final boolean exp = (experienceAns != EXPERIENCE_ANS_NO);
 
         return new UploadGroup(
                 key,    //Firebase Unique Group Key
@@ -339,11 +340,11 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_DESTINATION_ACODE) {
+        if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT_VAL);
+                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT);
             }
-        } else if (requestCode == INVITE_USERS_ACODE) {
+        } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
             if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
                 if (data.getBooleanExtra("member_added", false)) {//checking if members added
                     PopulateMembersList();
@@ -399,7 +400,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton(R.string.okay, null);
 
-        if(chosenDestId == CHOSEN_DEST_DEFAULT_VAL) {
+        if(chosenDestId == CHOSEN_DEST_DEFAULT) {
             builder.setMessage(R.string.dest_field_incomplete)
                     .show();
             return false;
@@ -419,7 +420,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
                     .show();
             return false;
         }
-        else if(experienceAns == EXPERIENCE_ANS_DEFAULT_VAL) {
+        else if(experienceAns == EXPERIENCE_ANS_DEFAULT) {
             builder.setMessage(R.string.exp_field_incomplete)
                     .show();
             return false;

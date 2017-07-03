@@ -17,7 +17,7 @@ import android.widget.ImageView;
 
 import java.util.Locale;
 
-public class OptionsFragment extends Fragment implements View.OnClickListener
+public class SettingsFragment extends Fragment implements View.OnClickListener
 {
     View myView;
     ImageView GeoButton;

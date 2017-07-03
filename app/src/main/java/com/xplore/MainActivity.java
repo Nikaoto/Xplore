@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         General.HideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
-            fm.beginTransaction().replace(R.id.fragment_container, new OptionsFragment()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).addToBackStack(null).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);

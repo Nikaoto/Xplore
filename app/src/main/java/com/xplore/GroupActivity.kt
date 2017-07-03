@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.group_info.*
 import kotlinx.android.synthetic.main.reserve_list_item.*
 
 /**
- * Created by nikao on 2/12/2017.
+ * Created by Nikaoto on 2/12/2017.
  */
 
 class GroupActivity : Activity() {
@@ -29,8 +29,8 @@ class GroupActivity : Activity() {
 
     private val members = ArrayList<User>()
     internal val DBref = FirebaseDatabase.getInstance().reference
-    internal val groupsDBref = DBref.child("groups").ref //TODO remove .ref
-    internal val usersDBref = DBref.child("users").ref
+    internal val groupsDBref = DBref.child("groups")
+    internal val usersDBref = DBref.child("users")
     internal var tempGroup = Group();
     internal var tempMember = User();
 
@@ -125,7 +125,7 @@ class GroupActivity : Activity() {
 
                 memberCount = tempGroup.getMember_ids().size.toInt()
 
-                for (memberId in tempGroup.getMember_ids()) { //TODO? this returns members in random order
+                for (memberId in tempGroup.getMember_ids()) {
                     getUserInfo(memberId.toString())
                 }
             }
@@ -152,13 +152,12 @@ class GroupActivity : Activity() {
     }
 
     private fun applyReserveData() {
-        val context = this@GroupActivity //TODO insert this into constructor
-        val dbManager = DBManager(context)
+        val dbManager = DBManager(this)
         dbManager.openDataBase()
         val tempReserveCard = dbManager.getReserveCard(reserveID)
 
 
-        reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, context) }
+        reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
         reserveNameTextView.text = tempReserveCard.name
         reserveImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(ReserveIcons.grey[tempReserveCard.iconId])
@@ -201,7 +200,7 @@ class GroupActivity : Activity() {
 
     //Displays information about the experience icon (X and tick)
     private fun popExperienceInfoDialog() {
-        val builder = AlertDialog.Builder(this@GroupActivity)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.what_is_this)
                 .setMessage(R.string.group_exp_help)
                 .setPositiveButton(R.string.okay, null)
@@ -209,7 +208,7 @@ class GroupActivity : Activity() {
     }
 
     private fun populateMemberImageList() {
-        val adapter = MemberListAdapter(this@GroupActivity, members, selectedMemberProfileLayout)
+        val adapter = MemberListAdapter(this, members, selectedMemberProfileLayout)
         membersRecyclerView.adapter = adapter
     }
 
