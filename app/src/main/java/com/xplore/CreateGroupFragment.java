@@ -36,11 +36,24 @@ import java.util.Map;
 import static com.xplore.General.currentUserId;
 
 /**
- * Created by nikao on 2/18/2017.
+ * Created by Nikaoto on 2/18/2017.
+ *
+ * აღწერა:
+ * ეს ფრაგმენტი იხსნება როცა მომხმარებელი ახალ გუნდს ქმნის. ეს კლასი ამოწმებს მომხმარებლის შეცდომებს
+ * ფორმის შევსებისას და "დასტურზე" დაჭერის შემდგომ ტვირთავს ახალ გუნდს Firebase-ს ბაზაში
+ *
+ * Description:
+ * This fragment opens when user is creating a group. This class checks for any errors in user's
+ * group info and with "Done" uploads group info to groups Fireabase Database
+ *
  */
 
 public class CreateGroupFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
+
+    //TODO add meeting time
+    //TODO add finish time
+    //TODO close fragment when "Done" is clicked and and group info is correct. Upload group data afterwards (async)
 
     public static ArrayList<User> invitedMembers = new ArrayList<>();
 
@@ -87,11 +100,12 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
 
+    //Class that gets mapped to a group in Firebase database and is uploaded
     private class UploadGroup extends Group
     {
-        public UploadGroup(String group_id, boolean experienced, long start_date, long end_date,
-                           String destination_id, String extra_info, String group_preferences,
-                           ArrayList<String> member_ids) {
+        UploadGroup(String group_id, boolean experienced, long start_date, long end_date,
+                    String destination_id, String extra_info, String group_preferences,
+                    ArrayList<String> member_ids) {
             this.group_id = group_id;
             this.experienced = experienced;
             this.start_date = start_date;
@@ -103,7 +117,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         }
 
         @Exclude
-        public Map<String, Object> toMap()
+        Map<String, Object> toMap()
         {
             HashMap<String, Object> result = new HashMap<>();
             result.put("destination_id", this.destination_id);
@@ -143,9 +157,11 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     public void onResume() {
         super.onResume();
 
+        //Check if net connected
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         }
+        //Checking if user chose a destination
         else if (chosenDestId != CHOSEN_DEST_DEFAULT) {//TODO remove table arguments after converting to kotlin
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));

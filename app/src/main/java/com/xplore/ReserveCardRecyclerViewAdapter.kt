@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.reserve_list_item.view.*
 import java.util.ArrayList
 
 /**
- * Created by Nika on 6/16/2017.
+ * Created by Nikaoto on 6/16/2017.
  */
 
 class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)

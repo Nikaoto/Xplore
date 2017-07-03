@@ -18,8 +18,10 @@ import kotlinx.android.synthetic.main.group_info.*
 import kotlinx.android.synthetic.main.reserve_list_item.*
 
 /**
- * Created by Nikaoto on 2/12/2017.
- */
+* Created by Nikaoto on 2/12/2017.
+* TODO write description of this class - what it does and why.
+* TODO after implementing user profile view fragment, remove the member layout and replace member OnClick with user profile activity
+*/
 
 class GroupActivity : Activity() {
 
@@ -47,7 +49,6 @@ class GroupActivity : Activity() {
         //reset the layout TODO remove after finishing testing and clear layouts
         ResetLayout()
 
-        //Loading the info
         loadGroupData(group_id)
         applyReserveData()
     }

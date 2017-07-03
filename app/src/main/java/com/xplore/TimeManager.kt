@@ -1,16 +1,19 @@
 package com.xplore
 
-import android.util.Log
 import com.google.firebase.database.*
 import java.util.*
 
 /**
- * Created by Nika on 6/17/2017.
- */
+* Created by Nikaoto on 6/17/2017.
+* TODO write description of this class - what it does and why.
+*/
 
 class TimeManager {
-    companion object {
+    init {
+        refreshGlobalTimeStamp()
+    }
 
+    companion object {
         //UNIX timestamp used for current server (global) time
         var globalTimeStamp: Long = 0L
 
@@ -27,8 +30,6 @@ class TimeManager {
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val temp = dataSnapshot.getValue(Long::class.java)
-                    //Log.println(Log.INFO, "brejk", "refreshGlobalStimeStamp()")
-
                     //Checking for null
                     if(temp == null) {
                         globalTimeStamp = 0L
@@ -37,7 +38,9 @@ class TimeManager {
                         setIntTimeStamp(temp)
                     }
                 }
-                override fun onCancelled(databaseError: DatabaseError) { }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    globalTimeStamp = 0L
+                }
             })
         }
 
@@ -49,8 +52,5 @@ class TimeManager {
             val d = calendar.get(Calendar.DAY_OF_MONTH)
             intTimeStamp = y*1000 + m*100 + d
         }
-    }
-    init {
-        refreshGlobalTimeStamp()
     }
 }

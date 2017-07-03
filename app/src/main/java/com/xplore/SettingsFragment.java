@@ -2,7 +2,6 @@ package com.xplore;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.Locale;
+
+//TODO add description
 
 public class SettingsFragment extends Fragment implements View.OnClickListener
 {

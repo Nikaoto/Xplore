@@ -21,8 +21,9 @@ import kotlinx.android.synthetic.main.search_layout2.*
 import java.util.ArrayList
 
 /**
- * Created by nikao on 2/23/2017.
- */
+* Created by Nikaoto on 2/23/2017.
+* TODO write description of this class - what it does and why.
+*/
 
 
 class SearchDestinationActivity : Activity() {
