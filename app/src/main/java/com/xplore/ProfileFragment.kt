@@ -49,9 +49,9 @@ class ProfileFragment : Fragment() {
             FirebaseAuth.getInstance().signOut()
 
             //TODO find which service was used to sign in and sign out accordingly
-            //If (signed in with google)
+            //If (signed in with Google)
             Auth.GoogleSignInApi.signOut(googleApiClient)
-            //
+            //else if (signed in with Facebook) ...
 
             currentUserId = ""
             accountStatus = NOT_LOGGED_IN

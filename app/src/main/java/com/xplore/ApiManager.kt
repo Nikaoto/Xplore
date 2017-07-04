@@ -3,9 +3,7 @@ package com.xplore
 import android.app.Activity
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Api
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Created by Nikaoto on 7/4/2017.

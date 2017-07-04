@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -257,17 +256,15 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        {
-            super.onBackPressed();
-            MapFragment.MAPS_CLOSED = true;
-            MapFragment.FIRST_TIME = false;
-            if(reserveMarker != null)
-                reserveMarker.remove();
-            if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
-                getFragmentManager().popBackStack();
-            }
-            showReserve = false;
+        super.onBackPressed();
+        MapFragment.MAPS_CLOSED = true;
+        MapFragment.FIRST_TIME = false;
+        if(reserveMarker != null)
+            reserveMarker.remove();
+        if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
+            getFragmentManager().popBackStack();
         }
+        showReserve = false;
     }
 
     private void LoadKML()
@@ -318,7 +315,8 @@ public class MapsActivity extends AppCompatActivity
         googleApiClient.connect();
     }
 
-  /*  void requestLastLocation() {
+    /*
+    void requestLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if(lastLocation !=null)
@@ -327,10 +325,10 @@ public class MapsActivity extends AppCompatActivity
                 //Myl
             }
         }
-    }*/
+    }
+    */
 
-    private void startLocationUpdates()
-    {
+    private void startLocationUpdates() {
         locationRequest = new LocationRequest();
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(1000);
@@ -400,5 +398,4 @@ public class MapsActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         createNetErrorDialog();
     }
-
 }
