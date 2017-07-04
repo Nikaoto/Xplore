@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity
     public static final String ENGLISH_LANG_CODE = "en";
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
-    public static final int RESERVE_NUM = 9; //TODO change to dbManager.getRowCount()
 
     private DrawerLayout drawer;
     private int[] navMenuItems = new int[6];

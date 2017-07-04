@@ -23,8 +23,9 @@ import com.xplore.General.*
 import kotlinx.android.synthetic.main.user_profile.*
 
 /**
- * Created by Nika on 11/9/2016.
- */
+* Created by Nikaoto on 11/9/2016.
+* TODO write description of this class - what it does and why.
+*/
 
 class ProfileFragment : Fragment() {
 
