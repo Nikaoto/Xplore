@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -29,27 +28,8 @@ import kotlinx.android.synthetic.main.user_profile.*
 
 class ProfileFragment : Fragment() {
 
-    private val auth: FirebaseAuth
-
-    init {
-        //Getting Firebase Auth instance
-        auth = FirebaseAuth.getInstance()
-    }
-
     private val googleApiClient: GoogleApiClient
-            by lazy { buildGoogleApiClient(buildGoogleSignInOptions()) }
-
-    //Google Sign-In boilerplate code//
-
-    private fun buildGoogleApiClient(gso: GoogleSignInOptions): GoogleApiClient =
-            GoogleApiClient.Builder(activity.applicationContext)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
-
-    private fun buildGoogleSignInOptions(): GoogleSignInOptions =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
-
-    //////////////////////////////////
+            by lazy { ApiManager.getGoogleAuthApiClient(activity) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
             = inflater.inflate(R.layout.user_profile, container, false)
@@ -63,21 +43,26 @@ class ProfileFragment : Fragment() {
         logOutButton.setOnClickListener{ logOut() }
     }
 
-    //TODO this is a hack. Create SignInActivity and use LogIn() and LogOut() from that activity
+    //TODO add Account field to Settings and LogOut() from there
     fun logOut() {
-        auth.signOut()
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback {
-            status ->
-            if (status.isSuccess && accountStatus != NOT_SIGNED_IN) {
-                currentUserId = ""
-                accountStatus = NOT_SIGNED_IN
-                Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT).show()
+        if(accountStatus == LOGGED_IN){
+            FirebaseAuth.getInstance().signOut()
 
-                //Refreshing current fragment
-                val currentFragment = this@ProfileFragment
-                val fragTransaction = fragmentManager.beginTransaction()
-                fragTransaction.detach(currentFragment).attach(currentFragment).commit()
-            }
+            //TODO find which service was used to sign in and sign out accordingly
+            //If (signed in with google)
+            Auth.GoogleSignInApi.signOut(googleApiClient)
+            //
+
+            currentUserId = ""
+            accountStatus = NOT_LOGGED_IN
+
+            Toast.makeText(activity, "Logged Out", Toast.LENGTH_SHORT).show() //TODO string resources
+
+            //Refreshing current fragment
+            fragmentManager.beginTransaction()
+                    .detach(this@ProfileFragment)
+                    .attach(this@ProfileFragment)
+                    .commit()
         }
     }
 
@@ -143,7 +128,7 @@ class ProfileFragment : Fragment() {
                                 override fun onCancelled(databaseError: DatabaseError) {}
                             })
                     */
-                    if (accountStatus != NOT_SIGNED_IN)
+                    if (accountStatus != NOT_LOGGED_IN)
                         logOutButton.isEnabled = true
                 }
             }
@@ -154,9 +139,9 @@ class ProfileFragment : Fragment() {
     //Checks and refreshes the account status
     private fun refreshAccountStatus() { //TODO add this in General
         if (FirebaseAuth.getInstance().currentUser != null)
-            accountStatus = SIGNED_IN
+            accountStatus = LOGGED_IN
         else
-            accountStatus = 0
+            accountStatus = NOT_LOGGED_IN
     }
 
     override fun onStop() {

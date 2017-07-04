@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.xplore.General.accountStatus
 
 import com.xplore.General.popSignInMenu
 import kotlinx.android.synthetic.main.group_menu_layout.createPartyButton
@@ -46,12 +47,14 @@ class GroupMenuFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        /*if(General.accountStatus == General.SIGNED_IN) {
+        /*if(General.accountStatus == General.LOGGED_IN) {
             Toast.makeText(getActivity(), "Signed In", Toast.LENGTH_SHORT).show(); //TODO string resources
         }*/
 
         //TODO show this toast after exitting register activity
-        if (General.accountStatus == General.REGISTERED)
+        if (General.accountStatus == General.JUST_REGISTERED) {
             Toast.makeText(activity, "Registered", Toast.LENGTH_SHORT).show() //TODO string resources
+            accountStatus = General.LOGGED_IN
+        }
     }
 }

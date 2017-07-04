@@ -1,20 +1,17 @@
 package com.xplore;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,7 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 import static com.xplore.General.*;
 
 /**
- * Created by nikao on 3/8/2017.
+ * Created by Nikaoto on 3/8/2017.
+ * TODO write description of this class - what it does and why.
  */
 
 public class GoogleSignInActivity extends AppCompatActivity {
@@ -44,8 +42,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final int RC_REGISTER = 3;
 
     public static GoogleApiClient googleApiClient;
-    private FirebaseAuth auth;
-    private SignInButton googleSignIn_b;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private SignInButton googleSignInButton;
     private FirebaseAuth.AuthStateListener authListener;
     private View myView;
     private PopupWindow popupWindow;
@@ -59,11 +57,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.signin_layout);
         myView = getLayoutInflater().inflate(R.layout.signin_layout, null);
 
+        //Building Google Api Client
+        googleApiClient = ApiManager.INSTANCE.getGoogleAuthApiClient(this);
 
-        Authorize();
+        //Setting up auth state listener
+        setUpAuthStateListener();
 
-        googleSignIn_b = (SignInButton) findViewById(R.id.signin_google_button);
-        googleSignIn_b.setOnClickListener(new View.OnClickListener() {
+        googleSignInButton = (SignInButton) findViewById(R.id.signin_google_button);
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signIn();
@@ -71,46 +72,13 @@ public class GoogleSignInActivity extends AppCompatActivity {
         });
     }
 
-    private void signIn() {
-        popLoadingBar(0.8, 0.8, this, myView);
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void popLoadingBar(double xScale, double yScale, Activity activity, View view)
-    {
-        int popWidth = (int) (appWidth * xScale);
-        int popHeight = (int) (appHeight * yScale);
-
-        View popupView = activity.getLayoutInflater().inflate(R.layout.loading_layout, null);
-
-
-        popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        dimBehind(popupWindow, 0.65f); //ajuk
-    }
-
-    private void Authorize()
-    {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        auth = FirebaseAuth.getInstance();
+    private void setUpAuthStateListener() {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
                 if (user != null) {
-                    //Toast.makeText(GoogleSignInActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoogleSignInActivity.this, "Logged In", Toast.LENGTH_SHORT).show(); //TODO string resources
                     //User signed in
                     currentUserId = user.getUid();
                     CheckUserExists(user); //creates user in case it doesn't exist
@@ -120,6 +88,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void signIn() {
+        popupWindow = General.popLoadingBar(0.8, 0.8, this, myView);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -140,7 +114,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
         else if(requestCode == RC_REGISTER)
         {
-            accountStatus = REGISTERED;
+            accountStatus = JUST_REGISTERED;
             finish();
         }
     }
@@ -165,7 +139,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     startActivityForResult(i, RC_REGISTER);
                 }
                 else {
-                    accountStatus = SIGNED_IN;
+                    accountStatus = LOGGED_IN;
                     finish();
                 }
             }
@@ -208,6 +182,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         auth.removeAuthStateListener(authListener);
+        googleApiClient.disconnect();
     }
 
     @Override

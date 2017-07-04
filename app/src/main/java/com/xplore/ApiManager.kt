@@ -3,6 +3,7 @@ package com.xplore
 import android.app.Activity
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Api
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 
@@ -20,16 +21,15 @@ import com.google.firebase.auth.FirebaseAuth
  * "Service" is the name of the API provider.
  *
  */
+
 object ApiManager {
 
-    fun getFirebaseAuth() = FirebaseAuth.getInstance()
-
-    fun getGoogleApiClient(activity: Activity) =
+    fun getGoogleAuthApiClient(activity: Activity) =
             buildGoogleApiClient(activity, buildGoogleSignInOptions(activity))
 
     //fun getFacebookApiClient
 
-    //Google Api Client//
+    //Google Auth Api Client//
     fun buildGoogleApiClient(activity: Activity, gso: GoogleSignInOptions) =
             GoogleApiClient.Builder(activity.applicationContext)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()

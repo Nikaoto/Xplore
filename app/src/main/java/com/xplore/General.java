@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Nika on 2/24/2017.
+ * Created by Nikaoto on 2/24/2017.
  */
 
 public class General {
@@ -35,10 +35,10 @@ public class General {
     //TODO create current User Singleton object
 
     //==== Account status stuff ===
-    public static final int SIGNED_IN = 1;
-    public static final int REGISTERED = 2;
-    public static final int NOT_SIGNED_IN = 0;
-    public static int accountStatus = NOT_SIGNED_IN;
+    public static final int LOGGED_IN = 1;
+    public static final int JUST_REGISTERED = 2;
+    public static final int NOT_LOGGED_IN = 0;
+    public static int accountStatus = NOT_LOGGED_IN;
     //=================
 
     public static int appWidth, appHeight;
@@ -260,5 +260,21 @@ public class General {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity, View view)
+    {
+        int popWidth = (int) (appWidth * xScale);
+        int popHeight = (int) (appHeight * yScale);
+
+        View popupView = activity.getLayoutInflater().inflate(R.layout.loading_layout, null);
+
+
+        PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        dimBehind(popupWindow, 0.65f);
+
+        return popupWindow;
     }
 }

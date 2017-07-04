@@ -36,6 +36,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.kml.KmlLayer;
 
+/*
+* Created by Nikaoto
+*
+* აღწერა:
+* ეს კლასი ხნის გუგლის რუკას და აწესრიგებს ადგილმდებარეობის ძებნას. ჯერ-ჯერობით სატესტო რეჟიმშია.
+*
+* Description:
+* This class opens a map with google maps api and manages location tracking. For now, it is only in
+* experimental mode.
+*/
+
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 //TODO also implement OnConnectionFailedListener
@@ -140,8 +151,7 @@ public class MapsActivity extends AppCompatActivity
     //TODO keep pestering the user to turn on location
     public boolean CheckLocationPermission()
     {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
@@ -299,6 +309,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
+    //Building google location api
     protected synchronized void buildGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
