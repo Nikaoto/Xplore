@@ -135,7 +135,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.create_group,container,false);
+        myView = inflater.inflate(R.layout.create_group, container, false);
 
         //Refreshing server timeStamp
         TimeManager.Companion.refreshGlobalTimeStamp();
@@ -199,10 +199,10 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         memberLayout.setVisibility(View.GONE);
 
         //Selected Member Stuff
-        member_fname_text = (TextView) myView.findViewById(R.id.member_fname_text);
-        member_lname_text = (TextView) myView.findViewById(R.id.member_lname_text);
-        member_age_text = (TextView) myView.findViewById(R.id.member_age_text);
-        member_tel_text = (TextView) myView.findViewById(R.id.member_tel_text);
+//        member_fname_text = (TextView) myView.findViewById(R.id.member_fname_text);
+//        member_lname_text = (TextView) myView.findViewById(R.id.member_lname_text);
+//        member_age_text = (TextView) myView.findViewById(R.id.member_age_text);
+//        member_tel_text = (TextView) myView.findViewById(R.id.member_tel_text);
 
         //Buttons
         chooseButton = (Button) myView.findViewById(R.id.chooseReserve_button);
@@ -372,9 +372,11 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     private void PopulateMembersList()
     {
         memberRecList.setVisibility(View.VISIBLE);
-        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers, memberLayout);
+        final InvitingMemberListAdapter adapter = new InvitingMemberListAdapter(getActivity(), invitedMembers, memberLayout);
         memberRecList.setAdapter(adapter);
 
+        //TODO add uninvite button popup on member click in the lsit adapter
+        //TODO create a new list adapter which extends MemberListAdapter, but does above todo
         uninviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

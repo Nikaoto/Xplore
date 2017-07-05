@@ -139,14 +139,30 @@ public class General {
         return calculateAge(timeStamp, String.valueOf(birthDate));
     }
 
+    //Adds slashes to a date given in int (yyyy.mm.dd) without dots
     public static String putSlashesInDate(int date) {
-        String temp = String.valueOf(date);
-
+        String dateStr = String.valueOf(date);
         //Checking if format is correct
-        if(temp.length() != 8)
+        if (dateStr.length() != 8) {
             return "";
+        }
 
-        return temp.substring(0, 4) + "/" + temp.substring(4, 6) + "/" + temp.substring(6);
+        StringBuilder sb = new StringBuilder(dateStr);
+        sb.insert(4, "/");
+        sb.insert(7, "/");
+
+        return sb.toString();
+    }
+
+    //TODO make all dates ints and remove this crap
+    static String putSlashesInDate(Long date) {
+        return putSlashesInDate(Integer.valueOf(String.valueOf(date)));
+    }
+
+    public static void openUserProfile(Activity activity, String userId) {
+        Intent intent = new Intent(activity, UserProfileActivity.class);
+        intent.putExtra("userId", userId);
+        activity.startActivity(intent);
     }
 
     public static void HideKeyboard(Activity context) {

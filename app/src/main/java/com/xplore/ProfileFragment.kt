@@ -1,6 +1,7 @@
 package com.xplore
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +41,6 @@ class ProfileFragment : Fragment() {
         //Start image loading animation
         imageProgressBar.visibility = View.VISIBLE
 
-        logOutButton.setOnClickListener{ logOut() }
     }
 
     //TODO add Account field to Settings and LogOut() from there
@@ -66,6 +66,14 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    //Checks and refreshes the account status
+    private fun refreshAccountStatus() { //TODO add this in General
+        if (FirebaseAuth.getInstance().currentUser != null)
+            accountStatus = LOGGED_IN
+        else
+            accountStatus = NOT_LOGGED_IN
+    }
+
     override fun onStart() {
         super.onStart()
         googleApiClient.connect()
@@ -86,7 +94,6 @@ class ProfileFragment : Fragment() {
 
     //Gets the user info from Firebase and loads them into views
     private fun showUserInfo() {
-        refreshAccountStatus()
         val DBref = FirebaseDatabase.getInstance().reference
         val query = DBref.child("users").orderByKey().equalTo(currentUserId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -128,20 +135,10 @@ class ProfileFragment : Fragment() {
                                 override fun onCancelled(databaseError: DatabaseError) {}
                             })
                     */
-                    if (accountStatus != NOT_LOGGED_IN)
-                        logOutButton.isEnabled = true
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) { }
         })
-    }
-
-    //Checks and refreshes the account status
-    private fun refreshAccountStatus() { //TODO add this in General
-        if (FirebaseAuth.getInstance().currentUser != null)
-            accountStatus = LOGGED_IN
-        else
-            accountStatus = NOT_LOGGED_IN
     }
 
     override fun onStop() {

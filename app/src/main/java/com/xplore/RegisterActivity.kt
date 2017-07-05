@@ -20,8 +20,9 @@ import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
- * Created by nikao on 3/11/2017.
- */
+* Created by Nikaoto on 3/11/2017.
+* TODO write description of this class - what it does and why.
+*/
 
 class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 

@@ -124,10 +124,10 @@ class GroupActivity : Activity() {
                 tempGroup = dataSnapshot.getValue(Group::class.java)
                 tempGroup.setGroup_id(dataSnapshot.key)
 
-                memberCount = tempGroup.getMember_ids().size.toInt()
+                memberCount = tempGroup.getMember_ids().size
 
                 for (memberId in tempGroup.getMember_ids()) {
-                    getUserInfo(memberId.toString())
+                    getUserInfo(memberId)
                 }
             }
 
@@ -141,6 +141,7 @@ class GroupActivity : Activity() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 tempMember = dataSnapshot.getValue(User::class.java) //Getting member info
+                tempMember.setId(userId) //Setting user Id
                 members.add(tempMember) //Setting member info
                 memberCount-- //Iterating member index
                 if (memberCount == 0) { //Checking if member list retrieval finished
@@ -166,6 +167,8 @@ class GroupActivity : Activity() {
 
     private fun ApplyGroupData() {
         groupProgressBar.visibility = View.GONE
+
+        //Displaying leader
         Picasso.with(this)
                 .load(members[0].getProfile_picture_url())
                 .transform(RoundedCornersTransformation(
@@ -190,13 +193,15 @@ class GroupActivity : Activity() {
             popExperienceInfoDialog()
         }
 
-        startDateTextView.text = BufferDate(tempGroup.getStart_date())
-        endDateTextView.text = BufferDate(tempGroup.getEnd_date())
+        startDateTextView.text = General.putSlashesInDate(tempGroup.getStart_date())
+        endDateTextView.text = General.putSlashesInDate(tempGroup.getEnd_date())
 
         groupPrefsTextView.text = tempGroup.getGroup_preferences()
         groupExtraInfoTextView.text = tempGroup.getExtra_info()
 
-        populateMemberImageList()
+        //Displaying members
+        val adapter = MemberListAdapter(this, members)
+        membersRecyclerView.adapter = adapter
     }
 
     //Displays information about the experience icon (X and tick)
@@ -206,18 +211,5 @@ class GroupActivity : Activity() {
                 .setMessage(R.string.group_exp_help)
                 .setPositiveButton(R.string.okay, null)
         builder.show()
-    }
-
-    private fun populateMemberImageList() {
-        val adapter = MemberListAdapter(this, members, selectedMemberProfileLayout)
-        membersRecyclerView.adapter = adapter
-    }
-
-    //adds slashes to a date given in int (yyyy.mm.dd) without dots
-    private fun BufferDate(date: Long): String {
-        val sd = StringBuffer(date.toString())
-        sd.insert(4, "/")
-        sd.insert(7, "/")
-        return sd.toString()
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="6dp">
+    <!--
+    ეს ლეიაუთი არის დროებითი, ექაუნთის სეთინგების იმპლემენტირებამდე ასე იქნება
+
+    This layout is temporary, it'll stay like this until account settings is implemented
+    -->
+    <Button
+        android:id="@+id/logOutButton"
+        android:text="@string/log_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        app:backgroundTint = "@color/colorAccent"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="15dp"
+        android:textSize="20sp"
+        android:textAllCaps="true"/>
+
+</RelativeLayout>

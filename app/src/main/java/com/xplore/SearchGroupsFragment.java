@@ -77,8 +77,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         if(!General.isNetConnected(getActivity()))
         {
             General.createNetErrorDialog(getActivity());
-        }
-        else {
+        } else if (getActivity() != null) {
             Authorize();
             //buildUserBase();
             PreLoadData();
@@ -147,7 +146,9 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     //adding it to the list
                     tempGroupList.add(tempGroup);
                 }
-                SortLeaderInfo();
+                if (getActivity() != null) {
+                    SortLeaderInfo();
+                }
             }
 
             @Override
