@@ -173,7 +173,7 @@
 
         <View style="@style/dashed_divider"/>
 
-        <RelativeLayout
+       <!-- <RelativeLayout
             android:id="@+id/member_profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
                 android:textAllCaps="true"
                 android:fontFamily="monospace"/>
         </RelativeLayout>
-
+-->
         <TextView
             android:text="@string/has_visited_question"
             android:layout_marginTop="25dp"

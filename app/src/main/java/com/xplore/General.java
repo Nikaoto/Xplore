@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -292,5 +293,15 @@ public class General {
         dimBehind(popupWindow, 0.65f);
 
         return popupWindow;
+    }
+
+
+    public static void vibrateDevice(Context context, Long time) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (time != null) {
+            v.vibrate(time);
+        } else {
+            v.vibrate(20L);
+        }
     }
 }

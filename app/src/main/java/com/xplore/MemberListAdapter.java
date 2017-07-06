@@ -1,19 +1,24 @@
 package com.xplore;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+
+import static com.xplore.CreateGroupFragment.invitedMembers;
 
 /**
  * Created by Nikaoto on 3/4/2017.
@@ -70,12 +75,43 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
                 .into(holder.memberImage);
 
         //Configuring Clicks
-        //TODO when creating group, pop up "remove" button on click
         holder.memberImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentMember = users.get(position); //DO NOT REMOVE, THIS IS NECESSARY
                 General.openUserProfile((Activity) context, currentMember.getId());
+            }
+        });
+
+        //Pops up "remove?" dialog
+        holder.memberImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                currentMember = users.get(position);
+                General.vibrateDevice(context, null);
+
+                //TODO string resources
+                new AlertDialog.Builder(context)
+                        .setTitle("Remove "+currentMember.getFname()+" "+currentMember.getLname())
+                        .setMessage("Do you wish to remove this member from your group?")
+                        .setCancelable(false)
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Removing user and updating recycler view
+                                invitedMembers.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, invitedMembers.size());
+                                Toast.makeText(context, R.string.member_removed, Toast.LENGTH_SHORT).show();
+                            }
+                        }).create().show();
+                return false;
             }
         });
     }

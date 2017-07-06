@@ -50,10 +50,10 @@ import static com.xplore.General.currentUserId;
 
 public class CreateGroupFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-
+    //TODO turn this into an activity
     //TODO add meeting time
     //TODO add finish time
-    //TODO close fragment when "Done" is clicked and and group info is correct. Upload group data afterwards (async)
+    //TODO close activity when "Done" is clicked and and group info is correct. Upload group data afterwards (async)
 
     public static ArrayList<User> invitedMembers = new ArrayList<>();
 
@@ -84,8 +84,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     //TODO Make a new class for holding the date after switching to UNIX time
     private int sYear = 0, sMonth, sDay, eYear = 0, eMonth, eDay;
 
-    private int selectedMemberPos;
-    private RelativeLayout memberLayout;
     private RecyclerView memberRecList;
 
     EditText groupPrefs_text, extraInfo_text;
@@ -93,7 +91,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     String groupPrefs, extraInfo;
     User leader;
     TextView startDate_text, endDate_text, member_fname_text, member_lname_text, member_age_text, member_tel_text;
-    Button chooseButton, reserveButton, inviteButton, uninviteButton, doneButton, startDate, endDate;
+    Button chooseButton, reserveButton, inviteButton, doneButton, startDate, endDate;
     RadioGroup radioGroup;
     View myView;
     DBManager dbManager;
@@ -158,13 +156,17 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         super.onResume();
 
         //Check if net connected
-        if(!General.isNetConnected(getActivity())) {
+        if (!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         }
         //Checking if user chose a destination
         else if (chosenDestId != CHOSEN_DEST_DEFAULT) {//TODO remove table arguments after converting to kotlin
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
+        }
+        //Checking if members removed
+        if (invitedMembers.isEmpty()) {
+            memberRecList.setVisibility(View.GONE);
         }
     }
 
@@ -194,22 +196,11 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         memberRecList.setHasFixedSize(true);
         memberRecList.setLayoutManager(layoutManager);
 
-        //Selected Member Info Layout
-        memberLayout = (RelativeLayout) myView.findViewById(R.id.member_profile_layout);
-        memberLayout.setVisibility(View.GONE);
-
-        //Selected Member Stuff
-//        member_fname_text = (TextView) myView.findViewById(R.id.member_fname_text);
-//        member_lname_text = (TextView) myView.findViewById(R.id.member_lname_text);
-//        member_age_text = (TextView) myView.findViewById(R.id.member_age_text);
-//        member_tel_text = (TextView) myView.findViewById(R.id.member_tel_text);
-
         //Buttons
         chooseButton = (Button) myView.findViewById(R.id.chooseReserve_button);
         reserveButton = (Button) myView.findViewById(R.id.createGroup_reserveButton);
         doneButton = (Button) myView.findViewById(R.id.creteGroup_done_button);
         inviteButton = (Button) myView.findViewById(R.id.inviteMembers_button);
-        uninviteButton = (Button) myView.findViewById(R.id.uninviteMember_button);
         startDate = (Button) myView.findViewById(R.id.chooseStartDate);
         endDate = (Button) myView.findViewById(R.id.chooseEndDate);
 
@@ -316,6 +307,22 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT);
+            }
+        } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
+            if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
+                if (data.getBooleanExtra("member_added", false)) {//checking if members added
+                    PopulateMembersList();
+                }
+            }
+        }
+    }
+
     private UploadGroup CreateGroup(String key)
     {
         //getting member IDs
@@ -353,55 +360,18 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         Toast.makeText(getActivity(),"Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT);
-            }
-        } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
-            if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
-                if (data.getBooleanExtra("member_added", false)) {//checking if members added
-                    PopulateMembersList();
-                }
-            }
-        }
-    }
-
-    private void PopulateMembersList()
-    {
+    private void PopulateMembersList() {
         memberRecList.setVisibility(View.VISIBLE);
-        final InvitingMemberListAdapter adapter = new InvitingMemberListAdapter(getActivity(), invitedMembers, memberLayout);
+        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers);
         memberRecList.setAdapter(adapter);
-
-        //TODO add uninvite button popup on member click in the lsit adapter
-        //TODO create a new list adapter which extends MemberListAdapter, but does above todo
-        uninviteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedMemberPos = adapter.GetSelectedMemberPos();
-                Toast.makeText(getActivity(), R.string.member_removed, Toast.LENGTH_SHORT).show();
-                invitedMembers.remove(selectedMemberPos);
-                adapter.notifyItemRemoved(selectedMemberPos);
-                adapter.notifyItemRangeChanged(selectedMemberPos, invitedMembers.size());
-                adapter.SetSelectedMemberPos(-1);
-                memberLayout.setVisibility(view.GONE);
-                if(invitedMembers.isEmpty())
-                    memberRecList.setVisibility(View.GONE);
-
-            }
-        });
     }
 
-    private void GatherData()
-    {
+    private void GatherData() {
         groupPrefs = groupPrefs_text.getText().toString();
         extraInfo = extraInfo_text.getText().toString();
     }
 
-    private void ShowHelp(int title, int text, int butt_text, Resources resources)
-    {
+    private void ShowHelp(int title, int text, int butt_text, Resources resources) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage(resources.getString(text))
@@ -462,7 +432,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO convert this to java and skip the other crap arguments
+        //TODO convert this to Kotlin and skip the other crap arguments
         dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
     }

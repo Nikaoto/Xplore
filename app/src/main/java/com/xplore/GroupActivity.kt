@@ -118,7 +118,6 @@ class GroupActivity : Activity() {
         val query = groupsDBref.child(groupId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                 //creating the temporary (current) group
                 tempGroup = Group()
                 tempGroup = dataSnapshot.getValue(Group::class.java)
