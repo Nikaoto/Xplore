@@ -82,8 +82,8 @@ class MemberListAdapter(private val context: Context,
                         .setTitle("Remove " + currentMember.getFname() + " " + currentMember.getLname())
                         .setMessage("Do you wish to remove this member from your group?")
                         .setCancelable(false)
-                        .setNegativeButton("No") { dialog, which -> dialog.dismiss() }
-                        .setPositiveButton("Yes") { dialog, which ->
+                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+                        .setPositiveButton("Yes") { _, _ ->
                             //Removing user and updating recycler view
                             invitedMembers.removeAt(position)
                             notifyItemRemoved(position)

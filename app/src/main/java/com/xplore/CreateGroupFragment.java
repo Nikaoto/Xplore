@@ -90,8 +90,9 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     ImageView prefs_help, info_help;
     String groupPrefs, extraInfo;
     User leader;
-    TextView startDate_text, endDate_text, member_fname_text, member_lname_text, member_age_text, member_tel_text;
-    Button chooseButton, reserveButton, inviteButton, doneButton, startDate, endDate;
+    TextView startDate_text, endDate_text;
+    Button chooseButton, inviteButton, doneButton, startDate, endDate;
+    Button reserveButton; //TODO replace reserveButton with reserveCard
     RadioGroup radioGroup;
     View myView;
     DBManager dbManager;
@@ -161,6 +162,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         }
         //Checking if user chose a destination
         else if (chosenDestId != CHOSEN_DEST_DEFAULT) {//TODO remove table arguments after converting to kotlin
+            //TODO make a separate method for displaying the reserve
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
         }

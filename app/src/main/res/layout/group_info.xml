@@ -183,6 +183,9 @@
                 android:textSize="21sp"/>
         </RelativeLayout>
 
+        <View style="@style/dashed_divider"
+            android:layout_marginTop="@dimen/main_text_margin_top"/>
+
         <TextView
             android:text="@string/group_members"
             android:textColor="@color/Black"
@@ -201,65 +204,6 @@
         </android.support.v7.widget.RecyclerView>
 
         <View style="@style/Divider"/>
-
-        <RelativeLayout
-            android:id="@+id/selectedMemberProfileLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp">
-
-            <TextView
-                android:id="@+id/selectedMemberFnameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="First Name"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="18sp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true" />
-
-            <TextView
-                android:id="@+id/selectedMemberLnameTextView"
-                android:text="Last Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="18sp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="3dp"
-                android:layout_below="@id/selectedMemberFnameTextView"
-                android:layout_alignParentLeft="true" />
-
-            <TextView
-                android:id="@+id/selectedMemberAgeTextView"
-                android:text="Birth date: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="18sp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="3dp"
-                android:layout_below="@id/selectedMemberLnameTextView"
-                android:layout_alignParentLeft="true"/>
-
-            <TextView
-                android:id="@+id/selectedMemberTelTextView"
-                android:text="Tel: 599 42 09 69"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="18sp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="3dp"
-                android:layout_below="@id/selectedMemberAgeTextView"
-                android:layout_alignParentLeft="true"/>
-        </RelativeLayout>
-
-        <View style="@style/dashed_divider"/>
 
         <TextView
             android:text="@string/group_preferences"

@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.reserve_list_item.*
 /**
 * Created by Nikaoto on 2/12/2017.
 * TODO write description of this class - what it does and why.
-* TODO after implementing user profile view fragment, remove the member layout and replace member OnClick with user profile activity
 */
 
 class GroupActivity : Activity() {
@@ -47,7 +46,7 @@ class GroupActivity : Activity() {
         initMemberList()
 
         //reset the layout TODO remove after finishing testing and clear layouts
-        ResetLayout()
+        resetLayout()
 
         loadGroupData(group_id)
         applyReserveData()
@@ -72,18 +71,13 @@ class GroupActivity : Activity() {
         membersRecyclerView.layoutManager = layoutManager
     }
 
-    private fun ResetLayout() {
+    private fun resetLayout() {
         //leader
         leaderFnameTextView.text = "-"
         leaderLnameTextView.text = "-"
         leaderAgeTextView.text = ""
         leaderTelTextView.text = ""
         leaderRepTextView.text = ""
-        //member
-        selectedMemberFnameTextView.text = "-"
-        selectedMemberLnameTextView.text = "-"
-        selectedMemberAgeTextView.text = ""
-        selectedMemberTelTextView.text = ""
         //group
         startDateTextView.text = ""
         endDateTextView.text = ""
@@ -144,7 +138,7 @@ class GroupActivity : Activity() {
                 members.add(tempMember) //Setting member info
                 memberCount-- //Iterating member index
                 if (memberCount == 0) { //Checking if member list retrieval finished
-                    ApplyGroupData()
+                    applyGroupData()
                 }
             }
 
@@ -152,6 +146,7 @@ class GroupActivity : Activity() {
         })
     }
 
+    //Gets reserve data from local database and displays it on the reserve card
     private fun applyReserveData() {
         val dbManager = DBManager(this)
         dbManager.openDataBase()
@@ -164,7 +159,8 @@ class GroupActivity : Activity() {
         reserveIconImageView.setImageResource(ReserveIcons.grey[tempReserveCard.iconId])
     }
 
-    private fun ApplyGroupData() {
+    //Displays the already-retrieved data of the group
+    private fun applyGroupData() {
         groupProgressBar.visibility = View.GONE
 
         //Displaying leader

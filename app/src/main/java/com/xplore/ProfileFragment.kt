@@ -99,8 +99,7 @@ class ProfileFragment : Fragment() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists() && activity != null) {
-                    var tempUser = User()
-                    tempUser = dataSnapshot.children.iterator().next().getValue(User::class.java)
+                    val tempUser = dataSnapshot.children.iterator().next().getValue(User::class.java)
                     //Loading Image
                     Picasso.with(activity)
                             .load(tempUser.getProfile_picture_url())

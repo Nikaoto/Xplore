@@ -94,9 +94,8 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
         if (General.isNetConnected(this@RegisterActivity)) {
-            val strDay: String
-            //Checking if age is OK
 
+            //Checking if age is OK
             if (General.calculateAge(globalTimeStamp, year, month, day) >= ageRestriction) {
                 bYear = year
                 bMonth = month
