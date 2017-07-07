@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.groups.create
 
 import android.app.Activity
 import android.content.DialogInterface
@@ -15,6 +15,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.xplore.DBManager
+import com.xplore.General
+import com.xplore.R
+import com.xplore.reserve.ReserveCard
+import com.xplore.reserve.Icons
 import kotlinx.android.synthetic.main.reserve_list_item.view.*
 import kotlinx.android.synthetic.main.search_layout2.*
 
@@ -83,7 +88,7 @@ class SearchDestinationActivity : Activity() {
             reserveCards = dbManager.getAllReserveCards()
             answerCards.addAll(reserveCards)
             //Creating & setting adapter
-            val adapter = RVAdapter(answerCards, this, ReserveIcons.grey)
+            val adapter = RVAdapter(answerCards, this, Icons.grey)
             resultsRV.post { resultsRV.adapter = adapter }
             progressBar.post { progressBar.visibility = View.INVISIBLE }
         }).start()
@@ -153,7 +158,7 @@ class SearchDestinationActivity : Activity() {
                     .setPositiveButton(R.string.yes, object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             chosenDestId = reserveCard.id
-                            Log.println(Log.INFO, "brejk", "chosen dest id is $chosenDestId")
+                            Log.println(Log.INFO, "brejk", "chosen dest id is ${chosenDestId}")
                             activity.onBackPressed()
                         }
                     })

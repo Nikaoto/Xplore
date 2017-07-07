@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.xplore.account.GoogleSignInActivity;
+import com.xplore.user.UserProfileActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +54,18 @@ public class General {
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         appWidth = dm.widthPixels;
         appHeight = dm.heightPixels;
+    }
+
+    //Refreshes currentUserId and the account status
+    public static void refreshAccountStatus() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            accountStatus = LOGGED_IN;
+            currentUserId = currentUser.getUid();
+        } else {
+            accountStatus = NOT_LOGGED_IN;
+            currentUserId = "";
+        }
     }
 
     public static void setCurrentTable(Context context)
@@ -136,7 +150,7 @@ public class General {
     }
 
     //The same, but takes integer as birth date instead
-    static int calculateAge(Long timeStamp, int birthDate) {
+    public static int calculateAge(Long timeStamp, int birthDate) {
         return calculateAge(timeStamp, String.valueOf(birthDate));
     }
 
@@ -156,7 +170,7 @@ public class General {
     }
 
     //TODO make all dates ints and remove this crap
-    static String putSlashesInDate(Long date) {
+    public static String putSlashesInDate(Long date) {
         return putSlashesInDate(Integer.valueOf(String.valueOf(date)));
     }
 
@@ -202,7 +216,7 @@ public class General {
         alert.show();
     }
 
-    static void dimBehind(PopupWindow popupWindow, float dimAmount) {
+    public static void dimBehind(PopupWindow popupWindow, float dimAmount) {
         View container;
         if (popupWindow.getBackground() == null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -294,7 +308,6 @@ public class General {
 
         return popupWindow;
     }
-
 
     public static void vibrateDevice(Context context, Long time) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

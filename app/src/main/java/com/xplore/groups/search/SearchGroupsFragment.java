@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.groups.search;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.xplore.DBManager;
+import com.xplore.General;
+import com.xplore.R;
+import com.xplore.TimeManager;
+import com.xplore.groups.Group;
+import com.xplore.groups.GroupButton;
+import com.xplore.groups.search.ViewGroupActivity;
+import com.xplore.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +39,7 @@ import java.util.List;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
- * Created by nikao on 2/8/2017.
+ * Created by Nikaoto on 2/8/2017.
  */
 
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
@@ -74,24 +81,14 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         //setting up progressbar
         progressBar = (ProgressBar) myView.findViewById(R.id.searchProgressBar);
 
-        if(!General.isNetConnected(getActivity()))
-        {
+        if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         } else if (getActivity() != null) {
-            Authorize();
             //buildUserBase();
             PreLoadData();
             LoadData();
         }
         return myView;
-    }
-
-    private void Authorize()
-    {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
     }
 
     /*
@@ -273,7 +270,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                 @Override
                 public void onClick(View view) {
                     //Creating intent
-                    Intent intent= new Intent(getActivity(),GroupActivity.class);
+                    Intent intent= new Intent(getActivity(), ViewGroupActivity.class);
 
                     //Sending data over to intent
                     intent.putExtra("group_id",currentButton.getGroup_id());

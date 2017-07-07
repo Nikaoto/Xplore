@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.reserve
 
 /**
  * Created by Nikaoto on 6/7/2017.

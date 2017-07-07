@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.user
 
 import android.app.Activity
 import android.os.Bundle
@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.General
+import com.xplore.R
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.user_profile.*
 
@@ -16,16 +18,19 @@ import kotlinx.android.synthetic.main.user_profile.*
  * Created by Nikaoto on 7/5/2017.
  *
  * აღწერა:
- * ეს მოქმედება აჩვენებს ნებისმიერი მომხმარებლის პროფილის გვერდს მისი ID-ს მიხედვით
+ * ეს მოქმედება აჩვენებს ნებისმიერი მომხმარებლის პროფილის გვერდს მისი ID-ს მიხედვით.
+ * ინტენტიდან იღებს "userId" სტრინგს.
  *
  * Description:
- * This activity displays any user's profile page with the given ID
+ * This activity displays any user's profile page with the given ID.
+ * Receives "userId" string from intent.
  *
  */
 
+//TODO open registration when not signed in
 class UserProfileActivity : Activity() {
 
-    private val userId: String by lazy { intent.getStringExtra("userId") }
+    private val userId: String by lazy { getPassedUserId() }
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +39,16 @@ class UserProfileActivity : Activity() {
 
         //Start load animation
         imageProgressBar.visibility = View.VISIBLE
-
         fetchUserInfo(userId)
+    }
+
+    private fun getPassedUserId(): String {
+        val tempUserId = intent.getStringExtra("userId")
+        if (tempUserId != null) {
+            return tempUserId
+        } else {
+            return General.currentUserId
+        }
     }
 
     private fun fetchUserInfo(userId: String){
@@ -44,7 +57,7 @@ class UserProfileActivity : Activity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists() && this@UserProfileActivity != null) {
                     val tempUser = dataSnapshot.children.iterator().next().getValue(User::class.java) //TODO remove .java after converting User to kotlin
-                    displayUserInfo(tempUser)
+                    displayUserInfo(tempUser!!)
                 } else {
                     Toast.makeText(this@UserProfileActivity,
                             "User does not exist", Toast.LENGTH_SHORT).show()//TODO String resources

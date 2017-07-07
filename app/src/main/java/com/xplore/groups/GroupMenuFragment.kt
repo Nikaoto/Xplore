@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.groups
 
 import android.app.Fragment
 import android.os.Bundle
@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.xplore.General
 import com.xplore.General.accountStatus
 
 import com.xplore.General.popSignInMenu
+import com.xplore.R
+import com.xplore.groups.create.CreateGroupFragment
+import com.xplore.groups.search.SearchGroupsFragment
 import kotlinx.android.synthetic.main.group_menu_layout.createPartyButton
 import kotlinx.android.synthetic.main.group_menu_layout.joinPartyButton
 
 
 /**
- * Created by Nika on 11/9/2016.
+ * Created by Nikaoto on 11/9/2016.
  */
 
 class GroupMenuFragment : Fragment() {

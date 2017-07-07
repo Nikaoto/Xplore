@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.maps;
 
 import android.app.Fragment;
 import android.content.Intent;

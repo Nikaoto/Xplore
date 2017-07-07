@@ -17,7 +17,8 @@ import java.util.ArrayList
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
-import com.xplore.CreateGroupFragment.invitedMembers
+import com.xplore.groups.create.CreateGroupFragment.invitedMembers
+import com.xplore.user.User
 
 /**
  * Created by Nikaoto on 3/4/2017.

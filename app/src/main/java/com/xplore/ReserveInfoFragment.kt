@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewCompat
+import com.xplore.maps.MapFragment
+import com.xplore.maps.MapsActivity
+import com.xplore.reserve.Reserve
+import com.xplore.reserve.Icons
 
 import kotlinx.android.synthetic.main.reserve_info2.*
 
@@ -67,7 +71,7 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
     fun setupLayout(reserve: Reserve) {
         collapsingToolbar.setTitle(reserve.name)
         reserveImageView.setBackgroundResource(reserve.imageId)
-        reserveIconFAB.setImageResource(ReserveIcons.black[reserve.iconId])
+        reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna
         floraTextView.text = reserve.flora

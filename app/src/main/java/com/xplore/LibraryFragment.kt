@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.xplore.reserve.ReserveCard
+import com.xplore.reserve.ReserveCardRecyclerViewAdapter
+import com.xplore.reserve.Icons
 
 import java.util.ArrayList
 
@@ -63,7 +66,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
               reserveCards = dbManager.getAllReserveCards()
               answerCards.addAll(reserveCards)
               //Creating & setting adapter
-              val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, ReserveIcons.grey)
+              val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
               resultsRV.post { resultsRV.adapter = adapter }
               progressBar.post { progressBar.visibility = View.INVISIBLE }
         }).start()

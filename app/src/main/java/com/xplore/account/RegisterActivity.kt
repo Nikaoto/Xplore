@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.account
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -11,12 +11,15 @@ import android.widget.Toast
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
+import com.xplore.General
+import com.xplore.R
 
 import java.util.HashMap
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
+import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**

@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.groups.create;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,12 +24,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.xplore.General;
+import com.xplore.R;
+import com.xplore.TimeManager;
+import com.xplore.user.User;
 
 import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-import static com.xplore.CreateGroupFragment.invitedMembers;
+import static com.xplore.groups.create.CreateGroupFragment.invitedMembers;
 
 
 /**

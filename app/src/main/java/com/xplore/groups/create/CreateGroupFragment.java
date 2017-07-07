@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.groups.create;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,13 +19,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
+import com.xplore.DBManager;
+import com.xplore.DatePickerDialogFragment;
+import com.xplore.General;
+import com.xplore.MemberListAdapter;
+import com.xplore.R;
+import com.xplore.TimeManager;
+import com.xplore.groups.Group;
+import com.xplore.user.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -165,10 +172,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             //TODO make a separate method for displaying the reserve
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
-        }
-        //Checking if members removed
-        if (invitedMembers.isEmpty()) {
-            memberRecList.setVisibility(View.GONE);
         }
     }
 

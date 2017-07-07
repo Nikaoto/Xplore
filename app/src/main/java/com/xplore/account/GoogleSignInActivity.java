@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.account;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.xplore.ApiManager;
+import com.xplore.General;
+import com.xplore.R;
+import com.xplore.account.RegisterActivity;
 
 import static com.xplore.General.*;
 

@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
 import com.google.android.gms.maps.model.LatLng
+import com.xplore.reserve.Reserve
+import com.xplore.reserve.ReserveCard
 
 import java.io.IOException
 import java.util.ArrayList

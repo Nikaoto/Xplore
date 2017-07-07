@@ -1,6 +1,7 @@
 package com.xplore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -18,6 +19,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.xplore.groups.GroupMenuFragment;
+import com.xplore.maps.MapFragment;
+import com.xplore.user.UserProfileActivity;
+
 import java.util.Locale;
 
 
@@ -29,7 +34,13 @@ public class MainActivity extends AppCompatActivity
     public static final String RUSSIAN_LANG_CODE = "ru";
 
     private DrawerLayout drawer;
-    private int[] navMenuItems = new int[6];
+    private int[] navMenuItems = {
+            R.id.nav_first_layout,
+            R.id.nav_second_layout,
+            R.id.nav_third_layout,
+            R.id.nav_fourth_layout,
+            R.id.nav_fifth_layout
+    };
     private int previousNavItemId;
     private int backstackEntryCount = 1;
     private NavigationView navigationView;
@@ -43,9 +54,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         InitPreferences(this);
         General.setCurrentTable(this);
-        InitNavMenuItems();
         setContentView(R.layout.activity_main);
         General.InitDisplayMetrics(this);
+        General.refreshAccountStatus();
 
         //Set initial Fragment
         fm = getFragmentManager();
@@ -57,7 +68,7 @@ public class MainActivity extends AppCompatActivity
             public void onBackStackChanged() {
                 int entryCount = fm.getBackStackEntryCount();
                 //if entry removed (back pressed, fragment closed)
-                if(backstackEntryCount > entryCount){
+                if (backstackEntryCount > entryCount) {
                     if (entryCount > 0) {
                         FragmentManager.BackStackEntry lastEntry = fm.getBackStackEntryAt(entryCount - 1);
                         try {
@@ -120,15 +131,6 @@ public class MainActivity extends AppCompatActivity
     {
         this.menu = menu_;
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    //Initializes navigation menu item IDs for backstack
-    private void InitNavMenuItems() {
-        navMenuItems[1] = R.id.nav_first_layout;
-        navMenuItems[2] = R.id.nav_second_layout;
-        navMenuItems[3] = R.id.nav_third_layout;
-        navMenuItems[4] = R.id.nav_fourth_layout;
-        navMenuItems[5] = R.id.nav_fifth_layout;
     }
 
     //Initializes prefrences
@@ -221,8 +223,9 @@ public class MainActivity extends AppCompatActivity
         //TODO change the nav item names
         switch (id){
             case R.id.nav_first_layout : {
-                fm.beginTransaction().replace(R.id.fragment_container, new ProfileFragment())
-                        .addToBackStack("1").commit();
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                intent.putExtra("userId", General.currentUserId);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_second_layout : {

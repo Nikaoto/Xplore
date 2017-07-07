@@ -1,15 +1,20 @@
-package com.xplore
+package com.xplore.groups.search
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.*
+import com.xplore.groups.Group
+import com.xplore.reserve.Icons
+import com.xplore.user.User
 
 import java.util.ArrayList
 
@@ -22,18 +27,22 @@ import kotlinx.android.synthetic.main.reserve_list_item.*
 * TODO write description of this class - what it does and why.
 */
 
-class GroupActivity : Activity() {
+class ViewGroupActivity : Activity() {
 
+    //TODO convert to inferred types after testing
     private var group_id: String = ""
-    private var reserveID: Int = 0
+    private var reserveID: Int= 0
     private var memberCount: Int = 0
-
     private val members = ArrayList<User>()
+
+    //Firebase database references
     internal val DBref = FirebaseDatabase.getInstance().reference
     internal val groupsDBref = DBref.child("groups")
     internal val usersDBref = DBref.child("users")
-    internal var tempGroup = Group();
-    internal var tempMember = User();
+
+    //The variables which contain the current group/member info
+    internal var currentGroup = Group()
+    internal var tempMember = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +61,20 @@ class GroupActivity : Activity() {
         applyReserveData()
     }
 
+    //Gets reserve data from local database and displays it on the reserve card
+    private fun applyReserveData() {
+        val dbManager = DBManager(this)
+        dbManager.openDataBase()
+        val tempReserveCard = dbManager.getReserveCard(reserveID)
+
+
+        reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
+        reserveNameTextView.text = tempReserveCard.name
+        reserveImageView.setImageResource(tempReserveCard.imageId)
+        reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
+    }
+
+    //TODO maybe remove?
     //Resets variables so a new group can be loaded from zero
     private fun resetVariables() {
         memberCount = 1
@@ -111,16 +134,20 @@ class GroupActivity : Activity() {
     private fun loadGroupData(groupId: String) {
         val query = groupsDBref.child(groupId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //creating the temporary (current) group
-                tempGroup = Group()
-                tempGroup = dataSnapshot.getValue(Group::class.java)
-                tempGroup.setGroup_id(dataSnapshot.key)
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                //Checking if group exists
+                if (dataSnapshot!!.exists()) {
+                    //creating the temporary (current) group
+                    currentGroup = dataSnapshot.getValue(Group::class.java)!!
+                    currentGroup.setGroup_id(dataSnapshot.key)
+                    memberCount = currentGroup.getMember_ids()!!.size
 
-                memberCount = tempGroup.getMember_ids().size
-
-                for (memberId in tempGroup.getMember_ids()) {
-                    getUserInfo(memberId)
+                    for (memberId in currentGroup.getMember_ids()) {
+                        getUserInfo(memberId)
+                    }
+                } else {//TODO string resources
+                    Toast.makeText(applicationContext, "The group does not exist", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
 
@@ -132,31 +159,24 @@ class GroupActivity : Activity() {
     private fun getUserInfo(userId: String) {
         val query = usersDBref.child(userId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                tempMember = dataSnapshot.getValue(User::class.java) //Getting member info
-                tempMember.setId(userId) //Setting user Id
-                members.add(tempMember) //Setting member info
-                memberCount-- //Iterating member index
-                if (memberCount == 0) { //Checking if member list retrieval finished
-                    applyGroupData()
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                //Checking if member exists
+                if (dataSnapshot!!.exists()) {
+                    tempMember = dataSnapshot.getValue(User::class.java)!! //Getting member info
+                    tempMember.setId(userId) //Setting user Id
+                    members.add(tempMember) //Setting member info
+                    memberCount-- //Iterating member index
+                    if (memberCount == 0) { //Checking if member list retrieval finished
+                        applyGroupData()
+                    }
+                } else {//TODO string resources
+                    Toast.makeText(applicationContext, "There was an error retreiving the members", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-    }
-
-    //Gets reserve data from local database and displays it on the reserve card
-    private fun applyReserveData() {
-        val dbManager = DBManager(this)
-        dbManager.openDataBase()
-        val tempReserveCard = dbManager.getReserveCard(reserveID)
-
-
-        reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
-        reserveNameTextView.text = tempReserveCard.name
-        reserveImageView.setImageResource(tempReserveCard.imageId)
-        reserveIconImageView.setImageResource(ReserveIcons.grey[tempReserveCard.iconId])
     }
 
     //Displays the already-retrieved data of the group
@@ -178,7 +198,7 @@ class GroupActivity : Activity() {
         leaderRepTextView.text = members[0].getReputation().toString()
 
         //Setting experienced icon
-        if (tempGroup.isExperienced) {
+        if (currentGroup.isExperienced) {
             groupExpImageView.setImageResource(R.drawable.ic_check)
         } else {
             groupExpImageView.setImageResource(R.drawable.ic_x)
@@ -188,11 +208,11 @@ class GroupActivity : Activity() {
             popExperienceInfoDialog()
         }
 
-        startDateTextView.text = General.putSlashesInDate(tempGroup.getStart_date())
-        endDateTextView.text = General.putSlashesInDate(tempGroup.getEnd_date())
+        startDateTextView.text = General.putSlashesInDate(currentGroup.getStart_date())
+        endDateTextView.text = General.putSlashesInDate(currentGroup.getEnd_date())
 
-        groupPrefsTextView.text = tempGroup.getGroup_preferences()
-        groupExtraInfoTextView.text = tempGroup.getExtra_info()
+        groupPrefsTextView.text = currentGroup.getGroup_preferences()
+        groupExtraInfoTextView.text = currentGroup.getExtra_info()
 
         //Displaying members
         val adapter = MemberListAdapter(this, members)

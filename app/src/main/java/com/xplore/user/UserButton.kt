@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.user
 
 /**
  * Created by Nikaoto on 3/1/2017.

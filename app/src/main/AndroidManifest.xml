@@ -31,26 +31,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.xplore.MapsActivity"
+        <activity android:name="com.xplore.maps.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
         <activity android:name="com.xplore.ReserveInfoFragment"
             android:label="@string/nav_lib_title"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xplore.GroupActivity"
+        <activity android:name="com.xplore.groups.search.ViewGroupActivity"
             android:label="@string/view_group"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xplore.SearchDestinationActivity"
+        <activity android:name="com.xplore.groups.create.SearchDestinationActivity"
             android:label="@string/choose_destination"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xplore.SearchUsersActivity"
+        <activity android:name="com.xplore.groups.create.SearchUsersActivity"
             android:label="@string/search_users"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xplore.GoogleSignInActivity"
+        <activity android:name="com.xplore.account.GoogleSignInActivity"
             android:label="@string/authorization"
             android:screenOrientation="portrait"/>
 
@@ -58,7 +58,7 @@
             android:label="@string/register"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.xplore.UserProfileActivity"
+        <activity android:name="com.xplore.user.UserProfileActivity"
             android:label="@string/profile"
             android:screenOrientation="portrait"/>
 

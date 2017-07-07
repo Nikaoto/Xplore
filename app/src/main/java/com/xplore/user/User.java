@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.user;
 
 
 /**

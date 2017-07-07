@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.maps;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -34,6 +34,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.kml.KmlLayer;
+import com.xplore.General;
+import com.xplore.R;
 
 /*
 * Created by Nikaoto

@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.reserve
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.xplore.General
+import com.xplore.R
 import kotlinx.android.synthetic.main.reserve_list_item.view.*
 import java.util.ArrayList
 
