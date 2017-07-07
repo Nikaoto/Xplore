@@ -362,7 +362,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     private void PopulateMembersList() {
         memberRecList.setVisibility(View.VISIBLE);
-        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers);
+        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers, true);
         memberRecList.setAdapter(adapter);
     }
 
