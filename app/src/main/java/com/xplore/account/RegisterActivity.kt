@@ -16,10 +16,10 @@ import com.xplore.R
 
 import java.util.HashMap
 
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.user.User
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**

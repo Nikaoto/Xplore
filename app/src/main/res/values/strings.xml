@@ -10,6 +10,10 @@
     <string name="calendar">კალენდარი</string>
     <string name="cancel">გაუქმება</string>
     <string name="profile">პროფილი</string>
+    <string name="groups">ჯგუფები</string>
+    <string name="my_groups">ჩემი ჯგუფები</string>
+    <string name="find_create">მოძებნე / შექმენი</string>
+    <string name="settings">რეგულაცია</string>
     <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
         შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
         http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.

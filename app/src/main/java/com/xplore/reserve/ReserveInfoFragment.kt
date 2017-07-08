@@ -1,14 +1,14 @@
-package com.xplore
+package com.xplore.reserve
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewCompat
+import com.xplore.DBManager
+import com.xplore.R
 import com.xplore.maps.MapFragment
 import com.xplore.maps.MapsActivity
-import com.xplore.reserve.Reserve
-import com.xplore.reserve.Icons
 
 import kotlinx.android.synthetic.main.reserve_info2.*
 

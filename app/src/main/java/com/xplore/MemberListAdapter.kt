@@ -15,8 +15,6 @@ import com.squareup.picasso.Picasso
 
 import java.util.ArrayList
 
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
-
 import com.xplore.groups.create.CreateGroupFragment.invitedMembers
 import com.xplore.user.User
 
@@ -61,9 +59,7 @@ class MemberListAdapter(private val context: Context,
         //Loading Member Image
         Picasso.with(context)
                 .load(currentMember.getProfile_picture_url())
-                .transform(RoundedCornersTransformation(
-                        context.resources.getInteger(R.integer.pic_small_angle),
-                        context.resources.getInteger(R.integer.pic_small_margin)))
+                .transform(CircleTransformation(holder.memberImage.width, holder.memberImage.height))
                 .into(holder.memberImage)
 
         //Configuring Clicks

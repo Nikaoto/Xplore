@@ -15,10 +15,9 @@
 
         <ImageView
             android:id="@+id/profileImageView"
-            android:background="@drawable/profile_picture_border"
             android:layout_width="@dimen/group_leader_profile_wh"
             android:layout_height="@dimen/group_leader_profile_wh"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/repTextView"

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.xplore.account.GoogleSignInActivity;
+import com.xplore.reserve.ReserveInfoFragment;
 import com.xplore.user.UserProfileActivity;
 
 import java.util.Calendar;

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.xplore.groups.GroupMenuFragment;
 import com.xplore.maps.MapFragment;
@@ -35,11 +36,12 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
     private int[] navMenuItems = {
-            R.id.nav_first_layout,
-            R.id.nav_second_layout,
-            R.id.nav_third_layout,
-            R.id.nav_fourth_layout,
-            R.id.nav_fifth_layout
+            R.id.nav_profile,
+            R.id.nav_library,
+            R.id.nav_map,
+            R.id.nav_my_groups,
+            R.id.nav_find_create_groups,
+            R.id.nav_settings
     };
     private int previousNavItemId;
     private int backstackEntryCount = 1;
@@ -62,32 +64,34 @@ public class MainActivity extends AppCompatActivity
         fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
 
-        //Check for back presses and manage backstack automatically
+/*        //Check for back presses and manage backstack automatically
         fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
                 int entryCount = fm.getBackStackEntryCount();
-                //if entry removed (back pressed, fragment closed)
+                //if entry removed (back pressed or fragment closed)
                 if (backstackEntryCount > entryCount) {
                     if (entryCount > 0) {
                         FragmentManager.BackStackEntry lastEntry = fm.getBackStackEntryAt(entryCount - 1);
                         try {
                             previousNavItemId = navMenuItems[Integer.parseInt(lastEntry.getName())];
                         } catch (NumberFormatException | NullPointerException n) {
-                            previousNavItemId = R.id.nav_fifth_layout;
+                            previousNavItemId = R.id.nav_settings;
                         }
                     } else {
                         //if the BSE count is 0 that means only 1 fragment was selected
-                        previousNavItemId = R.id.nav_fifth_layout;
+                        previousNavItemId = R.id.nav_settings;
                     }
                     navigationView.setCheckedItem(previousNavItemId);
                 }
                 backstackEntryCount = entryCount;
             }
-        });
+        });*/
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_fifth_layout);
+        navigationView.setCheckedItem(R.id.nav_settings);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,8 +106,6 @@ public class MainActivity extends AppCompatActivity
         });*/
 
         MapFragment.MAPS_CLOSED = false;
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -127,8 +129,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu_)
-    {
+    public boolean onPrepareOptionsMenu(Menu menu_) {
         this.menu = menu_;
         return super.onPrepareOptionsMenu(menu);
     }
@@ -176,15 +177,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //TODO show this toast after exitting register activity
+        if (General.accountStatus == General.JUST_REGISTERED) {
+            Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
+            General.accountStatus = General.LOGGED_IN;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         /*} else if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();*/
         } else {
-            super.onBackPressed();
+            openHomePage();
         }
+    }
+
+    public void openHomePage() {
+        fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+        navigationView.setCheckedItem(R.id.nav_settings);
+        fm.executePendingTransactions();
     }
 
     @Override
@@ -206,7 +222,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-/* //TODO May delete this
+    /* //TODO May delete this
     public static String[] MergeArrays(String[] a, String[] b) {
         int aLen = a.length;
         int bLen = b.length;
@@ -222,35 +238,43 @@ public class MainActivity extends AppCompatActivity
 
         //TODO change the nav item names
         switch (id){
-            case R.id.nav_first_layout : {
-                Intent intent = new Intent(this, UserProfileActivity.class);
-                intent.putExtra("userId", General.currentUserId);
-                startActivity(intent);
+            case R.id.nav_profile : {
+                if (General.isUserSignedIn()) {
+                    Intent intent = new Intent(this, UserProfileActivity.class);
+                    intent.putExtra("userId", General.currentUserId);
+                    startActivity(intent);
+                } else {
+                    General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
+                }
                 break;
             }
-            case R.id.nav_second_layout : {
+            case R.id.nav_library : {
                 fm.beginTransaction().replace(R.id.fragment_container, new LibraryFragment())
                         .addToBackStack("2").commit();
                 break;
             }
-            case R.id.nav_third_layout : {
+            case R.id.nav_map : {
                 fm.beginTransaction().replace(R.id.fragment_container, new MapFragment())
                         .addToBackStack("3").commit();
                 break;
             }
-            case R.id.nav_fourth_layout : {
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, new GroupMenuFragment())
-                        .addToBackStack("4").commit();
+            case R.id.nav_my_groups :case R.id.nav_find_create_groups : { //TODO add my groups
+                if (General.isUserSignedIn()) {
+                    fm.beginTransaction()
+                            .replace(R.id.fragment_container, new GroupMenuFragment())
+                            .addToBackStack("4").commit();
+                } else {
+                    General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
+                }
                 break;
             }
-            case R.id.nav_fifth_layout : {
+            case R.id.nav_settings : {
                 fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment())
                         .addToBackStack("4").commit();
                 break;
             }
         }
-        getFragmentManager().executePendingTransactions();
+        fm.executePendingTransactions();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -2,41 +2,44 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_first_layout"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile" />
+        android:id="@+id/nav_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"/>
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_second_layout"
-            android:icon="@drawable/ic_book"
-            android:title="@string/nav_lib_title" />
-        <item
-            android:id="@+id/nav_third_layout"
-            android:icon="@drawable/ic_map"
-            android:title="@string/nav_map_title" />
-        <item
-            android:id="@+id/nav_fourth_layout"
-            android:icon="@drawable/ic_party"
-            android:title="@string/nav_party_title" />
-        <item
-            android:id="@+id/nav_fifth_layout"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/nav_about_title"/>
+            android:id="@+id/nav_library"
+            android:title="@string/nav_lib_title"
+            android:icon="@drawable/ic_book"/>
     </group>
 
- <!--   <item android:title="Communicate">
+    <item
+        android:id="@+id/nav_map"
+        android:title="@string/nav_map_title"
+        android:icon="@drawable/ic_map"/>
+
+    <item android:title="@string/groups">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_my_groups"
+                    android:title="@string/my_groups"
+                    android:icon="@drawable/ic_my_groups"/>
+                <item
+                    android:id="@+id/nav_find_create_groups"
+                    android:title="@string/find_create"
+                    android:icon="@drawable/ic_find_create_groups" />
+            </group>
         </menu>
     </item>
-    -->
+
+    <group
+        android:id="@+id/nav_settings_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings"/>
+    </group>
 
 </menu>

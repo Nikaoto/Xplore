@@ -50,15 +50,5 @@ class GroupMenuFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        /*if(General.accountStatus == General.LOGGED_IN) {
-            Toast.makeText(getActivity(), "Signed In", Toast.LENGTH_SHORT).show(); //TODO string resources
-        }*/
-
-        //TODO show this toast after exitting register activity
-        if (General.accountStatus == General.JUST_REGISTERED) {
-            Toast.makeText(activity, "Registered", Toast.LENGTH_SHORT).show() //TODO string resources
-            accountStatus = General.LOGGED_IN
-        }
     }
 }

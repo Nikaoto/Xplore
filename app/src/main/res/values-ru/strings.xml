@@ -10,6 +10,10 @@
     <string name="calendar">Календарь</string>
     <string name="cancel">Отмена</string>
     <string name="profile">Профиль</string>
+    <string name="groups">Группы</string>
+    <string name="my_groups">Мои Группы</string>
+    <string name="find_create">Найти / Создай</string>
+    <string name="settings">Настройки</string>
     <string name="about">Это приложение только демо-версия Xplore. Любой элемент приложения может
         быть изменен.\n\nИнформация и ресурсы о парках и заповедниках получена из
         http://apa.gov.ge/. Они принадлежат их законныx владельцаx.
