@@ -51,8 +51,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //Google Play Services
-    compile 'com.google.android.gms:play-services-auth:11.0.2'
-    compile 'com.google.android.gms:play-services-maps:11.0.2'
+    //NOTE: DO NOT INCLUDE GOOGLE PLAY SERVICES SEPARATELY (:app:compileDebugKotlin error arises)
+    compile 'com.google.android.gms:play-services:11.0.2'
 
     //Maps
     compile 'com.google.maps.android:android-maps-utils:0.4'

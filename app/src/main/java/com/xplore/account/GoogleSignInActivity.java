@@ -31,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.xplore.ApiManager;
 import com.xplore.General;
 import com.xplore.R;
-import com.xplore.account.RegisterActivity;
 
 import static com.xplore.General.*;
 
