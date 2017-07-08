@@ -25,9 +25,9 @@ public class CircleTransformation implements Transformation {
 
     private int viewSize, viewHeight, viewWidth;
 
-    public CircleTransformation(int height, int width) {
-        this.viewHeight = height;
+    public CircleTransformation(int width, int height) {
         this.viewWidth = width;
+        this.viewHeight = height;
         this.viewSize = Math.min(width, height);
     }
 

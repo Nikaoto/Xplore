@@ -6,13 +6,12 @@
 
 <ImageView
     android:id="@+id/user_profile_image"
-    android:background="@drawable/profile_picture_border"
     android:scaleType="fitXY"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:layout_width="@dimen/group_list_profile_wh"
-    android:layout_height="@dimen/group_list_profile_wh"/>
+    android:layout_width="@dimen/user_profile_image_small_size"
+    android:layout_height="@dimen/user_profile_image_small_size"/>
 
     <LinearLayout
         android:layout_toRightOf="@id/user_profile_image"

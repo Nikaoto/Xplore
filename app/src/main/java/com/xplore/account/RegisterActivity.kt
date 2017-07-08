@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
+import com.xplore.CircleTransformation
 import com.xplore.General
 import com.xplore.R
 
@@ -19,7 +20,6 @@ import java.util.HashMap
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.user.User
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -32,6 +32,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 16
 
+    private val userImageSize by lazy {
+        Math.round(resources.getDimension(R.dimen.user_profile_image_medium_size))
+    }
     private var bYear: Int = 0
     private var bMonth: Int = 0
     private var bDay: Int = 0
@@ -68,9 +71,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         if(userProfilePicUrl != "") {
             Picasso.with(this@RegisterActivity)
                     .load(userProfilePicUrl)
-                    .transform(RoundedCornersTransformation(
-                            resources.getInteger(R.integer.pic_big_angle),
-                            resources.getInteger(R.integer.pic_big_margin)))
+                    .transform(CircleTransformation(userImageSize, userImageSize))
                     .into(profileImageView)
         }
 

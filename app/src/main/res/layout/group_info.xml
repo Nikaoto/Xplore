@@ -26,10 +26,9 @@
 
                 <ImageView
                     android:id="@+id/leaderImageView"
-                    android:background="@drawable/profile_picture_border"
-                    android:scaleType="fitXY"
-                    android:layout_width="@dimen/group_leader_profile_wh"
-                    android:layout_height="@dimen/group_leader_profile_wh"/>
+                    android:scaleType="centerCrop"
+                    android:layout_width="@dimen/user_profile_image_large_size"
+                    android:layout_height="@dimen/user_profile_image_large_size"/>
 
                 <TextView
                     android:id="@+id/leaderRepTextView"
@@ -54,8 +53,8 @@
                 <ProgressBar
                     android:id="@+id/groupProgressBar"
                     style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="@dimen/group_leader_profile_wh"
-                    android:layout_height="@dimen/group_leader_profile_wh"
+                    android:layout_width="@dimen/user_profile_image_large_size"
+                    android:layout_height="@dimen/user_profile_image_large_size"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -196,11 +195,14 @@
             android:textStyle="bold"
             android:layout_marginTop="@dimen/main_text_margin_top"/>
 
+        <View style="@style/Divider"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/membersRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
         </android.support.v7.widget.RecyclerView>
 
         <View style="@style/Divider"/>

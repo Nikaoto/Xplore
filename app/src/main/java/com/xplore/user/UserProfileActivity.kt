@@ -73,7 +73,7 @@ class UserProfileActivity : Activity() {
         //Profile picture
         Picasso.with(this)
                 .load(user.getProfile_picture_url())
-                .transform(CircleTransformation(profileImageView.height, profileImageView.width))
+                .transform(CircleTransformation(profileImageView.width, profileImageView.height))
                 .into(profileImageView)
 
         nameTextView.text = "${user.getFname()} ${user.getLname()}"

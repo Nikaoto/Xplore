@@ -18,10 +18,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.xplore.groups.GroupMenuFragment;
 import com.xplore.maps.MapFragment;
+import com.xplore.user.User;
 import com.xplore.user.UserProfileActivity;
 
 import java.util.Locale;
@@ -35,16 +43,9 @@ public class MainActivity extends AppCompatActivity
     public static final String RUSSIAN_LANG_CODE = "ru";
 
     private DrawerLayout drawer;
-    private int[] navMenuItems = {
-            R.id.nav_profile,
-            R.id.nav_library,
-            R.id.nav_map,
-            R.id.nav_my_groups,
-            R.id.nav_find_create_groups,
-            R.id.nav_settings
-    };
-    private int previousNavItemId;
-    private int backstackEntryCount = 1;
+    private ImageView userImageView;
+    private int userImageViewSize;
+    private TextView userFullNameTextView;
     private NavigationView navigationView;
     private FragmentManager fm;
     private SharedPreferences.Editor prefEditor;
@@ -64,34 +65,26 @@ public class MainActivity extends AppCompatActivity
         fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
 
-/*        //Check for back presses and manage backstack automatically
-        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                int entryCount = fm.getBackStackEntryCount();
-                //if entry removed (back pressed or fragment closed)
-                if (backstackEntryCount > entryCount) {
-                    if (entryCount > 0) {
-                        FragmentManager.BackStackEntry lastEntry = fm.getBackStackEntryAt(entryCount - 1);
-                        try {
-                            previousNavItemId = navMenuItems[Integer.parseInt(lastEntry.getName())];
-                        } catch (NumberFormatException | NullPointerException n) {
-                            previousNavItemId = R.id.nav_settings;
-                        }
-                    } else {
-                        //if the BSE count is 0 that means only 1 fragment was selected
-                        previousNavItemId = R.id.nav_settings;
-                    }
-                    navigationView.setCheckedItem(previousNavItemId);
-                }
-                backstackEntryCount = entryCount;
-            }
-        });*/
-
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_settings);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        userImageViewSize =
+                Math.round(getResources().getDimension(R.dimen.user_profile_image_medium_size));
+
+        View navHeaderView = navigationView.getHeaderView(0);
+        userImageView = (ImageView) navHeaderView.findViewById(R.id.drawer_image);
+        userFullNameTextView = (TextView) navHeaderView.findViewById(R.id.userFullNameTextView);
+        userImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (General.isUserSignedIn()) {
+                    General.openUserProfile(MainActivity.this, General.currentUserId);
+                } else {
+                    General.popSignInMenu(0.8, 0.6, getCurrentFocus(), MainActivity.this);
+                }
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -184,6 +177,42 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
             General.accountStatus = General.LOGGED_IN;
         }
+
+        //TODO add boolean to undo redundant loading
+        if (userImageView != null) {
+            if (General.isUserSignedIn()) {
+                refreshUserProfileViews(this);
+            } else {
+                userFullNameTextView.setVisibility(View.GONE);
+                Picasso.with(this)
+                        .load(R.drawable.user_default_profile_image)
+                        .transform(new CircleTransformation(userImageViewSize, userImageViewSize))
+                        .into(userImageView);
+            }
+        }
+    }
+
+    public void refreshUserProfileViews(final Context context) {
+        FirebaseDatabase.getInstance().getReference().child("users").orderByKey()
+                .equalTo(General.currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && context != null) {
+                    User tempUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
+                    Picasso.with(context)
+                            .load(tempUser.getProfile_picture_url())
+                            .transform(new CircleTransformation(userImageViewSize, userImageViewSize))
+                            .into(userImageView);
+                    userFullNameTextView.setVisibility(View.VISIBLE);
+                    userFullNameTextView.setText(tempUser.getFname()+" "+tempUser.getLname());
+                } else {
+                    Toast.makeText(context,"Error loading your profile image", Toast.LENGTH_SHORT).show();//TODO String resources
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
     }
 
     @Override
@@ -240,9 +269,7 @@ public class MainActivity extends AppCompatActivity
         switch (id){
             case R.id.nav_profile : {
                 if (General.isUserSignedIn()) {
-                    Intent intent = new Intent(this, UserProfileActivity.class);
-                    intent.putExtra("userId", General.currentUserId);
-                    startActivity(intent);
+                    General.openUserProfile(MainActivity.this, General.currentUserId);
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
                 }

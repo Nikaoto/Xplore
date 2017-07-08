@@ -186,9 +186,7 @@ class ViewGroupActivity : Activity() {
         //Displaying leader
         Picasso.with(this)
                 .load(members[0].getProfile_picture_url())
-                .transform(RoundedCornersTransformation(
-                        resources.getInteger(R.integer.pic_big_angle),
-                        resources.getInteger(R.integer.pic_big_margin)))
+                .transform(CircleTransformation(leaderImageView.width, leaderImageView.height))
                 .into(leaderImageView)
         leaderFnameTextView.text = members[0].getFname()
         leaderLnameTextView.text = members[0].getLname()

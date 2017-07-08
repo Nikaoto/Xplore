@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.xplore.CircleTransformation;
 import com.xplore.DBManager;
 import com.xplore.General;
 import com.xplore.R;
@@ -233,8 +235,10 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     }
 
     private class GroupsListAdapter extends ArrayAdapter<GroupButton> {
+        final int imgSize;
         public GroupsListAdapter() {
             super(getActivity(), R.layout.group_list_item, groupButtons);
+            imgSize =  Math.round(getResources().getDimension(R.dimen.user_profile_image_small_size));
         }
 
         @NonNull
@@ -256,9 +260,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             String leaderImageRef = currentButton.getLeader_image_url();
             Picasso.with(getContext())
                     .load(leaderImageRef)
-                    .transform(new RoundedCornersTransformation(
-                            getResources().getInteger(R.integer.pic_small_angle),
-                            getResources().getInteger(R.integer.pic_small_margin)))
+                    .transform(new CircleTransformation(imgSize, imgSize))
                     .into(leaderImage);
 
             //Loading Reserve Background

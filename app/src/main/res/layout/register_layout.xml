@@ -211,12 +211,11 @@
 
             <ImageView
                 android:id="@+id/profileImageView"
-                android:background="@drawable/profile_picture_border"
                 android:layout_toRightOf="@id/profileLabelTextView"
                 android:layout_marginLeft="25dp"
 
-                android:layout_width="@dimen/group_leader_profile_wh"
-                android:layout_height="@dimen/group_leader_profile_wh" />
+                android:layout_width="@dimen/user_profile_image_medium_size"
+                android:layout_height="@dimen/user_profile_image_medium_size"/>
         </RelativeLayout>
 
         <RelativeLayout

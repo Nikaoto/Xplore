@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.xplore.CircleTransformation;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
@@ -176,9 +177,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         });
     }
 
-    private void PopulateButtonList()
-    {
-
+    private void PopulateButtonList() {
         boolean foundDup;
         //filtering duplicates into answerList
         for(int i = 0; i<userList.size(); i++)
@@ -212,8 +211,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     }
 
     private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
+        private final int imgSize;
         public UserListAdapter() {
             super(SearchUsersActivity.this, R.layout.group_list_item, answerList);
+            imgSize = Math.round(getResources().getDimension(R.dimen.user_profile_image_small_size));
         }
 
         @NonNull
@@ -251,9 +252,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             String userImageRef = currentUser.getProfile_picture_url();
             Picasso.with(getContext())
                     .load(userImageRef)
-                    .transform(new RoundedCornersTransformation(
-                            getResources().getInteger(R.integer.pic_small_angle),
-                            getResources().getInteger(R.integer.pic_small_margin)))
+                    .transform(new CircleTransformation(imgSize, imgSize))
                     .into(userImage);
 
             //Configuring Clicks

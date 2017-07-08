@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -20,11 +21,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.xplore.account.GoogleSignInActivity;
 import com.xplore.reserve.ReserveInfoFragment;
+import com.xplore.user.User;
 import com.xplore.user.UserProfileActivity;
 
 import java.util.Calendar;
@@ -44,6 +52,8 @@ public class General {
     public static final int NOT_LOGGED_IN = 0;
     public static int accountStatus = NOT_LOGGED_IN;
     //=================
+
+    public static String currentUserProfileImageUrl;
 
     public static int appWidth, appHeight;
     public static String currentUserId;
@@ -248,7 +258,7 @@ public class General {
         int locationX = 0;
         int locationY = 0;
 
-        View popupView = activity.getLayoutInflater().inflate(R.layout.pre_signin_layout, null);
+        View popupView = activity.getLayoutInflater().inflate(R.layout.signin_dialog, null);
         popupView.setBackgroundResource(R.drawable.popup_fade_background);
         popupView.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.slide_down_open));
 
