@@ -48,24 +48,26 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private final String DB_FNAME_TAG = "fname";
     private final String DB_LNAME_TAG = "lname";
+    private final DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
 
-    private boolean memberAdded;
-/*
+    private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
+
+    /*
     private String USERBASE_KEY;
     private String USERBASE_APPID;
     private String USERBASE_URL;
-*/
+
+    DatabaseReference dbRef;
+    FirebaseApp userBaseApp;
+    FirebaseOptions userBaseOptions;
+    */
+
 
     private ListView listView;
     private ProgressBar progressBar;
+
     private boolean dataFound;
-
-    private ArrayList<User> userList= new ArrayList<>(); //replace with UserButtons
-
-/*    DatabaseReference dbRef;
-    FirebaseApp userBaseApp;
-    FirebaseOptions userBaseOptions;*/
-    DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
+    private boolean memberAdded;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,11 +93,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         progressBar.setVisibility(View.INVISIBLE);
         userList.clear();
         userList.clear();
-        userCounter = 0;
-        DBref = FirebaseDatabase.getInstance().getReference();
     }
-
-    int userCounter = 0;
 
     //search by last names in firebase database (because fname collisions are more frequent) and then filter results with first names
     private void loadUsersWithFullName(final String fname, final String lname, final boolean displayData) {
