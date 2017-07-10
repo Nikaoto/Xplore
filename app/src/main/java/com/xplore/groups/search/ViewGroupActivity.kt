@@ -67,7 +67,6 @@ class ViewGroupActivity : Activity() {
         dbManager.openDataBase()
         val tempReserveCard = dbManager.getReserveCard(reserveID)
 
-
         reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
         reserveNameTextView.text = tempReserveCard.name
         reserveImageView.setImageResource(tempReserveCard.imageId)
