@@ -37,6 +37,8 @@ class UserProfileActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_profile)
 
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+
         //Start load animation
         imageProgressBar.visibility = View.VISIBLE
         fetchUserInfo(userId)
