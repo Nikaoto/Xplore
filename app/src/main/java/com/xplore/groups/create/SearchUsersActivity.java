@@ -46,9 +46,10 @@ import static com.xplore.groups.create.CreateGroupFragment.invitedMembers;
 
 public class SearchUsersActivity extends Activity implements EditText.OnEditorActionListener{
 
-    private final String DB_FNAME_TAG = "fname";
-    private final String DB_LNAME_TAG = "lname";
-    private final DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
+    private final String FIREBASE_FNAME_TAG = "fname";
+    private final String FIREBASE_LNAME_TAG = "lname";
+    private final DatabaseReference firebaseUsersRef
+            = FirebaseDatabase.getInstance().getReference().child("users");
 
     private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
 
@@ -61,7 +62,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     FirebaseApp userBaseApp;
     FirebaseOptions userBaseOptions;
     */
-
 
     private ListView listView;
     private ProgressBar progressBar;
@@ -85,39 +85,39 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         searchBar.setOnEditorActionListener(this);
 
         //buildUserBase();
-        PreLoadData();
+        prepareForSearch();
     }
 
-    private void PreLoadData() {
+    private void prepareForSearch() {
         memberAdded = false;
         progressBar.setVisibility(View.INVISIBLE);
-        userList.clear();
         userList.clear();
     }
 
     //search by last names in firebase database (because fname collisions are more frequent) and then filter results with first names
     private void loadUsersWithFullName(final String fname, final String lname, final boolean displayData) {
-        Query fnameQuery = DBref.child("users").orderByChild(DB_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
+        //Sorting by first name
+        Query fnameQuery = firebaseUsersRef.orderByChild(FIREBASE_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
         fnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataFound = false;
                 if (dataSnapshot.exists()) {
-                    User tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        if (userSnapshot.getValue(User.class).getLname().toLowerCase().contains(lname.toLowerCase())) {
+                        User tempUser = userSnapshot.getValue(User.class);
+                        if (tempUser.getFname().toLowerCase().contains(fname.toLowerCase())) {
                             tempUser = userSnapshot.getValue(User.class);
                             tempUser.setId(userSnapshot.getKey());
                             userList.add(tempUser);
                             dataFound = true;
                         }
                     }
-                    if (dataFound && displayData)
+                    if (dataFound && displayData) {
                         displayUserList();
-                    else if (!dataFound)
+                    } else if (!dataFound) {
                         nothingFound();
-                }
-                else {
+                    }
+                } else {
                     nothingFound();
                 }
             }
@@ -130,7 +130,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private void loadUsersWithTag(final String query, final String tag, final boolean resummon,
                                   final String query2, final String tag2) {
         //if resummon == true, do NOT display data
-        Query dbQuery = DBref.child("users").orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
+        Query dbQuery = firebaseUsersRef.orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
         dbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,16 +142,17 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                         tempUser.setId(userSnapshot.getKey());
                         userList.add(tempUser);
                     }
-                }
-                else if (!resummon && !dataFound)
+                } else if (!resummon && !dataFound) {
                     nothingFound();
-                else if(resummon)
-                    dataFound =  false;
+                } else if(resummon) {
+                    dataFound = false;
+                }
 
-                if (resummon)
+                if (resummon) {
                     loadUsersWithTag(query2, tag2, false, null, null);
-                else if (dataFound)
+                } else if (dataFound) {
                     displayUserList();
+                }
             }
 
             @Override
@@ -248,7 +249,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(UserAlreadyInvited(currentUser)) {
+                    if(userAlreadyInvited(currentUser)) {
                         Toast.makeText(SearchUsersActivity.this, R.string.member_already_added,
                                 Toast.LENGTH_SHORT).show();
                     } else {
@@ -264,10 +265,8 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         }
     }
 
-    public boolean UserAlreadyInvited(User user)
-    {
-        for(User u : invitedMembers)
-        {
+    public boolean userAlreadyInvited(User user) {
+        for(User u : invitedMembers) {
             if(u.getId().equals(user.getId()))
                 return true;
         }
@@ -283,7 +282,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     }
 
     //returns given string with the first letter in uppercase
-    private String FirstLetterUpper(String str) {
+    private String firstLetterUpper(String str) {
         if(str.length() == 0)
             return str.toUpperCase();
 
@@ -304,14 +303,12 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         //If searchQuery has both first and last names
         if(searchQuery.contains(" ")) {
             String[] parts = searchQuery.split(" ",2);
-            loadUsersWithFullName(FirstLetterUpper(parts[0]), FirstLetterUpper(parts[1]), true);
+            loadUsersWithFullName(firstLetterUpper(parts[0]), firstLetterUpper(parts[1]), true);
 
             //TODO add fname search with lname filter (reverse loadUsersWithFullName, in case they type lname first, then fname)
-        }
-        else
-        {
-            loadUsersWithTag(FirstLetterUpper(searchQuery), DB_FNAME_TAG, true,
-                    FirstLetterUpper(searchQuery), DB_LNAME_TAG);
+        } else {
+            loadUsersWithTag(firstLetterUpper(searchQuery), FIREBASE_FNAME_TAG, true,
+                    firstLetterUpper(searchQuery), FIREBASE_LNAME_TAG);
         }
 
         return false;

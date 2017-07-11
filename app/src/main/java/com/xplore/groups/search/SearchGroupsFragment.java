@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +31,10 @@ import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.groups.Group;
 import com.xplore.groups.GroupButton;
-import com.xplore.groups.search.ViewGroupActivity;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Nikaoto on 2/8/2017.
@@ -46,10 +42,10 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
 
-    private final String JSON_START_DATE_TAG = "start_date";
+    private final String FIREBASE_START_DATE_TAG = "start_date";
 
     private String searchQuery, tempUserImageUrl;
-    private boolean requestCancelled, firstLoad;
+    private boolean firstLoad;
     private int leaderCounter;
 
     private View myView;
@@ -90,6 +86,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             PreLoadData();
             LoadData();
         }
+
         return myView;
     }
 
@@ -126,13 +123,12 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         tempUserImageUrl = "";
         firstLoad = true;
         leaderCounter = 0;
-        requestCancelled = false;
         resultID.clear();
     }
 
     private void LoadData()
     {
-        Query query = DBref.child("groups").orderByChild(JSON_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
+        Query query = DBref.child("groups").orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(20); //TODO change this after adding sort by settings
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,20 +142,17 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     tempGroupList.add(tempGroup);
                 }
                 if (getActivity() != null) {
-                    SortLeaderInfo();
+                    sortLeaderInfo();
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                requestCancelled = true;
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
     //TODO when user is searching for groups and presses back, getActivity() will throw NPE. Fix that ONLY after converting this to kotlin
-    private void SortLeaderInfo()
-    {
+    private void sortLeaderInfo() {
         //TODO convert this to java and skip the other crap arguments
         final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
@@ -169,12 +162,9 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) //getting users
-                    {
-                        for(Group group : tempGroupList) //going over every collected group
-                        {
-                            if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) //checking if leader
-                            {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) { //getting users
+                        for(Group group : tempGroupList) { //going over every collected group
+                            if(group.getMember_ids().get(0).equals(userSnapshot.getKey())) { //checking if leader
                                 //TODO change database calls
                                 //loading leader profile picture url
                                 tempUserImageUrl = userSnapshot.getValue(User.class)
@@ -197,7 +187,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
                                 //adding the button to the list
                                 groupButtons.add(tempGroupButton);
-
                             }
                         }
                     }
@@ -209,29 +198,25 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
                 //check for interruptions
                 if(getActivity() != null)
-                    PostLoadData();
+                    postLoadData();
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                requestCancelled = true;
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
 
     }
 
-    private void PostLoadData()
-    {
+    private void postLoadData() {
         firstLoad = false;
 
         //NO NEED FOR ANSWERBUTTONS, THE GROUPBUTTONS WILL CONTAIN QUERIED GROUPS
         populateListView();
     }
 
-    private void populateListView()
-    {
-            ArrayAdapter<GroupButton> adapter = new GroupsListAdapter();
-            list.setAdapter(adapter);
-            progressBar.setVisibility(View.INVISIBLE);
+    private void populateListView() {
+        ArrayAdapter<GroupButton> adapter = new GroupsListAdapter();
+        list.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private class GroupsListAdapter extends ArrayAdapter<GroupButton> {
@@ -298,7 +283,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     @Override
     public void onResume() {
         if(!firstLoad)
-            PostLoadData();
+            postLoadData();
 
         super.onResume();
     }

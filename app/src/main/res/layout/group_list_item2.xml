@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/groupCardView"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:src="@drawable/user_default_profile_image"
+                android:id="@+id/leaderImageView"
+                android:layout_width="@dimen/user_profile_image_tiny_size"
+                android:layout_height="@dimen/user_profile_image_tiny_size"
+                android:layout_marginRight="10dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/leaderRepCombinedTextView"
+                android:layout_toRightOf="@id/leaderImageView"
+                android:text="100 reputation"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreyText"
+                android:layout_marginRight="5dp"/>
+
+            <TextView
+                android:text="Nika Otiashvili"
+                android:id="@+id/leaderNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/leaderImageView"
+                android:layout_below="@id/leaderRepCombinedTextView"
+                android:layout_centerVertical="@id/leaderImageView"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"/>
+
+            <!--
+            TODO ribbonRecyclerView to right of reputation text wich has ribbons and markers (team exp, cost?,
+            -->
+
+        </RelativeLayout>
+
+        <ImageView
+            android:src="@drawable/algeti"
+            android:id="@+id/reserveImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reserve_image_height"
+            android:scaleType="centerCrop"/>
+
+        <View style="@style/Divider"
+            android:layout_marginTop="5dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--
+            TODO add member count (curr / max)
+            TODO add start time (in days)
+            TODO add duration (in days)
+            -->
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

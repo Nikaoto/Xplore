@@ -33,4 +33,5 @@
     <dimen name="user_profile_image_large_size">150dp</dimen>
     <dimen name="user_profile_image_medium_size">100dp</dimen>
     <dimen name="user_profile_image_small_size">90dp</dimen>
+    <dimen name="user_profile_image_tiny_size">50dp</dimen>
 </resources>
