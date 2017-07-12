@@ -70,7 +70,7 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
 
     fun setupLayout(reserve: Reserve) {
         collapsingToolbar.setTitle(reserve.name)
-        reserveImageView.setImageResource(reserve.imageId)
+        groupImageView.setImageResource(reserve.imageId)
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna

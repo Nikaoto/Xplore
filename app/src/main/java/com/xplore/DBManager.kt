@@ -15,8 +15,9 @@ import java.io.IOException
 import java.util.ArrayList
 
 /**
- * Created by nikao on 1/15/2017.
- */
+* Created by Nikaoto on 1/15/2017.
+* TODO write description of this class - what it does and why.
+*/
 
 internal class DBManager(private val mContext: Context,
                          DB_NAME: String = "reserveDB.db",

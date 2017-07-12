@@ -26,7 +26,7 @@ class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>, val activit
 
         init{
             reserveName = itemView.reserveNameTextView
-            reserveImage = itemView.reserveImageView
+            reserveImage = itemView.groupImageView
             reserveIcon = itemView.reserveIconImageView
         }
     }

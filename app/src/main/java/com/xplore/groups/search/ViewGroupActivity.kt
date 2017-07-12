@@ -18,7 +18,6 @@ import com.xplore.user.User
 
 import java.util.ArrayList
 
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.group_info.*
 import kotlinx.android.synthetic.main.reserve_list_item.*
 
@@ -31,7 +30,7 @@ class ViewGroupActivity : Activity() {
 
     //TODO convert to inferred types after testing
     private var group_id: String = ""
-    private var reserveID: Int= 0
+    private var reserveID: Int= 0 //TODO remove this and load submitted image or map image instead
     private var memberCount: Int = 0
     private val members = ArrayList<User>()
 
@@ -69,7 +68,7 @@ class ViewGroupActivity : Activity() {
 
         reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
         reserveNameTextView.text = tempReserveCard.name
-        reserveImageView.setImageResource(tempReserveCard.imageId)
+        groupImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
     }
 

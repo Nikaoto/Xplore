@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/groupCardView"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="3dp"
-    app:cardElevation="3dp"
-    android:layout_margin="10dp">
+    app:cardElevation="4dp"
+    android:layout_margin="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,13 +16,14 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/leaderLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp">
 
             <ImageView
-                android:src="@drawable/user_default_profile_image"
                 android:id="@+id/leaderImageView"
+                tools:src="@drawable/user_default_profile_image"
                 android:layout_width="@dimen/user_profile_image_tiny_size"
                 android:layout_height="@dimen/user_profile_image_tiny_size"
                 android:layout_marginRight="10dp"
@@ -29,24 +31,25 @@
 
             <TextView
                 android:id="@+id/leaderRepCombinedTextView"
+                tools:text="100 reputation"
                 android:layout_toRightOf="@id/leaderImageView"
-                android:text="100 reputation"
                 android:fontFamily="sans-serif-medium"
                 android:textAllCaps="true"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGreyText"
                 android:layout_marginRight="5dp"/>
 
             <TextView
-                android:text="Nika Otiashvili"
                 android:id="@+id/leaderNameTextView"
+                tools:text="Nika Otiashvili"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/leaderImageView"
                 android:layout_below="@id/leaderRepCombinedTextView"
                 android:layout_centerVertical="@id/leaderImageView"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginRight="5dp"/>
 
@@ -57,8 +60,8 @@
         </RelativeLayout>
 
         <ImageView
-            android:src="@drawable/algeti"
-            android:id="@+id/reserveImageView"
+            android:id="@+id/groupImageView"
+            tools:src="@drawable/algeti"
             android:layout_width="match_parent"
             android:layout_height="@dimen/reserve_image_height"
             android:scaleType="centerCrop"/>

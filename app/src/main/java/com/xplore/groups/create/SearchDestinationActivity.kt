@@ -124,7 +124,7 @@ class SearchDestinationActivity : Activity() {
 
             init{
                 reserveName = itemView.reserveNameTextView
-                reserveImage = itemView.reserveImageView
+                reserveImage = itemView.groupImageView
                 reserveIcon = itemView.reserveIconImageView
             }
         }
