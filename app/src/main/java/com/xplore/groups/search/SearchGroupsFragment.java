@@ -33,13 +33,10 @@ import com.xplore.DBManager;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
-import com.xplore.groups.Group;
-import com.xplore.groups.GroupButton;
 import com.xplore.groups.GroupCard;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nikaoto on 2/8/2017.
