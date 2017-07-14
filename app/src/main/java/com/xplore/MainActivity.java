@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.xplore.groups.MyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapFragment;
 import com.xplore.user.User;
@@ -283,11 +284,10 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             }
-            case R.id.nav_my_groups : { //TODO add my groups
+            case R.id.nav_my_groups : {
                 if (General.isUserSignedIn()) {
-                    Toast.makeText(this, "TODO: add my groups", Toast.LENGTH_SHORT).show();
-                    /*fm.beginTransaction()
-                            .replace(R.id.fragment_container, new MyGroupsFragment()).commit();*/
+                    fm.beginTransaction()
+                            .replace(R.id.fragment_container, new MyGroupsFragment()).commit();
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
                 }

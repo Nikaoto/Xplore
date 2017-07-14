@@ -14,10 +14,21 @@ import com.xplore.R
 
 class MyGroupsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
-            = inflater.inflate(R.layout.my_groups, container, false)
+    var empty = true
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?): View {
+        //TODO check for current joined groups (if empty)
+        if (empty) {
+            return inflater.inflate(R.layout.my_groups_empty, container, false)
+        } else {
+            return inflater.inflate(R.layout.my_groups, container, false)
+        }
+    }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (!empty) {
+            //TODO load current joined groups with GroupCardRecyclerViewAdapter
+        }
     }
 }

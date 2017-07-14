@@ -10,11 +10,18 @@ import com.xplore.R
 import com.xplore.maps.MapFragment
 import com.xplore.maps.MapsActivity
 
-import kotlinx.android.synthetic.main.reserve_info2.*
+import kotlinx.android.synthetic.main.reserve_info.*
 
 /**
- * Created by nikao on 11/16/2016.
- */
+* Created by Nikaoto on 11/16/2016.
+*
+* აღწერა:
+* ეს მარტივი ფრაგმენტი ანახებს ნაკრძალის ინფორმაციას
+*
+* Description:
+* This is a simple fragment that shows info about a certain reserve
+*
+*/
 
 class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedListener {
 
