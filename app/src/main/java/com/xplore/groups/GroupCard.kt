@@ -6,15 +6,16 @@ package com.xplore.groups
  * აღწერა:
  * ინახავს ინფორმაციას, რომელიც საჭიროა სიაში ჯგუფის კარტის საჩვენებლად (არაა საჭირო მთლიანი ჯგუფის
  * ინფოს შექმნა)
- * დატოვეთ ცვლადების სახელები როგორც არის, საჭიროა Firebase-ს ORM-is თვის
+ * დატოვეთ ცვლადების სახელები როგორც არის, საჭიროა Firebase-ს data mapping-ის თვის
  * ასევე საჭიროა დეფაულტ მნიშვნელობები ORM-ის თვის (ცარიელი კონსტრუქტორის მაგიერია კოტლინში)
  *
  * Description:
  * Holds the data needed to display a group on a card (instead of full group)
- * UNCONVENTIONAL VARIABLE ARE NEEDED FOR FIREBASE ORM, DO NOT CHANGE
- * DEFAULT VALUES ENSURE ORM SUCCEEDS, DO NOT CHANGE
+ * UNCONVENTIONAL VARIABLE ARE NEEDED FOR FIREBASE DATA MAPPING, DO NOT CHANGE.
+ * DEFAULT VALUES ENSURE DATA MAPPING SUCCEEDS, DO NOT CHANGE
  *
  */
+
 data class GroupCard(
         var name: String = "",
         var groupId: String = "",
@@ -23,7 +24,7 @@ data class GroupCard(
         var leaderName: String = "",
         var leaderImageUrl: String = "",
         var reserveImageId: Int = 0,
-        //Firebase ORM intented values
+        //Values intended for Firebase data mapping
         val destination_id: String = "",
         val start_date: Int = 0,
         val end_date: Int = 0,

@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#309f4c</color>
     <color name="colorAccent">#46d196</color>
     <color name="colorDialect">#ff4051</color>
-    <color name="Black">#000000</color>
+    <color name="black">#000000</color>
     <color name="colorLibText">#fffefe</color>
     <color name="colorLibBGTint">#6e3f3e3e</color>
     <color name="colorLibBGTintClick">#32bcbcbb</color>
@@ -14,5 +14,5 @@
     <color name="colorGrey">#BDBDBD</color>
     <color name="colorRepNumGrey">#151515</color>
     <color name="colorDarkGrey">#3F3F3F</color>
-    <color name="colorWhite">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

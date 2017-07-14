@@ -32,6 +32,7 @@ class UserProfileActivity : Activity() {
 
     private val userId: String by lazy { getPassedUserId() }
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
+    private val profileImageSize: Int by lazy { resources.getDimension(R.dimen.user_profile_image_large_size).toInt() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,10 +73,12 @@ class UserProfileActivity : Activity() {
 
     private fun displayUserInfo(user: User){
         //TODO remove get after converting User class to kotlin
-        //Profile picture
+        //Removing small image from cache
+        Picasso.with(this).invalidate(user.getProfile_picture_url())
+        //Loading profile picture
         Picasso.with(this)
                 .load(user.getProfile_picture_url())
-                .transform(CircleTransformation(profileImageView.width, profileImageView.height))
+                .transform(CircleTransformation(profileImageSize))
                 .into(profileImageView)
 
         nameTextView.text = "${user.getFname()} ${user.getLname()}"

@@ -112,27 +112,27 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         UploadGroup(String group_id, boolean experienced, long start_date, long end_date,
                     String destination_id, String extra_info, String group_preferences,
                     ArrayList<String> member_ids) {
-            this.group_id = group_id;
-            this.experienced = experienced;
-            this.start_date = start_date;
-            this.end_date = end_date;
-            this.destination_id = destination_id;
-            this.extra_info = extra_info;
-            this.group_preferences = group_preferences;
-            this.member_ids = member_ids;
+            this.setGroup_id(group_id);
+            this.setExperienced(experienced);
+            this.setStart_date(start_date);
+            this.setEnd_date(end_date);
+            this.setDestination_id(destination_id);
+            this.setExtra_info(extra_info);
+            this.setGroup_preferences(group_preferences);
+            this.setMember_ids(member_ids);
         }
 
         @Exclude
         Map<String, Object> toMap()
         {
             HashMap<String, Object> result = new HashMap<>();
-            result.put("destination_id", this.destination_id);
-            result.put("start_date", this.start_date);
-            result.put("end_date", this.end_date);
-            result.put("experienced", this.experienced);
-            result.put("group_preferences", this.group_preferences);
-            result.put("extra_info", this.extra_info);
-            result.put("member_ids", this.member_ids);
+            result.put("destination_id", this.getDestination_id());
+            result.put("start_date", this.getStart_date());
+            result.put("end_date", this.getEnd_date());
+            result.put("experienced", this.isExperienced());
+            result.put("group_preferences", this.getGroup_preferences());
+            result.put("extra_info", this.getExtra_info());
+            result.put("member_ids", this.getMember_ids());
             return result;
         }
     }

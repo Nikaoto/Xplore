@@ -31,14 +31,14 @@ public class CircleTransformation implements Transformation {
         this.viewSize = Math.min(width, height);
     }
 
-    @Override public Bitmap transform(Bitmap source) {
-        Bitmap scaledSource;
-        if (source.getWidth() != viewWidth && source.getHeight() != viewHeight) {
-            scaledSource = Bitmap.createScaledBitmap(source, viewWidth, viewHeight, true);
-        } else {
-            scaledSource = source;
-        }
+    public CircleTransformation(int size) {
+        this.viewWidth = size;
+        this.viewHeight = size;
+        this.viewSize = size;
+    }
 
+    @Override public Bitmap transform(Bitmap source) {
+        Bitmap scaledSource = Bitmap.createScaledBitmap(source, viewWidth, viewHeight, true);
         Bitmap bitmap = Bitmap.createBitmap(viewSize, viewSize, Bitmap.Config.ARGB_8888);
 
         int sourceSize = Math.min(scaledSource.getWidth(), scaledSource.getHeight());

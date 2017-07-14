@@ -1,7 +1,6 @@
 package com.xplore;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -27,10 +26,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.xplore.groups.GroupMenuFragment;
+import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapFragment;
 import com.xplore.user.User;
-import com.xplore.user.UserProfileActivity;
 
 import java.util.Locale;
 
@@ -245,7 +243,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         General.HideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
-            fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).addToBackStack(null).commit();
+            fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -276,28 +274,37 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_library : {
-                fm.beginTransaction().replace(R.id.fragment_container, new LibraryFragment())
-                        .addToBackStack("2").commit();
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, new LibraryFragment()).commit();
                 break;
             }
             case R.id.nav_map : {
-                fm.beginTransaction().replace(R.id.fragment_container, new MapFragment())
-                        .addToBackStack("3").commit();
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             }
-            case R.id.nav_my_groups :case R.id.nav_find_create_groups : { //TODO add my groups
+            case R.id.nav_my_groups : { //TODO add my groups
+                if (General.isUserSignedIn()) {
+                    Toast.makeText(this, "TODO: add my groups", Toast.LENGTH_SHORT).show();
+                    /*fm.beginTransaction()
+                            .replace(R.id.fragment_container, new MyGroupsFragment()).commit();*/
+                } else {
+                    General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
+                }
+                break;
+            }
+            case R.id.nav_find_create_groups : {
                 if (General.isUserSignedIn()) {
                     fm.beginTransaction()
-                            .replace(R.id.fragment_container, new GroupMenuFragment())
-                            .addToBackStack("4").commit();
+                            .replace(R.id.fragment_container, new SearchGroupsFragment()).commit();
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
                 }
                 break;
             }
             case R.id.nav_settings : {
-                fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment())
-                        .addToBackStack("4").commit();
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, new AboutFragment()).commit();
                 break;
             }
         }

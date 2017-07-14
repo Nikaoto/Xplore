@@ -3,19 +3,16 @@ package com.xplore.groups.search;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +31,7 @@ import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.groups.GroupCard;
+import com.xplore.groups.create.CreateGroupFragment;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
@@ -74,19 +72,33 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
         TimeManager.Companion.refreshGlobalTimeStamp();
 
-        //setting up listview
+        //RecyclerView
         resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //setting up searchbar
+        //Search EditText
         searchBar = (EditText) view.findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_groups_hint);
         searchBar.setOnEditorActionListener(this);
 
-        //setting up progressbar
+        //Progressbar
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
+        //FAB
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Opens CreateGroupFragment
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new CreateGroupFragment()).commit();
+                getFragmentManager().executePendingTransactions();
+            }
+        });
+
+        //Checking internet and displaying data
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         } else if (getActivity() != null) {
@@ -224,7 +236,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         @Override
         public ResultsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ResultsViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.group_list_item2, parent, false));
+                    .inflate(R.layout.group_card, parent, false));
         }
 
         @Override

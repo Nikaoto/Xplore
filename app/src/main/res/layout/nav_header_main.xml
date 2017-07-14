@@ -39,7 +39,7 @@
         android:layout_below="@id/drawer_image"
         android:layout_marginLeft="@dimen/nav_header_margin_left"
         android:textSize="21sp"
-        android:textColor="@color/Black"
+        android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"/>
 
     <View style="@style/green_divider"

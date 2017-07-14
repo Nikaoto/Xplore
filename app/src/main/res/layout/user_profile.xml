@@ -33,7 +33,7 @@
             android:id="@+id/profileImageView"
             android:layout_width="@dimen/user_profile_image_large_size"
             android:layout_height="@dimen/user_profile_image_large_size"
-            android:scaleType="centerCrop"/>
+            android:scaleType="center"/>
 
         <TextView
             android:id="@+id/repTextView"
