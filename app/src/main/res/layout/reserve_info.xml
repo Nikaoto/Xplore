@@ -1,181 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
+    android:layout_height="match_parent">
+    
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <Button
-            android:text="A"
-            android:id="@+id/headerButton"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/lib_button_height"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:fontFamily="sans-serif-condensed"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="7"
-            android:textSize="@dimen/lib_button_text_size"
-            android:textAllCaps="true"
-            android:textColor="@color/colorLibText"
-            android:gravity="bottom|left"
-            android:paddingLeft="@dimen/lib_text_padding_left"
-            android:paddingBottom="4dp"
-            android:clickable="false"
-            android:textStyle="normal|bold"/>
+            android:layout_height="235dp"
+            android:textSize="28sp"
+            app:expandedTitleGravity="center"
+            app:expandedTitleTextAppearance="@style/ReserveTitleTextAppearance"
+            app:expandedTitleMarginBottom="90dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?colorPrimary">
 
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:text="description"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="@dimen/lib_text_padding"
-            android:paddingRight="@dimen/lib_text_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="14sp"
-            android:lineSpacingExtra="3sp"/>
+            <ImageView
+                android:id="@+id/groupImageView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:layout_collapseMode="parallax"
+                android:scaleType="centerCrop"/>
 
-        <View style="@style/dashed_divider"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@null"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/abc_ic_ab_back_material"/>
 
-        <TextView
-            android:id="@+id/faunaHeaderTextView"
-            android:text="@string/lib_fauna_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-        <com.xplore.ExpandableTextView
-            android:id="@+id/faunaTextView"
-            android:text="fauna"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_marginTop="5dp"
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:behavior_overlapTop="78dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/lib_text_padding"
-            android:paddingRight="@dimen/lib_text_padding"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:lineSpacingExtra="3sp"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/floraHeaderTextView"
-            android:text="@string/lib_flora_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/descriptionCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp">
 
-        <com.xplore.ExpandableTextView
-            android:id="@+id/floraTextView"
-            android:text="animals"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="@dimen/lib_text_padding"
-            android:paddingRight="@dimen/lib_text_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:lineSpacingExtra="3sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/equipmentHeaderTextView"
-            android:text="@string/lib_equip_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+                    <TextView
+                        android:id="@+id/descriptionHeaderTextView"
+                        android:text="@string/lib_description_header"
+                        style="@style/InfoCardViewHeader"
+                        android:minHeight="46dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/equipmentTextView"
-            android:text="equipment"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="@dimen/lib_text_padding"
-            android:paddingRight="@dimen/lib_text_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:lineSpacingExtra="3sp"/>
+                    <TextView
+                        android:id="@+id/descriptionTextView"
+                        android:text="Description content"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tagsHeaderTextView"
-            android:text="@string/lib_tags_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+                </LinearLayout>
 
-        <com.xplore.ExpandableTextView
-            android:id="@+id/tagsTextView"
-            android:text="tags"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="@dimen/lib_text_padding"
-            android:paddingRight="@dimen/lib_text_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:lineSpacingExtra="3sp"/>
+            </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/difficultyHeaderTextView"
-            android:text="@string/lib_difficulty_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/floraCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        <RatingBar
-            android:id="@+id/difficultyRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.RatingBar.Indicator"
-            android:numStars="10"
-            android:stepSize="1"
-            android:paddingLeft="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginTop="2dp" />
+                    <TextView
+                        android:id="@+id/floraHeaderTextView"
+                        android:text="@string/lib_flora_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/showonmapButton"
-            android:text="@string/show_on_map"
-            android:textSize="16sp"
-            app:backgroundTint="@color/colorAccent"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/floraTextView"
+                        android:text="Flora content"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    </LinearLayout>
-</ScrollView>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/faunaCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/faunaHeaderTextView"
+                        android:text="@string/lib_fauna_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/faunaTextView"
+                        android:text="Fauna content"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/equipmentCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/equipmentHeaderTextView"
+                        android:text="@string/lib_equip_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/equipmentTextView"
+                        android:text="Equipment content"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/tagsCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tagsHeaderTextView"
+                        android:text="@string/lib_tags_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/tagsTextView"
+                        android:text="Extra tags content"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/difficultyCardView"
+                style="@style/ReserveInfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/difficultyHeaderTextView"
+                        android:text="@string/lib_difficulty_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <RatingBar
+                        android:id="@+id/difficultyRatingBar"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:stepSize="0.5"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/showonmapButton"
+                android:text="@string/show_on_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                app:backgroundTint="@color/colorAccent"
+                android:padding="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="54dp"/>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/reserveIconFAB"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginRight="30dp"
+        app:layout_anchor="@id/descriptionCardView"
+        app:layout_anchorGravity="top|right|end"/>
+    
+</android.support.design.widget.CoordinatorLayout>

@@ -25,7 +25,7 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.reserve_info2)
+        setContentView(R.layout.reserve_info)
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
 

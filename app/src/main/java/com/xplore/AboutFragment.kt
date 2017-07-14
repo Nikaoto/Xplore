@@ -12,6 +12,6 @@ import android.view.ViewGroup
 
 class AboutFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
             = inflater.inflate(R.layout.about_layout, container, false)
 }
