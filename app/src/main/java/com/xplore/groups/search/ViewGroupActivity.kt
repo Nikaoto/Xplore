@@ -181,17 +181,24 @@ class ViewGroupActivity : Activity() {
     private fun applyGroupData() {
         groupProgressBar.visibility = View.GONE
 
+        val leader = members[0];
         //Displaying leader
+        //Profile picture
+        Picasso.with(this).invalidate(leader.getProfile_picture_url())
         Picasso.with(this)
-                .load(members[0].getProfile_picture_url())
+                .load(leader.getProfile_picture_url())
                 .transform(CircleTransformation(leaderImageView.width, leaderImageView.height))
                 .into(leaderImageView)
-        leaderFnameTextView.text = members[0].getFname()
-        leaderLnameTextView.text = members[0].getLname()
-        val age = General.calculateAge(TimeManager.globalTimeStamp, members[0].getBirth_date())
+        //Name
+        leaderFnameTextView.text = leader.getFname()
+        leaderLnameTextView.text = leader.getLname()
+        //Age
+        val age = General.calculateAge(TimeManager.globalTimeStamp, leader.getBirth_date())
         leaderAgeTextView.text = "${getString(R.string.age)}: $age"
-        leaderTelTextView.text = "${getString(R.string.tel)}: ${members[0].getTel_num()}"
-        leaderRepTextView.text = members[0].getReputation().toString()
+        //Telephone
+        leaderTelTextView.text = "${getString(R.string.tel)}: ${leader.getTel_num()}"
+        //Reputation
+        leaderRepTextView.text = leader.getReputation().toString()
 
         //Setting experienced icon
         if (currentGroup.isExperienced) {

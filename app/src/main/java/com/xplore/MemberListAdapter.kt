@@ -57,6 +57,11 @@ class MemberListAdapter(private val context: Context,
         //Loading Member Reputation
         holder.rep_txt.text = currentMember.getReputation().toString()
 
+        //If leader, display higher res image
+        if (position == 0) {
+            Picasso.with(context).invalidate(currentMember.profile_picture_url)
+        }
+
         //Loading Member Image
         Picasso.with(context)
                 .load(currentMember.getProfile_picture_url())

@@ -5,10 +5,10 @@ apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         config {
-            keyAlias 'xplore_alias'
-            keyPassword 'QwertY!234%'
-            storeFile file('E:/Documents/Xplore Documents/Development/Keystores/xplore.jks')
-            storePassword 'QwertY!234%'
+            keyAlias 'Nikaoto'
+            keyPassword 'Otiashvili99'
+            storeFile file('E:/Documents/Xplore Documents/Development/xplore.keystore')
+            storePassword 'qwertq5'
         }
     }
     compileSdkVersion 25
