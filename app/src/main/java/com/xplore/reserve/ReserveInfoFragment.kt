@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewCompat
-import com.xplore.DBManager
+import com.xplore.database.DBManager
 import com.xplore.R
-import com.xplore.maps.MapFragment
 import com.xplore.maps.MapsActivity
 
 import kotlinx.android.synthetic.main.reserve_info.*
@@ -70,9 +69,6 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
 
     override fun onResume() {
         super.onResume()
-        if (MapFragment.MAPS_CLOSED) {
-            fragmentManager.popBackStack()
-        }
     }
 
     fun setupLayout(reserve: Reserve) {
@@ -87,7 +83,6 @@ class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedLi
         difficultyRatingBar.rating = reserve.difficulty.toFloat()
 
         showonmapButton.setOnClickListener() {
-            MapFragment.MAPS_CLOSED = false
             val intent = Intent(mActivity, MapsActivity::class.java)
             intent.putExtra("show_reserve", true)
             intent.putExtra("reserve_name", reserve.name)

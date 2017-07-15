@@ -259,8 +259,6 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MapFragment.MAPS_CLOSED = true;
-        MapFragment.FIRST_TIME = false;
         if(reserveMarker != null)
             reserveMarker.remove();
         if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
@@ -269,8 +267,7 @@ public class MapsActivity extends AppCompatActivity
         showReserve = false;
     }
 
-    private void LoadKML()
-    {
+    private void LoadKML() {
         try {
             KmlLayer kmlLayer = new KmlLayer(mMap, R.raw.testeroni, getApplicationContext());
             kmlLayer.addLayerToMap();

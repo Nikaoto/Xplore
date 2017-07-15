@@ -15,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.xplore.DBManager
+import com.xplore.database.DBManager
 import com.xplore.General
 import com.xplore.R
 import com.xplore.reserve.ReserveCard

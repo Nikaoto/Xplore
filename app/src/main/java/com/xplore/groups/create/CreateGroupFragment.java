@@ -25,8 +25,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
-import com.xplore.DBManager;
-import com.xplore.DatePickerDialogFragment;
+import com.xplore.database.DBManager;
+import com.xplore.CustomDatePicker;
 import com.xplore.General;
 import com.xplore.MemberListAdapter;
 import com.xplore.R;
@@ -250,7 +250,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             public void onClick(View view) {
                 if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_START;
-                    new DatePickerDialogFragment(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
+                    new CustomDatePicker(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "startDate");
                 }
             }
@@ -261,7 +261,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             public void onClick(View view) {
                 if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_END;
-                    new DatePickerDialogFragment(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
+                    new CustomDatePicker(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "endDate");
                 }
             }

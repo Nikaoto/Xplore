@@ -1,6 +1,7 @@
 package com.xplore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -28,7 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.groups.MyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
-import com.xplore.maps.MapFragment;
+import com.xplore.maps.MapsActivity;
+import com.xplore.reserve.LibraryFragment;
+import com.xplore.settings.SettingsFragment;
 import com.xplore.user.User;
 
 import java.util.Locale;
@@ -96,8 +99,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });*/
-
-        MapFragment.MAPS_CLOSED = false;
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -280,8 +281,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_map : {
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, new MapFragment()).commit();
+                Intent intent= new Intent(this, MapsActivity.class);
+                intent.putExtra("show_reserve", false);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_my_groups : {

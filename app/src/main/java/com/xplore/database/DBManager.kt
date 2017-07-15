@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.database
 
 import android.content.Context
 import android.database.Cursor
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
 import com.google.android.gms.maps.model.LatLng
+import com.xplore.General
 import com.xplore.reserve.Reserve
 import com.xplore.reserve.ReserveCard
 
@@ -25,7 +26,7 @@ internal class DBManager(private val mContext: Context,
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
     //Path of the database that will be created
-    private val DB_PATH = "/data/data/${mContext.packageName}/databases/$DB_NAME"
+    private val DB_PATH = "/data/data/${mContext?.packageName}/databases/$DB_NAME"
     val GENERAL_TABLE = "general"
 
     companion object ColumnNames {
@@ -66,7 +67,7 @@ internal class DBManager(private val mContext: Context,
     }
 
     fun initRowCount(table: String = TABLE): Int {
-        val cursor = DataBase.doQuery("SELECT $ID FROM $table")
+        val cursor = DataBase.doQuery("SELECT ${ID} FROM $table")
         try {
             cursor.moveToLast()
             return cursor.getInt(0)
@@ -96,8 +97,8 @@ internal class DBManager(private val mContext: Context,
 
     //Assembles and returns Reserve object from Database by Id (FASTER)
     fun getReserve(id: Int, table: String = TABLE): Reserve {
-        val cursor = DataBase.doQuery("SELECT * FROM $table WHERE $ID = $id")
-        val gcursor = DataBase.doQuery("SELECT * FROM $GENERAL_TABLE WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT * FROM $table WHERE ${ID} = $id")
+        val gcursor = DataBase.doQuery("SELECT * FROM $GENERAL_TABLE WHERE ${ID} = $id")
         try {
             cursor.moveToFirst()
             gcursor.moveToFirst()
@@ -125,8 +126,8 @@ internal class DBManager(private val mContext: Context,
     }
 
     fun getReserveCard(id: Int, table: String = TABLE): ReserveCard {
-        val cursor = DataBase.doQuery("SELECT $NAME FROM $table WHERE $ID = $id")
-        val gcursor = DataBase.doQuery("SELECT $IMAGE, $TYPE FROM $GENERAL_TABLE WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT ${NAME} FROM $table WHERE ${ID} = $id")
+        val gcursor = DataBase.doQuery("SELECT ${IMAGE}, ${TYPE} FROM $GENERAL_TABLE WHERE ${ID} = $id")
         try{
             cursor.moveToFirst()
             gcursor.moveToFirst()
@@ -147,8 +148,8 @@ internal class DBManager(private val mContext: Context,
     //Load all reserveCards from DB
     fun getAllReserveCards(table: String = TABLE): ArrayList<ReserveCard> {
         val results = ArrayList<ReserveCard>(rowCount)
-        val cursor = DataBase.doQuery("SELECT $NAME FROM $table")
-        val gcursor = DataBase.doQuery("SELECT $IMAGE, $TYPE FROM $GENERAL_TABLE")
+        val cursor = DataBase.doQuery("SELECT ${NAME} FROM $table")
+        val gcursor = DataBase.doQuery("SELECT ${IMAGE}, ${TYPE} FROM $GENERAL_TABLE")
         try{
             if(cursor.moveToFirst() && gcursor.moveToFirst()){
                 var index = 0
@@ -176,7 +177,7 @@ internal class DBManager(private val mContext: Context,
 
     //Finds a String by Id in Database and returns it
     fun getStr(id: Int, column: String, table: String = TABLE): String {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE ${ID} = $id")
         try {
             cursor.moveToNext()
             return cursor.getString(0)
@@ -192,7 +193,7 @@ internal class DBManager(private val mContext: Context,
 
     //Finds a Double by Id in Database and returns it
     fun getDouble(id: Int, column: String, table: String = TABLE): Double {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE ${ID} = $id")
         try{
             cursor.moveToFirst()
             return cursor.getDouble(0)
@@ -208,7 +209,7 @@ internal class DBManager(private val mContext: Context,
 
     //Finds an Integer by Id in Database and returns it
     fun getInt(id: Int, column: String, table: String = TABLE): Int {
-        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE $ID = $id")
+        val cursor = DataBase.doQuery("SELECT $column FROM $table WHERE ${ID} = $id")
         try {
             cursor.moveToFirst()
             return cursor.getInt(0)
@@ -241,8 +242,12 @@ internal class DBManager(private val mContext: Context,
             return context.resources.getDrawable(tempImageId)
     }*/
 
-    fun getImageId(id: Int, context: Context = mContext, table: String = TABLE): Int =
-            convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
+    fun getImageId(id: Int, context: Context? = mContext, table: String = TABLE): Int {
+        if (context != null) {
+            return convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
+        } else return 0
+    }
+
 
     //Finds the Id of an entry by every field in Database and returns it
     fun getIdFromQuery(query: String, table: String): List<Int> {
@@ -250,12 +255,12 @@ internal class DBManager(private val mContext: Context,
 
         //TODO add categorized search
         //Use string query to search for reserves and output IDs
-        val cursor = DataBase.doQuery("SELECT $ID FROM $table WHERE $NAME"+
+        val cursor = DataBase.doQuery("SELECT ${ID} FROM $table WHERE ${NAME}"+
                 " LIKE '%$query%'"+
-                " or $FLORA LIKE '%$query%'"+
-                " or $FAUNA LIKE '%$query%'"+
-                " or $EXTRATAGS LIKE '%$query%'"+
-                " or $EQUIPMENT LIKE '%$query%'")
+                " or ${FLORA} LIKE '%$query%'"+
+                " or ${FAUNA} LIKE '%$query%'"+
+                " or ${EXTRATAGS} LIKE '%$query%'"+
+                " or ${EQUIPMENT} LIKE '%$query%'")
 
         try {
             if (cursor.moveToFirst()) {
@@ -278,7 +283,7 @@ internal class DBManager(private val mContext: Context,
         val answers = ArrayList<Int>()
 
         //Searching the database by names
-        val cursor = DataBase.doQuery("SELECT $ID FROM $table WHERE $NAME LIKE '%$nameQuery%'")
+        val cursor = DataBase.doQuery("SELECT ${ID} FROM $table WHERE ${NAME} LIKE '%$nameQuery%'")
         try {
             if (cursor.moveToFirst()) {
                 do {

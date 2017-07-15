@@ -10,8 +10,12 @@ import java.util.*
  * Created by nikao on 3/11/2017.
  */
 
-class DatePickerDialogFragment(val listener: DatePickerDialog.OnDateSetListener,
-                               val timeStamp: Long, val yearOffset: Int = 0) : DialogFragment() {
+class CustomDatePicker(val listener: DatePickerDialog.OnDateSetListener?,
+                       val timeStamp: Long,
+                       val yearOffset: Int = 0) : DialogFragment() {
+
+    //Empty constructor
+    constructor() : this(null, 0L, -1)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
     {

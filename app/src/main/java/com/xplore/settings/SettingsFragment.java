@@ -1,4 +1,4 @@
-package com.xplore;
+package com.xplore.settings;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.xplore.MainActivity;
+import com.xplore.R;
 
 import java.util.Locale;
 
@@ -88,7 +91,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener
         prefEditor.putString("lang",language_code);
         prefEditor.commit();
 
-        Locale locale = new Locale(preferences.getString("lang",MainActivity.ENGLISH_LANG_CODE));
+        Locale locale = new Locale(preferences.getString("lang", MainActivity.ENGLISH_LANG_CODE));
         Locale.setDefault(locale);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //TODO enable this when out of alpha

@@ -63,7 +63,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Birth date selector
         bdateTextView.setOnClickListener {
             //Creating new DialogFragment
-            val fragment = com.xplore.DatePickerDialogFragment(this, globalTimeStamp, ageRestriction)
+            val fragment = com.xplore.CustomDatePicker(this, globalTimeStamp, ageRestriction)
             fragment.show(fragmentManager, "datePicker")
         }
         //TODO CHOOSE GALLERY IMAGE OR TAKE PHOTO

@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.reserve
 
 import android.app.Fragment
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.xplore.reserve.ReserveCard
-import com.xplore.reserve.ReserveCardRecyclerViewAdapter
-import com.xplore.reserve.Icons
+import com.xplore.General
+import com.xplore.R
+import com.xplore.database.DBManager
 
 import java.util.ArrayList
 

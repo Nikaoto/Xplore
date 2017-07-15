@@ -26,7 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.CircleTransformation;
-import com.xplore.DBManager;
+import com.xplore.database.DBManager;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;

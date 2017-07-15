@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.database
 
 import java.io.FileInputStream
 import java.io.FileOutputStream
