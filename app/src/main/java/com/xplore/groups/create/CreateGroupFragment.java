@@ -32,6 +32,7 @@ import com.xplore.MemberListAdapter;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.groups.Group;
+import com.xplore.reserve.ReserveInfoActivity;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
@@ -138,6 +139,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     }
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -241,7 +243,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View view) {
                 if(chosenDestId != CHOSEN_DEST_DEFAULT)
-                    General.openReserveInfoFragment(chosenDestId, getActivity());
+                    startActivity(ReserveInfoActivity.getStartIntent(getActivity(), chosenDestId));
             }
         });
 

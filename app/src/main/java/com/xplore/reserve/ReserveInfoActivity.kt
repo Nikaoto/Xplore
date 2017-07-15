@@ -1,9 +1,10 @@
 package com.xplore.reserve
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
-import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewCompat
 import com.xplore.database.DBManager
 import com.xplore.R
@@ -22,19 +23,24 @@ import kotlinx.android.synthetic.main.reserve_info.*
 *
 */
 
-class ReserveInfoFragment() : FragmentActivity(), AppBarLayout.OnOffsetChangedListener {
+class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
 
     private val IMAGE_SHOW_PERCENT = 45
     private val mActivity = this
     private var maxScrollSize = 0
     private var isImageHidden = false
 
+    companion object {
+        @JvmStatic
+        fun getStartIntent(context: Context, reserveId: Int)
+            = Intent(context, ReserveInfoActivity::class.java).putExtra("chosen_element", reserveId)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reserve_info)
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
-
         appBar.addOnOffsetChangedListener(this)
         //Sets up Layout acording to info from chosen Reserve
         val chosenReserve = intent.getIntExtra("chosen_element", 0)

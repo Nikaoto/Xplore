@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -21,18 +20,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 import com.xplore.account.GoogleSignInActivity;
-import com.xplore.reserve.ReserveInfoFragment;
-import com.xplore.user.User;
+import com.xplore.reserve.ReserveInfoActivity;
 import com.xplore.user.UserProfileActivity;
 
 import java.util.Calendar;
@@ -89,7 +81,7 @@ public class General {
 
     public static void openReserveInfoFragment(int resId, Context context)
     {
-        Intent intent= new Intent(context, ReserveInfoFragment.class);
+        Intent intent= new Intent(context, ReserveInfoActivity.class);
         intent.putExtra("chosen_element", resId);
         context.startActivity(intent);
     }

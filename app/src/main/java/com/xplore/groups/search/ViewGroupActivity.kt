@@ -15,6 +15,7 @@ import com.xplore.*
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.reserve.Icons
+import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 
 import java.util.ArrayList
@@ -67,7 +68,7 @@ class ViewGroupActivity : Activity() {
         dbManager.openDataBase()
         val tempReserveCard = dbManager.getReserveCard(reserveID)
 
-        reserveCardView.setOnClickListener { General.openReserveInfoFragment(reserveID, this) }
+        reserveCardView.setOnClickListener { ReserveInfoActivity.getStartIntent(this, reserveID) }
         reserveNameTextView.text = tempReserveCard.name
         groupImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])

@@ -122,8 +122,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
     }
 
-    private void CheckUserExists(final FirebaseUser firebaseUser)
-    {
+    private void CheckUserExists(final FirebaseUser firebaseUser) {
         Query query = DBref.child("users").getRef().orderByKey().equalTo(firebaseUser.getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

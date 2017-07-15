@@ -34,7 +34,7 @@
         <activity android:name="com.xplore.maps.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
-        <activity android:name="com.xplore.reserve.ReserveInfoFragment"
+        <activity android:name="com.xplore.reserve.ReserveInfoActivity"
             android:label="@string/nav_lib_title"
             android:screenOrientation="portrait" />
 
