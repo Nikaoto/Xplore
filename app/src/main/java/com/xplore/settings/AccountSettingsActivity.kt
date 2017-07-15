@@ -10,8 +10,8 @@ import com.xplore.ApiManager
 import com.xplore.General
 
 /**
- * Created by Nika on 7/7/2017.
- * TODO write description of this class - what it does and why.
+ * Created by Nikaoto on 7/7/2017.
+ * User can log out from here
  */
 
 class AccountSettingsActivity : Activity() {
