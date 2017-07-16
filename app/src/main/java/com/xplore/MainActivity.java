@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -281,9 +282,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_map : {
-                Intent intent= new Intent(this, MapsActivity.class);
-                intent.putExtra("show_reserve", false);
-                startActivity(intent);
+                startActivity(MapsActivity.getStartIntent(this, false));
                 break;
             }
             case R.id.nav_my_groups : {

@@ -53,6 +53,7 @@ dependencies {
     //Google Play Services
     //NOTE: DO NOT INCLUDE GOOGLE PLAY SERVICES SEPARATELY (:app:compileDebugKotlin error arises)
     compile 'com.google.android.gms:play-services:11.0.2'
+    compile 'com.google.android.gms:play-services-auth:11.0.2'
 
     //Maps
     compile 'com.google.maps.android:android-maps-utils:0.4'

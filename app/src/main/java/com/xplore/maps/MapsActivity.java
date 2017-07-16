@@ -73,6 +73,20 @@ public class MapsActivity extends AppCompatActivity
     private LatLng reserveLocation;
     private String reserveName;
 
+    public static Intent getStartIntent(Context context, Boolean showReserve) {
+        return new Intent(context, MapsActivity.class)
+                .putExtra("showReserve", showReserve);
+    }
+
+    public static Intent getStartIntent(Context context, Boolean showReserve,
+                                        String reserveName, double lat, double lng) {
+        return new Intent(context, MapsActivity.class)
+                .putExtra("showReserve", showReserve)
+                .putExtra("reserveName", reserveName)
+                .putExtra("reserveLat", lat)
+                .putExtra("reserveLng", lng);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,14 +127,14 @@ public class MapsActivity extends AppCompatActivity
     private void InitReserve()
     {
         Intent intent = this.getIntent();
-        showReserve = intent.getBooleanExtra("show_reserve",false);
+        showReserve = intent.getBooleanExtra("showReserve",false);
 
         if(showReserve)
         {
-            reserveName = intent.getStringExtra("reserve_name");
+            reserveName = intent.getStringExtra("reserveName");
             reserveLocation = new LatLng(
-                    intent.getDoubleExtra("reserve_latitude",0),
-                    intent.getDoubleExtra("reserve_longitude",0)
+                    intent.getDoubleExtra("reserveLat",0),
+                    intent.getDoubleExtra("reserveLng",0)
             );
         }
     }

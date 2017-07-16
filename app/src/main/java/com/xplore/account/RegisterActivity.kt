@@ -2,6 +2,9 @@ package com.xplore.account
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.DatePicker
@@ -45,6 +48,17 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     internal val DBref = FirebaseDatabase.getInstance().reference
 
+    companion object {
+        @JvmStatic
+        fun getStartIntent(context: Context, userId: String, fullName: String?, email: String?,
+                           photoUrl: Uri?): Intent
+                = Intent(context, RegisterActivity::class.java)
+                    .putExtra("userId", userId)
+                    .putExtra("fullName", fullName)
+                    .putExtra("email", email)
+                    .putExtra("photoUrl", photoUrl.toString())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_layout)
@@ -52,6 +66,8 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Getting User info from SignInActivity
         val userId = intent.getStringExtra("userId")
         val userFullName = intent.getStringExtra("fullName")
+        Log.println(Log.INFO, "firebaseuser", "User FullName = $userFullName")
+
         val userEmail = intent.getStringExtra("email")
         val userProfilePicUrl = intent.getStringExtra("photoUrl")
 
@@ -167,12 +183,16 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     //Splits a full name and returns the i-th part of it. Returns fullName back if it has no space
-    private fun separateFullName(fullName: String, i: Int): String {
-        var name = arrayOf<String>(fullName,"")
-        if (fullName.contains(" "))
-            name = fullName.split(" ".toRegex(), 2).toTypedArray()
+    private fun separateFullName(fullName: String?, i: Int): String {
+        if (fullName == null) {
+            return ""
+        } else {
+            var name = arrayOf<String>(fullName,"")
+            if (fullName.contains(" "))
+                name = fullName.split(" ".toRegex(), 2).toTypedArray()
 
-        return name[i]
+            return name[i]
+        }
     }
 
     fun EditText.str() = this.text.toString() //TODO take this to general

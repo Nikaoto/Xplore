@@ -51,7 +51,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private View myView;
     private PopupWindow popupWindow;
 
-    private DatabaseReference DBref = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference firebaseUsersReference
+            = FirebaseDatabase.getInstance().getReference().child("users");
 
 
     @Override
@@ -75,6 +76,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
         });
     }
 
+    private void signIn() {
+        popupWindow = General.popLoadingBar(0.8, 0.8, this, myView);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
     private void setUpAuthStateListener() {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -84,7 +91,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     Toast.makeText(GoogleSignInActivity.this, "Logged In", Toast.LENGTH_SHORT).show(); //TODO string resources
                     //User signed in
                     currentUserId = user.getUid();
-                    CheckUserExists(user); //creates user in case it doesn't exist
+                    checkUserExists(user); //creates user in case it doesn't exist
                 } else {
                     // User is signed out
                     Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
@@ -93,10 +100,36 @@ public class GoogleSignInActivity extends AppCompatActivity {
         };
     }
 
-    private void signIn() {
-        popupWindow = General.popLoadingBar(0.8, 0.8, this, myView);
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    private void checkUserExists(final FirebaseUser user) {
+        Log.println(Log.INFO, "firebaseuser", "User FullName = "+user.getDisplayName());
+        Query query = firebaseUsersReference.orderByKey().equalTo(user.getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    Log.println(Log.INFO, "firebaseuser", "User FullName = "+user.getDisplayName());
+
+
+                    //Start user registration
+                    startActivityForResult(
+                            RegisterActivity.getStartIntent(
+                                    GoogleSignInActivity.this,
+                                    user.getUid(),
+                                    user.getDisplayName(),
+                                    user.getEmail(),
+                                    user.getPhotoUrl()
+                            ),
+                            RC_REGISTER);
+                }
+                else {
+                    accountStatus = LOGGED_IN;
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     @Override
@@ -109,46 +142,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-
             } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
+                Toast.makeText(GoogleSignInActivity.this, "Could not authenticate", Toast.LENGTH_SHORT).show();
+                finish();
             }
-        }
-        else if(requestCode == RC_REGISTER)
-        {
+        } else if(requestCode == RC_REGISTER) {
             accountStatus = JUST_REGISTERED;
             finish();
         }
-    }
-
-    private void CheckUserExists(final FirebaseUser firebaseUser) {
-        Query query = DBref.child("users").getRef().orderByKey().equalTo(firebaseUser.getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()) {
-                    //Start user registration
-                    Intent i = new Intent(GoogleSignInActivity.this, RegisterActivity.class);
-                    i.putExtra("userId", firebaseUser.getUid());
-                    i.putExtra("fullName", firebaseUser.getDisplayName());
-                    i.putExtra("email", firebaseUser.getEmail());
-
-                    if (firebaseUser.getPhotoUrl() != null)
-                        i.putExtra("photoUrl", firebaseUser.getPhotoUrl().toString());
-                    else
-                        i.putExtra("photoUrl", "");
-                    startActivityForResult(i, RC_REGISTER);
-                }
-                else {
-                    accountStatus = LOGGED_IN;
-                    finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {

@@ -89,12 +89,15 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
         difficultyRatingBar.rating = reserve.difficulty.toFloat()
 
         showonmapButton.setOnClickListener() {
-            val intent = Intent(mActivity, MapsActivity::class.java)
-            intent.putExtra("show_reserve", true)
-            intent.putExtra("reserve_name", reserve.name)
-            intent.putExtra("reserve_latitude", reserve.location.latitude)
-            intent.putExtra("reserve_longitude", reserve.location.longitude)
-            mActivity.startActivity(intent)
+            mActivity.startActivity(
+                    MapsActivity.getStartIntent(
+                            mActivity,
+                            true,
+                            reserve.name,
+                            reserve.location.latitude,
+                            reserve.location.longitude
+                    )
+            )
         }
     }
 }
