@@ -31,7 +31,7 @@ import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.groups.GroupCard;
-import com.xplore.groups.create.CreateGroupFragment;
+import com.xplore.groups.create.CreateGroupActivity;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             public void onClick(View view) {
                 //Opens CreateGroupFragment
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new CreateGroupFragment()).commit();
+                        .replace(R.id.fragment_container, new CreateGroupActivity()).commit();
                 getFragmentManager().executePendingTransactions();
             }
         });

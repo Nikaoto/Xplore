@@ -1,7 +1,6 @@
 package com.xplore.groups.create;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,7 +30,7 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
-import static com.xplore.groups.create.CreateGroupFragment.invitedMembers;
+import static com.xplore.groups.create.CreateGroupActivity.invitedMembers;
 
 
 /**

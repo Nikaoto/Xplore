@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 
 import java.util.ArrayList
 
-import com.xplore.groups.create.CreateGroupFragment.invitedMembers
+import com.xplore.groups.create.CreateGroupActivity.invitedMembers
 import com.xplore.user.User
 
 /**

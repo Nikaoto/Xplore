@@ -3,7 +3,6 @@ package com.xplore.groups.create;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -11,9 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.xplore.database.DBManager;
 import com.xplore.CustomDatePicker;
@@ -31,7 +27,6 @@ import com.xplore.General;
 import com.xplore.MemberListAdapter;
 import com.xplore.R;
 import com.xplore.TimeManager;
-import com.xplore.groups.Group;
 import com.xplore.reserve.ReserveInfoActivity;
 import com.xplore.user.User;
 
@@ -56,7 +51,7 @@ import static com.xplore.General.currentUserId;
  *
  */
 
-public class CreateGroupFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class CreateGroupActivity extends Activity implements DatePickerDialog.OnDateSetListener {
 
     //TODO turn this into an activity
     //TODO add meeting time
@@ -102,15 +97,14 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     Button chooseButton, inviteButton, doneButton, startDate, endDate;
     Button reserveButton; //TODO replace reserveButton with reserveCard
     RadioGroup radioGroup;
-    View myView;
     DBManager dbManager;
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.create_group, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_group);
 
         //Refreshing server timeStamp
         TimeManager.Companion.refreshGlobalTimeStamp();
@@ -125,7 +119,9 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
         InitClickEvents();
 
-        return myView;
+        //TODO convert this to Kotlin and skip the other crap arguments
+        dbManager = new DBManager(this, "reserveDB.db", General.DB_TABLE);
+        dbManager.openDataBase();
     }
 
     @Override
@@ -133,20 +129,20 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         super.onResume();
 
         //Check if net connected
-        if (!General.isNetConnected(getActivity())) {
-            General.createNetErrorDialog(getActivity());
+        if (!General.isNetConnected(this)) {
+            General.createNetErrorDialog(this);
         }
         //Checking if user chose a destination
         else if (chosenDestId != CHOSEN_DEST_DEFAULT) {//TODO remove table arguments after converting to kotlin
             //TODO make a separate method for displaying the reserve
-            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, getActivity(), dbManager.getGENERAL_TABLE()));
+            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId, this, dbManager.getGENERAL_TABLE()));
             reserveButton.setText(dbManager.getStr(chosenDestId, DBManager.ColumnNames.getNAME(), General.DB_TABLE));
         }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        if(General.isNetConnected(getActivity())) {
+        if(General.isNetConnected(this)) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(TimeManager.Companion.getGlobalTimeStamp()));
 
@@ -160,40 +156,40 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
                 eYear = year; eMonth = month; eDay = day;
                 endDate_text.setText(eYear+"/"+eMonth+"/"+eDay);
             }
-        } else General.createNetErrorDialog(getActivity());
+        } else General.createNetErrorDialog(this);
     }
 
     private void InitLayout() {
         //Member List RecyclerView
-        memberRecList = (RecyclerView) myView.findViewById(R.id.createGroup_member_list); //NOTE: uncomment in create_group.xml
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        memberRecList = (RecyclerView) findViewById(R.id.createGroup_member_list); //NOTE: uncomment in create_group.xml
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         memberRecList.setHasFixedSize(true);
         memberRecList.setLayoutManager(layoutManager);
 
         //Buttons
-        chooseButton = (Button) myView.findViewById(R.id.chooseReserve_button);
-        reserveButton = (Button) myView.findViewById(R.id.createGroup_reserveButton);
-        doneButton = (Button) myView.findViewById(R.id.creteGroup_done_button);
-        inviteButton = (Button) myView.findViewById(R.id.inviteMembers_button);
-        startDate = (Button) myView.findViewById(R.id.chooseStartDate);
-        endDate = (Button) myView.findViewById(R.id.chooseEndDate);
+        chooseButton = (Button) findViewById(R.id.chooseReserve_button);
+        reserveButton = (Button) findViewById(R.id.createGroup_reserveButton);
+        doneButton = (Button) findViewById(R.id.creteGroup_done_button);
+        inviteButton = (Button) findViewById(R.id.inviteMembers_button);
+        startDate = (Button)findViewById(R.id.chooseStartDate);
+        endDate = (Button) findViewById(R.id.chooseEndDate);
 
         //Radios
-        radioGroup = (RadioGroup) myView.findViewById(R.id.radioGroup);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         //Images
-        prefs_help = (ImageView) myView.findViewById(R.id.prefs_help);
-        info_help = (ImageView) myView.findViewById(R.id.extraInfo_help);
+        prefs_help = (ImageView) findViewById(R.id.prefs_help);
+        info_help = (ImageView) findViewById(R.id.extraInfo_help);
 
         //Tint Images
-        prefs_help.setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorGrey));
-        info_help.setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorGrey));
+        prefs_help.setColorFilter(ContextCompat.getColor(this, R.color.colorGrey));
+        info_help.setColorFilter(ContextCompat.getColor(this, R.color.colorGrey));
 
         //Texts
-        startDate_text = (TextView) myView.findViewById(R.id.dateStart_text);
-        endDate_text = (TextView) myView.findViewById(R.id.dateEnd_text);
-        groupPrefs_text= (EditText) myView.findViewById(R.id.groupPrefs_editText);
-        extraInfo_text = (EditText) myView.findViewById(R.id.extraInfo_editText);
+        startDate_text = (TextView) findViewById(R.id.dateStart_text);
+        endDate_text = (TextView) findViewById(R.id.dateEnd_text);
+        groupPrefs_text= (EditText) findViewById(R.id.groupPrefs_editText);
+        extraInfo_text = (EditText) findViewById(R.id.extraInfo_editText);
     }
 
     private void InitClickEvents()
@@ -201,7 +197,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),SearchDestinationActivity.class);
+                Intent intent = new Intent(CreateGroupActivity.this, SearchDestinationActivity.class);
                 startActivityForResult(intent, SEARCH_DESTINATION_ACTIVITY_CODE);
             }
         });
@@ -210,7 +206,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View view) {
                 if(chosenDestId != CHOSEN_DEST_DEFAULT)
-                    startActivity(ReserveInfoActivity.getStartIntent(getActivity(), chosenDestId));
+                    startActivity(ReserveInfoActivity.getStartIntent(CreateGroupActivity.this, chosenDestId));
             }
         });
 
@@ -219,7 +215,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             public void onClick(View view) {
                 if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_START;
-                    new CustomDatePicker(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
+                    new CustomDatePicker(CreateGroupActivity.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "startDate");
                 }
             }
@@ -230,7 +226,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             public void onClick(View view) {
                 if(TimeManager.Companion.getGlobalTimeStamp() != 0L) {
                     selectingDate = SELECTION_END;
-                    new CustomDatePicker(CreateGroupFragment.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
+                    new CustomDatePicker(CreateGroupActivity.this, TimeManager.Companion.getGlobalTimeStamp(), 0)
                             .show(getFragmentManager(), "endDate");
                 }
             }
@@ -239,7 +235,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SearchUsersActivity.class);
+                Intent intent = new Intent(CreateGroupActivity.this, SearchUsersActivity.class);
                 startActivityForResult(intent, INVITE_USERS_ACTIVITY_CODE);
             }
         });
@@ -265,7 +261,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             public void onClick(View view) {
                 GatherData();
                 if(CheckFields()) {
-                    UploadGroupData();
+                    uploadGroupData();
                 }
             }
         });
@@ -321,9 +317,8 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
                 member_ids);   //Group Member Ids
     }
 
-    private void UploadGroupData()
-    {
-        Toast.makeText(getActivity(),"Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
+    private void uploadGroupData() {
+        Toast.makeText(this, "Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
         String key = groupsRef.child("groups").push().getKey();
         Map<String, Object> groupData = createUploadGroup(key).toMap();
 
@@ -331,12 +326,13 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         childUpdates.put("/groups/"+key, groupData);
 
         groupsRef.updateChildren(childUpdates);
-        Toast.makeText(getActivity(),"Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        finish();
     }
 
     private void PopulateMembersList() {
         memberRecList.setVisibility(View.VISIBLE);
-        final MemberListAdapter adapter = new MemberListAdapter(getActivity(), invitedMembers, true);
+        final MemberListAdapter adapter = new MemberListAdapter(this, invitedMembers, true);
         memberRecList.setAdapter(adapter);
     }
 
@@ -346,7 +342,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     }
 
     private void ShowHelp(int title, int text, int butt_text, Resources resources) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage(resources.getString(text))
                 .setTitle(resources.getString(title))
@@ -359,7 +355,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     private boolean CheckFields()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.okay, null);
 
         if(chosenDestId == CHOSEN_DEST_DEFAULT) {
@@ -400,14 +396,5 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
             } else
                 return true;
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        //TODO convert this to Kotlin and skip the other crap arguments
-        dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
-        dbManager.openDataBase();
     }
 }

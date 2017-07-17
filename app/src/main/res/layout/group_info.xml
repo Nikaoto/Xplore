@@ -195,7 +195,8 @@
             android:textStyle="bold"
             android:layout_marginTop="@dimen/main_text_margin_top"/>
 
-        <View style="@style/Divider"/>
+        <View style="@style/Divider"
+            android:layout_marginTop="6dp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/membersRecyclerView"
