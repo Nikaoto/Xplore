@@ -31,6 +31,7 @@ import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.groups.GroupCard;
+import com.xplore.groups.GroupCardRecyclerViewAdapter;
 import com.xplore.groups.create.CreateGroupActivity;
 import com.xplore.user.User;
 
@@ -112,7 +113,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         firstLoad = true;
 
         //Displaying list already
-        resultsRV.setAdapter(new GroupsListAdapter(displayCards));
+        resultsRV.setAdapter(new GroupCardRecyclerViewAdapter(displayCards, getActivity()));
     }
 
     private void loadData() {
@@ -203,99 +204,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private void postLoadData() {
         firstLoad = false;
         progressBar.setVisibility(View.INVISIBLE);
-    }
-    private class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.ResultsViewHolder> {
-        final int imgSize;
-        final ArrayList<GroupCard> groupCards;
-
-        public GroupsListAdapter(ArrayList<GroupCard> groupCards) {
-            this.groupCards = groupCards;
-            imgSize = Math.round(getResources().getDimension(R.dimen.user_profile_image_tiny_size));
-        }
-
-        class ResultsViewHolder extends RecyclerView.ViewHolder {
-            //TODO add ribbons and stuff
-            ImageView groupImage;
-            ImageView leaderImage;
-            TextView leaderName;
-            TextView leaderReputation;
-            RelativeLayout leaderLayout;
-
-            public ResultsViewHolder(View itemView) {
-                super(itemView);
-                this.leaderImage = (ImageView) itemView.findViewById(R.id.leaderImageView);
-                this.leaderName = (TextView) itemView.findViewById(R.id.leaderNameTextView);
-                this.leaderReputation = (TextView) itemView.findViewById(R.id.leaderRepCombinedTextView);
-                this.leaderLayout = (RelativeLayout) itemView.findViewById(R.id.leaderLayout);
-                this.groupImage = (ImageView) itemView.findViewById(R.id.groupImageView);
-            }
-        }
-
-        @Override
-        public ResultsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ResultsViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.group_card, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(ResultsViewHolder holder, final int position) {
-            final GroupCard currentCard = groupCards.get(position);
-
-            //Leader layout
-            holder.leaderLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    General.openUserProfile(getActivity(), currentCard.getLeaderId());
-                }
-            });
-
-            //On card click
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    General.HideKeyboard(getActivity());
-                    //TODO add this in general
-                    //Creating intent
-                    Intent intent = new Intent(getActivity(), ViewGroupActivity.class);
-
-                    //Sending data over to intent
-                    intent.putExtra("group_id", currentCard.getGroupId());
-                    intent.putExtra("reserve_id", Integer.valueOf(currentCard.getDestination_id()));
-
-                    //Starting intent
-                    getActivity().startActivity(intent);
-                }
-            });
-
-            //Leader name
-            holder.leaderName.setText(currentCard.getLeaderName());
-
-            //Leader reputation
-            holder.leaderReputation.setText(currentCard.getLeaderReputation() + " " + getActivity().getResources().getString(R.string.reputation));
-
-            //Leader image
-            Picasso.with(getActivity())
-                    .load(currentCard.getLeaderImageUrl())
-                    .transform(new CircleTransformation(imgSize, imgSize))
-                    .into(holder.leaderImage);
-            holder.leaderImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    General.openUserProfile(getActivity(), currentCard.getLeaderId());
-                }
-            });
-
-            //Group image
-            //TODO change this to just map or submitted image
-            holder.groupImage.setImageResource(currentCard.getReserveImageId());
-
-            //TODO add ribbons and other stuff
-        }
-
-        @Override
-        public int getItemCount() {
-            return groupCards.size();
-        }
     }
 
     @Override

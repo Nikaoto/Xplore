@@ -304,8 +304,8 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
         ArrayList<String> member_ids = new ArrayList<>();
         member_ids.add(String.valueOf(currentUserId));
 
-        for(int i = 0; i<invitedMembers.size(); i++) {
-            member_ids.add(invitedMembers.get(i).getId());
+        for(User user : invitedMembers) {
+            member_ids.add(user.getId());
         }
 
         //get experience question

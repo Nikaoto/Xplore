@@ -1,6 +1,8 @@
 package com.xplore.user;
 
 
+import java.util.ArrayList;
+
 /**
  * Created by nikao on 2/11/2017.
  */
@@ -8,6 +10,7 @@ package com.xplore.user;
 //DO NOT CHANGE THE VARIABLE NAMES, THEY CORRESPOND TO THE FIREBASE DATABASE KEY NAMES
 public class User {
     String fname, lname, tel_num, id, profile_picture_url, email;
+    ArrayList<String> group_ids;
     int reputation, birth_date, age;
     //TODO change age to birth date and calculate age every time user info is loaded
 
@@ -24,6 +27,14 @@ public class User {
         this.email = email;
         this.reputation = reputation;
         this.birth_date = birth_date;
+    }
+
+    public ArrayList<String> getGroup_ids() {
+        return group_ids;
+    }
+
+    public void setGroup_ids(ArrayList<String> group_ids) {
+        this.group_ids = group_ids;
     }
 
     public int getAge() {
