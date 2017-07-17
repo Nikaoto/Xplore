@@ -1,6 +1,7 @@
 package com.xplore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -31,7 +32,6 @@ import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapsActivity;
 import com.xplore.reserve.LibraryFragment;
 import com.xplore.settings.SettingsActivity;
-import com.xplore.settings.SettingsFragment;
 import com.xplore.user.User;
 
 import java.util.Locale;

@@ -4,14 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:src="@drawable/ic_join_party"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_above="@id/nothingHereTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
-
     <TextView
         android:id="@+id/nothingHereTextView"
         android:text="Nothing here"
@@ -21,5 +13,13 @@
         android:layout_centerInParent="true"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"/>
+
+    <ImageView
+        android:src="@drawable/ic_join_party"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_above="@id/nothingHereTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>
