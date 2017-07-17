@@ -92,9 +92,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             @Override
             public void onClick(View view) {
                 //Opens CreateGroupFragment
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new CreateGroupActivity()).commit();
-                getFragmentManager().executePendingTransactions();
+                startActivity(CreateGroupActivity.getStartIntent(getActivity()));
             }
         });
 

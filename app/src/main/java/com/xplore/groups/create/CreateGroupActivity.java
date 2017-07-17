@@ -3,6 +3,7 @@ package com.xplore.groups.create;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -100,6 +101,10 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
     DBManager dbManager;
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
+
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, CreateGroupActivity.class);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
