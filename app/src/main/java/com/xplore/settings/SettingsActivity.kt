@@ -1,9 +1,7 @@
 package com.xplore.settings
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceFragment
-import android.util.Log
 import android.view.MenuItem
 
 import com.xplore.R
