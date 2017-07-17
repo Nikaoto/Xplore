@@ -107,39 +107,6 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
 
     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference();
 
-    //Class that gets mapped to a group in Firebase database and is uploaded
-    private class UploadGroup extends Group
-    {
-        UploadGroup(String group_id, boolean experienced, long start_date, long end_date,
-                    String destination_id, String extra_info, String group_preferences,
-                    ArrayList<String> member_ids) {
-            this.setGroup_id(group_id);
-            this.setExperienced(experienced);
-            this.setStart_date(start_date);
-            this.setEnd_date(end_date);
-            this.setDestination_id(destination_id);
-            this.setExtra_info(extra_info);
-            this.setGroup_preferences(group_preferences);
-            this.setMember_ids(member_ids);
-        }
-
-        @Exclude
-        Map<String, Object> toMap()
-        {
-            HashMap<String, Object> result = new HashMap<>();
-            result.put("destination_id", this.getDestination_id());
-            result.put("start_date", this.getStart_date());
-            result.put("end_date", this.getEnd_date());
-            result.put("experienced", this.isExperienced());
-            result.put("group_preferences", this.getGroup_preferences());
-            result.put("extra_info", this.getExtra_info());
-            result.put("member_ids", this.getMember_ids());
-            return result;
-        }
-    }
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -330,8 +297,8 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         }
     }
 
-    private UploadGroup CreateGroup(String key)
-    {
+    //Creates uploadable group
+    private UploadableGroup createUploadGroup(String key) {
         //getting member IDs
         ArrayList<String> member_ids = new ArrayList<>();
         member_ids.add(String.valueOf(currentUserId));
@@ -343,7 +310,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
         //get experience question
         final boolean exp = (experienceAns != EXPERIENCE_ANS_NO);
 
-        return new UploadGroup(
+        return new UploadableGroup(
                 key,    //Firebase Unique Group Key
                 exp,    //Group Experienced Boolean
                 General.getDateLong(sYear, sMonth, sDay),   //Start Date
@@ -358,7 +325,7 @@ public class CreateGroupFragment extends Fragment implements DatePickerDialog.On
     {
         Toast.makeText(getActivity(),"Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
         String key = groupsRef.child("groups").push().getKey();
-        Map<String, Object> groupData = CreateGroup(key).toMap();
+        Map<String, Object> groupData = createUploadGroup(key).toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/groups/"+key, groupData);
