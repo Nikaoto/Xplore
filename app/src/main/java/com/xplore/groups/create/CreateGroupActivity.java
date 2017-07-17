@@ -323,7 +323,6 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
     }
 
     private void uploadGroupData() {
-        Toast.makeText(this, "Uploading Data...", Toast.LENGTH_SHORT).show(); //TODO add string resources
         String key = groupsRef.child("groups").push().getKey();
         Map<String, Object> groupData = createUploadGroup(key).toMap();
 
@@ -331,7 +330,8 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
         childUpdates.put("/groups/"+key, groupData);
 
         groupsRef.updateChildren(childUpdates);
-        Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        Toast.makeText(this, "Group Created", Toast.LENGTH_SHORT).show(); //TODO add string resources
+        General.HideKeyboard(this);
         finish();
     }
 

@@ -9,6 +9,7 @@ secrets.xml
 app/src/main/assets/*.db
 google-services.json
 google_maps_api.xml
+app/build.gradle
 
 # Built application files
 *.apk
@@ -50,3 +51,4 @@ captures/
 
 # Keystore files
 *.jks
+*.keystore
