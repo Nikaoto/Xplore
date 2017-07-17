@@ -1,7 +1,6 @@
 package com.xplore;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -27,7 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.xplore.groups.MyGroupsFragment;
+import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapsActivity;
 import com.xplore.reserve.LibraryFragment;
@@ -288,7 +287,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_my_groups : {
                 if (General.isUserSignedIn()) {
                     fm.beginTransaction()
-                            .replace(R.id.fragment_container, new MyGroupsFragment()).commit();
+                            .replace(R.id.fragment_container, new LoadingMyGroupsFragment()).commit();
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
                 }
