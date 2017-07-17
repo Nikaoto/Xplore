@@ -107,4 +107,10 @@
     <string name="choose_date">ამოირჩიეთ თარიღი</string>
     <string name="email">ელ-პოსტა</string>
     <string name="log_out">გამოსვლა</string>
+
+    <!-- Settings resources -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_account_title">Account</string>
+    <string name="settings_language_title">Language</string>
+    <!-- -->
 </resources>

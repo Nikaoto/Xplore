@@ -31,6 +31,7 @@ import com.xplore.groups.MyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapsActivity;
 import com.xplore.reserve.LibraryFragment;
+import com.xplore.settings.SettingsActivity;
 import com.xplore.settings.SettingsFragment;
 import com.xplore.user.User;
 
@@ -246,7 +247,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         General.HideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
-            fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+            //fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);

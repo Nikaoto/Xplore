@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/settings_title">
+        <Preference
+            android:key="pref_key_tutorial"
+            android:title="Tutorial" />
+        <Preference
+            android:key="pref_key_view_reserves"
+            android:title="View reserve types" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_account_title">
+        <Preference
+            android:key="pref_key_logout"
+            android:title="Log out" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_language_title">
+        <Preference
+            android:key="pref_key_language"
+            android:title="Prefered Language" />
+    </PreferenceCategory>
+</PreferenceScreen>
