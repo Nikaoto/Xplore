@@ -35,18 +35,10 @@ class LoadingMyGroupsFragment : Fragment() {
                         if (user.group_ids != null) {
                             if (user.group_ids.isNotEmpty()) {
                                 loadMyGroupsLayout(user.group_ids)
-                            } else {
-                                loadEmptyLayout()
-                            }
-                        } else {
-                            loadEmptyLayout()
-                        }
-                    } else {
-                        Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
-                }
+                            } else { loadEmptyLayout() }
+                        } else { loadEmptyLayout() }
+                    } else { printError() }
+                } else { printError() }
             }
             override fun onCancelled(p0: DatabaseError?) { }
         })
@@ -63,5 +55,9 @@ class LoadingMyGroupsFragment : Fragment() {
     fun loadMyGroupsLayout(groupIds: ArrayList<String>) {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, MyGroupsFragment(groupIds)).commit()
+    }
+
+    fun printError() {
+        Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
     }
 }

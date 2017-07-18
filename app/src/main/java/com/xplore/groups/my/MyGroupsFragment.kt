@@ -6,14 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.xplore.R
 
 /**
  * Created by Nika on 7/14/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * აღწერა:
+ * ეს კლასი აჩვენებს ჯგუფებს, რომელშიც მომხმარებელი გაწევრიანებულია.
+ *
+ * Description:
+ * This class displays the currently joined groups of the user.
+ *
  */
 
 class MyGroupsFragment() : Fragment() {
+
+    //Firebase
+    val FIREBASE_START_DATE_TAG = "start_date"
+    val FIREBASE_MEMBER_IDS_TAG = "member_ids"
+    val firebaseGroupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
     val groupIds = ArrayList<String>()
 
@@ -25,6 +41,29 @@ class MyGroupsFragment() : Fragment() {
             = inflater.inflate(R.layout.my_groups, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        Toast.makeText(activity, "TODO: Load my groups", Toast.LENGTH_SHORT).show()
+
     }
+
+    fun loadGroups(groupIds: ArrayList<String>) {
+        for (groupId in groupIds) {
+            firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(
+                    object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                            if (dataSnapshot != null) {
+
+                            } else {
+
+                            }
+                        }
+
+                        override fun onCancelled(p0: DatabaseError?) { }
+                    }
+            )
+        }
+    }
+
+    fun loadLeaderInfo() {
+
+    }
+
 }
