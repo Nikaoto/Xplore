@@ -17,7 +17,8 @@
 
     <PreferenceCategory android:title="@string/settings_language_title">
         <Preference
-            android:key="pref_key_language"
-            android:title="Prefered Language" />
+            android:title="Select Language"
+            android:key="button_select_language"/>
     </PreferenceCategory>
+
 </PreferenceScreen>
