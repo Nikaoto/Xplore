@@ -108,4 +108,14 @@
     <string name="choose_date">Выберите дату</string>
     <string name="email">Эл. адрес</string>
     <string name="log_out">Выйти</string>
+
+    <!-- Settings resources -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_account_title">Account</string>
+    <string name="settings_language_title">Language</string>
+    <!-- language preference screen -->
+    <string name="current_language_georgian">ქართული</string>
+    <string name="current_language_english">English</string>
+    <string name="current_language_russian">Русский</string>
+    <!-- -->
 </resources>

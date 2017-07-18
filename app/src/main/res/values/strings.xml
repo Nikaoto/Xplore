@@ -109,9 +109,9 @@
     <string name="log_out">გამოსვლა</string>
 
     <!-- Settings resources -->
-    <string name="settings_title">Settings</string>
-    <string name="settings_account_title">Account</string>
-    <string name="settings_language_title">Language</string>
+    <string name="settings_title">რეგულაცია</string>
+    <string name="settings_account_title">მომხმარებელი</string>
+    <string name="settings_language_title">ენა</string>
     <!-- language preference screen -->
     <string name="current_language_georgian">ქართული</string>
     <string name="current_language_english">English</string>

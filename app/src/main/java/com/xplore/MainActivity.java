@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
 
+    //TODO add this in singleton PreferenceManager
+    public static boolean languagePrefsChanged = false;
+
     private DrawerLayout drawer;
     private ImageView userImageView;
     private int userImageViewSize;
@@ -136,6 +139,7 @@ public class MainActivity extends AppCompatActivity
         if (prefs.getString("lang", "null").equals("null")) {
 
             prefEditor = getSharedPreferences("lang", 0).edit();
+            //TODO do below code for low-end devices
             String config = getResources().getConfiguration().locale.toString().toLowerCase();
 
             if (config.contains(GEORGIAN_LANG_CODE)) {
@@ -173,6 +177,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        //Checks if language preferences changed and reloads
+        if (languagePrefsChanged) {
+            languagePrefsChanged = false;
+            recreate();
+        }
+
         //TODO show this toast after exitting register activity
         if (General.accountStatus == General.JUST_REGISTERED) {
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources

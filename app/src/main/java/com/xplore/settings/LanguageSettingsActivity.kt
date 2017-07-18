@@ -1,9 +1,7 @@
 package com.xplore.settings
 
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.view.MenuItem
 import com.xplore.MainActivity
@@ -25,38 +23,49 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
 
+            //TODO create a singleton PreferenceManager and store these two in there
+            val prefs = activity.getSharedPreferences("lang", 0)
+            val currentLanguage = prefs.getString("lang", "null")
+
             /*  */
             addPreferencesFromResource(R.xml.prefs_language)
 
+
+
             /* click listener , TODO implement OnPreferenceClickLisneter and handle logic with switch */
-            val preferenceGeorgian = findPreference("")
-            val preferenceEnglish  = findPreference("")
-            val preferenceRussian = findPreference("")
+            val preferenceGeorgian = findPreference("language_georgian")
+            val preferenceEnglish  = findPreference("language_english")
+            val preferenceRussian = findPreference("language_russian")
 
             preferenceGeorgian.setOnPreferenceClickListener({
-
+                onPrefClick(MainActivity.GEORGIAN_LANG_CODE, currentLanguage)
                 true
             })
 
             preferenceEnglish.setOnPreferenceClickListener({
-
+                onPrefClick(MainActivity.ENGLISH_LANG_CODE, currentLanguage)
                 true
             })
 
             preferenceRussian.setOnPreferenceClickListener({
-
+                onPrefClick(MainActivity.RUSSIAN_LANG_CODE, currentLanguage)
                 true
             })
         }
 
-        fun ChangeLocale(language_code: String) {
+        fun onPrefClick(languageCode: String, currentLanguage: String) {
+            if (currentLanguage != languageCode) {
+                changeLocale(languageCode)
+            }
+        }
+
+        fun changeLocale(language_code: String) {
             val preferences = activity.getSharedPreferences("lang", 0)
             val prefEditor = preferences.edit()
 
             val res = activity.resources
-            val dm = res.displayMetrics
-
             val config = res.configuration
+
             prefEditor.putString("lang", language_code)
             prefEditor.commit()
 
@@ -64,19 +73,22 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
             Locale.setDefault(locale)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-               // setSystemLocale(config, locale)
+                config.setLocale(locale)
             } else {
-              //  setSystemLocaleLegacy(config, locale, res, dm)
+                //Meant for lower-end devices
+                @Suppress("DEPRECATION")
+                config.locale = locale
+                @Suppress("DEPRECATION")
+                resources.updateConfiguration(config, res.displayMetrics)
             }
 
-            //DisableChosenLanguageButton()
+            MainActivity.languagePrefsChanged = true
             activity.recreate()
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == android.R.id.home) onBackPressed()
-        return super.onOptionsItemSelected(item)
+        finish()
+        return true
     }
 }
