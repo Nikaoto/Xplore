@@ -11,6 +11,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.R
+import com.xplore.groups.Group
+import com.xplore.groups.GroupCard
+import com.xplore.user.UserCard
 
 /**
  * Created by Nika on 7/14/2017.
@@ -32,6 +35,8 @@ class MyGroupsFragment() : Fragment() {
     val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
     val groupIds = ArrayList<String>()
+    val groupCards = ArrayList<GroupCard>()
+    val userCards = ArrayList<UserCard>()
 
     constructor(groupIds: ArrayList<String>) : this() {
         this.groupIds.addAll(groupIds)
@@ -50,10 +55,11 @@ class MyGroupsFragment() : Fragment() {
                     object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
                             if (dataSnapshot != null) {
-
-                            } else {
-
-                            }
+                                val group = dataSnapshot.getValue(Group::class.java)
+                                if (group != null) {
+                                    //group.
+                                } else { printError() }
+                            } else { printError() }
                         }
 
                         override fun onCancelled(p0: DatabaseError?) { }
@@ -64,6 +70,10 @@ class MyGroupsFragment() : Fragment() {
 
     fun loadLeaderInfo() {
 
+    }
+
+    fun printError() {
+        Toast.makeText(activity, "Error loading data", Toast.LENGTH_SHORT).show()
     }
 
 }
