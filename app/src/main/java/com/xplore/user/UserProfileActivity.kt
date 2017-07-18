@@ -55,16 +55,15 @@ class UserProfileActivity : Activity() {
     }
 
     private fun fetchUserInfo(userId: String){
-        val query = usersRef.orderByKey().equalTo(userId)
+        val query = usersRef.child(userId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists() && this@UserProfileActivity != null) {
-                    val tempUser = dataSnapshot.children.iterator().next().getValue(User::class.java) //TODO remove .java after converting User to kotlin
-                    displayUserInfo(tempUser!!)
-                } else {
-                    Toast.makeText(this@UserProfileActivity,
-                            "User does not exist", Toast.LENGTH_SHORT).show()//TODO String resources
-                }
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    val tempUser = dataSnapshot.getValue(User::class.java)
+                    if (tempUser != null) {
+                        displayUserInfo(tempUser)
+                    } else { printError() }
+                } else { printError() }
             }
 
             override fun onCancelled(p0: DatabaseError?) { }
@@ -91,5 +90,10 @@ class UserProfileActivity : Activity() {
         //Stop loading animation
         imageProgressBar.visibility = View.INVISIBLE
 
+    }
+
+    inline fun printError() {
+        Toast.makeText(this@UserProfileActivity, "User does not exist", Toast.LENGTH_SHORT).show()
+        //TODO String resources
     }
 }
