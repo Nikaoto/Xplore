@@ -1,7 +1,6 @@
 package com.xplore.groups;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import com.xplore.CircleTransformation;
 import com.xplore.General;
 import com.xplore.R;
-import com.xplore.groups.search.ViewGroupActivity;
+import com.xplore.groups.search.GroupInfoActivity;
 
 import java.util.ArrayList;
 
@@ -32,9 +31,9 @@ import java.util.ArrayList;
  */
 
 public class GroupCardRecyclerViewAdapter extends RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder> {
-    final ArrayList<GroupCard> groupCards;
-    final Activity activity;
-    final int imgSize;
+    private final ArrayList<GroupCard> groupCards;
+    private final Activity activity;
+    private final int imgSize;
 
     public GroupCardRecyclerViewAdapter(ArrayList<GroupCard> groupCards, Activity activity) {
         this.groupCards = groupCards;
@@ -50,7 +49,7 @@ public class GroupCardRecyclerViewAdapter extends RecyclerView.Adapter<GroupCard
         TextView leaderReputation;
         RelativeLayout leaderLayout;
 
-        public ResultsViewHolder(View itemView) {
+        ResultsViewHolder(View itemView) {
             super(itemView);
             this.leaderImage = (ImageView) itemView.findViewById(R.id.leaderImageView);
             this.leaderName = (TextView) itemView.findViewById(R.id.leaderNameTextView);
@@ -83,16 +82,15 @@ public class GroupCardRecyclerViewAdapter extends RecyclerView.Adapter<GroupCard
             @Override
             public void onClick(View v) {
                 General.HideKeyboard(activity);
-                //TODO add this in general
-                //Creating intent
-                Intent intent = new Intent(activity, ViewGroupActivity.class);
-
-                //Sending data over to intent
-                intent.putExtra("group_id", currentCard.getGroupId());
-                intent.putExtra("reserve_id", Integer.valueOf(currentCard.getDestination_id()));
 
                 //Starting intent
-                activity.startActivity(intent);
+                activity.startActivity(
+                        GroupInfoActivity.getStartIntent(
+                                activity,
+                                currentCard.getId(),
+                                Integer.valueOf(currentCard.getDestination_id())
+                        )
+                );
             }
         });
 

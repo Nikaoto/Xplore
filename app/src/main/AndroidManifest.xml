@@ -38,7 +38,7 @@
             android:label="@string/nav_lib_title"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".groups.search.ViewGroupActivity"
+            android:name=".groups.search.GroupInfoActivity"
             android:label="@string/view_group"
             android:screenOrientation="portrait" />
         <activity

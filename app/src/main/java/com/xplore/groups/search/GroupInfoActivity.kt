@@ -2,6 +2,8 @@ package com.xplore.groups.search
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -28,7 +30,7 @@ import kotlinx.android.synthetic.main.reserve_list_item.*
 * TODO write description of this class - what it does and why.
 */
 
-class ViewGroupActivity : Activity() {
+class GroupInfoActivity : Activity() {
 
     //TODO convert to inferred types after testing
     private var group_id: String = ""
@@ -37,13 +39,21 @@ class ViewGroupActivity : Activity() {
     private val members = ArrayList<User>()
 
     //Firebase database references
-    internal val DBref = FirebaseDatabase.getInstance().reference
-    internal val groupsDBref = DBref.child("groups")
-    internal val usersDBref = DBref.child("users")
+    private val DBref = FirebaseDatabase.getInstance().reference
+    private val groupsDBref = DBref.child("groups")
+    private val usersDBref = DBref.child("users")
 
     //The variables which contain the current group/member info
-    internal var currentGroup = Group()
-    internal var tempMember = User()
+    private var currentGroup = Group()
+    private var tempMember = User()
+
+    companion object {
+        @JvmStatic
+        fun getStartIntent(context: Context, groupId: String, reserveId: Int)
+                = Intent(context, GroupInfoActivity::class.java)
+                        .putExtra("group_id", groupId)
+                        .putExtra("reserve_id", reserveId)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,7 +146,7 @@ class ViewGroupActivity : Activity() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if group exists
-                if (dataSnapshot!!.exists()) {
+                if (dataSnapshot != null) {
                     //creating the temporary (current) group
                     currentGroup = dataSnapshot.getValue(Group::class.java)!!
                     currentGroup.setGroup_id(dataSnapshot.key)

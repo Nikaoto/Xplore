@@ -1,7 +1,6 @@
 package com.xplore.groups.search;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.xplore.CircleTransformation;
 import com.xplore.database.DBManager;
 import com.xplore.General;
 import com.xplore.R;
@@ -117,7 +112,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     }
 
     private void loadData() {
-        Query query = firebaseGroupsRef.orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(100); //TODO change this after adding sort by settings
+        Query query = firebaseGroupsRef.orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(100); //TODO change this after adding sort by options
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,7 +120,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     //Geting group info
                     GroupCard tempCard = snapshot.getValue(GroupCard.class);
                     //group id
-                    tempCard.setGroupId(snapshot.getKey());
+                    tempCard.setId(snapshot.getKey());
                     //leader id
                     tempCard.setLeaderId(snapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildren().iterator().next().getValue(String.class));
 

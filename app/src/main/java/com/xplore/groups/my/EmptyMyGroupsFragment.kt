@@ -18,7 +18,7 @@ import com.xplore.R
  *
  */
 
-class EmptyGroupsFragment : Fragment() {
+class EmptyMyGroupsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
         = inflater.inflate(R.layout.my_groups_empty, container, false)

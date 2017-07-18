@@ -8,6 +8,7 @@ package com.xplore.user
 //TODO also, change User arraylists in SearchUsersActivity to UserButton arraylists
 
 class UserCard(
+        var id: String = "",
         val fname: String = "",
         val lname: String = "",
         val reputation: Int = -1,

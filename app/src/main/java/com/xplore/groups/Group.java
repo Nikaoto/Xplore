@@ -12,8 +12,7 @@ public class Group {
     protected String destination_id, group_id, extra_info, group_preferences;
     public ArrayList<String> member_ids;
 
-    public Group()
-    {
+    public Group() {
         //LEAVE EMPTY
     }
 
