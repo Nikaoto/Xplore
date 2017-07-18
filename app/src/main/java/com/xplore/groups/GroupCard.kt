@@ -17,8 +17,8 @@ package com.xplore.groups
  */
 
 data class GroupCard(
+        var id: String = "",
         var name: String = "",
-        var groupId: String = "",
         var leaderId: String = "",
         var leaderReputation: Int = 0,
         var leaderName: String = "",
@@ -28,9 +28,7 @@ data class GroupCard(
         val destination_id: String = "",
         val start_date: Int = 0,
         val end_date: Int = 0,
-        val experienced: Boolean = false) {
-
-}
+        val experienced: Boolean = false)
 
 //TODO add tour name to firebase
 //TODO remove reserveImageId

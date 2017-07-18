@@ -15,12 +15,20 @@ import com.xplore.R
 import com.xplore.user.User
 
 /**
- * Created by Nika on 7/17/2017.
- * TODO write description of this class - what it does and why.
+ * Created by Nikaoto on 7/17/2017.
+ *
+ * აღწერა:
+ * ეს კლასი რთავს ჩატვირთვის ანიმაციას სანამ ტვირთავს მომხმარებლის ჯგუფებს. თუ მომხმარებელი არის
+ * ჯგუფებში, გახსნის MyGroupsFragment-ს და აჩვენებს ჯუფებს, თუ არა - EmptyGroupsFragment-ს
+ *
+ * Description:
+ * This class opens a loading animation while it loads the user's joined groups. If the user has
+ * groups, it opens the MyGroupsFragment, otherwise, it opens EmptyMyGroupsFragment
+ *
  */
 class LoadingMyGroupsFragment : Fragment() {
 
-    val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
+    private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -47,17 +55,13 @@ class LoadingMyGroupsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
             = inflater.inflate(R.layout.loading_layout, container, false)
 
-    fun loadEmptyLayout() {
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, EmptyGroupsFragment()).commit()
-    }
+    fun loadEmptyLayout()
+         = fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()
 
-    fun loadMyGroupsLayout(groupIds: ArrayList<String>) {
-        fragmentManager.beginTransaction()
+    fun loadMyGroupsLayout(groupIds: ArrayList<String>)
+         = fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, MyGroupsFragment(groupIds)).commit()
-    }
 
-    fun printError() {
-        Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
-    }
+    fun printError() = Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
 }

@@ -242,7 +242,7 @@ internal class DBManager(private val mContext: Context,
             return context.resources.getDrawable(tempImageId)
     }*/
 
-    fun getImageId(id: Int, context: Context? = mContext, table: String = TABLE): Int {
+    fun getImageId(id: Int, context: Context? = mContext, table: String = GENERAL_TABLE): Int {
         if (context != null) {
             return convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
         } else return 0

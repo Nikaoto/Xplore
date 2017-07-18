@@ -5,11 +5,8 @@ package com.xplore.reserve
  */
 
 class ReserveCard(
-        val id: Int,
-        val name: String,
-        val imageId: Int,
-        val iconId: Int
-) {
-    //Empty constructor
-    constructor() : this(-1, "", -1, -1)
-}
+        val id: Int = -1,
+        val name: String = "",
+        val imageId: Int = -1,
+        val iconId: Int = -1
+)
