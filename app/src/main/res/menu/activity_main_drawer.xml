@@ -34,12 +34,17 @@
     </item>
 
     <group
-        android:id="@+id/nav_settings_group"
-        android:checkableBehavior="single">
+        android:id="@+id/nav_others_group">
         <item
+            android:checkable="false"
             android:id="@+id/nav_settings"
             android:title="@string/settings"
-            android:icon="@drawable/ic_settings"/>
+            android:icon="@drawable/ic_nav_settings"/>
+        <item
+            android:checkable="true"
+            android:id="@+id/nav_about"
+            android:title="@string/nav_about_title"
+            android:icon="@drawable/ic_nav_about"/>
     </group>
 
 </menu>

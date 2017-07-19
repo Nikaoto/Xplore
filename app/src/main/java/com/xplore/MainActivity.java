@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_settings);
+        navigationView.setCheckedItem(R.id.nav_about);
 
         userImageViewSize =
                 Math.round(getResources().getDimension(R.dimen.user_profile_image_medium_size));
@@ -317,9 +317,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_settings : {
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            }
+            case R.id.nav_about : {
                 fm.beginTransaction()
                         .replace(R.id.fragment_container, new AboutFragment()).commit();
-                break;
             }
         }
         fm.executePendingTransactions();
