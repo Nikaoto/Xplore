@@ -17,7 +17,8 @@
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_map_grey600_48dp"
+        android:src="@drawable/ic_map"
+        android:tint="@color/colorGreyText"
         android:scaleType="centerCrop"
         android:padding="6dp"
         android:layout_margin="5dp"/>

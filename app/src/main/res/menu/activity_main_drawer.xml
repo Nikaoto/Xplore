@@ -4,19 +4,19 @@
     <item
         android:id="@+id/nav_profile"
         android:title="@string/profile"
-        android:icon="@drawable/ic_profile"/>
+        android:icon="@drawable/ic_nav_profile"/>
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_library"
             android:title="@string/nav_lib_title"
-            android:icon="@drawable/ic_book"/>
+            android:icon="@drawable/ic_nav_library"/>
     </group>
 
     <item
         android:id="@+id/nav_map"
         android:title="@string/nav_map_title"
-        android:icon="@drawable/ic_map"/>
+        android:icon="@drawable/ic_nav_map"/>
 
     <item android:title="@string/groups">
         <menu>
@@ -24,11 +24,11 @@
                 <item
                     android:id="@+id/nav_my_groups"
                     android:title="@string/my_groups"
-                    android:icon="@drawable/ic_my_groups"/>
+                    android:icon="@drawable/ic_nav_my_groups"/>
                 <item
                     android:id="@+id/nav_find_create_groups"
                     android:title="@string/find_create"
-                    android:icon="@drawable/ic_find_create_groups" />
+                    android:icon="@drawable/ic_nav_find_create_groups" />
             </group>
         </menu>
     </item>
