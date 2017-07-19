@@ -3,7 +3,7 @@
     <string name="app_name">Xplore</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="create_party">Cоздавать</string>
+    <string name="create_group">Создать группу</string>
     <string name="join_party">Соединяться</string>
     <string name="party">Группы</string>
     <string name="about_header">Информация</string>
@@ -33,7 +33,6 @@
     <string name="action_settings">Настройки</string>
     <string name="title_activity_maps">Карта</string>
     <string name="nav_description">Xplore демо-версия.</string>
-    <string name="options_lang">Язык</string>
     <string name="search_no_results">Результатов не найдено</string>
     <string name="show_on_map">Показать на карту</string>
     <string name="lib_description_header">Описание</string>
@@ -112,7 +111,7 @@
     <!-- Settings resources -->
     <string name="settings_title">Настройки</string>
     <string name="settings_account_title">Account</string>
-    <string name="settings_language_title">Language</string>
+    <string name="settings_language_title">Язык</string>
     <!-- language preference screen -->
     <string name="current_language_georgian">ქართული</string>
     <string name="current_language_english">English</string>

@@ -12,13 +12,13 @@
     <PreferenceCategory android:title="@string/settings_account_title">
         <Preference
             android:key="logout"
-            android:title="Log out" />
+            android:title="@string/log_out" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_language_title">
         <Preference
             android:key="select_language"
-            android:title="Select Language"/>
+            android:title="@string/settings_language_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

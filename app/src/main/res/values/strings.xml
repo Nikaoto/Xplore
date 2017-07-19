@@ -3,7 +3,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="create_party">შექმენი</string>
+    <string name="create_group">შექმენი ჯგუფი</string>
     <string name="join_party">შეუერთდი</string>
     <string name="party">ჯგუფები</string>
     <string name="about_header">შესახებ</string>
@@ -30,10 +30,9 @@
     <string name="nav_map_title">რუკა</string>
     <string name="nav_party_title">ჯგუფები</string>
     <string name="nav_about_title">შესახებ</string>
-    <string name="action_settings">რეგულირება</string>
+    <string name="action_settings">რეგულაცია</string>
     <string name="title_activity_maps">რუკა</string>
     <string name="nav_description">ეს აპლიკაციის მხოლოდ დემო ვერსიაა.</string>
-    <string name="options_lang">ენა</string>
     <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
     <string name="show_on_map">იხილეთ რუკაზე</string>
     <string name="lib_description_header">აღწერა</string>

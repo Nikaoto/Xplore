@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity
 
     public void openHomePage() {
         fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-        navigationView.setCheckedItem(R.id.nav_settings);
+        navigationView.setCheckedItem(R.id.nav_about);
         fm.executePendingTransactions();
     }
 

@@ -63,14 +63,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.create.CreateGroupActivity"
-            android:label="@string/create_party"
+            android:label="@string/create_group"
             android:screenOrientation="portrait" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="Settings" />
+            android:label="@string/settings_title" />
         <activity
             android:name=".settings.LanguageSettingsActivity"
-            android:label="Select Language"/>
+            android:label="@string/settings_language_title"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

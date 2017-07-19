@@ -13,8 +13,10 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setTitle(R.string.settings_language_title)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true)
-        fragmentManager.beginTransaction().replace(android.R.id.content, LanguagePreferenceFragment()).commit()
+        fragmentManager.beginTransaction()
+                .replace(android.R.id.content, LanguagePreferenceFragment()).commit()
     }
 
 
@@ -83,7 +85,7 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
             }
 
             MainActivity.languagePrefsChanged = true
-            activity.recreate()
+            activity.finish()
         }
     }
 
