@@ -32,11 +32,11 @@ import kotlinx.android.synthetic.main.my_groups.*
 
 class MyGroupsFragment() : Fragment() {
 
-    //Firebase
-    private val FIREBASE_START_DATE_TAG = "start_date"
-    private val FIREBASE_MEMBER_IDS_TAG = "member_ids"
-    private val firebaseGroupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    //Firebase References
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
+    private val firebaseGroupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    //Firebase Tags
+    private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
 
     private val groupIds = ArrayList<String>()
     private val groupCards = ArrayList<GroupCard>()
@@ -69,9 +69,9 @@ class MyGroupsFragment() : Fragment() {
                                 if (groupCard != null) {
                                     groupCard.id = dataSnapshot.key
                                     loadUserCard(
-                                            dataSnapshot.child(FIREBASE_MEMBER_IDS_TAG).child("0").getValue(String::class.java)!!,
-                                            groupCard
-                                    )
+                                            dataSnapshot.child(FIREBASE_TAG_MEMBER_IDS).child("0")
+                                                    .getValue(String::class.java)!!,
+                                            groupCard)
                                 } else { printError() }
                             } else { printError() }
                         }

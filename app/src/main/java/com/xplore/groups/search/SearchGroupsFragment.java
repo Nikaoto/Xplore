@@ -19,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.xplore.database.DBManager;
 import com.xplore.General;
@@ -39,12 +38,14 @@ import java.util.ArrayList;
 //TODO add searching
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
 
-    private static final String FIREBASE_START_DATE_TAG = "start_date";
-    private static final String FIREBASE_MEMBER_IDS_TAG = "member_ids";
-    private static final DatabaseReference firebaseGroupsRef
-            = FirebaseDatabase.getInstance().getReference().child("groups");
+    //Firebase References
     private static final DatabaseReference firebaseUsersRef
             = FirebaseDatabase.getInstance().getReference().child("users");
+    private static final DatabaseReference firebaseGroupsRef
+            = FirebaseDatabase.getInstance().getReference().child("groups");
+    //Firebase Tags
+    private static final String FIREBASE_TAG_START_DATE = "start_date";
+    private static final String FIREBASE_TAG_MEMBER_IDS = "member_ids";
 
     private String searchQuery;
     private boolean firstLoad;
@@ -112,8 +113,9 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     }
 
     private void loadData() {
-        Query query = firebaseGroupsRef.orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(100); //TODO change this after adding sort by options
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        //TODO change this after adding sort by options
+        firebaseGroupsRef.orderByChild(FIREBASE_TAG_START_DATE).limitToFirst(100)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -122,7 +124,10 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     //group id
                     tempCard.setId(snapshot.getKey());
                     //leader id
-                    tempCard.setLeaderId(snapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildren().iterator().next().getValue(String.class));
+                    tempCard.setLeaderId(
+                            snapshot.child(FIREBASE_TAG_MEMBER_IDS).getChildren()
+                                    .iterator().next().getValue(String.class)
+                    );
 
                     //adding it to the list
                     groupCards.add(tempCard);
@@ -143,8 +148,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
-        Query query = firebaseUsersRef.orderByKey();
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseUsersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

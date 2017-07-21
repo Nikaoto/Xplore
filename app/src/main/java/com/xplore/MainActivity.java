@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences prefs;
     private Menu menu; //TODO check if this is needed
+
+    private int invitedGroupCount = 0;
+    private static final DatabaseReference firebaseUsersRef
+            = FirebaseDatabase.getInstance().getReference().child("users");
+    private static final String FIREBASE_INVITED_GROUP_IDS = "invited_group_ids";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +97,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -184,13 +180,13 @@ public class MainActivity extends AppCompatActivity
             recreate();
         }
 
-        //TODO show this toast after exitting register activity
+        //TODO show this toast after exiting register activity
         if (General.accountStatus == General.JUST_REGISTERED) {
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
             General.accountStatus = General.LOGGED_IN;
         }
 
-        //TODO add boolean to undo redundant loading
+        //TODO add boolean to stop redundant loading
         if (userImageView != null) {
             if (General.isUserSignedIn()) {
                 refreshUserProfileViews(this);
@@ -202,6 +198,8 @@ public class MainActivity extends AppCompatActivity
                         .into(userImageView);
             }
         }
+
+        updateInvitedGroupCount();
     }
 
     public void refreshUserProfileViews(final Context context) {
@@ -225,6 +223,25 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+    }
+
+
+    //Gets the number of groups the user is invited in
+    public void updateInvitedGroupCount() {
+        firebaseUsersRef.child(General.currentUserId).child(FIREBASE_INVITED_GROUP_IDS)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot != null) {
+                            invitedGroupCount = (int) dataSnapshot.getChildrenCount();
+                        } else {
+                            invitedGroupCount = 0;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
     }
 
     @Override
