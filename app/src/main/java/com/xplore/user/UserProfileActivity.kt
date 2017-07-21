@@ -92,7 +92,7 @@ class UserProfileActivity : Activity() {
 
     }
 
-    inline fun printError() {
+    fun printError() {
         Toast.makeText(this@UserProfileActivity, "User does not exist", Toast.LENGTH_SHORT).show()
         //TODO String resources
     }

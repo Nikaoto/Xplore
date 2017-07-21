@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     public static boolean languagePrefsChanged = false;
 
     private DrawerLayout drawer;
+    private TextView myGroupsBadgeTextView;
+    //private TextView menuBadgeTextView;
     private ImageView userImageView;
     private int userImageViewSize;
     private TextView userFullNameTextView;
@@ -99,7 +105,14 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        myGroupsBadgeTextView = (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
+                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadgeTextView);
+
+        myGroupsBadgeTextView.setText("1");
+
+        //TODO create new customActionBarDrawerToggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -225,7 +238,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
     //Gets the number of groups the user is invited in
     public void updateInvitedGroupCount() {
         firebaseUsersRef.child(General.currentUserId).child(FIREBASE_INVITED_GROUP_IDS)
@@ -236,6 +248,14 @@ public class MainActivity extends AppCompatActivity
                             invitedGroupCount = (int) dataSnapshot.getChildrenCount();
                         } else {
                             invitedGroupCount = 0;
+                        }
+                        if (invitedGroupCount == 0) {
+                            //Hide badges
+                            myGroupsBadgeTextView.setVisibility(View.INVISIBLE);
+                        } else {
+                            myGroupsBadgeTextView.setVisibility(View.VISIBLE);
+                            myGroupsBadgeTextView.setText(String.valueOf(invitedGroupCount));
+                            //menuBadgeTextView.setText(String.valueOf(invitedGroupCount));
                         }
                     }
 
