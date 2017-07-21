@@ -294,8 +294,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        drawer.closeDrawer(GravityCompat.START);
-
         int id = item.getItemId();
 
         //TODO change the nav item names
@@ -345,6 +343,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
         fm.executePendingTransactions();
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
