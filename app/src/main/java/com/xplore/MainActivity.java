@@ -110,8 +110,6 @@ public class MainActivity extends AppCompatActivity
         myGroupsBadgeTextView = (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
                         .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadgeTextView);
 
-        myGroupsBadgeTextView.setText("1");
-
         //TODO create new customActionBarDrawerToggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
