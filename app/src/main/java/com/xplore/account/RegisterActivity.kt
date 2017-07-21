@@ -104,13 +104,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     //Adds zero to Day or Month number if needed
-    fun addZero(num: Int): String {
-        if(num < 10){
-            return "0$num"
-        }
-        else
-            return "$num"
-    }
+    fun addZero(num: Int) = if(num < 10) "0$num" else "$num"
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
         if (General.isNetConnected(this@RegisterActivity)) {
