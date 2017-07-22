@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +32,8 @@ import com.squareup.picasso.Picasso;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.MapsActivity;
+import com.xplore.notifications.BadgeDrawerArrowDrawable;
+import com.xplore.notifications.NotificationManager;
 import com.xplore.reserve.LibraryFragment;
 import com.xplore.settings.SettingsActivity;
 import com.xplore.user.User;
@@ -53,7 +52,9 @@ public class MainActivity extends AppCompatActivity
     public static boolean languagePrefsChanged = false;
 
     private DrawerLayout drawer;
-    private TextView myGroupsBadgeTextView;
+    private NotificationManager notificationManager;
+
+    private TextView myGroupsBadge;
     //private TextView menuBadgeTextView;
     private ImageView userImageView;
     private int userImageViewSize;
@@ -82,13 +83,14 @@ public class MainActivity extends AppCompatActivity
         fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
 
+        //Setting up drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_about);
 
+        //Setting up user profile inside drawer header
         userImageViewSize =
                 Math.round(getResources().getDimension(R.dimen.user_profile_image_medium_size));
-
         View navHeaderView = navigationView.getHeaderView(0);
         userImageView = (ImageView) navHeaderView.findViewById(R.id.drawer_image);
         userFullNameTextView = (TextView) navHeaderView.findViewById(R.id.userFullNameTextView);
@@ -102,15 +104,12 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        //
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        myGroupsBadgeTextView = (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
-                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadgeTextView);
-
-        //TODO create new customActionBarDrawerToggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -127,10 +126,20 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+        notificationManager
+                = new NotificationManager(new BadgeDrawerArrowDrawable(toolbar.getContext()));
+        toggle.setDrawerArrowDrawable(notificationManager.getDrawerBadge());
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        myGroupsBadge = (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
+                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadge);
     }
+
+    //Sets up the user image inside the drawer
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu_) {
@@ -209,8 +218,8 @@ public class MainActivity extends AppCompatActivity
                         .into(userImageView);
             }
         }
-
-        updateInvitedGroupCount();
+        updateMyGroupsBadge();
+        notificationManager.update();
     }
 
     public void refreshUserProfileViews(final Context context) {
@@ -236,29 +245,22 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    //Gets the number of groups the user is invited in
-    public void updateInvitedGroupCount() {
+    public void updateMyGroupsBadge() {
         firebaseUsersRef.child(General.currentUserId).child(FIREBASE_INVITED_GROUP_IDS)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot != null) {
-                            invitedGroupCount = (int) dataSnapshot.getChildrenCount();
+                            myGroupsBadge.setVisibility(View.VISIBLE);
+                            myGroupsBadge.setText(String.valueOf(dataSnapshot.getChildrenCount()));
                         } else {
-                            invitedGroupCount = 0;
-                        }
-                        if (invitedGroupCount == 0) {
-                            //Hide badges
-                            myGroupsBadgeTextView.setVisibility(View.INVISIBLE);
-                        } else {
-                            myGroupsBadgeTextView.setVisibility(View.VISIBLE);
-                            myGroupsBadgeTextView.setText(String.valueOf(invitedGroupCount));
-                            //menuBadgeTextView.setText(String.valueOf(invitedGroupCount));
+                            myGroupsBadge.setText("0");
+                            myGroupsBadge.setVisibility(View.GONE);
                         }
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) { }
+                    public void onCancelled(DatabaseError databaseError) {}
                 });
     }
 

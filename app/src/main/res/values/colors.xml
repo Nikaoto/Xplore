@@ -10,7 +10,7 @@
     <color name="colorLibBGTintClick">#32bcbcbb</color>
     <color name="colorGreyText">#8c8c8c</color>
     <color name="colorGreen">#00E500</color>
-    <color name="colorRed">#E50000</color>
+    <color name="red">#FF0000</color>
     <color name="colorGrey">#BDBDBD</color>
     <color name="colorRepNumGrey">#151515</color>
     <color name="colorDarkGrey">#3F3F3F</color>
