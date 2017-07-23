@@ -30,21 +30,26 @@ class LoadingMyGroupsFragment : Fragment() {
 
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
+    //Used to only get group info, instead of everything. Speeds up loading
+    private class UserGroups (
+            val group_ids: ArrayList<String> = ArrayList(),
+            val invited_group_ids: ArrayList<String> = ArrayList())
+
+    //Starts loading ASAP
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
         //Loads joined group Ids for current user
         val query = firebaseUsersRef.child(General.currentUserId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val user = dataSnapshot.getValue(User::class.java)
+                    val user = dataSnapshot.getValue(UserGroups::class.java)
                     if (user != null) {
-                        if (user.group_ids != null) {
-                            if (user.group_ids.isNotEmpty()) {
-                                loadMyGroupsLayout(user.group_ids)
-                            } else { loadEmptyLayout() }
-                        } else { loadEmptyLayout() }
+                        if (user.group_ids.isEmpty() && user.invited_group_ids.isEmpty()) {
+                            loadEmptyLayout()
+                        } else {
+                            loadMyGroupsLayout(user.group_ids, user.invited_group_ids)
+                        }
                     } else { printError() }
                 } else { printError() }
             }
@@ -59,9 +64,10 @@ class LoadingMyGroupsFragment : Fragment() {
          = fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()
 
-    fun loadMyGroupsLayout(groupIds: ArrayList<String>)
+    fun loadMyGroupsLayout(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>)
          = fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MyGroupsFragment(groupIds)).commit()
+                .replace(R.id.fragment_container, MyGroupsFragment(joinedGroupIds, invitedGroupIds))
+                .commit()
 
     fun printError() = Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
 }

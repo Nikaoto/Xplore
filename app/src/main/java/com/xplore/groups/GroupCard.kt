@@ -24,7 +24,7 @@ data class GroupCard(
         var leaderName: String = "",
         var leaderImageUrl: String = "",
         var reserveImageId: Int = 0,
-        val invite: Boolean = false,
+        var invite: Boolean = false,
         //Values intended for Firebase data mapping
         val destination_id: String = "",
         val start_date: Int = 0,

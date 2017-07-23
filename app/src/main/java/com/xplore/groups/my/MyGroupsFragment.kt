@@ -38,15 +38,17 @@ class MyGroupsFragment() : Fragment() {
     //Firebase Tags
     private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
 
-    private val groupIds = ArrayList<String>()
+    private val joinedGroupIds = ArrayList<String>()
+    private val invitedGroupIds = ArrayList<String>()
     private val groupCards = ArrayList<GroupCard>()
     private val userCards = ArrayList<UserCard>()
 
     //For reserve image loading
     private val dbManager: DBManager by lazy { DBManager(activity) }
 
-    constructor(groupIds: ArrayList<String>) : this() {
-        this.groupIds.addAll(groupIds)
+    constructor(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>) : this() {
+        this.joinedGroupIds.addAll(joinedGroupIds)
+        this.invitedGroupIds.addAll(invitedGroupIds)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
@@ -56,10 +58,12 @@ class MyGroupsFragment() : Fragment() {
         dbManager.openDataBase()
         myGroupsRecyclerView.layoutManager = LinearLayoutManager(activity)
         myGroupsRecyclerView.adapter = GroupCardRecyclerViewAdapter(groupCards, activity)
-        loadGroups(groupIds)
+
+        loadGroups(invitedGroupIds, true)
+        loadGroups(joinedGroupIds, false)
     }
 
-    fun loadGroups(groupIds: ArrayList<String>) {
+    fun loadGroups(groupIds: ArrayList<String>, invited: Boolean) {
         for (groupId in groupIds) {
             firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(
                     object : ValueEventListener {
@@ -68,10 +72,12 @@ class MyGroupsFragment() : Fragment() {
                                 val groupCard = dataSnapshot.getValue(GroupCard::class.java)
                                 if (groupCard != null) {
                                     groupCard.id = dataSnapshot.key
-                                    loadUserCard(
+                                    val leaderId =
                                             dataSnapshot.child(FIREBASE_TAG_MEMBER_IDS).child("0")
-                                                    .getValue(String::class.java)!!,
-                                            groupCard)
+                                                    .getValue(String::class.java)!!
+
+                                    groupCard.invite = invited
+                                    loadLeaderCard(leaderId, groupCard)
                                 } else { printError() }
                             } else { printError() }
                         }
@@ -82,9 +88,9 @@ class MyGroupsFragment() : Fragment() {
         }
     }
 
-    //Used to load leader info and assign it to a group
-    fun loadUserCard(userId: String, groupCard: GroupCard) {
-        firebaseUsersRef.child(userId).addListenerForSingleValueEvent(
+    //Used to load leader info, assign it to a group AND UPDATE THE RECYCLERVIEW
+    fun loadLeaderCard(leaderId: String, groupCard: GroupCard) {
+        firebaseUsersRef.child(leaderId).addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         if (dataSnapshot != null) {

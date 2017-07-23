@@ -16,47 +16,81 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/leaderLayout"
-            android:foreground="?android:attr/selectableItemBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/leaderImageView"
-                tools:src="@drawable/user_default_profile_image"
-                android:layout_width="@dimen/user_profile_image_tiny_size"
-                android:layout_height="@dimen/user_profile_image_tiny_size"
-                android:layout_marginRight="10dp"
-                android:scaleType="centerCrop"/>
+            <RelativeLayout
+                android:id="@+id/leaderLayout"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/leaderRepCombinedTextView"
-                tools:text="100 reputation"
-                android:layout_toRightOf="@id/leaderImageView"
-                android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true"
-                android:textSize="13sp"
+                <ImageView
+                    android:id="@+id/leaderImageView"
+                    tools:src="@drawable/user_default_profile_image"
+                    android:layout_width="@dimen/user_profile_image_tiny_size"
+                    android:layout_height="@dimen/user_profile_image_tiny_size"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop"/>
+
+                <TextView
+                    android:id="@+id/leaderRepCombinedTextView"
+                    tools:text="100 reputation"
+                    android:layout_toRightOf="@id/leaderImageView"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAllCaps="true"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorGreyText"
+                    android:layout_marginRight="5dp"/>
+
+                <TextView
+                    android:id="@+id/leaderNameTextView"
+                    tools:text="Nika Otiashvili"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/leaderImageView"
+                    android:layout_below="@id/leaderRepCombinedTextView"
+                    android:layout_centerVertical="@id/leaderImageView"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="5dp"/>
+
+                <!--
+                TODO ribbonRecyclerView to right of reputation text wich has ribbons and markers (team exp, cost?,
+                -->
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/groupMarksLayout"
+                android:layout_toRightOf="@id/leaderLayout"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGreyText"
-                android:layout_marginRight="5dp"/>
+                android:gravity="end"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/leaderNameTextView"
-                tools:text="Nika Otiashvili"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/leaderImageView"
-                android:layout_below="@id/leaderRepCombinedTextView"
-                android:layout_centerVertical="@id/leaderImageView"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginRight="5dp"/>
+                <ImageView
+                    android:id="@+id/invitedMark"
+                    android:src="@drawable/ic_mark_invite"
+                    tools:visibility="visible"
+                    android:visibility="invisible"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent" />
 
-            <!--
-            TODO ribbonRecyclerView to right of reputation text wich has ribbons and markers (team exp, cost?,
-            -->
+                <ImageView
+                    android:id="@+id/beenHereMark"
+                    android:src="@drawable/ic_mark_beenhere"
+                    tools:visibility="visible"
+                    android:visibility="invisible"
+                    android:layout_width="26dp"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -68,7 +102,7 @@
             android:scaleType="centerCrop"/>
 
         <View style="@style/Divider"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="1dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
