@@ -268,8 +268,6 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        /*} else if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();*/
         } else {
             openHomePage();
         }
