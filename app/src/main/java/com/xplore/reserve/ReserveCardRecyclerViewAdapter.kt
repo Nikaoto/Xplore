@@ -16,19 +16,15 @@ import java.util.ArrayList
  * Created by Nikaoto on 6/16/2017.
  */
 
-class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
+class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>,
+                                     val activity: Activity,
+                                     val icons: ArrayList<Int>)
     : RecyclerView.Adapter<ReserveCardRecyclerViewAdapter.ResultViewHolder>() {
 
     class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        internal val reserveName: TextView
-        internal val reserveImage: ImageView
-        internal val reserveIcon: ImageView
-
-        init{
-            reserveName = itemView.reserveNameTextView
-            reserveImage = itemView.groupImageView
-            reserveIcon = itemView.reserveIconImageView
-        }
+        internal val reserveName: TextView = itemView.reserveNameTextView
+        internal val reserveImage: ImageView = itemView.groupImageView
+        internal val reserveIcon: ImageView = itemView.reserveIconImageView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =

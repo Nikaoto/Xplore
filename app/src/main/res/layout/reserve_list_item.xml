@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reserveCardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="155dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp"
@@ -15,12 +16,14 @@
         android:layout_margin="@dimen/reserve_cardview_int_margin">
 
         <ImageView
+            tools:src="@drawable/algeti"
             android:id="@+id/groupImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/reserve_image_height"
             android:scaleType="centerCrop" />
 
         <ImageView
+            tools:src="@drawable/ic_nature_people_black_48dp"
             android:id="@+id/reserveIconImageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -28,6 +31,7 @@
             android:layout_alignParentBottom="true"/>
 
         <TextView
+            tools:text="ALGETI"
             android:id="@+id/reserveNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
