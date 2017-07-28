@@ -41,6 +41,7 @@ public class General {
     //==== Account status stuff ===
     public static final int LOGGED_IN = 1;
     public static final int JUST_REGISTERED = 2;
+    public static final int JUST_LOGGED_IN = 3;
     public static final int NOT_LOGGED_IN = 0;
     public static int accountStatus = NOT_LOGGED_IN;
     //=================

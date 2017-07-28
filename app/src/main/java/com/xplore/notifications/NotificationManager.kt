@@ -1,9 +1,8 @@
 package com.xplore.notifications
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import android.view.View
+import android.widget.TextView
+import com.google.firebase.database.*
 import com.xplore.General
 
 
@@ -16,39 +15,109 @@ import com.xplore.General
  * //TODO add message sent notifications
  *
  */
-class NotificationManager(val drawerBadge: BadgeDrawerArrowDrawable) {
+class NotificationManager(
+        val drawerBadge: BadgeDrawerArrowDrawable,
+        val myGroupsBadge: TextView) {
+
+    //Firebase
+    private val FB_TAG_USERS = "users"
+    private val FB_TAG_INVITED_GROUP_IDS = "invited_group_ids"
+    private fun getInvitedGroupIdsFirebaseReference(userId: String): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+                .child(FB_TAG_USERS)
+                .child(userId)
+                .child(FB_TAG_INVITED_GROUP_IDS)
+    }
+    //
 
     var notificationCount: Int = 0;
+    var firebaseReference = getInvitedGroupIdsFirebaseReference(General.currentUserId)
+
+    //Listener for fetching notifications once
+    val fetchNotifsOnce =  object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            if (dataSnapshot != null) {
+                notificationCount = dataSnapshot.childrenCount.toInt()
+            } else {
+                notificationCount = 0
+            }
+            updateBadges()
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {}
+    }
+
+    //Listener for tracking changes in invites
+    val inviteListener = object : ChildEventListener {
+        override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+            updateCount(1)
+        }
+
+        override fun onChildRemoved(p0: DataSnapshot?) {
+            updateCount(-1)
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {}
+
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+
+        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+    }
 
     init {
-        drawerBadge.setEnabled(false)
-        drawerBadge.text = "0"
+        init()
     }
 
-    fun update() {
-        FirebaseDatabase.getInstance().reference.child("users").child(General.currentUserId)
-                .child("invited_group_ids")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        if (dataSnapshot != null) {
-                            notificationCount = dataSnapshot.childrenCount.toInt()
-                        } else {
-                            notificationCount = 0
-                        }
-                        updateBadges()
-                    }
-
-                    override fun onCancelled(p0: DatabaseError?) {}
-                }
-        )
+    fun init(){
+        updateBadges()
+        fetchNotifications()
+        //startListening()
     }
 
+    //Use only in OnCreate(); gets notifs ONCE and updates badge texts
+    fun fetchNotifications() {
+        firebaseReference.addListenerForSingleValueEvent(fetchNotifsOnce)
+    }
+
+    //Listens for changes in invites and updates notifs accordingly
+    fun startListening() {
+        firebaseReference.addChildEventListener(inviteListener)
+    }
+
+    //Disabled badges if no notifs, otherwise udpates their visibility and text
     fun updateBadges() {
         if (notificationCount == 0) {
+            //Drawer
             drawerBadge.setEnabled(false)
+            //My Groups
+            myGroupsBadge.visibility = View.INVISIBLE
         } else {
+            //Drawer
             drawerBadge.setEnabled(true)
             drawerBadge.text = notificationCount.toString()
+
+            //My Groups
+            myGroupsBadge.visibility = View.VISIBLE
+            myGroupsBadge.text = notificationCount.toString()
         }
+    }
+
+    fun updateCount(amount: Int) {
+        notificationCount += amount
+        updateBadges()
+    }
+
+    fun reset() {
+        firebaseReference.removeEventListener(inviteListener)
+        firebaseReference.removeEventListener(fetchNotifsOnce)
+        firebaseReference = getInvitedGroupIdsFirebaseReference(General.currentUserId)
+        init()
+    }
+
+    fun disable() {
+        firebaseReference.removeEventListener(inviteListener)
+        firebaseReference.removeEventListener(fetchNotifsOnce)
+        notificationCount = 0
+        updateBadges()
     }
 }

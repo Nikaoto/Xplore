@@ -90,6 +90,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Toast.makeText(GoogleSignInActivity.this, "Logged In", Toast.LENGTH_SHORT).show(); //TODO string resources
+
                     //User signed in
                     currentUserId = user.getUid();
                     checkUserExists(user); //creates user in case it doesn't exist
@@ -108,9 +109,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
-                    Log.println(Log.INFO, "firebaseuser", "User FullName = "+user.getDisplayName());
-
-
                     //Start user registration
                     startActivityForResult(
                             RegisterActivity.getStartIntent(
@@ -123,7 +121,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             RC_REGISTER);
                 }
                 else {
-                    accountStatus = LOGGED_IN;
+                    accountStatus = JUST_LOGGED_IN;
                     finish();
                 }
             }

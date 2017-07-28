@@ -1,28 +1,29 @@
 package com.xplore;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.app.FragmentManager;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.util.DisplayMetrics;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,11 +52,10 @@ public class MainActivity extends AppCompatActivity
     //TODO add this in singleton PreferenceManager
     public static boolean languagePrefsChanged = false;
 
-    private DrawerLayout drawer;
     private NotificationManager notificationManager;
 
-    private TextView myGroupsBadge;
-    //private TextView menuBadgeTextView;
+    private DrawerLayout drawer;
+
     private ImageView userImageView;
     private int userImageViewSize;
     private TextView userFullNameTextView;
@@ -126,16 +126,16 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        notificationManager
-                = new NotificationManager(new BadgeDrawerArrowDrawable(toolbar.getContext()));
+        notificationManager = new NotificationManager(
+                new BadgeDrawerArrowDrawable(toolbar.getContext()),
+                (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
+                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadge)
+        );
         toggle.setDrawerArrowDrawable(notificationManager.getDrawerBadge());
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        myGroupsBadge = (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
-                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadge);
     }
 
     //Sets up the user image inside the drawer
@@ -203,7 +203,16 @@ public class MainActivity extends AppCompatActivity
         //TODO show this toast after exiting register activity
         if (General.accountStatus == General.JUST_REGISTERED) {
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
+            General.accountStatus = General.JUST_LOGGED_IN;
+        }
+
+        if (General.accountStatus == General.JUST_LOGGED_IN) {
+            notificationManager.reset();
             General.accountStatus = General.LOGGED_IN;
+        }
+
+        if (General.accountStatus == General.NOT_LOGGED_IN) {
+            notificationManager.disable();
         }
 
         //TODO add boolean to stop redundant loading
@@ -218,8 +227,6 @@ public class MainActivity extends AppCompatActivity
                         .into(userImageView);
             }
         }
-        updateMyGroupsBadge();
-        notificationManager.update();
     }
 
     public void refreshUserProfileViews(final Context context) {
@@ -243,25 +250,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-    }
-
-    public void updateMyGroupsBadge() {
-        firebaseUsersRef.child(General.currentUserId).child(FIREBASE_INVITED_GROUP_IDS)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null) {
-                            myGroupsBadge.setVisibility(View.VISIBLE);
-                            myGroupsBadge.setText(String.valueOf(dataSnapshot.getChildrenCount()));
-                        } else {
-                            myGroupsBadge.setText("0");
-                            myGroupsBadge.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                });
     }
 
     @Override
