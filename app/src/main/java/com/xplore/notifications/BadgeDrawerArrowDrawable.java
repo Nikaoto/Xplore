@@ -13,7 +13,7 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
  * TODO write description of this class - what it does and why.
  */
 
-public class BadgeDrawerArrowDrawable extends DrawerArrowDrawable {
+public class BadgeDrawerArrowDrawable extends DrawerArrowDrawable{
 
     private static final float SIZE_FACTOR = .35f;
     private static final float HALF_SIZE_FACTOR = SIZE_FACTOR / 2;

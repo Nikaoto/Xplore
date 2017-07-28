@@ -65,11 +65,6 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences prefs;
     private Menu menu; //TODO check if this is needed
 
-    private int invitedGroupCount = 0;
-    private static final DatabaseReference firebaseUsersRef
-            = FirebaseDatabase.getInstance().getReference().child("users");
-    private static final String FIREBASE_INVITED_GROUP_IDS = "invited_group_ids";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,12 +121,17 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+        //TODO create a timer which checks for notifs every 30s and gives notification + updates badges
+
+        BadgeDrawerArrowDrawable drawerBadge = new BadgeDrawerArrowDrawable(toolbar.getContext());
+
         notificationManager = new NotificationManager(
-                new BadgeDrawerArrowDrawable(toolbar.getContext()),
+                drawerBadge,
                 (TextView) MenuItemCompat.getActionView(navigationView.getMenu()
                         .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadge)
         );
-        toggle.setDrawerArrowDrawable(notificationManager.getDrawerBadge());
+
+        toggle.setDrawerArrowDrawable(drawerBadge);
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity
 
         if (General.accountStatus == General.NOT_LOGGED_IN) {
             notificationManager.disable();
+            openHomePage();
         }
 
         //TODO add boolean to stop redundant loading
