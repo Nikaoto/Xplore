@@ -292,10 +292,11 @@ class GroupInfoActivity : Activity() {
                             for (itemSnapshot in dataSnapshot.children) {
                                 itemSnapshot.ref.removeValue()
                             }
+                            //TODO resort member ids
                             //TODO string resources
-                                Toast.makeText(this@GroupInfoActivity,
-                                        "You have left the group",
-                                        Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@GroupInfoActivity,
+                                    "You have left the group",
+                                    Toast.LENGTH_SHORT).show()
                         } else {
                             // If the user gets here, then... Well.. fuck...
                             // we'll need to fix the issue from the firebase console
