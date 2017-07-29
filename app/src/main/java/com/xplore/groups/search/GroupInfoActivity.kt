@@ -9,12 +9,10 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
+import com.xplore.R
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.reserve.Icons
@@ -35,6 +33,7 @@ class GroupInfoActivity : Activity() {
 
     //Firebase
     private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
+    private val FIREBASE_TAG_GROUP_IDS = "group_ids"
     private val DBref = FirebaseDatabase.getInstance().reference
     private val firebaseGroupsRef = DBref.child("groups")
     private val firebaseUsersRef = DBref.child("users")
@@ -265,13 +264,9 @@ class GroupInfoActivity : Activity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         if (dataSnapshot != null) {
                             for (itemSnapshot in dataSnapshot.children) {
-                                itemSnapshot.ref.removeValue()
-
-                                //TODO remove current groupId from group_ids in the user's node
-                                Toast.makeText(this@GroupInfoActivity,
-                                        "You have left the group",
-                                        Toast.LENGTH_SHORT).show()
+                                removeUserFromGroup(itemSnapshot.ref)
                             }
+
                         } else {
                             //TODO string resources
                             Toast.makeText(this@GroupInfoActivity,
@@ -283,6 +278,37 @@ class GroupInfoActivity : Activity() {
 
                     override fun onCancelled(p0: DatabaseError?) {}
                 })
+    }
+
+    private fun removeUserFromGroup(dbRef: DatabaseReference) {
+        firebaseUsersRef.child("${General.currentUserId}/$FIREBASE_TAG_GROUP_IDS")
+                .orderByValue().equalTo(groupId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                        if (dataSnapshot != null) {
+                            dbRef.removeValue()
+                            // Don't move ^this^ up to leaveGroup(), deletions need to be as close
+                            // as possible in case of sudden disconnection
+                            for (itemSnapshot in dataSnapshot.children) {
+                                itemSnapshot.ref.removeValue()
+                            }
+                            //TODO string resources
+                                Toast.makeText(this@GroupInfoActivity,
+                                        "You have left the group",
+                                        Toast.LENGTH_SHORT).show()
+                        } else {
+                            // If the user gets here, then... Well.. fuck...
+                            // we'll need to fix the issue from the firebase console
+                            //TODO string resources
+                            Toast.makeText(this@GroupInfoActivity,
+                                    "Server error: couldn't leave group. Please try again later",
+                                    Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError?) {}
+                }
+        )
     }
 
     //Displays information about the experience icon (X and tick)
