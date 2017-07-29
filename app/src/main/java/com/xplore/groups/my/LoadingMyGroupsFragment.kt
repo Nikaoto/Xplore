@@ -66,7 +66,7 @@ class LoadingMyGroupsFragment : Fragment() {
 
     fun loadMyGroupsLayout(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>)
          = fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MyGroupsFragment(joinedGroupIds, invitedGroupIds))
+                .replace(R.id.fragment_container, MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds))
                 .commit()
 
     fun printError() = Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()

@@ -46,15 +46,27 @@ class MyGroupsFragment() : Fragment() {
     //For reserve image loading
     private val dbManager: DBManager by lazy { DBManager(activity) }
 
-    constructor(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>) : this() {
-        this.joinedGroupIds.addAll(joinedGroupIds)
-        this.invitedGroupIds.addAll(invitedGroupIds)
+    companion object {
+        @JvmStatic
+        fun newInstance(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>)
+                : MyGroupsFragment {
+            val f = MyGroupsFragment()
+            val args = Bundle()
+            args.putStringArrayList("joinedGroupIds", joinedGroupIds)
+            args.putStringArrayList("invitedGroupIds", invitedGroupIds)
+            f.arguments = args
+            return  f
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
             = inflater.inflate(R.layout.my_groups, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        //Getting bundle arguments
+        joinedGroupIds.addAll(arguments.getStringArrayList("joinedGroupIds"))
+        invitedGroupIds.addAll(arguments.getStringArrayList("invitedGroupIds"))
+
         dbManager.openDataBase()
         myGroupsRecyclerView.layoutManager = LinearLayoutManager(activity)
         myGroupsRecyclerView.adapter = GroupCardRecyclerViewAdapter(groupCards, activity)
