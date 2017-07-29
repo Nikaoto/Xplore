@@ -7,8 +7,17 @@ import android.os.Bundle
 import java.util.*
 
 /**
- * Created by nikao on 3/11/2017.
- */
+* Created by Nikaoto on 3/11/2017.
+*
+* აღწერა
+* ეს კლასი არის ჩვენი DatePicker DialogFragment-ი, რომელსაც მთელს აპლიკაციაში ვიყენებთ როდესაც
+* მომხმარებელს ნებისმიერი თარიღის ამორჩევა ჭირდება
+*
+* Description:
+* This class is a custom datePicker DialogFragment that we use throughout the whole application
+* whenever the user needs to select a date
+*
+*/
 
 class CustomDatePicker(val listener: DatePickerDialog.OnDateSetListener?,
                        val timeStamp: Long,
