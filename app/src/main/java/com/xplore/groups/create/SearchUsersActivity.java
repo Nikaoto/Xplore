@@ -37,10 +37,12 @@ import static com.xplore.groups.create.CreateGroupActivity.invitedMembers;
  * Created by Nikaoto on 3/1/2017.
  *
  * არწერა:
- * ეს მოქმედება იხსნება როდესაც მომხარებელი ჯგუფს ქმნის სა იწყებს თანამოლაშქრეების ძებნას რომ ჩაამატოს.
+ * ეს მოქმედება იხსნება როდესაც მომხარებელი ეძებს თანამოლაშქრეებს რომ ჯფუფში დაპატიჟოს
+ * (CreateGroupActivity და GroupInfoActivity - დან)
  *
  * Description:
- * This activity opens up when the user is creating a group and starts searching for members to add.
+ * This activity opens up when the user wants to invite other hikers to the group (from
+ * CreateGroupActivity and GroupInfoActivity)
  *
  */
 

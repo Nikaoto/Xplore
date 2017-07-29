@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -65,7 +67,7 @@
                 android:id="@+id/leaderFnameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Name"
+                tools:text="First Name"
                 android:textColor="@color/colorDarkGrey"
                 android:textSize="21sp"
                 android:layout_toRightOf="@id/leaderProfileLayout"
@@ -74,7 +76,7 @@
 
             <TextView
                 android:id="@+id/leaderLnameTextView"
-                android:text="Last Name"
+                tools:text="Last Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorDarkGrey"
@@ -86,7 +88,7 @@
 
             <TextView
                 android:id="@+id/leaderAgeTextView"
-                android:text="Age: 23"
+                tools:text="Age: 23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorDarkGrey"
@@ -98,7 +100,7 @@
 
             <TextView
                 android:id="@+id/leaderTelTextView"
-                android:text="Tel: 599 42 09 69"
+                tools:text="Tel: 599 42 09 69"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="21sp"
@@ -152,7 +154,7 @@
 
             <TextView
                 android:id="@+id/startDateTextView"
-                android:text="10/02/2017"
+                tools:text="10/02/2017"
                 android:textColor="@color/colorDarkGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -173,7 +175,7 @@
 
             <TextView
                 android:id="@+id/endDateTextView"
-                android:text="11/02/2017"
+                tools:text="11/02/2017"
                 android:textColor="@color/colorDarkGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -246,6 +248,18 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="9dp"
             android:textSize="15sp"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/leaveGroupButton"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:text="Leave Group"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif-medium"
+            app:backgroundTint="@color/colorAccent"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </ScrollView>

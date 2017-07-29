@@ -3,6 +3,7 @@ package com.xplore.groups.search
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -32,16 +33,16 @@ import kotlinx.android.synthetic.main.reserve_list_item.*
 
 class GroupInfoActivity : Activity() {
 
-    //TODO convert to inferred types after testing
-    private var group_id: String = ""
-    private var reserveID: Int= 0 //TODO remove this and load submitted image or map image instead
-    private var memberCount: Int = 0
-    private val members = ArrayList<User>()
-
-    //Firebase database references
+    //Firebase
+    private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
     private val DBref = FirebaseDatabase.getInstance().reference
-    private val groupsDBref = DBref.child("groups")
-    private val usersDBref = DBref.child("users")
+    private val firebaseGroupsRef = DBref.child("groups")
+    private val firebaseUsersRef = DBref.child("users")
+
+    private var groupId = ""
+    private var reserveID = 0 //TODO remove this and load submitted image or map image instead
+    private var memberCount = 1
+    private val members = ArrayList<User>()
 
     //The variables which contain the current group/member info
     private var currentGroup = Group()
@@ -57,19 +58,36 @@ class GroupInfoActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.group_info)
         //buildUserBase();
 
-        resetVariables()
-        receiveData()
+        //Receives group data from last intent
+        val intent = this.intent
+        groupId = intent.getStringExtra("group_id")
+        reserveID = intent.getIntExtra("reserve_id", 0)
+
         initMemberList()
-
-        //reset the layout TODO remove after finishing testing and clear layouts
-        resetLayout()
-
-        loadGroupData(group_id)
+        loadGroupData(groupId)
         applyReserveData()
+    }
+
+    /* Only runs when a member from the current group is viewing it.
+        Adds buttons like "leave group" or "invite members" */
+    private fun configureGroupLayoutForMember() {
+        leaveGroupButton.visibility = View.VISIBLE
+        leaveGroupButton.setOnClickListener {
+            popLeaveGroupConfirmationDialog()
+        }
+    }
+
+    /* Runs when the current user is viewing a group he's not in */
+    private fun configureGroupLayoutForOutsider() {
+        //TODO do stuff here
+    }
+
+    /* Runs when the current user is viewing the group is the leader */
+    private fun configureGroupLayoutForLeader() {
+        //TODO do stuff here
     }
 
     //Gets reserve data from local database and displays it on the reserve card
@@ -78,44 +96,18 @@ class GroupInfoActivity : Activity() {
         dbManager.openDataBase()
         val tempReserveCard = dbManager.getReserveCard(reserveID)
 
-        reserveCardView.setOnClickListener { startActivity(ReserveInfoActivity.getStartIntent(this, reserveID)) }
+        reserveCardView.setOnClickListener {
+            startActivity(ReserveInfoActivity.getStartIntent(this, reserveID))
+        }
         reserveNameTextView.text = tempReserveCard.name
         groupImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
-    }
-
-    //TODO maybe remove?
-    //Resets variables so a new group can be loaded from zero
-    private fun resetVariables() {
-        memberCount = 1
-        members.clear()
-    }
-
-    //Receives group data from last intent
-    private fun receiveData() {
-        val intent = this.intent
-        group_id = intent.getStringExtra("group_id")
-        reserveID = intent.getIntExtra("reserve_id", 0)
     }
 
     private fun initMemberList() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         membersRecyclerView.setHasFixedSize(true)
         membersRecyclerView.layoutManager = layoutManager
-    }
-
-    private fun resetLayout() {
-        //leader
-        leaderFnameTextView.text = "-"
-        leaderLnameTextView.text = "-"
-        leaderAgeTextView.text = ""
-        leaderTelTextView.text = ""
-        leaderRepTextView.text = ""
-        //group
-        startDateTextView.text = ""
-        endDateTextView.text = ""
-        groupPrefsTextView.text = ""
-        groupExtraInfoTextView.text = ""
     }
 
     /*
@@ -142,21 +134,41 @@ class GroupInfoActivity : Activity() {
     */
 
     private fun loadGroupData(groupId: String) {
-        val query = groupsDBref.child(groupId)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if group exists
                 if (dataSnapshot != null) {
                     //creating the temporary (current) group
                     currentGroup = dataSnapshot.getValue(Group::class.java)!!
                     currentGroup.setGroup_id(dataSnapshot.key)
-                    memberCount = currentGroup.getMember_ids()!!.size
+                    memberCount = currentGroup.getMember_ids().size
+
+                    if (currentGroup.getMember_ids()[0] == General.currentUserId) {
+                        configureGroupLayoutForLeader()
+                    } else {
+                        //Checking if current user is a member and configuring layout accordingly
+                        if (currentGroup.getMember_ids().contains(General.currentUserId)) {
+                            configureGroupLayoutForMember()
+                        } else {
+                            configureGroupLayoutForOutsider()
+                        }
+                    }
 
                     for (memberId in currentGroup.getMember_ids()) {
-                        getUserInfo(memberId)
+                        if (memberId != null) {
+                            getUserInfo(memberId)
+                        } else {
+                            memberCount--
+                            if (memberCount == 0) {
+                                applyGroupData()
+                            }
+                        }
                     }
-                } else {//TODO string resources
-                    Toast.makeText(applicationContext, "The group does not exist", Toast.LENGTH_SHORT).show()
+                } else {
+                    //TODO string resources
+                    Toast.makeText(applicationContext,
+                            "The group does not exist",
+                            Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -167,8 +179,7 @@ class GroupInfoActivity : Activity() {
 
     //Gets user info from Firebase using userId
     private fun getUserInfo(userId: String) {
-        val query = usersDBref.child(userId)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        firebaseUsersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if member exists
                 if (dataSnapshot!!.exists()) {
@@ -179,8 +190,11 @@ class GroupInfoActivity : Activity() {
                     if (memberCount == 0) { //Checking if member list retrieval finished
                         applyGroupData()
                     }
-                } else {//TODO string resources
-                    Toast.makeText(applicationContext, "There was an error retreiving the members", Toast.LENGTH_SHORT).show()
+                } else {
+                    //TODO string resources
+                    Toast.makeText(applicationContext,
+                            "There was an error retreiving the members",
+                            Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -232,6 +246,43 @@ class GroupInfoActivity : Activity() {
         //Displaying members
         val adapter = MemberListAdapter(this, members)
         membersRecyclerView.adapter = adapter
+    }
+
+    private fun popLeaveGroupConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        //TODO string resources
+        builder.setTitle("Leave Group?")
+                .setMessage("Are you sure you want to leave this group?")
+                .setPositiveButton("Yes", { _, _: Int -> leaveGroup() })
+                .setNegativeButton("No", null)
+        builder.show()
+    }
+
+    private fun leaveGroup() {
+        firebaseGroupsRef.child("$groupId/$FIREBASE_TAG_MEMBER_IDS")
+                .orderByValue().equalTo(General.currentUserId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                        if (dataSnapshot != null) {
+                            for (itemSnapshot in dataSnapshot.children) {
+                                itemSnapshot.ref.removeValue()
+
+                                //TODO remove current groupId from group_ids in the user's node
+                                Toast.makeText(this@GroupInfoActivity,
+                                        "You have left the group",
+                                        Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            //TODO string resources
+                            Toast.makeText(this@GroupInfoActivity,
+                                    "Server error: couldn't leave group. Please try again later",
+                                    Toast.LENGTH_SHORT).show()
+                        }
+                        finish() //TODO recreate with the same parameters
+                    }
+
+                    override fun onCancelled(p0: DatabaseError?) {}
+                })
     }
 
     //Displays information about the experience icon (X and tick)
