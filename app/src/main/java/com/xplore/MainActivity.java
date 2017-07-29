@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity
                 userFullNameTextView.setVisibility(View.GONE);
                 Picasso.with(this)
                         .load(R.drawable.user_default_profile_image)
-                        .transform(new CircleTransformation(userImageViewSize, userImageViewSize))
                         .into(userImageView);
             }
         }
