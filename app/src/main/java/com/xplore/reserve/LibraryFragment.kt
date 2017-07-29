@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.search_layout2.searchEditText
 import kotlinx.android.synthetic.main.search_layout2.progressBar
 
 /**
- * Created by Nika on 11/9/2016.
+ * Created by Nikaoto on 11/9/2016.
  */
 
 class LibraryFragment : Fragment(), TextView.OnEditorActionListener {

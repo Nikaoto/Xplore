@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by nikao on 2/22/2017.
+ * Created by Nikaoto on 2/22/2017.
  */
 
 public class ExpandableTextView extends android.support.v7.widget.AppCompatTextView {

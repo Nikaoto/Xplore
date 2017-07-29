@@ -8,6 +8,10 @@ import com.xplore.MainActivity
 import com.xplore.R
 import java.util.*
 
+/**
+ * Created by el on 7/18/17.
+ */
+
 class LanguageSettingsActivity : AppCompatPreferenceActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

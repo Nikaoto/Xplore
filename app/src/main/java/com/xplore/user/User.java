@@ -4,7 +4,7 @@ package com.xplore.user;
 import java.util.ArrayList;
 
 /**
- * Created by nikao on 2/11/2017.
+ * Created by Nikaoto on 2/11/2017.
  */
 
 //DO NOT CHANGE THE VARIABLE NAMES, THEY CORRESPOND TO THE FIREBASE DATABASE KEY NAMES

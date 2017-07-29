@@ -7,7 +7,7 @@ import java.io.InputStream
 import java.io.OutputStream
 
 /**
- * Created by nikao on 5/24/2017.
+ * Created by Nikaoto on 5/24/2017.
  * This class is meant for copying data byte by byte
  */
 

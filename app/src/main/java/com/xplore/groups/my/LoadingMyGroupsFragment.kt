@@ -12,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.General
 import com.xplore.R
-import com.xplore.user.User
 
 /**
  * Created by Nikaoto on 7/17/2017.

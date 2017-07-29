@@ -5,8 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 /**
- * Created by Nika on 7/17/2017.
- * TODO write description of this class - what it does and why.
+ * Created by Nikaoto on 7/17/2017.
+ * This class is exclusively used for multiDex for the support lower-end device debugging
  */
 
 public class XploreApplication extends Application {

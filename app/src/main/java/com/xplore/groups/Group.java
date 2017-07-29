@@ -3,7 +3,7 @@ package com.xplore.groups;
 import java.util.ArrayList;
 
 /**
- * Created by nikao on 2/8/2017.
+ * Created by Nikaoto on 2/8/2017.
  */
 
 public class Group {

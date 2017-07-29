@@ -15,6 +15,7 @@ import android.view.View
 /**
  * Created by el on 7/18/17.
  */
+
 abstract class AppCompatPreferenceActivity : PreferenceActivity() {
     private var mDelegate: AppCompatDelegate? = null
 

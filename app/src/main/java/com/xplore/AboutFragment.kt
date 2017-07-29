@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 /**
- * Created by Nika on 11/9/2016.
+ * Created by Nikaoto on 11/9/2016.
  */
 
 class AboutFragment : Fragment() {
