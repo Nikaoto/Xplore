@@ -11,7 +11,7 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/chooseReserve_button"
-            android:text="@string/choose_destination"
+            android:text="@string/activity_choose_destination_title"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"
             android:layout_gravity="center_horizontal"
@@ -188,7 +188,7 @@
         <View style="@style/dashed_divider"/>
 
         <TextView
-            android:text="@string/has_visited_question"
+            android:text="@string/question_has_visited"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="5dp"
             android:textSize="16sp"

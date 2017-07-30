@@ -59,7 +59,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_layout);
-        setTitle(R.string.authorization);
+        setTitle(R.string.activity_authorization_title);
         myView = getLayoutInflater().inflate(R.layout.signin_layout, null);
 
         //Building Google Api Client

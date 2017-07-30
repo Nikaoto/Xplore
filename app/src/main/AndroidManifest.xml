@@ -34,38 +34,36 @@
 
         <activity
             android:name=".maps.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/activity_maps_title" />
         <activity
             android:name=".reserve.ReserveInfoActivity"
-            android:label="@string/nav_lib_title"
+            android:label="@string/activity_library_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.search.GroupInfoActivity"
-            android:label="@string/view_group"
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.create.SearchDestinationActivity"
-            android:label="@string/choose_destination"
+            android:label="@string/activity_choose_destination_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.create.SearchUsersActivity"
-            android:label="@string/search_users"
+            android:label="@string/activity_search_users_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".account.GoogleSignInActivity"
-            android:label="@string/authorization"
+            android:label="@string/activity_authorization_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".account.RegisterActivity"
-            android:label="@string/register"
+            android:label="@string/activity_register_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".user.UserProfileActivity"
-            android:label="@string/profile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.create.CreateGroupActivity"
-            android:label="@string/create_group"
+            android:label="@string/activity_create_group_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".settings.SettingsActivity"

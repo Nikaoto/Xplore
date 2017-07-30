@@ -83,7 +83,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
         EditText searchBar = (EditText) findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
-        searchBar.setHint(R.string.search_users);
+        searchBar.setHint(R.string.activity_search_users_title);
         searchBar.setOnEditorActionListener(this);
 
         //buildUserBase();

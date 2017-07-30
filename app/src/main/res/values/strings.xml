@@ -1,88 +1,97 @@
 <resources>
     <string name="app_name">Xplore</string>
 
+    <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="create_group">შექმენი ჯგუფი</string>
-    <string name="join_party">შეუერთდი</string>
-    <string name="party">ჯგუფები</string>
-    <string name="about_header">შესახებ</string>
-    <string name="calendar">კალენდარი</string>
-    <string name="cancel">გაუქმება</string>
-    <string name="profile">პროფილი</string>
-    <string name="groups">ჯგუფები</string>
-    <string name="my_groups">ჩემი ჯგუფები</string>
-    <string name="find_create">მოძებნე / შექმენი</string>
-    <string name="settings">რეგულაცია</string>
-    <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
-        შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
-        http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
-    </string>
-    <string name="credits">
-        The Xplore Team: \n\t\tნიკოლოზ ოთიაშვილი\n\t\tთიო გაბუნია\n\t\tაჩიკო წერეთელი\n\t\tსანდრო
-        მოსაშვილი\n\t\tბექა კაკაბაძე
-    </string>
-    <string name="search_tags_hint">მოძებნეთ ტეგები</string>
-    <string name="search_name_hint">მოძებნეთ სახელით</string>
-    <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
-    <string name="nav_profile_title">პროფილი</string>
-    <string name="nav_lib_title">ბიბლიოთეკა</string>
-    <string name="nav_map_title">რუკა</string>
-    <string name="nav_party_title">ჯგუფები</string>
-    <string name="nav_about_title">შესახებ</string>
+    <string name="nav_profile">პროფილი</string>
+    <string name="nav_lib">ბიბლიოთეკა</string>
+    <string name="nav_map">რუკა</string>
+    <string name="nav_groups">ჯგუფები</string>
+    <string name="nav_my_groups">ჩემი ჯგუფები</string>
+    <string name="nav_find_create">მოძებნე / შექმენი</string>
+    <string name="nav_about">შესახებ</string>
+    <string name="nav_settings">რეგულაცია</string>
     <string name="action_settings">რეგულაცია</string>
-    <string name="title_activity_maps">რუკა</string>
-    <string name="nav_description">ეს აპლიკაციის მხოლოდ დემო ვერსიაა.</string>
-    <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
-    <string name="show_on_map">იხილეთ რუკაზე</string>
-    <string name="description_header">აღწერა</string>
-    <string name="lib_fauna_header">ფაუნა</string>
-    <string name="lib_flora_header">ფლორა</string>
-    <string name="lib_tags_header">ტეგები</string>
-    <string name="lib_equip_header">აღჭურვილობა</string>
-    <string name="lib_difficulty_header">სირთულე</string>
-    <string name="wifi_connect_dialog_maps">
-        გთხოვთ ჩართოთ ინტერნეტკავშირი რუკების გადმოსაწერად. ეს მხოლოდ ერთჯერადად არის საჭირო.
-    </string>
-    <string name="wifi_connect_dialog">
-        გთხოვთ ჩართოთ ინტერნეტკავშირი ახალი გუნდის შესაქმნელად.
-    </string>
-    <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
-    <string name="location">ადგილმდებარეობა</string>
-    <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>
-    <string name="please_enable_location">გთხოვთ ჩართოთ ადგილმდებარეობა(Location)</string>
-    <string name="destination">მიმართულება</string>
-    <string name="date">თარიღი</string>
-    <string name="group_members">გუნდის წევრები</string>
-    <string name="group_preferences">სასურველია</string>
-    <string name="extra_info">დამატებით ინფო</string>
-    <string name="loading_groups">იტვირთება ჯგუფები</string>
-    <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
-    <string name="view_group">ჯგუფების ნახვა</string>
-    <string name="reputation">რეპუტაცია</string>
-    <string name="age">ასაკი</string>
-    <string name="birth_date">დაბადების თარიღი</string>
-    <string name="tel">ტელ</string>
-    <string name="choose_destination">ამოირჩიეთ მიმართულება</string>
-    <string name="invite_members">დაპატიჟე</string>
-    <string name="has_visited_question">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
+
+    <!-- Activity Titles -->
+    <string name="activity_library_title">ბიბლიოთეკა</string>
+    <string name="activity_maps_title">რუკა</string>
+    <string name="activity_authorization_title">ავტორიზაცია</string>
+    <string name="activity_create_group_title">შექმენი ჯგუფი</string>
+    <string name="activity_choose_destination_title">ამოირჩიეთ მიმართულება</string>
+    <string name="activity_search_users_title">მოძებნეთ მომხმარებლები</string>
+    <string name="activity_register_title">დარეგისტრირება</string>
+
+    <!-- Basic Buttons and Actions-->
     <string name="yes">დიახ</string>
     <string name="no">არა</string>
     <string name="done">დასტური</string>
     <string name="set">ამორჩევა</string>
     <string name="confirm">დასტური</string>
     <string name="okay">გასაგებია</string>
+    <string name="remove">წაშლა</string>
+    <string name="cancel">გაუქმება</string>
+
+    <!-- Texts -->
+    <string name="search_tags_hint">მოძებნეთ ტეგები</string>
+    <string name="search_name_hint">მოძებნეთ სახელით</string>
+    <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
+    <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
+    <string name="wifi_connect_dialog">
+        გთხოვთ ჩართოთ ინტერნეტკავშირი ახალი გუნდის შესაქმნელად.
+    </string>
+    <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
+
+    <!-- Searching & Inviting Users -->
+    <string name="invite_members">დაპატიჟე</string>
+    <string name="member_already_added">მომხმარებელი უკვე გუნდშია</string>
+    <string name="member_added">გუნდის წევრი დაემატა</string>
+    <string name="member_removed">გუნდის წევრი ამოიშალა</string>
+
+    <!-- User -->
+    <string name="user">მომხმარებელი</string>
+    <string name="reputation">რეპუტაცია</string>
+    <string name="email">ელ-პოსტა</string>
+    <string name="tel">ტელ</string>
+    <string name="age">ასაკი</string>
+    <string name="birth_date">დაბადების თარიღი</string>
+
+    <!-- Group -->
+    <string name="destination">მიმართულება</string>
+    <string name="date">თარიღი</string>
+    <string name="group_members">გუნდის წევრები</string>
+    <string name="group_preferences">სასურველია</string>
     <string name="date_start">დაწყების თარიღი</string>
     <string name="date_end">დასასრულის თარიღი</string>
+    <string name="extra_info">დამატებით ინფო</string>
+    <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
+        ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
+
+    <!-- Map -->
+    <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>
+    <string name="please_enable_location">გთხოვთ ჩართოთ ადგილმდებარეობა(Location)</string>
+    <string name="wifi_connect_dialog_maps">
+        გთხოვთ ჩართოთ ინტერნეტკავშირი რუკების გადმოსაწერად. ეს მხოლოდ ერთჯერადად არის საჭირო.
+    </string>
+
+    <!-- Library & Reserve -->
+    <string name="lib_fauna_header">ფაუნა</string>
+    <string name="lib_flora_header">ფლორა</string>
+    <string name="lib_tags_header">ტეგები</string>
+    <string name="lib_equip_header">აღჭურვილობა</string>
+    <string name="lib_difficulty_header">სირთულე</string>
+    <string name="show_on_map">იხილეთ რუკაზე</string>
+
+    <!-- Create Group -->
     <string name="question_choose_reserve">დარწმუნებული ხართ რომ გინდათ ამოირჩიოთ</string>
+    <string name="question_has_visited">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
     <string name="group_prefs_help">ამ ველში უნდა მიუთითოთ როგორი გუნდის წევრებია თქვენი
         გუნდისთვის სასურველი.\n\nმაგ: ვინმე, ვინც გამოცდილია და გუნდს არ ჩამორჩება…</string>
     <string name="extra_info_help">ამ ველში უნდა მიუთითოთ დამატებით ინფორმაცია რაც შეიძლება ახალ
         გუნდის წევრს გამოადგეს.\n\nმაგ: ნაკრძალამდე მივდივართ ერთად, 11ზე გავდივართ რუსთაველის
         მეტროდან…</string>
     <string name="what_is_this">რას ნიშნავს ეს?</string>
-    <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
-        ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
     <string name="dest_field_incomplete">გთხოვთ, ამოირჩიოთ მიმართულება.</string>
     <string name="exp_field_incomplete">გთხოვთ, უპასუხოთ დასმულ კითხვას.</string>
     <string name="date_start_field_incomplete">გთხოვთ, მიუთითოთ დასაწყისის თარიღი.</string>
@@ -94,26 +103,40 @@
     <string name="date_past_invalid">
         დასაწყისის ან დასასრული თარიღი ვერ იქნება წარსულში.\n\nგთხოვთ, შეასწოროთ შეცდომა.
     </string>
-    <string name="search_users">მოძებნეთ მომხმარებლები</string>
-    <string name="member_already_added">მომხმარებელი უკვე გუნდშია</string>
-    <string name="user">მომხმარებელი</string>
-    <string name="member_added">გუნდის წევრი დაემატა</string>
-    <string name="member_removed">გუნდის წევრი ამოიშალა</string>
-    <string name="remove">წაშლა</string>
-    <string name="authorization">ავტორიზაცია</string>
-    <string name="sign_in">შესვლა</string>
-    <string name="register">დარეგისტრირება</string>
-    <string name="choose_date">ამოირჩიეთ თარიღი</string>
-    <string name="email">ელ-პოსტა</string>
-    <string name="log_out">გამოსვლა</string>
 
-    <!-- Settings resources -->
+    <!-- About -->
+    <string name="about_header">შესახებ</string>
+    <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
+        შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
+        http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
+    </string>
+    <string name="credits">
+        The Xplore Team: \n\t\tნიკოლოზ ოთიაშვილი\n\t\tთიო გაბუნია\n\t\tაჩიკო წერეთელი\n\t\tსანდრო
+        მოსაშვილი\n\t\tბექა კაკაბაძე
+    </string>
+
+    <!-- Settings -->
     <string name="settings_title">რეგულაცია</string>
     <string name="settings_account_title">მომხმარებელი</string>
     <string name="settings_language_title">ენა</string>
-    <!-- language preference screen -->
+
+    <!-- Account Settings -->
+    <string name="log_out">გამოსვლა</string>
+
+    <!-- Language Settings-->
     <string name="current_language_georgian">ქართული</string>
     <string name="current_language_english">English</string>
     <string name="current_language_russian">Русский</string>
-    <!-- -->
+
+    <!-- Other -->
+    <string name="description_header">აღწერა</string>
+
+    <!-- Unused -->
+    <string name="join_party">შეუერთდი</string>
+    <string name="sign_in">შესვლა</string>
+    <string name="choose_date">ამოირჩიეთ თარიღი</string>
+    <string name="loading_groups">იტვირთება ჯგუფები</string>
+    <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
+    <string name="location">ადგილმდებარეობა</string>
+
 </resources>

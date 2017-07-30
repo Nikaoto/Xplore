@@ -92,7 +92,7 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        setTitle(R.string.title_activity_maps);
+        setTitle(R.string.activity_maps_title);
 
         InitReserve();
 

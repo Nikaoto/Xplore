@@ -111,7 +111,7 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_group);
 
-        setTitle(R.string.create_group);
+        setTitle(R.string.activity_create_group_title);
 
         //Refreshing server timeStamp
         TimeManager.Companion.refreshGlobalTimeStamp();
