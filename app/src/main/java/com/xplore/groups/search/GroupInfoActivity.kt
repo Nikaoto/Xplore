@@ -61,6 +61,10 @@ class GroupInfoActivity : Activity() {
         setContentView(R.layout.group_info2)
         //buildUserBase();
 
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         //Receives group data from last intent
         val intent = this.intent
         groupId = intent.getStringExtra("group_id")
@@ -78,16 +82,22 @@ class GroupInfoActivity : Activity() {
         leaveGroupButton.setOnClickListener {
             popLeaveGroupConfirmationDialog()
         }
+        //TODO add discussion
+        //TODO add invite members button
     }
 
     /* Runs when the current user is viewing a group he's not in */
     private fun configureGroupLayoutForOutsider() {
-        //TODO do stuff here
+        //TODO add join button
     }
 
     /* Runs when the current user is viewing the group is the leader */
     private fun configureGroupLayoutForLeader() {
-        //TODO do stuff here
+        //TODO add discussion
+        //TODO add control panel card
+            //TODO add remove members button
+            //TODO add invite members button
+            //TODO add onlongclick to cards to edit them
     }
 
     //Gets reserve data from local database and displays it on the reserve card
@@ -234,6 +244,7 @@ class GroupInfoActivity : Activity() {
         leaderRepCombinedTextView.text = "${leader.reputation} ${resources.getString(R.string.reputation)}"
 
         //Setting experienced icon
+        //TODO experienced icon
 /*        if (currentGroup.isExperienced) {
             groupExpImageView.setImageResource(R.drawable.ic_check)
         } else {
