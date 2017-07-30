@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:title="ASKJLKDSGLKSDJ"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/abc_ic_ab_back_material">
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Destination -->
+            <include layout="@layout/reserve_list_item"/>
+
+            <!-- Group Description -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:text="@string/description_header"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/group_info_single_card_header_min_height"/>
+
+                    <TextView
+                        tools:text="@string/about"
+                        android:id="@+id/descriptionTextView"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Dates and Times -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/date"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/dateCombinedTextView"
+                        style="@style/InfoCardViewTextView"
+                        tools:text="10/02/2017 - 11/02/2017"
+                        android:textSize="27sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Leader Info -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView_noContentPadding"
+                app:contentPaddingLeft="12dp"
+                app:contentPaddingBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="155dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/leaderHeader"
+                        android:text="@string/leader"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include layout="@layout/leader_profile"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Member List -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView_noContentPadding"
+                android:layout_width="match_parent"
+                android:layout_height="185dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/group_members"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/membersRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="@dimen/member_list_item_height"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Group Preferences -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/group_preferences"
+                        style="@style/InfoCardViewHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/preferencesTextView"
+                        style="@style/InfoCardViewTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!--
+             TODO add controls cardview for members and leader
+                TODO add invite members btn
+                TODO add uninvite members btn (only for pending invite requests)
+                TODO add remove members btn (only leader)
+                TODO add long press edit info on each cardview (only leeader)
+            -->
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/leaveGroupButton"
+                android:visibility="gone"
+                android:layout_marginLeft="15dp"
+                android:padding="15dp"
+                tools:visibility="visible"
+                android:text="Leave Group"
+                android:fontFamily="sans-serif-medium"
+                app:backgroundTint="@color/colorAccent"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

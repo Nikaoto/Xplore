@@ -23,7 +23,7 @@
     <dimen name="reg_label_size">20sp</dimen>
     <dimen name="reg_text_padding_left">6dp</dimen>
     <dimen name="reg_text_margin_left">20dp</dimen>
-    <dimen name="member_list_item_height">127dp</dimen>
+    <dimen name="member_list_item_height">130dp</dimen>
     <dimen name="search_bar_height">40dp</dimen>
     <dimen name="cardview_list_entry_margin">10dp</dimen>
     <dimen name="reserve_image_height">100dp</dimen>
@@ -33,6 +33,6 @@
     <dimen name="user_profile_image_medium_size">100dp</dimen>
     <dimen name="user_profile_image_small_size">90dp</dimen>
     <dimen name="user_profile_image_tiny_size">50dp</dimen>
-    <dimen name="user_card_text_marginTop">3dp</dimen>
+    <dimen name="user_card_text_marginTop">1dp</dimen>
     <dimen name="group_info_single_card_header_min_height">46dp</dimen>
 </resources>

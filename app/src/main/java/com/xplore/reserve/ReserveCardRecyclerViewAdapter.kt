@@ -23,7 +23,7 @@ class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>,
 
     class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         internal val reserveName: TextView = itemView.reserveNameTextView
-        internal val reserveImage: ImageView = itemView.groupImageView
+        internal val reserveImage: ImageView = itemView.reserveImageView
         internal val reserveIcon: ImageView = itemView.reserveIconImageView
     }
 

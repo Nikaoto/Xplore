@@ -1,7 +1,6 @@
 package com.xplore.groups
 
 import android.app.Activity
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +48,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         internal val leaderImage: ImageView = itemView.leaderImageView
         internal val leaderReputation: TextView = itemView.leaderRepCombinedTextView
         //Group
-        internal val groupImage: ImageView = itemView.groupImageView
+        internal val groupImage: ImageView = itemView.reserveImageView
         //Group marks
         internal val beenHereMark: ImageView = itemView.beenHereMark
         internal val invitedMark: ImageView = itemView.invitedMark

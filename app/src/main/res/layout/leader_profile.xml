@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_marginTop="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
@@ -17,7 +16,7 @@
 
     <TextView
         android:id="@+id/leaderRepCombinedTextView"
-        tools:text="100 reputation"
+        tools:text="100 Reputation"
         android:layout_toRightOf="@id/leaderImageView"
         android:fontFamily="sans-serif-medium"
         android:textAllCaps="true"
@@ -35,29 +34,26 @@
         android:layout_below="@id/leaderRepCombinedTextView"
         android:layout_centerVertical="@id/leaderImageView"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/user_card_text_marginTop"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/leaderAgeTextView"
-        tools:text="Age: 23"
+        tools:text="ასაკი: 23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorDarkGrey"
-        android:textSize="19sp"
+        android:textColor="@color/colorGreyText"
+        android:textSize="18sp"
         android:layout_toRightOf="@id/leaderImageView"
-        android:layout_below="@id/leaderNameTextView"
-        android:layout_marginTop="@dimen/user_card_text_marginTop"/>
+        android:layout_below="@id/leaderNameTextView"/>
 
     <TextView
         android:id="@+id/leaderTelTextView"
-        tools:text="Tel: 599 42 09 69"
+        tools:text="ტელ: 599 42 09 69"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="19sp"
-        android:textColor="@color/colorDarkGrey"
+        android:textSize="18sp"
+        android:textColor="@color/colorGreyText"
         android:layout_toRightOf="@id/leaderImageView"
-        android:layout_below="@id/leaderAgeTextView"
-        android:layout_marginTop="@dimen/user_card_text_marginTop"/>
+        android:layout_below="@id/leaderAgeTextView"/>
 
 </RelativeLayout>

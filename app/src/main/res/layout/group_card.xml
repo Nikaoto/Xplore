@@ -95,7 +95,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/groupImageView"
+            android:id="@+id/reserveImageView"
             tools:src="@drawable/algeti"
             android:layout_width="match_parent"
             android:layout_height="@dimen/reserve_image_height"

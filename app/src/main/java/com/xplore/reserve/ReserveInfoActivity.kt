@@ -79,7 +79,7 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
 
     fun setupLayout(reserve: Reserve) {
         collapsingToolbar.setTitle(reserve.name)
-        groupImageView.setImageResource(reserve.imageId)
+        reserveImageView.setImageResource(reserve.imageId)
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
         descriptionTextView.text = reserve.description
         faunaTextView.text = reserve.fauna

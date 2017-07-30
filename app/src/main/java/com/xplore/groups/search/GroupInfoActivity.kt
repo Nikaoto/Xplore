@@ -3,7 +3,6 @@ package com.xplore.groups.search
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -18,11 +17,13 @@ import com.xplore.groups.Group
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
+import com.xplore.user.UserProfileActivity
 
 import java.util.ArrayList
 
-import kotlinx.android.synthetic.main.group_info.*
+import kotlinx.android.synthetic.main.group_info2.*
 import kotlinx.android.synthetic.main.reserve_list_item.*
+import kotlinx.android.synthetic.main.leader_profile.*
 
 /**
 * Created by Nikaoto on 2/12/2017.
@@ -57,7 +58,7 @@ class GroupInfoActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.group_info)
+        setContentView(R.layout.group_info2)
         //buildUserBase();
 
         //Receives group data from last intent
@@ -99,7 +100,7 @@ class GroupInfoActivity : Activity() {
             startActivity(ReserveInfoActivity.getStartIntent(this, reserveID))
         }
         reserveNameTextView.text = tempReserveCard.name
-        groupImageView.setImageResource(tempReserveCard.imageId)
+        reserveImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
     }
 
@@ -204,29 +205,36 @@ class GroupInfoActivity : Activity() {
 
     //Displays the already-retrieved data of the group
     private fun applyGroupData() {
-        groupProgressBar.visibility = View.GONE
-
         val leader = members[0];
+        val leaderImageSize = Math.round(resources.getDimension(R.dimen.user_profile_image_medium_size))
+
         //Displaying leader
+
         //Profile picture
         Picasso.with(this).invalidate(leader.getProfile_picture_url())
         Picasso.with(this)
                 .load(leader.getProfile_picture_url())
-                .transform(CircleTransformation(leaderImageView.width, leaderImageView.height))
+                .transform(CircleTransformation(leaderImageSize, leaderImageSize))
                 .into(leaderImageView)
+        leaderImageView.setOnClickListener {
+            General.openUserProfile(this, leader.id)
+        }
+
         //Name
-        leaderFnameTextView.text = leader.getFname()
-        leaderLnameTextView.text = leader.getLname()
+        leaderNameTextView.text = "${leader.fname} ${leader.lname}"
+
         //Age
         val age = General.calculateAge(TimeManager.globalTimeStamp, leader.getBirth_date())
         leaderAgeTextView.text = "${getString(R.string.age)}: $age"
+
         //Telephone
         leaderTelTextView.text = "${getString(R.string.tel)}: ${leader.getTel_num()}"
+
         //Reputation
-        leaderRepTextView.text = leader.getReputation().toString()
+        leaderRepCombinedTextView.text = "${leader.reputation} ${resources.getString(R.string.reputation)}"
 
         //Setting experienced icon
-        if (currentGroup.isExperienced) {
+/*        if (currentGroup.isExperienced) {
             groupExpImageView.setImageResource(R.drawable.ic_check)
         } else {
             groupExpImageView.setImageResource(R.drawable.ic_x)
@@ -234,13 +242,13 @@ class GroupInfoActivity : Activity() {
 
         groupExpImageView.setOnClickListener {
             popExperienceInfoDialog()
-        }
+        }*/
 
-        startDateTextView.text = General.putSlashesInDate(currentGroup.getStart_date())
-        endDateTextView.text = General.putSlashesInDate(currentGroup.getEnd_date())
+        dateCombinedTextView.text = General.putSlashesInDate(currentGroup.getStart_date()) + " - " +
+                General.putSlashesInDate(currentGroup.getEnd_date())
 
-        groupPrefsTextView.text = currentGroup.getGroup_preferences()
-        groupExtraInfoTextView.text = currentGroup.getExtra_info()
+        descriptionTextView.text = currentGroup.extra_info
+        preferencesTextView.text = currentGroup.group_preferences
 
         //Displaying members
         val adapter = MemberListAdapter(this, members)
