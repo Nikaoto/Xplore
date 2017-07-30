@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/reserve_cardview_int_margin">
 
+        <!-- Reserve Image -->
         <ImageView
             tools:src="@drawable/algeti"
             android:id="@+id/groupImageView"
@@ -22,6 +23,7 @@
             android:layout_height="@dimen/reserve_image_height"
             android:scaleType="centerCrop" />
 
+        <!-- Reserve Type Icon -->
         <ImageView
             tools:src="@drawable/ic_nature_people_black_48dp"
             android:id="@+id/reserveIconImageView"
@@ -30,6 +32,7 @@
             android:layout_alignRight="@id/groupImageView"
             android:layout_alignParentBottom="true"/>
 
+        <!-- Reserve Name -->
         <TextView
             tools:text="ALGETI"
             android:id="@+id/reserveNameTextView"
@@ -44,5 +47,7 @@
             android:textAllCaps="true"
             android:fontFamily="sans-serif-medium"
             android:textSize="21sp" />
+
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>

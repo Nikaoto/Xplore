@@ -35,7 +35,7 @@
     <string name="nav_description">Xplore демо-версия.</string>
     <string name="search_no_results">Результатов не найдено</string>
     <string name="show_on_map">Показать на карту</string>
-    <string name="lib_description_header">Описание</string>
+    <string name="description_header">Описание</string>
     <string name="lib_fauna_header">Фауна</string>
     <string name="lib_flora_header">Флора</string>
     <string name="lib_tags_header">Метки</string>

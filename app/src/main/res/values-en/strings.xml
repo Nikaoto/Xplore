@@ -35,7 +35,7 @@
     <string name="nav_description">This is only a demo version of Xplore.</string>
     <string name="search_no_results">No Results Found</string>
     <string name="show_on_map">Show on Map</string>
-    <string name="lib_description_header">Description</string>
+    <string name="description_header">Description</string>
     <string name="lib_fauna_header">Fauna</string>
     <string name="lib_flora_header">Flora</string>
     <string name="lib_tags_header">Tags</string>

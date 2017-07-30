@@ -55,7 +55,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/descriptionCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp">
@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/descriptionHeaderTextView"
-                        android:text="@string/lib_description_header"
+                        android:text="@string/description_header"
                         style="@style/InfoCardViewHeader"
                         android:minHeight="46dp"
                         android:layout_width="match_parent"
@@ -86,7 +86,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/floraCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 
@@ -115,7 +115,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/faunaCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -144,7 +144,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/equipmentCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -173,7 +173,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/tagsCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -202,7 +202,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/difficultyCardView"
-                style="@style/ReserveInfoCardView"
+                style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

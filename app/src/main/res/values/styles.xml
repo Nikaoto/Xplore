@@ -52,7 +52,7 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="ReserveInfoCardView">
+    <style name="InfoCardView">
         <item name="android:layout_marginLeft">9dp</item>
         <item name="android:layout_marginRight">9dp</item>
         <item name="android:layout_marginTop">7dp</item>
