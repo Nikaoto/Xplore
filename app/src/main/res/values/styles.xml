@@ -41,6 +41,7 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorDialect</item>
         <item name="android:minHeight">40dp</item>
     </style>
@@ -49,7 +50,7 @@
         <item name="android:textColor">@color/colorGreyText</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:lineSpacingExtra">6dp</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">15.5sp</item>
     </style>
 
     <style name="InfoCardView">

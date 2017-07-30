@@ -58,6 +58,7 @@
     <string name="birth_date">დაბადების თარიღი</string>
 
     <!-- Group -->
+    <string name="leader">ლიდერი</string>
     <string name="destination">მიმართულება</string>
     <string name="date">თარიღი</string>
     <string name="group_members">გუნდის წევრები</string>
@@ -67,6 +68,7 @@
     <string name="extra_info">დამატებით ინფო</string>
     <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
         ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
+    <string name="leave_group">ჯგუფის დატოვება</string>
 
     <!-- Map -->
     <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>

@@ -33,5 +33,6 @@
     <dimen name="user_profile_image_medium_size">100dp</dimen>
     <dimen name="user_profile_image_small_size">90dp</dimen>
     <dimen name="user_profile_image_tiny_size">50dp</dimen>
+    <dimen name="user_card_text_marginTop">3dp</dimen>
     <dimen name="group_info_single_card_header_min_height">46dp</dimen>
 </resources>

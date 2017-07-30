@@ -111,5 +111,7 @@
     <string name="current_language_russian">Русский</string>
     <string name="activity_library_title">Library</string>
     <string name="location">Location</string>
+    <string name="leader">Leader</string>
+    <string name="leave_group">Leave Group</string>
     <!-- -->
 </resources>
