@@ -9,8 +9,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import com.xplore.CircleTransformation
 import com.xplore.General
+import com.xplore.ImageUtil
 import com.xplore.R
 import kotlinx.android.synthetic.main.user_profile.*
 
@@ -32,7 +32,6 @@ class UserProfileActivity : Activity() {
 
     private val userId: String by lazy { getPassedUserId() }
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
-    private val profileImageSize: Int by lazy { resources.getDimension(R.dimen.user_profile_image_large_size).toInt() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +76,7 @@ class UserProfileActivity : Activity() {
         //Loading profile picture
         Picasso.with(this)
                 .load(user.getProfile_picture_url())
-                .transform(CircleTransformation(profileImageSize))
+                .transform(ImageUtil.largeCircle(this))
                 .into(profileImageView)
 
         nameTextView.text = "${user.getFname()} ${user.getLname()}"

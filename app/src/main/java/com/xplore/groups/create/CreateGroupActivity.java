@@ -354,7 +354,7 @@ public class CreateGroupActivity extends Activity implements DatePickerDialog.On
         builder.setMessage(resources.getString(text))
                 .setTitle(resources.getString(title))
                 .setCancelable(false)
-                .setPositiveButton(resources.getString(butt_text),null);
+                .setPositiveButton(resources.getString(butt_text), null);
 
         AlertDialog alert = builder.create();
         alert.show();

@@ -10,8 +10,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 
 import com.squareup.picasso.Picasso
-import com.xplore.CircleTransformation
 import com.xplore.General
+import com.xplore.ImageUtil
 import com.xplore.R
 import com.xplore.groups.search.GroupInfoActivity
 
@@ -34,12 +34,6 @@ import kotlinx.android.synthetic.main.group_card.view.*
 class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                                            private val activity: Activity)
     : RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder>() {
-
-    private val imgSize: Int
-
-    init {
-        imgSize = Math.round(activity.resources.getDimension(R.dimen.user_profile_image_tiny_size))
-    }
 
     class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //Leader
@@ -90,7 +84,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         //Leader image
         Picasso.with(activity)
                 .load(group.leaderImageUrl)
-                .transform(CircleTransformation(imgSize, imgSize))
+                .transform(ImageUtil.tinyCircle(activity))
                 .into(holder.leaderImage)
         holder.leaderImage.setOnClickListener { General.openUserProfile(activity, group.leaderId) }
 

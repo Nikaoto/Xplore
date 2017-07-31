@@ -35,7 +35,6 @@ class MemberListAdapter(private val context: Context,
                         private val allowUserRemoval: Boolean = false)
     : RecyclerView.Adapter<MemberListAdapter.MemberViewHolder>() {
 
-    private val imgSize = Math.round(context.resources.getDimension(R.dimen.user_profile_image_small_size))
     private var currentMember = User()
 
     override fun getItemCount() = users.size
@@ -65,7 +64,7 @@ class MemberListAdapter(private val context: Context,
         //Loading Member Image
         Picasso.with(context)
                 .load(currentMember.getProfile_picture_url())
-                .transform(CircleTransformation(imgSize, imgSize))
+                .transform(ImageUtil.smallCircle(context))
                 .into(holder.memberImage)
 
         //Configuring Clicks

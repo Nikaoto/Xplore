@@ -22,8 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.xplore.CircleTransformation;
 import com.xplore.General;
+import com.xplore.ImageUtil;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.user.User;
@@ -199,12 +199,10 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
 
-        private final int imgSize;
         private final ArrayList<User> userList;
 
         public UserListAdapter(ArrayList<User> userList) {
             super(SearchUsersActivity.this, R.layout.group_list_item, userList);
-            imgSize = Math.round(getResources().getDimension(R.dimen.user_profile_image_small_size));
             this.userList = userList;
         }
 
@@ -244,7 +242,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             String userImageRef = currentUser.getProfile_picture_url();
             Picasso.with(getContext())
                     .load(userImageRef)
-                    .transform(new CircleTransformation(imgSize, imgSize))
+                    .transform(ImageUtil.smallCircle(getContext()))
                     .into(userImage);
 
             //Configuring Clicks

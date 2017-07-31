@@ -216,7 +216,6 @@ class GroupInfoActivity : Activity() {
     //Displays the already-retrieved data of the group
     private fun applyGroupData() {
         val leader = members[0];
-        val leaderImageSize = Math.round(resources.getDimension(R.dimen.user_profile_image_medium_size))
 
         //Displaying leader
 
@@ -224,7 +223,7 @@ class GroupInfoActivity : Activity() {
         Picasso.with(this).invalidate(leader.getProfile_picture_url())
         Picasso.with(this)
                 .load(leader.getProfile_picture_url())
-                .transform(CircleTransformation(leaderImageSize, leaderImageSize))
+                .transform(ImageUtil.mediumCircle(this))
                 .into(leaderImageView)
         leaderImageView.setOnClickListener {
             General.openUserProfile(this, leader.id)
@@ -271,7 +270,7 @@ class GroupInfoActivity : Activity() {
         //TODO string resources
         builder.setTitle("Leave Group?")
                 .setMessage("Are you sure you want to leave this group?")
-                .setPositiveButton("Yes", { _, _: Int -> leaveGroup() })
+                .setPositiveButton("Yes", { _, _ -> leaveGroup() })
                 .setNegativeButton("No", null)
         builder.show()
     }

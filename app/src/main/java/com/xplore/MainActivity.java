@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
 
     private ImageView userImageView;
-    private int userImageViewSize;
     private TextView userFullNameTextView;
     private NavigationView navigationView;
     private FragmentManager fm;
@@ -83,8 +82,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_about);
 
         //Setting up user profile inside drawer header
-        userImageViewSize =
-                Math.round(getResources().getDimension(R.dimen.user_profile_image_medium_size));
         View navHeaderView = navigationView.getHeaderView(0);
         userImageView = (ImageView) navHeaderView.findViewById(R.id.drawer_image);
         userFullNameTextView = (TextView) navHeaderView.findViewById(R.id.userFullNameTextView);
@@ -237,7 +234,7 @@ public class MainActivity extends AppCompatActivity
                     User tempUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
                     Picasso.with(context)
                             .load(tempUser.getProfile_picture_url())
-                            .transform(new CircleTransformation(userImageViewSize, userImageViewSize))
+                            .transform(ImageUtil.mediumCircle(context))
                             .into(userImageView);
                     userFullNameTextView.setVisibility(View.VISIBLE);
                     userFullNameTextView.setText(tempUser.getFname()+" "+tempUser.getLname());
