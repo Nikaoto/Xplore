@@ -52,7 +52,7 @@
     <!-- User -->
     <string name="user">მომხმარებელი</string>
     <string name="reputation">რეპუტაცია</string>
-    <string name="email">ელ-პოსტა</string>
+    <string name="email">ელ-ფოსტა</string>
     <string name="tel">ტელ</string>
     <string name="age">ასაკი</string>
     <string name="birth_date">დაბადების თარიღი</string>
@@ -105,6 +105,15 @@
     <string name="date_past_invalid">
         დასაწყისის ან დასასრული თარიღი ვერ იქნება წარსულში.\n\nგთხოვთ, შეასწოროთ შეცდომა.
     </string>
+
+    <!-- Registration -->
+    <string name="register">რეგისტრაცია</string>
+    <string name="first_name">სახელი</string>
+    <string name="last_name">გვარი</string>
+    <string name="mobile_number">მობილურის ნომერი</string>
+    <string name="date_format">წელი/თვე/დღე</string>
+    <string name="profile_picture">პროფილის ფოტო</string>
+    <string name="click_to_change">დააჭირეთ რომ შეცვალოთ</string>
 
     <!-- About -->
     <string name="about_header">შესახებ</string>

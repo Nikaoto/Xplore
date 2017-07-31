@@ -113,5 +113,12 @@
     <string name="location">Место Нахождения</string>
     <string name="leader">Лидер</string>
     <string name="leave_group">Покинуть Группу</string>
+    <string name="register">Регистрация</string>
+    <string name="profile_picture">Профильный Фото</string>
+    <string name="mobile_number">Мобильный Номер</string>
+    <string name="last_name">Фамилия</string>
+    <string name="first_name">Имя</string>
+    <string name="date_format">Лет/Месяц/День</string>
+    <string name="click_to_change">Нажмите, чтобы изменить</string>
     <!-- -->
 </resources>

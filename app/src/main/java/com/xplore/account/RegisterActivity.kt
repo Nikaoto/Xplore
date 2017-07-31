@@ -34,10 +34,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 16
-
-    private val userImageSize by lazy {
-        Math.round(resources.getDimension(R.dimen.user_profile_image_medium_size))
-    }
     private var bYear: Int = 0
     private var bMonth: Int = 0
     private var bDay: Int = 0
@@ -84,6 +80,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
         //TODO CHOOSE GALLERY IMAGE OR TAKE PHOTO
         //TODO AI check for face in photo?
+
+        val userImageSize = Math.round(resources.getDimension(R.dimen.user_profile_image_medium_size))
+
         if(userProfilePicUrl != "") {
             Picasso.with(this@RegisterActivity)
                     .load(userProfilePicUrl)

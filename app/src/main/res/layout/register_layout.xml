@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/titleTextView"
-            android:text="Register"
+            android:text="@string/register"
             android:textSize="30sp"
             android:textColor="@color/colorDarkGrey"
             android:textStyle="bold"
@@ -31,7 +31,7 @@
 
             <TextView
                 android:id="@+id/fnameLabelTextView"
-                android:text="First Name"
+                android:text="@string/first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/fnameEditText"
@@ -64,7 +64,7 @@
 
             <TextView
                 android:id="@+id/lnameLabelTextView"
-                android:text="Last Name"
+                android:text="@string/last_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="@dimen/reg_label_size"
                 android:layout_alignBaseline="@+id/lnameEditText"
@@ -96,7 +96,7 @@
 
             <TextView
                 android:id="@+id/emailLabelTextView"
-                android:text="Email"
+                android:text="@string/email"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
                 android:layout_alignBaseline="@+id/emailEditText"
@@ -131,7 +131,7 @@
                 android:id="@+id/numLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mobile Number"
+                android:text="@string/mobile_number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
                 android:layout_alignBaseline="@+id/numEditText" />
@@ -161,7 +161,7 @@
 
             <TextView
                 android:id="@+id/bdateLabelTextView"
-                android:text="Birth Date"
+                android:text="@string/birth_date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
                 android:layout_alignBaseline="@+id/bdateTextView"
@@ -186,11 +186,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="yyyy/mm/dd"
+                android:text="@string/date_format"
                 android:layout_below="@id/bdateTextView"
-                android:layout_alignLeft="@id/bdateTextView"
-                android:layout_marginLeft="@dimen/reg_text_margin_left"
-                android:textSize="15sp" />
+                android:layout_alignParentRight="true"
+                android:textSize="14sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -201,7 +200,7 @@
 
             <TextView
                 android:id="@+id/profileLabelTextView"
-                android:text="Profile Picture"
+                android:text="@string/profile_picture"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
                 android:layout_centerVertical="true"
@@ -210,12 +209,21 @@
 
             <ImageView
                 android:id="@+id/profileImageView"
+                android:src="@drawable/user_default_profile_image"
+                android:scaleType="centerCrop"
                 android:layout_toRightOf="@id/profileLabelTextView"
                 android:layout_marginLeft="25dp"
                 android:layout_width="@dimen/user_profile_image_medium_size"
                 android:layout_height="@dimen/user_profile_image_medium_size"/>
 
         </RelativeLayout>
+
+        <TextView
+            android:text="@string/click_to_change"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="right"/>
 
         <RelativeLayout
             android:gravity="center_horizontal"
