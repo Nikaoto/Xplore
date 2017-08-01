@@ -17,7 +17,6 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
@@ -152,7 +151,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         addUserEntryToDataBase(user)
                 }
                 .addOnFailureListener {
-                    Log.println(Log.INFO, "upload", imagePath.toString())
                     //TODO string resources
                     Toast.makeText(this, "Failed to upload profile picture, please try again",
                             Toast.LENGTH_SHORT).show()
@@ -251,7 +249,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     /* Everything below is code needed for profile picture choosing or taking functionality */
 
     var imagePath: Uri? = null
-    var uploadImagePath: Uri? = null
 
     //Requests permissions for given module with the passed request code and permissionType
     fun requestModulePermission(activity: Activity, permission: String, requestCode: Int,
@@ -319,7 +316,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     val temp = createImageFile()
                     cropImage(imagePath as Uri, temp.getUri())
                     imagePath = Uri.parse(getPicturePath(temp.name))
-                    Log.println(Log.INFO, "upload-snap", imagePath.toString())
                     addPictureToGallery(imagePath.toString())
                 }
             }
@@ -327,7 +323,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val tempFile = createImageFile()
                     imagePath = Uri.parse(getPicturePath(tempFile.name))
-                    Log.println(Log.INFO, "upload-pick", imagePath.toString())
                     cropImage(data.data, tempFile.getUri())
                 }
             }
@@ -336,7 +331,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     val tempPath = resizeAndCompressImage(imagePath.toString())
                     val tempFile = File(tempPath)
                     imagePath = tempFile.getUri()
-                    Log.println(Log.INFO, "upload-crop", imagePath.toString())
                     Picasso.with(this)
                             .load(tempFile)
                             .transform(ImageUtil.mediumCircle(this))
