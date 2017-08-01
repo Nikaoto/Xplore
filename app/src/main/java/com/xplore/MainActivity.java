@@ -196,11 +196,10 @@ public class MainActivity extends AppCompatActivity
             recreate();
         }
 
-        //TODO show this toast after exiting register activity
-        if (General.accountStatus == General.JUST_REGISTERED) {
+/*        if (General.accountStatus == General.JUST_REGISTERED) {
             Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show(); //TODO string resources
             General.accountStatus = General.JUST_LOGGED_IN;
-        }
+        }*/
 
         if (General.accountStatus == General.JUST_LOGGED_IN) {
             notificationManager.reset();

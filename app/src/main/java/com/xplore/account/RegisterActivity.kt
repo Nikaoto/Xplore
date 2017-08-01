@@ -22,6 +22,9 @@ import android.widget.Toast
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.soundcloud.android.crop.Crop
 import com.squareup.picasso.Picasso
 import com.xplore.General
@@ -49,6 +52,10 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     val CAMERA_PERMISSION_REQUEST_CODE = 1;
     val GALLERY_PERMISSION_REQUEST_CODE = 2;
     val ACTION_SNAP_IMAGE = 3
+
+    //Firebase
+    val storageRef = FirebaseStorage.getInstance().reference
+    private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
 
     // File provider authority string
     val authority = "com.xplore.fileprovider"
@@ -83,8 +90,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Getting User info from SignInActivity
         val userId = intent.getStringExtra("userId")
         val userFullName = intent.getStringExtra("fullName")
-        Log.println(Log.INFO, "firebaseuser", "User FullName = $userFullName")
-
         val userEmail = intent.getStringExtra("email")
         val userProfilePicUrl = intent.getStringExtra("photoUrl")
 
@@ -120,14 +125,36 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
         doneButton.setOnClickListener {
             if (checkFields()) {
-                //TODO upload image to db if changed
-                addUserEntryToDataBase(
-                        UploadUser(userId, fnameEditText.str(), lnameEditText.str(),
-                                numEditText.str(), userEmail,
-                                General.getDateLong(bYear, bMonth, bDay), userProfilePicUrl)
-                )
+                if (imagePath != null) {
+                    val ref = storageRef.child("users/$userId/profile_picture.jpg")
+                    val newUser = UploadUser(
+                            userId,
+                            fnameEditText.str(),
+                            lnameEditText.str(),
+                            numEditText.str(),
+                            userEmail,
+                            General.getDateLong(bYear, bMonth, bDay),
+                            userProfilePicUrl)
+                    uploadUserData(newUser, imagePath as Uri, ref)
+                }
             }
         }
+    }
+
+    private fun uploadUserData(user: UploadUser, input: Uri, output: StorageReference) {
+        Log.println(Log.INFO, "storage", "Uploading user profile picture")
+        Log.println(Log.INFO, "storage", "Input = $input")
+        Log.println(Log.INFO, "storage", "Output = ${output.path}")
+        output.putFile(input)
+                .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
+                        user.profile_picture_url = taskSnapshot.downloadUrl.toString()
+                        addUserEntryToDataBase(user)
+                }
+                .addOnFailureListener {
+                    //TODO string resources
+                    Toast.makeText(this, "Failed to upload profile picture, please try again",
+                            Toast.LENGTH_SHORT).show()
+                }
     }
 
     //Adds zero to Day or Month number if needed
@@ -146,7 +173,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
             } else {
                 //TODO string resources
                 Toast.makeText(this@RegisterActivity,
-                        "You must be of age $ageRestriction to use Xplore",
+                        "You must be at least $ageRestriction years old to use Xplore",
                         Toast.LENGTH_SHORT).show()
             }
         } else
@@ -229,9 +256,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Checking if not allowed
         if (ContextCompat.checkSelfPermission(activity, permission)
                 != PackageManager.PERMISSION_GRANTED) {
-            //Open dialogue requesting permission
-            Log.println(Log.INFO, "camera", "requesting permission")
-
+            //Open dialogue and request the permission
             ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
         } else {
             module()
@@ -252,7 +277,6 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     val takeFromCamera = DialogInterface.OnClickListener {
         _, _ ->
-        Log.println(Log.INFO, "camera", "write_ext_storage permission")
             requestModulePermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     CAMERA_PERMISSION_REQUEST_CODE, { prepareCamera() })
 
@@ -260,15 +284,11 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     // Prepares extra permissions for camera and then opens it(kind of hacky)
     fun prepareCamera() {
-        Log.println(Log.INFO, "camera", "preparing Camera")
-        Log.println(Log.INFO, "camera", "camera permission")
         requestModulePermission(this, Manifest.permission.CAMERA,
                 CAMERA_PERMISSION_REQUEST_CODE, { openCamera() })
     }
 
     fun openCamera() {
-        Log.println(Log.INFO, "camera", "opening Camera")
-
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
             val photoFile: File

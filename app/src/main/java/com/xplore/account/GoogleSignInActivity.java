@@ -146,7 +146,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 finish();
             }
         } else if(requestCode == RC_REGISTER) {
-            accountStatus = JUST_REGISTERED;
+            Toast.makeText(getApplicationContext(),
+                    "Registered successfully. Welcome to Xplore!",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            General.accountStatus = General.JUST_LOGGED_IN;
             finish();
         }
     }
