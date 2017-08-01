@@ -223,7 +223,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:gravity="right"/>
+            android:gravity="center_horizontal"/>
 
         <RelativeLayout
             android:gravity="center_horizontal"
