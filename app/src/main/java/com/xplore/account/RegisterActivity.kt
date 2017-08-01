@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -37,7 +39,9 @@ import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 /**
@@ -142,15 +146,13 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun uploadUserData(user: UploadUser, input: Uri, output: StorageReference) {
-        Log.println(Log.INFO, "storage", "Uploading user profile picture")
-        Log.println(Log.INFO, "storage", "Input = $input")
-        Log.println(Log.INFO, "storage", "Output = ${output.path}")
         output.putFile(input)
                 .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
                         user.profile_picture_url = taskSnapshot.downloadUrl.toString()
                         addUserEntryToDataBase(user)
                 }
                 .addOnFailureListener {
+                    Log.println(Log.INFO, "upload", imagePath.toString())
                     //TODO string resources
                     Toast.makeText(this, "Failed to upload profile picture, please try again",
                             Toast.LENGTH_SHORT).show()
@@ -249,6 +251,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     /* Everything below is code needed for profile picture choosing or taking functionality */
 
     var imagePath: Uri? = null
+    var uploadImagePath: Uri? = null
 
     //Requests permissions for given module with the passed request code and permissionType
     fun requestModulePermission(activity: Activity, permission: String, requestCode: Int,
@@ -291,13 +294,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
-            val photoFile: File
-            try {
-                photoFile = createImageFile();
-            } catch (ex: IOException) {
-                throw ex
-            }
-            val photoURI = FileProvider.getUriForFile(this, authority, photoFile)
+            val photoURI = createImageFile().getUri()
             imagePath = photoURI
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(takePictureIntent, ACTION_SNAP_IMAGE);
@@ -319,27 +316,40 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         when (requestCode) {
             ACTION_SNAP_IMAGE -> {
                 if(resultCode == Activity.RESULT_OK && imagePath != null) {
-                    cropImage(imagePath as Uri, imagePath as Uri)
+                    val temp = createImageFile()
+                    cropImage(imagePath as Uri, temp.getUri())
+                    imagePath = Uri.parse(getPicturePath(temp.name))
+                    Log.println(Log.INFO, "upload-snap", imagePath.toString())
                     addPictureToGallery(imagePath.toString())
                 }
             }
             Crop.REQUEST_PICK -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val photoURI = FileProvider.getUriForFile(this, authority, createImageFile())
-                    cropImage(data.data, photoURI)
+                    val tempFile = createImageFile()
+                    imagePath = Uri.parse(getPicturePath(tempFile.name))
+                    Log.println(Log.INFO, "upload-pick", imagePath.toString())
+                    cropImage(data.data, tempFile.getUri())
                 }
             }
             Crop.REQUEST_CROP -> {
                 if (data != null) {
+                    val tempPath = resizeAndCompressImage(imagePath.toString())
+                    val tempFile = File(tempPath)
+                    imagePath = tempFile.getUri()
+                    Log.println(Log.INFO, "upload-crop", imagePath.toString())
                     Picasso.with(this)
-                            .load(Crop.getOutput(data))
+                            .load(tempFile)
                             .transform(ImageUtil.mediumCircle(this))
                             .into(profileImageView)
-                    imagePath = Crop.getOutput(data)
                 }
             }
         }
     }
+
+    fun getPicturePath(picName: String)
+            = getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath + "/" + picName
+
+    fun File.getUri() = FileProvider.getUriForFile(this@RegisterActivity, authority, this)
 
     //Starts cropping activity with code Crop.REQUEST_CROP
     fun cropImage(input: Uri, output: Uri) = Crop.of(input, output).asSquare().start(this)
@@ -356,9 +366,62 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     /* add picture to gallery */
     private fun addPictureToGallery(picturePath: String) {
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        val f = File(picturePath)
-        val contentUri = Uri.fromFile(f)
-        mediaScanIntent.data = contentUri
+        mediaScanIntent.data = Uri.fromFile(File(picturePath))
         this.sendBroadcast(mediaScanIntent)
+    }
+
+    fun resizeAndCompressImage(filePath: String): String {
+        val MAX_IMAGE_SIZE = 10 * 1024 //in kilobytes
+
+        //Decode with inJustDecodeBounds so we can resize it first
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(filePath, options)
+        //
+        options.inSampleSize = calculateInSampleSize(options, 300, 300)
+        //
+        options.inJustDecodeBounds = false
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888
+        val bmp = BitmapFactory.decodeFile(filePath, options)
+
+        //Compressing
+        var compressQuality = 100 //Decreases by 5 every loop
+        var streamLength = 0
+
+        do {
+            val bmpStream = ByteArrayOutputStream()
+            bmp.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            val bmpByteAarray = bmpStream.toByteArray()
+            streamLength = bmpByteAarray.size
+            compressQuality -= 5
+        } while (streamLength >= MAX_IMAGE_SIZE)
+
+        val tempFile = createImageFile()
+        try {
+            val tempBmpFile = FileOutputStream(tempFile)
+            bmp.compress(Bitmap.CompressFormat.JPEG, compressQuality, tempBmpFile)
+            tempBmpFile.flush()
+            tempBmpFile.close()
+        } catch (e: Exception) {
+            throw e
+        }
+        return tempFile.absolutePath
+    }
+
+    //Calculates largest sample size that is the power of 2
+    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val width = options.outWidth
+        val height = options.outHeight
+        var sampleSize = 1
+
+        if (width > reqWidth || height > reqHeight) {
+            val halfWidth = width /2
+            val halfHeight = height / 2
+
+            while ((halfWidth / sampleSize) > reqWidth && (halfHeight / sampleSize) > reqHeight) {
+                sampleSize *= 2
+            }
+        }
+        return sampleSize
     }
 }
