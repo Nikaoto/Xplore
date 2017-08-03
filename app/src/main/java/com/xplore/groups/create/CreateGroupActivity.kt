@@ -1,9 +1,6 @@
 package com.xplore.groups.create
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -14,12 +11,8 @@ import android.widget.DatePicker
 import android.widget.Toast
 
 import com.google.firebase.database.FirebaseDatabase
+import com.xplore.*
 import com.xplore.database.DBManager
-import com.xplore.DatePickerFragment
-import com.xplore.General
-import com.xplore.MemberListAdapter
-import com.xplore.R
-import com.xplore.TimeManager
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 
@@ -61,18 +54,15 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private val E_INFO_CHAR_MAX = 200
     private val E_INFO_CHAR_MIN = 5
 
-    //Variables for finding out which date user is selecting (start / end)
+    //Tags for date and time pickers
     private val SELECTION_NONE = ""
     private val SELECTION_START = "start"
     private val SELECTION_END = "end"
+    private var selecting = SELECTION_NONE
 
     //Setting chosen answer and destination to default
     private var chosenDestId = CHOSEN_DEST_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
-
-    //Needed to determine which date or time the user is choosing
-    private var selectingDate = SELECTION_NONE
-    private var selectingTime = SELECTION_NONE
 
     //Stores start/end dates and times
     private object date {
@@ -80,37 +70,68 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         var startYear = 0
         var startMonth = 0
         var startDay = 0
-        var startTime = 0
+        var startTime = ""
 
         //End
         var endYear = 0
         var endMonth = 0
         var endDay = 0
-        var endTime = 0
+        var endTime = ""
 
         //Setting dates
         fun setStartDate(y: Int, m: Int, d: Int) {
             this.startYear = y
             this.startMonth = m
-            this.startDay = m
+            this.startDay = d
         }
+
         fun setEndDate(y: Int, m: Int, d: Int) {
             this.endYear = y
             this.endMonth = m
-            this.endDay = m
+            this.endDay = d
         }
 
+        //Setting times
+        fun setTime(hour: Int, minute: Int): String {
+            var str = ""
+            if (hour < 10) {
+                str += "0"
+            }
+            str += hour.toString()
+            if (minute < 10) {
+                str += "0"
+            }
+            str += minute.toString()
+            return str
+        }
+
+        fun setStartTime(hour: Int, minute: Int) {
+            startTime = setTime(hour, minute)
+        }
+        fun setEndTime(hour: Int, minute: Int) {
+            endTime = setTime(hour, minute)
+        }
+
+        //Getting times as strings
+        private fun getTimeText(s: String) = s.substring(0, 2) + ":" + s.substring(2)
+        fun getStartTimeText() = getTimeText(startTime)
+        fun getEndTimeText() = getTimeText(endTime)
+
         //Getting dates as longs
-        private fun getDateLong(y: Int, m: Int, d: Int) = y*10000 + m*100 + d
+        private fun getDateLong(y: Int, m: Int, d: Int): Long {
+            if (d < 10)
+                return (y*10000 + m*1000 + d).toLong()
+            else
+                return (y*10000 + m*100 + d).toLong()
+        }
+
         fun getStartDate() = getDateLong(startYear, startMonth, startDay)
         fun getEndDate() = getDateLong(endYear, endMonth, endDay)
 
         //Getting dates as strings (to display on TextViews)
-        fun getDateString(y: Int, m: Int, d: Int) = "$y/$m/$d"
+        private fun getDateString(y: Int, m: Int, d: Int) = "$y/$m/$d"
         fun getStartDateString() = getDateString(startYear, startMonth, startDay)
         fun getEndDateString() = getDateString(endYear, endMonth, endDay)
-
-        //
     }
 
     private var groupPrefs: String = ""
@@ -166,27 +187,19 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         startDateButton.setOnClickListener {
-            if (TimeManager.globalTimeStamp != 0L) {
-                selectingDate = SELECTION_START
-                DatePickerFragment(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
-                        .show(fragmentManager, "startDate")
-            }
+            showDatePicker(SELECTION_START)
         }
 
         startTimeButton.setOnClickListener {
-
+            showTimePicker(SELECTION_START)
         }
 
         endDateButton.setOnClickListener {
-            if (TimeManager.globalTimeStamp != 0L) {
-                selectingDate = SELECTION_END
-                DatePickerFragment(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
-                        .show(fragmentManager, "endDate")
-            }
+            showDatePicker(SELECTION_END)
         }
 
         endTimeButton.setOnClickListener {
-
+            showTimePicker(SELECTION_END)
         }
 
         inviteButton.setOnClickListener {
@@ -205,7 +218,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         doneButton.setOnClickListener {
-            GatherData()
+            getDescriptions()
             if (checkFields()) {
                 uploadGroupData()
             }
@@ -219,6 +232,50 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun showDatePicker(code: String) {
+        if (TimeManager.globalTimeStamp != 0L) {
+            selecting = code
+            DatePickerFragment(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
+                    .show(fragmentManager, "")
+        }
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, receivedMonth: Int, day: Int) {
+        val month  = receivedMonth + 1 //+1 is necessary because 0 is January
+        when (selecting) {
+            SELECTION_START -> {
+                selecting = SELECTION_NONE
+                date.setStartDate(year, month, day)
+                startDateTextView.text = date.getStartDateString()
+            }
+            SELECTION_END -> {
+                selecting = SELECTION_NONE
+                date.setEndDate(year, month, day)
+                endDateTextView.text = date.getEndDateString()
+            }
+        }
+    }
+
+    private fun showTimePicker(code: String) {
+        selecting = code
+        TimePickerFragment(onTimeSetListener).show(fragmentManager, "")
+    }
+
+    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        when (selecting) {
+            SELECTION_START -> {
+                selecting = SELECTION_NONE
+                date.setStartTime(hourOfDay, minute)
+                startTimeTextView.text = date.getStartTimeText()
+            }
+            SELECTION_END -> {
+                selecting = SELECTION_NONE
+                date.setEndTime(hourOfDay, minute)
+                endTimeTextView.text = date.getEndTimeText()
+            }
+        }
+    }
+
     public override fun onResume() {
         super.onResume()
 
@@ -228,22 +285,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             //TODO make a separate method for displaying the reserve
             reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId))
             reserveButton.text = dbManager.getStr(chosenDestId, DBManager.NAME, General.DB_TABLE)
-        }
-    }
-
-    override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        if (General.isNetConnected(this)) {
-            if (selectingDate == SELECTION_START) {
-                selectingDate = SELECTION_NONE
-                date.setStartDate(year, month, day)
-                startDateTextView.text = date.getStartDateString()
-            } else if (selectingDate == SELECTION_END) {
-                selectingDate = SELECTION_NONE
-                date.setEndDate(year, month, day)
-                endDateTextView.text = date.getEndDateString()
-            }
-        } else {
-            General.createNetErrorDialog(this)
         }
     }
 
@@ -278,8 +319,10 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         return UploadableGroup(
                 key, //Firebase Unique Group Key
                 exp, //Group Experienced Boolean
-                date.getStartDate().toLong(), //Start Date
-                date.getEndDate().toLong(), //End Date
+                date.getStartDate(), //Start Date
+                date.startTime.toLong(), //Start Time
+                date.getEndDate(), //End Date
+                date.endTime.toLong(),
                 chosenDestId.toString(), //Chosen Destination Id
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
@@ -294,7 +337,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         childUpdates.put("/" + key, groupData)
 
         groupsRef.updateChildren(childUpdates)
-        Toast.makeText(this, "Group Created", Toast.LENGTH_SHORT).show() //TODO add string resources
+        Toast.makeText(this, "Group Created", Toast.LENGTH_SHORT).show() //TODO string resources
         General.HideKeyboard(this)
         finish()
     }
@@ -305,7 +348,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         invitedMemberList.adapter = adapter
     }
 
-    private fun GatherData() {
+    private fun getDescriptions() {
         groupPrefs = groupPrefs_editText.text.toString()
         extraInfo = extraInfo_editText.text.toString()
     }
@@ -339,6 +382,10 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             builder.setMessage(R.string.date_invalid)
                     .show()
             return false
+        } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
+            builder.setMessage("Please fix the start and end times.") //TODO string resources
+                    .show()
+            return false
         } else if (experienceAns == EXPERIENCE_ANS_DEFAULT) {
             builder.setMessage(R.string.exp_field_incomplete)
                     .show()
@@ -349,7 +396,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     .show()
             return false
         } else if (date.getStartDate() < General.getDateLong(TimeManager.globalTimeStamp) || date.getEndDate() < General.getDateLong(TimeManager.globalTimeStamp)) {
-            builder.setMessage(R.string.date_past_invalid).show()
+            builder.setMessage(R.string.date_past_invalid)
+                    .show()
             return false
         } else {
             return true

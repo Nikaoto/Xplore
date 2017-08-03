@@ -23,13 +23,16 @@ import java.util.Map;
 //Class that gets mapped to a group in Firebase database and is uploaded
 class UploadableGroup extends Group {
 
-    UploadableGroup(String group_id, boolean experienced, long start_date, long end_date,
-                String destination_id, String extra_info, String group_preferences,
-                ArrayList<String> member_ids) {
+    UploadableGroup(String group_id, boolean experienced,
+                    long start_date, long start_time, long end_date, long end_time,
+                    String destination_id, String extra_info, String group_preferences,
+                    ArrayList<String> member_ids) {
         this.setGroup_id(group_id);
         this.setExperienced(experienced);
         this.setStart_date(start_date);
+        this.setStart_time(start_time);
         this.setEnd_date(end_date);
+        this.setEnd_time(end_time);
         this.setDestination_id(destination_id);
         this.setExtra_info(extra_info);
         this.setGroup_preferences(group_preferences);
@@ -42,7 +45,9 @@ class UploadableGroup extends Group {
         HashMap<String, Object> result = new HashMap<>();
         result.put("destination_id", this.getDestination_id());
         result.put("start_date", this.getStart_date());
+        result.put("start_time", this.getStart_date());
         result.put("end_date", this.getEnd_date());
+        result.put("end_time", this.getEnd_date());
         result.put("experienced", this.isExperienced());
         result.put("group_preferences", this.getGroup_preferences());
         result.put("extra_info", this.getExtra_info());

@@ -35,10 +35,9 @@ class SearchDestinationActivity : Activity() {
 
     private val dbManager: DBManager by lazy { DBManager(this) }
 
-    companion object {
-        private val CHOSEN_DEST_DEFAULT_VAL = -1
-        private var chosenDestId = CHOSEN_DEST_DEFAULT_VAL
-    }
+    private val CHOSEN_DEST_DEFAULT_VAL = -1
+    var chosenDestId = CHOSEN_DEST_DEFAULT_VAL
+
 
     private var reserveCards = ArrayList<ReserveCard>()
     private val answerCards = ArrayList<ReserveCard>()
@@ -114,10 +113,10 @@ class SearchDestinationActivity : Activity() {
         resultsRV.adapter.notifyDataSetChanged()
     }
 
-    class RVAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
+    inner class RVAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
         : RecyclerView.Adapter<RVAdapter.ResultViewHolder>(){
 
-        class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        inner class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             internal val reserveName: TextView
             internal val reserveImage: ImageView
             internal val reserveIcon: ImageView

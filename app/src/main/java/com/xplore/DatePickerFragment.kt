@@ -4,7 +4,8 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.DialogFragment
 import android.os.Bundle
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 /**
 * Created by Nikaoto on 3/11/2017.
@@ -26,13 +27,12 @@ class DatePickerFragment(val listener: DatePickerDialog.OnDateSetListener?,
     //Empty constructor
     constructor() : this(null, 0L, -1)
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
-    {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //Setting up current date
         val c = Calendar.getInstance()
         c.time = Date(timeStamp)
         val year = c.get(Calendar.YEAR) - yearOffset
-        val month = c.get(Calendar.MONTH) + 1 //+1 is necessary because 0 is january
+        val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it

@@ -160,7 +160,8 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     //Adds zero to Day or Month number if needed
     fun addZero(num: Int) = if(num < 10) "0$num" else "$num"
 
-    override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, day: Int) {
+    override fun onDateSet(datePicker: DatePicker, year: Int, receivedMonth: Int, day: Int) {
+        val month  = receivedMonth + 1 //+1 is necessary because 0 is January
         if (General.isNetConnected(this@RegisterActivity)) {
 
             //Checking if age is OK

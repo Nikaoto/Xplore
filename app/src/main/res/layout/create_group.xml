@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/chooseReserve_button"
+            android:id="@+id/chooseReserveButton"
             android:text="@string/activity_choose_destination_title"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"
@@ -32,7 +32,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat"/>
 
         <Button
-            android:id="@+id/createGroup_reserveButton"
+            android:id="@+id/reserveButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lib_button_height"
             android:textAppearance="@style/TextAppearance.AppCompat"
@@ -50,35 +50,38 @@
             android:layout_marginTop="@dimen/lib_button_margin_top"
             android:textStyle="bold"/>
 
+        <View style="@style/Divider"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"/>
+
         <RelativeLayout
-            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <!-- Start Date -->
             <TextView
-                android:id="@+id/dateStart_label"
+                android:id="@+id/startDateLabel"
                 android:text="@string/date_start"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/chooseStartDate"
-                android:layout_alignBaseline="@+id/chooseStartDate"
+                android:layout_toLeftOf="@+id/startDateButton"
+                android:layout_alignBaseline="@+id/startDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat"/>
-
             <TextView
-                android:id="@+id/dateStart_text"
-                android:layout_below="@id/dateStart_label"
+                android:id="@+id/startDateTextView"
+                android:layout_below="@id/startDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"/>
-
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/chooseStartDate"
+                android:id="@+id/startDateButton"
                 android:text="@string/set"
                 android:textSize="15sp"
                 app:backgroundTint="@color/colorAccent"
@@ -90,33 +93,74 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <!-- Start Time -->
             <TextView
-                android:id="@+id/dateEnd_label"
-                android:text="@string/date_end"
+                android:id="@+id/startTimeLabel"
+                android:text="@string/start_time"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/chooseEndDate"
-                android:layout_alignBaseline="@+id/chooseEndDate"
+                android:layout_toLeftOf="@+id/startTimeButton"
+                android:layout_alignBaseline="@+id/startTimeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat"/>
-
             <TextView
-                android:id="@+id/dateEnd_text"
-                android:layout_below="@id/dateEnd_label"
+                android:id="@+id/startTimeTextView"
+                android:layout_below="@id/startTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"/>
-
-
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/chooseEndDate"
-                android:layout_below="@id/chooseStartDate"
+                android:id="@+id/startTimeButton"
+                android:text="@string/set"
+                android:layout_below="@id/startDateTextView"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <View style="@style/dashed_divider"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/startTimeTextView"/>
+
+
+            <!-- End Date -->
+            <TextView
+                android:id="@+id/endDateLabel"
+                android:text="@string/date_end"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/endDateButton"
+                android:layout_alignBaseline="@+id/endDateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+            <TextView
+                android:id="@+id/endDateTextView"
+                android:layout_below="@id/endDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="11dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20sp"/>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/endDateButton"
+                android:layout_below="@id/startTimeButton"
                 android:text="@string/set"
                 android:textSize="15sp"
                 app:backgroundTint="@color/colorAccent"
@@ -128,7 +172,50 @@
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <!-- End Time -->
+            <TextView
+                android:id="@+id/endTimeLabel"
+                android:text="@string/end_time"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/endTimeButton"
+                android:layout_alignBaseline="@+id/endTimeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+            <TextView
+                android:id="@+id/endTimeTextView"
+                android:layout_below="@id/endTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="11dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20sp"/>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/endTimeButton"
+                android:text="@string/set"
+                android:layout_below="@id/endDateTextView"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </RelativeLayout>
+
+
+        <View style="@style/Divider"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"/>
 
         <RelativeLayout
             android:layout_marginTop="25dp"
@@ -140,14 +227,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@+id/inviteMembers_button"
-                    android:layout_alignBaseline="@+id/inviteMembers_button"
+                    android:layout_toLeftOf="@+id/inviteButton"
+                    android:layout_alignBaseline="@+id/inviteButton"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textAppearance="@style/TextAppearance.AppCompat"/>
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/inviteMembers_button"
+                    android:id="@+id/inviteButton"
                     android:text="@string/invite_members"
                     android:textSize="15sp"
                     app:backgroundTint="@color/colorAccent"
@@ -165,7 +252,7 @@
         <View style="@style/Divider"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/createGroup_member_list"
+            android:id="@+id/invitedMemberList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
@@ -302,7 +389,7 @@
             android:minLines="3"/>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/creteGroup_done_button"
+            android:id="@+id/doneButton"
             android:text="@string/done"
             android:textSize="19sp"
             app:backgroundTint="@color/colorAccent"

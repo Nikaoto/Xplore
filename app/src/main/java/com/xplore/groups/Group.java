@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Group {
     public boolean experienced;
-    public long start_date, end_date;
+    public long start_date, end_date, start_time, end_time;
     protected String destination_id, group_id, extra_info, group_preferences;
     public ArrayList<String> member_ids;
 
@@ -78,5 +78,21 @@ public class Group {
 
     public void setDestination_id(String destination_id) {
         this.destination_id = destination_id;
+    }
+
+    public long getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(long start_time) {
+        this.start_time = start_time;
+    }
+
+    public long getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(long end_time) {
+        this.end_time = end_time;
     }
 }
