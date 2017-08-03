@@ -69,6 +69,9 @@
     <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
         ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
     <string name="leave_group">ჯგუფის დატოვება</string>
+    <string name="start_time">დაწყების დრო</string>
+    <string name="end_time">დასასრულის დრო</string>
+
 
     <!-- Map -->
     <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>
@@ -120,10 +123,6 @@
     <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
         შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
         http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
-    </string>
-    <string name="credits">
-        The Xplore Team: \n\t\tნიკოლოზ ოთიაშვილი\n\t\tთიო გაბუნია\n\t\tაჩიკო წერეთელი\n\t\tსანდრო
-        მოსაშვილი\n\t\tბექა კაკაბაძე
     </string>
 
     <!-- Settings -->

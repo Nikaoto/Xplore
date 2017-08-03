@@ -15,10 +15,6 @@
         subject to change.\n\nThe information and resources of parks and reserves is sourced from
         http://apa.gov.ge/ and they belong to their rightful owners.
     </string>
-    <string name="credits">
-        The Xplore Team: \n\t\tNikoloz Otiashvili\n\t\tTio Gabunia\n\t\tAchiko Tsereteli\n\t\tSandro
-        Mosashvili\n\t\tBeka Kakabadze
-    </string>
     <string name="search_tags_hint">Search Tags</string>
     <string name="search_name_hint">Search by name</string>
     <string name="search_groups_hint">Search Groups</string>
@@ -121,5 +117,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="register">Register</string>
+    <string name="end_time">End Time</string>
+    <string name="start_time">Start TIme</string>
     <!-- -->
 </resources>

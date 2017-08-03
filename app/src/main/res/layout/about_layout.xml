@@ -48,7 +48,7 @@
             android:layout_below="@id/about_text" />
 
         <TextView
-            android:text="@string/credits"
+            android:text="მთელი გუნდი მადლობას გიხდოთ რომ ალფა ტესტირებაში მონაწილეობთ!"
             android:layout_marginLeft="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

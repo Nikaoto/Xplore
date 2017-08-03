@@ -15,10 +15,6 @@
         быть изменен.\n\nИнформация и ресурсы о парках и заповедниках получена из
         http://apa.gov.ge/. Они принадлежат их законныx владельцаx.
     </string>
-    <string name="credits">
-        The Xplore Team: \n\t\tНиколоз Отиашвили\n\t\tТио Габуния\n\t\tАчико Церетели\n\t\tСандро
-        Мосашвили\n\t\tБека Какабадзе
-    </string>
     <string name="search_tags_hint">Искать Метки</string>
     <string name="search_name_hint">Поиск по названию</string>
     <string name="search_groups_hint">Поиск Группы</string>
@@ -120,5 +116,7 @@
     <string name="first_name">Имя</string>
     <string name="date_format">Лет/Месяц/День</string>
     <string name="click_to_change">Нажмите, чтобы изменить</string>
+    <string name="end_time">Время Окончания</string>
+    <string name="start_time">Время Начала</string>
     <!-- -->
 </resources>
