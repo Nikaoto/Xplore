@@ -38,8 +38,8 @@ class MyGroupsFragment() : Fragment() {
     //Firebase Tags
     private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
 
-    private val joinedGroupIds = ArrayList<String>()
-    private val invitedGroupIds = ArrayList<String>()
+    private var joinedGroups = HashMap<String, Boolean>()
+    private var invitedGroups = HashMap<String, Boolean>()
     private val groupCards = ArrayList<GroupCard>()
     private val userCards = ArrayList<UserCard>()
 
@@ -48,12 +48,13 @@ class MyGroupsFragment() : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>)
+        fun newInstance(joinedGroupIds: HashMap<String, Boolean>,
+                        invitedGroupIds: HashMap<String, Boolean>)
                 : MyGroupsFragment {
             val f = MyGroupsFragment()
             val args = Bundle()
-            args.putStringArrayList("joinedGroupIds", joinedGroupIds)
-            args.putStringArrayList("invitedGroupIds", invitedGroupIds)
+            args.putSerializable("joinedGroupIds", joinedGroupIds)
+            args.putSerializable("invitedGroupIds", invitedGroupIds)
             f.arguments = args
             return  f
         }
@@ -64,19 +65,19 @@ class MyGroupsFragment() : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         //Getting bundle arguments
-        joinedGroupIds.addAll(arguments.getStringArrayList("joinedGroupIds"))
-        invitedGroupIds.addAll(arguments.getStringArrayList("invitedGroupIds"))
+        joinedGroups = arguments.getSerializable("joinedGroupIds") as HashMap<String, Boolean>
+        invitedGroups = arguments.getSerializable("invitedGroupIds") as HashMap<String, Boolean>
 
         dbManager.openDataBase()
         myGroupsRecyclerView.layoutManager = LinearLayoutManager(activity)
         myGroupsRecyclerView.adapter = GroupCardRecyclerViewAdapter(groupCards, activity)
 
-        loadGroups(invitedGroupIds, true)
-        loadGroups(joinedGroupIds, false)
+        loadGroups(invitedGroups, true)
+        loadGroups(joinedGroups, false)
     }
 
-    fun loadGroups(groupIds: ArrayList<String>, invited: Boolean) {
-        for (groupId in groupIds) {
+    fun loadGroups(groupMap: HashMap<String, Boolean>, invited: Boolean) {
+        for (groupId in groupMap.keys) {
             firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(
                     object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -84,9 +85,8 @@ class MyGroupsFragment() : Fragment() {
                                 val groupCard = dataSnapshot.getValue(GroupCard::class.java)
                                 if (groupCard != null) {
                                     groupCard.id = dataSnapshot.key
-                                    val leaderId =
-                                            dataSnapshot.child(FIREBASE_TAG_MEMBER_IDS).child("0")
-                                                    .getValue(String::class.java)!!
+                                    val leaderId = dataSnapshot.child(FIREBASE_TAG_MEMBER_IDS)
+                                            .child("0").getValue(String::class.java)!!
 
                                     groupCard.invite = invited
                                     loadLeaderCard(leaderId, groupCard)

@@ -44,6 +44,10 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     //Firebase
     private var groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    private var joinedGroupsRef = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(General.currentUserId)
+            .child("group_ids")
 
     //Activity Codes
     private val SEARCH_DESTINATION_ACTIVITY_CODE = 1
@@ -228,7 +232,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         doneButton.setOnClickListener {
             getDescriptions()
             if (checkFields()) {
-                uploadGroupData()
+                uploadData()
+
             }
         }
 
@@ -339,14 +344,17 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 member_ids)   //Group Member Ids
     }
 
-    private fun uploadGroupData() {
+    private fun uploadData() {
+        //Group
         val key = groupsRef.push().key
         val groupData = createUploadGroup(key).toMap()
-
         val childUpdates = HashMap<String, Any>()
         childUpdates.put("/" + key, groupData)
-
         groupsRef.updateChildren(childUpdates)
+
+        //Leader (current user)
+        joinedGroupsRef.child("/" + key).setValue(true)
+
         General.HideKeyboard(this)
         finish()
     }
@@ -374,8 +382,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private fun checkFields(): Boolean {
         val builder = AlertDialog.Builder(this)
         builder.setPositiveButton(R.string.okay, null)
-
-        Toast.makeText(this, "startDate = ${date.getStartDate()}; endDate = ${date.getEndDate()}", Toast.LENGTH_SHORT).show()
 
         if (chosenDestId == CHOSEN_DEST_DEFAULT) {
             builder.setMessage(R.string.dest_field_incomplete)

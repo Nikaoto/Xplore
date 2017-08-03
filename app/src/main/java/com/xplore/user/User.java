@@ -2,6 +2,7 @@ package com.xplore.user;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Nikaoto on 2/11/2017.
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 //DO NOT CHANGE THE VARIABLE NAMES, THEY CORRESPOND TO THE FIREBASE DATABASE KEY NAMES
 public class User {
     String fname, lname, tel_num, id, profile_picture_url, email;
-    public ArrayList<String> group_ids;
     int reputation, birth_date, age;
     //TODO change age to birth date and calculate age every time user info is loaded
 
@@ -29,25 +29,16 @@ public class User {
         this.birth_date = birth_date;
     }
 
-    public User(String fname, String lname, String tel_num, String id, String profile_picture_url, String email, ArrayList<String> group_ids, int reputation, int birth_date, int age) {
+    public User(String fname, String lname, String tel_num, String id, String profile_picture_url, String email, int reputation, int birth_date, int age) {
         this.fname = fname;
         this.lname = lname;
         this.tel_num = tel_num;
         this.id = id;
         this.profile_picture_url = profile_picture_url;
         this.email = email;
-        this.group_ids = group_ids;
         this.reputation = reputation;
         this.birth_date = birth_date;
         this.age = age;
-    }
-
-    public ArrayList<String> getGroup_ids() {
-        return group_ids;
-    }
-
-    public void setGroup_ids(ArrayList<String> group_ids) {
-        this.group_ids = group_ids;
     }
 
     public int getAge() {

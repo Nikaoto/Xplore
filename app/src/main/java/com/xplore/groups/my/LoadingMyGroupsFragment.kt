@@ -31,8 +31,9 @@ class LoadingMyGroupsFragment : Fragment() {
 
     //Used to only get group info, instead of everything. Speeds up loading
     private class UserGroups (
-            val group_ids: ArrayList<String> = ArrayList(),
-            val invited_group_ids: ArrayList<String> = ArrayList())
+            val group_ids: HashMap<String, Boolean> = HashMap(),
+            val invited_group_ids: HashMap<String, Boolean> = HashMap()
+    )
 
     //Starts loading ASAP
     override fun onAttach(context: Context?) {
@@ -42,14 +43,26 @@ class LoadingMyGroupsFragment : Fragment() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val user = dataSnapshot.getValue(UserGroups::class.java)
-                    if (user != null) {
-                        if (user.group_ids.isEmpty() && user.invited_group_ids.isEmpty()) {
-                            loadEmptyLayout()
-                        } else {
-                            loadMyGroupsLayout(user.group_ids, user.invited_group_ids)
+                    val groups = UserGroups()
+                    val joinedSnapshot = dataSnapshot.child("group_ids")
+                    val invitedSnapshot = dataSnapshot.child("invited_group_ids")
+
+                    if (joinedSnapshot != null) {
+                        for (group in joinedSnapshot.children) {
+                            groups.group_ids.put(group.key, group.value as Boolean)
                         }
-                    } else { printError() }
+                    }
+                    if (invitedSnapshot != null) {
+                        for (group in invitedSnapshot.children) {
+                            groups.invited_group_ids.put(group.key, group.value as Boolean)
+                        }
+                    }
+
+                    if (groups.group_ids.isEmpty() && groups.invited_group_ids.isEmpty()) {
+                        loadEmptyLayout()
+                    } else {
+                        loadMyGroupsLayout(groups.group_ids, groups.invited_group_ids)
+                    }
                 } else { printError() }
             }
             override fun onCancelled(p0: DatabaseError?) { }
@@ -63,7 +76,8 @@ class LoadingMyGroupsFragment : Fragment() {
          = fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()
 
-    fun loadMyGroupsLayout(joinedGroupIds: ArrayList<String>, invitedGroupIds: ArrayList<String>)
+    fun loadMyGroupsLayout(joinedGroupIds: HashMap<String, Boolean>,
+                           invitedGroupIds: HashMap<String, Boolean>)
          = fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds))
                 .commit()

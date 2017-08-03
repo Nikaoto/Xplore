@@ -283,9 +283,23 @@ class GroupInfoActivity : Activity() {
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         if (dataSnapshot != null) {
+                            //Removing userId from group
                             for (itemSnapshot in dataSnapshot.children) {
-                                removeUserFromGroup(itemSnapshot.ref)
+                                itemSnapshot.ref.removeValue()
                             }
+
+                            //Removing groupId from user
+                            firebaseUsersRef
+                                    .child(General.currentUserId)
+                                    .child(FIREBASE_TAG_GROUP_IDS)
+                                    .child(groupId)
+                                    .removeValue()
+
+                            //TODO resort member ids
+                            //TODO string resources
+                            Toast.makeText(this@GroupInfoActivity,
+                                    "You have left the group",
+                                    Toast.LENGTH_SHORT).show()
 
                         } else {
                             //TODO string resources
@@ -298,38 +312,6 @@ class GroupInfoActivity : Activity() {
 
                     override fun onCancelled(p0: DatabaseError?) {}
                 })
-    }
-
-    private fun removeUserFromGroup(dbRef: DatabaseReference) {
-        firebaseUsersRef.child("${General.currentUserId}/$FIREBASE_TAG_GROUP_IDS")
-                .orderByValue().equalTo(groupId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        if (dataSnapshot != null) {
-                            dbRef.removeValue()
-                            // Don't move ^this^ up to leaveGroup(), deletions need to be as close
-                            // as possible in case of sudden disconnection
-                            for (itemSnapshot in dataSnapshot.children) {
-                                itemSnapshot.ref.removeValue()
-                            }
-                            //TODO resort member ids
-                            //TODO string resources
-                            Toast.makeText(this@GroupInfoActivity,
-                                    "You have left the group",
-                                    Toast.LENGTH_SHORT).show()
-                        } else {
-                            // If the user gets here, then... Well.. fuck...
-                            // we'll need to fix the issue from the firebase console
-                            //TODO string resources
-                            Toast.makeText(this@GroupInfoActivity,
-                                    "Server error: couldn't leave group. Please try again later",
-                                    Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onCancelled(p0: DatabaseError?) {}
-                }
-        )
     }
 
     //Displays information about the experience icon (X and tick)
