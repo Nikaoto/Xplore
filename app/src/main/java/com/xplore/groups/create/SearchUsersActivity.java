@@ -30,8 +30,6 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
-import static com.xplore.groups.create.CreateGroupActivity.invitedMembers;
-
 
 /**
  * Created by Nikaoto on 3/1/2017.
@@ -254,7 +252,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         memberAdded = true;
-                        invitedMembers.add(currentUser);
+                        CreateGroupActivity.getInvitedMembers().add(currentUser);
                         Toast.makeText(SearchUsersActivity.this,R.string.member_added,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -266,7 +264,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     }
 
     public boolean userAlreadyInvited(User user) {
-        for(User u : invitedMembers) {
+        for(User u : CreateGroupActivity.getInvitedMembers()) {
             if(u.getId().equals(user.getId()))
                 return true;
         }
