@@ -19,9 +19,9 @@ import java.util.*
 *
 */
 
-class CustomDatePicker(val listener: DatePickerDialog.OnDateSetListener?,
-                       val timeStamp: Long,
-                       val yearOffset: Int = 0) : DialogFragment() {
+class DatePickerFragment(val listener: DatePickerDialog.OnDateSetListener?,
+                         val timeStamp: Long,
+                         val yearOffset: Int = 0) : DialogFragment() {
 
     //Empty constructor
     constructor() : this(null, 0L, -1)

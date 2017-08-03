@@ -3,6 +3,7 @@ package com.xplore.groups.create
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -14,7 +15,7 @@ import android.widget.Toast
 
 import com.google.firebase.database.FirebaseDatabase
 import com.xplore.database.DBManager
-import com.xplore.CustomDatePicker
+import com.xplore.DatePickerFragment
 import com.xplore.General
 import com.xplore.MemberListAdapter
 import com.xplore.R
@@ -43,6 +44,9 @@ import kotlinx.android.synthetic.main.create_group.*
 
 class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
+    //Firebase
+    private var groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+
     //Activity Codes
     private val SEARCH_DESTINATION_ACTIVITY_CODE = 1
     private val INVITE_USERS_ACTIVITY_CODE = 4
@@ -65,11 +69,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     //Setting chosen answer and destination to default
     private var chosenDestId = CHOSEN_DEST_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
+
+    //Needed to determine which date or time the user is choosing
     private var selectingDate = SELECTION_NONE
+    private var selectingTime = SELECTION_NONE
 
-    //Firebase
-    private var groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
-
+    //Stores start/end dates and times
     private object date {
         //Start
         var startYear = 0
@@ -111,16 +116,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var groupPrefs: String = ""
     private var extraInfo: String = ""
 
-    private val leader: User? = null
-
     //TODO replace reserveButton with reserveCard
 
     private val dbManager: DBManager by lazy { DBManager(this) }
 
     companion object {
-
-        //TODO close activity when "Done" is clicked and and group info is correct. Upload group data afterwards (async)
-
         @JvmStatic
         var invitedMembers = ArrayList<User>()
 
@@ -168,17 +168,25 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         startDateButton.setOnClickListener {
             if (TimeManager.globalTimeStamp != 0L) {
                 selectingDate = SELECTION_START
-                CustomDatePicker(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
+                DatePickerFragment(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
                         .show(fragmentManager, "startDate")
             }
+        }
+
+        startTimeButton.setOnClickListener {
+
         }
 
         endDateButton.setOnClickListener {
             if (TimeManager.globalTimeStamp != 0L) {
                 selectingDate = SELECTION_END
-                CustomDatePicker(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
+                DatePickerFragment(this@CreateGroupActivity, TimeManager.globalTimeStamp, 0)
                         .show(fragmentManager, "endDate")
             }
+        }
+
+        endTimeButton.setOnClickListener {
+
         }
 
         inviteButton.setOnClickListener {

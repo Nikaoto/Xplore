@@ -69,11 +69,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var bMonth: Int = 0
     private var bDay: Int = 0
 
-    init {
-        refreshGlobalTimeStamp()
-    }
-
-    internal val DBref = FirebaseDatabase.getInstance().reference
+    private val DBref = FirebaseDatabase.getInstance().reference
 
     companion object {
         @JvmStatic
@@ -84,6 +80,10 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     .putExtra("fullName", fullName)
                     .putExtra("email", email)
                     .putExtra("photoUrl", photoUrl.toString())
+    }
+
+    init {
+        refreshGlobalTimeStamp()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Birth date selector
         bdateTextView.setOnClickListener {
             //Creating new DialogFragment
-            val fragment = com.xplore.CustomDatePicker(this, globalTimeStamp, ageRestriction)
+            val fragment = com.xplore.DatePickerFragment(this, globalTimeStamp, ageRestriction)
             fragment.show(fragmentManager, "datePicker")
         }
         //TODO AI check for face in photo?
