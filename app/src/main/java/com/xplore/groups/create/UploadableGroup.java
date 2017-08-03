@@ -45,9 +45,9 @@ class UploadableGroup extends Group {
         HashMap<String, Object> result = new HashMap<>();
         result.put("destination_id", this.getDestination_id());
         result.put("start_date", this.getStart_date());
-        result.put("start_time", this.getStart_date());
+        result.put("start_time", this.getStart_time());
         result.put("end_date", this.getEnd_date());
-        result.put("end_time", this.getEnd_date());
+        result.put("end_time", this.getEnd_time());
         result.put("experienced", this.isExperienced());
         result.put("group_preferences", this.getGroup_preferences());
         result.put("extra_info", this.getExtra_info());

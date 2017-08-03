@@ -128,13 +128,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         fun getEndTimeText() = getTimeText(endTime)
 
         //Getting dates as longs
-        private fun getDateLong(y: Int, m: Int, d: Int): Long {
-            var month = m
-
-            if (m < 10) month *= 10
-
-            return (y*10000 + m*10 + d).toLong()
-        }
+        private fun getDateLong(y: Int, m: Int, d: Int) = (y*10000 + m*100 + d).toLong()
 
         fun getStartDate() = getDateLong(startYear, startMonth, startDay)
         fun getEndDate() = getDateLong(endYear, endMonth, endDay)
@@ -380,6 +374,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private fun checkFields(): Boolean {
         val builder = AlertDialog.Builder(this)
         builder.setPositiveButton(R.string.okay, null)
+
+        Toast.makeText(this, "startDate = ${date.getStartDate()}; endDate = ${date.getEndDate()}", Toast.LENGTH_SHORT).show()
 
         if (chosenDestId == CHOSEN_DEST_DEFAULT) {
             builder.setMessage(R.string.dest_field_incomplete)
