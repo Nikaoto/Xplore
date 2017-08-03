@@ -118,5 +118,6 @@
     <string name="click_to_change">Нажмите, чтобы изменить</string>
     <string name="end_time">Время Окончания</string>
     <string name="start_time">Время Начала</string>
+    <string name="meetup_time">Время Встречи</string>
     <!-- -->
 </resources>

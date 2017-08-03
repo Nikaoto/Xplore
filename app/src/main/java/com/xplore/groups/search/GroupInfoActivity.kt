@@ -254,8 +254,10 @@ class GroupInfoActivity : Activity() {
             popExperienceInfoDialog()
         }*/
 
+        //Dates
         dateCombinedTextView.text = General.putSlashesInDate(currentGroup.getStart_date()) + " - " +
                 General.putSlashesInDate(currentGroup.getEnd_date())
+        meetupTimeTextView.text = General.putColonInTime(currentGroup.getStart_time())
 
         descriptionTextView.text = currentGroup.extra_info
         preferencesTextView.text = currentGroup.group_preferences

@@ -37,6 +37,11 @@ import kotlinx.android.synthetic.main.create_group.*
 
 class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
+    //TODO replace reserveButton with reserveCard
+
+    //Database
+    private val dbManager: DBManager by lazy { DBManager(this) }
+
     //Firebase
     private var groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
 
@@ -63,6 +68,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     //Setting chosen answer and destination to default
     private var chosenDestId = CHOSEN_DEST_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
+
+    //Descriptions
+    private var groupPrefs: String = ""
+    private var extraInfo: String = ""
+
 
     //Stores start/end dates and times
     private object date {
@@ -119,27 +129,31 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
         //Getting dates as longs
         private fun getDateLong(y: Int, m: Int, d: Int): Long {
-            if (d < 10)
-                return (y*10000 + m*1000 + d).toLong()
-            else
-                return (y*10000 + m*100 + d).toLong()
+            var month = m
+
+            if (m < 10) month *= 10
+
+            return (y*10000 + m*10 + d).toLong()
         }
 
         fun getStartDate() = getDateLong(startYear, startMonth, startDay)
         fun getEndDate() = getDateLong(endYear, endMonth, endDay)
 
         //Getting dates as strings (to display on TextViews)
-        private fun getDateString(y: Int, m: Int, d: Int) = "$y/$m/$d"
+        private fun getDateString(y: Int, m: Int, d: Int): String {
+            var month = ""
+            var day = ""
+
+            if (d < 10) day = "0"
+            day += d.toString()
+            if (m < 10) month = "0"
+            month += m.toString()
+
+            return "$y/$month/$day"
+        }
         fun getStartDateString() = getDateString(startYear, startMonth, startDay)
         fun getEndDateString() = getDateString(endYear, endMonth, endDay)
     }
-
-    private var groupPrefs: String = ""
-    private var extraInfo: String = ""
-
-    //TODO replace reserveButton with reserveCard
-
-    private val dbManager: DBManager by lazy { DBManager(this) }
 
     companion object {
         @JvmStatic
@@ -288,16 +302,18 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
-            }
-        } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
-            if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
-                if (data.getBooleanExtra("member_added", false)) {//checking if members added
-                    PopulateMembersList()
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data != null) {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
+                if (resultCode == Activity.RESULT_OK) {
+                    chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
+                }
+            } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
+                if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
+                    if (data.getBooleanExtra("member_added", false)) {//checking if members added
+                        PopulateMembersList()
+                    }
                 }
             }
         }
@@ -320,9 +336,9 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 key, //Firebase Unique Group Key
                 exp, //Group Experienced Boolean
                 date.getStartDate(), //Start Date
-                date.startTime.toLong(), //Start Time
+                date.startTime, //Start Time
                 date.getEndDate(), //End Date
-                date.endTime.toLong(),
+                date.endTime,
                 chosenDestId.toString(), //Chosen Destination Id
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
@@ -337,7 +353,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         childUpdates.put("/" + key, groupData)
 
         groupsRef.updateChildren(childUpdates)
-        Toast.makeText(this, "Group Created", Toast.LENGTH_SHORT).show() //TODO string resources
         General.HideKeyboard(this)
         finish()
     }

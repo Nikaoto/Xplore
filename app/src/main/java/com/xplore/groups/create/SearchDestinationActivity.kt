@@ -36,7 +36,7 @@ class SearchDestinationActivity : Activity() {
     private val dbManager: DBManager by lazy { DBManager(this) }
 
     private val CHOSEN_DEST_DEFAULT_VAL = -1
-    var chosenDestId = CHOSEN_DEST_DEFAULT_VAL
+    private var chosenDestId = CHOSEN_DEST_DEFAULT_VAL
 
 
     private var reserveCards = ArrayList<ReserveCard>()
@@ -81,15 +81,16 @@ class SearchDestinationActivity : Activity() {
     fun firstDisplayData() {
         dbManager.openDataBase()
 
+        resultsRV.adapter = RVAdapter(answerCards, this, Icons.grey)
+
         //Load all reserveCards in a separate thread
         Thread(Runnable {
             //Loading data
             reserveCards = dbManager.getAllReserveCards()
             answerCards.addAll(reserveCards)
+            //answerCards.addAll(reserveCards)
             //Creating & setting adapter
-            val adapter = RVAdapter(answerCards, this, Icons.grey)
-            resultsRV.post { resultsRV.adapter = adapter }
-            progressBar.post { progressBar.visibility = View.INVISIBLE }
+            resultsRV.post { resultsRV.adapter.notifyDataSetChanged()}
         }).start()
     }
 
@@ -113,19 +114,15 @@ class SearchDestinationActivity : Activity() {
         resultsRV.adapter.notifyDataSetChanged()
     }
 
-    inner class RVAdapter(val results: List<ReserveCard>, val activity: Activity, val icons: ArrayList<Int>)
+    inner class RVAdapter(val results: List<ReserveCard>,
+                          val activity: Activity,
+                          val icons: ArrayList<Int>)
         : RecyclerView.Adapter<RVAdapter.ResultViewHolder>(){
 
         inner class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-            internal val reserveName: TextView
-            internal val reserveImage: ImageView
-            internal val reserveIcon: ImageView
-
-            init{
-                reserveName = itemView.reserveNameTextView
-                reserveImage = itemView.reserveImageView
-                reserveIcon = itemView.reserveIconImageView
-            }
+            internal val reserveName: TextView = itemView.reserveNameTextView
+            internal val reserveImage: ImageView = itemView.reserveImageView
+            internal val reserveIcon: ImageView = itemView.reserveIconImageView
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
@@ -154,13 +151,10 @@ class SearchDestinationActivity : Activity() {
             val message = "${activity.resources.getString(R.string.question_choose_reserve)} ${reserveCard.name}?"
             builder.setMessage(message)
                     .setTitle(reserveCard.name)
-                    .setPositiveButton(R.string.yes, object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            chosenDestId = reserveCard.id
-                            Log.println(Log.INFO, "brejk", "chosen dest id is ${chosenDestId}")
-                            activity.onBackPressed()
-                        }
-                    })
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        chosenDestId = reserveCard.id
+                        activity.onBackPressed()
+                    }
                     .setNegativeButton(R.string.no, null);
 
             builder.show();
@@ -171,6 +165,7 @@ class SearchDestinationActivity : Activity() {
 
     override fun onBackPressed() {
         val resultIntent = Intent()
+
         //Checking if destination was chosen
         if (chosenDestId == CHOSEN_DEST_DEFAULT_VAL) {
             setResult(Activity.RESULT_CANCELED)

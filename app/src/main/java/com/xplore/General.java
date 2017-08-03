@@ -178,6 +178,10 @@ public class General {
         return putSlashesInDate(Integer.valueOf(String.valueOf(date)));
     }
 
+    public static String putColonInTime(String time) {
+        return time.substring(0, 2) + ":" + time.substring(2);
+    }
+
     public static void openUserProfile(Activity activity, String userId) {
         Intent intent = new Intent(activity, UserProfileActivity.class);
         intent.putExtra("userId", userId);
@@ -243,8 +247,7 @@ public class General {
         wm.updateViewLayout(container, p);
     }
 
-    public static void popSignInMenu(double xScale, double yScale, View parent, final Activity activity)
-    {
+    public static void popSignInMenu(double xScale, double yScale, View parent, final Activity activity) {
         int popWidth = (int) (appWidth * xScale);
         int popHeight = (int) (appHeight * yScale);
 
@@ -297,8 +300,7 @@ public class General {
         });
     }
 
-    public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity, View view)
-    {
+    public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity, View view) {
         int popWidth = (int) (appWidth * xScale);
         int popHeight = (int) (appHeight * yScale);
 

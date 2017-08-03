@@ -56,8 +56,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         resultsRV.layoutManager = LinearLayoutManager(activity)
     }
 
-    fun firstDisplayData()
-    {
+    fun firstDisplayData() {
         dbManager.openDataBase()
 
         //Load all reserveCards in a separate thread

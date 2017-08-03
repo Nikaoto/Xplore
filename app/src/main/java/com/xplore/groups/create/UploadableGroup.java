@@ -24,7 +24,7 @@ import java.util.Map;
 class UploadableGroup extends Group {
 
     UploadableGroup(String group_id, boolean experienced,
-                    long start_date, long start_time, long end_date, long end_time,
+                    long start_date, String start_time, long end_date, String end_time,
                     String destination_id, String extra_info, String group_preferences,
                     ArrayList<String> member_ids) {
         this.setGroup_id(group_id);
