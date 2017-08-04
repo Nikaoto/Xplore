@@ -264,10 +264,13 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
     @Override
     public void onBackPressed() {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("invitedMemberIds", invitedMemberIds);
-        resultIntent.putExtra("member_added", memberAdded);
-        setResult(Activity.RESULT_OK, resultIntent);
+        if (memberAdded) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("invitedMemberIds", invitedMemberIds);
+            setResult(Activity.RESULT_OK, resultIntent);
+        } else {
+            setResult(Activity.RESULT_CANCELED);
+        }
         finish();
     }
 

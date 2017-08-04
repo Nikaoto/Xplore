@@ -314,11 +314,9 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
                 }
             } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
-                if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
-                    if (data.getBooleanExtra("member_added", false)) {//checking if members added
-                        invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
-                        populateMembersList(invitedMemberIds)
-                    }
+                if (resultCode == Activity.RESULT_OK) {
+                    invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
+                    populateMembersList(invitedMemberIds)
                 }
             }
         }
