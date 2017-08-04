@@ -26,7 +26,7 @@ class UploadableGroup extends Group {
     UploadableGroup(String group_id, boolean experienced,
                     long start_date, String start_time, long end_date, String end_time,
                     String destination_id, String extra_info, String group_preferences,
-                    ArrayList<String> member_ids) {
+                    ArrayList<String> member_ids, ArrayList<String> invited_member_ids) {
         this.setGroup_id(group_id);
         this.setExperienced(experienced);
         this.setStart_date(start_date);
@@ -37,6 +37,7 @@ class UploadableGroup extends Group {
         this.setExtra_info(extra_info);
         this.setGroup_preferences(group_preferences);
         this.setMember_ids(member_ids);
+        this.setInvited_member_ids(invited_member_ids);
     }
 
     //Maps data to a HashMap (NOTE: all key names are directly from Firebase, do not change them)
@@ -52,6 +53,7 @@ class UploadableGroup extends Group {
         result.put("group_preferences", this.getGroup_preferences());
         result.put("extra_info", this.getExtra_info());
         result.put("member_ids", this.getMember_ids());
+        result.put("invited_member_ids", this.getInvited_member_ids());
         return result;
     }
 }

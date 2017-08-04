@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.DatePicker
-import android.widget.Toast
 
 import com.google.firebase.database.FirebaseDatabase
 import com.xplore.*
@@ -43,8 +42,9 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private val dbManager: DBManager by lazy { DBManager(this) }
 
     //Firebase
-    private var groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
-    private var joinedGroupsRef = FirebaseDatabase.getInstance().reference
+    private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
+    private val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    private val joinedGroupsRef = FirebaseDatabase.getInstance().reference
             .child("users")
             .child(General.currentUserId)
             .child("group_ids")
@@ -230,10 +230,14 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         doneButton.setOnClickListener {
+            General.HideKeyboard(this)
             getDescriptions()
             if (checkFields()) {
-                uploadData()
-
+                val key = groupsRef.push().key
+                uploadGroupData(key)
+                addLeaderToGroup(key)
+                sendInvites(key)
+                finish()
             }
         }
 
@@ -318,15 +322,19 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun getUserIds(invitedUsers: ArrayList<User>): ArrayList<String> {
+        val ans = ArrayList<String>()
+        for (user in invitedUsers) {
+            ans.add(user.id)
+        }
+        return ans
+    }
+
     //Creates uploadable group
     private fun createUploadGroup(key: String): UploadableGroup {
-        //getting member IDs
-        val member_ids = ArrayList<String>()
-        member_ids.add(currentUserId.toString())
-
-        for (user in invitedMembers) {
-            member_ids.add(user.id)
-        }
+        //Member ids of the group
+        val member_ids = arrayListOf<String>(currentUserId) //Adding leader to members list
+        val invited_member_ids = getUserIds(invitedMembers) //Adding invited members
 
         //get experience question
         val exp = experienceAns != EXPERIENCE_ANS_NO
@@ -341,22 +349,27 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 chosenDestId.toString(), //Chosen Destination Id
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
-                member_ids)   //Group Member Ids
+                member_ids, //Group Member Ids (only the leader)
+                invited_member_ids) //Invited members
     }
 
-    private fun uploadData() {
-        //Group
-        val key = groupsRef.push().key
-        val groupData = createUploadGroup(key).toMap()
-        val childUpdates = HashMap<String, Any>()
-        childUpdates.put("/" + key, groupData)
-        groupsRef.updateChildren(childUpdates)
-
-        //Leader (current user)
+    private fun addLeaderToGroup(key: String) {
         joinedGroupsRef.child("/" + key).setValue(true)
+    }
 
-        General.HideKeyboard(this)
-        finish()
+    private fun uploadGroupData(key: String) {
+        //Group
+        val groupData = createUploadGroup(key).toMap()
+        val groupUpdates = HashMap<String, Any>()
+        groupUpdates.put("/" + key, groupData)
+        groupsRef.updateChildren(groupUpdates)
+    }
+
+    private fun sendInvites(groupId: String) {
+        val memberIds = getUserIds(invitedMembers)
+        for (memberId in memberIds) {
+            usersRef.child(memberId).child("invited_group_ids").child("/" + groupId).setValue(true)
+        }
     }
 
     private fun PopulateMembersList() {

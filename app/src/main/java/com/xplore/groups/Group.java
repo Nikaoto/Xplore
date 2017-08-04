@@ -12,6 +12,7 @@ public class Group {
     public String start_time, end_time;
     protected String destination_id, group_id, extra_info, group_preferences;
     public ArrayList<String> member_ids;
+    public ArrayList<String> invited_member_ids;
 
     public Group() {
         //LEAVE EMPTY
@@ -95,5 +96,13 @@ public class Group {
 
     public void setEnd_time(String end_time) {
         this.end_time = end_time;
+    }
+
+    public ArrayList<String> getInvited_member_ids() {
+        return invited_member_ids;
+    }
+
+    public void setInvited_member_ids(ArrayList<String> invited_member_ids) {
+        this.invited_member_ids = invited_member_ids;
     }
 }
