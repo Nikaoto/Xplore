@@ -65,10 +65,10 @@ class InvitedControls : Fragment() {
     }
 
     private fun acceptInvite() {
-        //Remove from invited groups
-        invitedGroupIdsRef.child(groupId).removeValue()
         //Add to joined groups
         joinedGroupIdsRef.child(groupId).setValue(false)
+        //Remove from invited groups
+        invitedGroupIdsRef.child(groupId).removeValue()
         //Add user id to group's memberIds
         currentGroupRef.child("member_ids").child(General.currentUserId).setValue(false)
         activity.finish() //TODO recreate with new arguments
@@ -79,5 +79,6 @@ class InvitedControls : Fragment() {
         invitedGroupIdsRef.child(groupId).removeValue()
         //Remove this user from group's invited users
         currentGroupRef.child("invited_member_ids").child(General.currentUserId).removeValue()
+        activity.finish() //TODO recreate with arguments
     }
 }

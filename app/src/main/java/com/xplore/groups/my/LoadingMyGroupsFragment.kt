@@ -3,6 +3,7 @@ package com.xplore.groups.my
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -49,12 +50,12 @@ class LoadingMyGroupsFragment : Fragment() {
 
                     if (joinedSnapshot != null) {
                         for (group in joinedSnapshot.children) {
-                            groups.group_ids.put(group.key, group.value as Boolean)
+                            groups.group_ids.put(group.key, group.getValue(Boolean::class.java)!!)
                         }
                     }
                     if (invitedSnapshot != null) {
                         for (group in invitedSnapshot.children) {
-                            groups.invited_group_ids.put(group.key, group.value as Boolean)
+                            groups.invited_group_ids.put(group.key, group.getValue(Boolean::class.java)!!)
                         }
                     }
 

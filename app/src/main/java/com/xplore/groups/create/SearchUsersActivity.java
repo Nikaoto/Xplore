@@ -1,6 +1,7 @@
 package com.xplore.groups.create;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,16 +53,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             = FirebaseDatabase.getInstance().getReference().child("users");
 
     private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
-
-    /*
-    private String USERBASE_KEY;
-    private String USERBASE_APPID;
-    private String USERBASE_URL;
-
-    DatabaseReference dbRef;
-    FirebaseApp userBaseApp;
-    FirebaseOptions userBaseOptions;
-    */
+    private ArrayList<String> invitedMemberIds = new ArrayList<>(); //Ids of already invited members + the ones we invite
 
     private ListView listView;
     private ProgressBar progressBar;
@@ -69,10 +61,19 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     private boolean dataFound;
     private boolean memberAdded;
 
+    public static Intent getStartIntent(Context context, ArrayList<String> invitedMemberIds) {
+        return new Intent(context, SearchUsersActivity.class)
+                .putExtra("invitedMemberIds", invitedMemberIds);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
+
+        if (getIntent().getStringArrayListExtra("invitedMemberIds") != null) {
+            invitedMemberIds = getIntent().getStringArrayListExtra("invitedMemberIds");
+        }
 
         TimeManager.Companion.refreshGlobalTimeStamp();
 
@@ -241,12 +242,12 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(userAlreadyInvited(currentUser)) {
+                    if(userAlreadyInvited(currentUser.getId())) {
                         Toast.makeText(SearchUsersActivity.this, R.string.member_already_added,
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         memberAdded = true;
-                        CreateGroupActivity.getInvitedMembers().add(currentUser);
+                        invitedMemberIds.add(currentUser.getId());
                         Toast.makeText(SearchUsersActivity.this,R.string.member_added,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -257,17 +258,14 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         }
     }
 
-    public boolean userAlreadyInvited(User user) {
-        for(User u : CreateGroupActivity.getInvitedMembers()) {
-            if(u.getId().equals(user.getId()))
-                return true;
-        }
-        return false;
+    public boolean userAlreadyInvited(String userId) {
+        return invitedMemberIds.contains(userId);
     }
 
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
+        resultIntent.putExtra("invitedMemberIds", invitedMemberIds);
         resultIntent.putExtra("member_added", memberAdded);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();

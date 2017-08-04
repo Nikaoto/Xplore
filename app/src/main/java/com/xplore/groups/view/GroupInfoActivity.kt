@@ -84,7 +84,8 @@ class GroupInfoActivity : Activity() {
         } else if(group.getMember_ids().contains(General.currentUserId)) {
             configureMemberControls()
         } else if (group.getInvited_member_ids() != null
-                && group.getInvited_member_ids().keys.contains(General.currentUserId)) {
+                && group.getInvited_member_ids().get(General.currentUserId) != null
+                && group.getInvited_member_ids().get(General.currentUserId) == true) {
             configureInvitedControls()
         } else {
             configureOutsiderControls()

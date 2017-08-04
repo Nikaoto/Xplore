@@ -2,6 +2,7 @@ package com.xplore.groups.view.controls
 
 import android.app.AlertDialog
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
+import com.xplore.groups.create.SearchUsersActivity
 
 import kotlinx.android.synthetic.main.member_controls.*
 
@@ -26,6 +28,8 @@ import kotlinx.android.synthetic.main.member_controls.*
  */
 
 class MemberControls : Fragment() {
+
+    private val INVITE_USERS_ACTIVITY_CODE = 1
 
     //Firebase
     val FIREBASE_TAG_MEMBER_IDS = "member_ids"
@@ -58,12 +62,17 @@ class MemberControls : Fragment() {
         currentGroupRef = FirebaseDatabase.getInstance().reference.child("groups").child(groupId)
 
         inviteMembersButton.setOnClickListener {
-            //startInvitingMembers()
+            startInvitingMembers()
         }
 
         leaveGroupButton.setOnClickListener {
             popLeaveGroupConfirmationDialog()
         }
+    }
+
+    private fun startInvitingMembers() {
+        val i = Intent(activity, SearchUsersActivity::class.java)
+        startActivityForResult(i, INVITE_USERS_ACTIVITY_CODE)
     }
 
     private fun popLeaveGroupConfirmationDialog() {
@@ -87,7 +96,7 @@ class MemberControls : Fragment() {
                             }
 
                             //Removing groupId from user
-                            currentUserRef.child(groupId).removeValue()
+                            currentUserRef.child("group_ids").child(groupId).removeValue()
 
                             //TODO sort member ids
                             //TODO string resources
@@ -100,7 +109,10 @@ class MemberControls : Fragment() {
                                     "Server error: couldn't leave group. Please try again later",
                                     Toast.LENGTH_SHORT).show()
                         }
-                        activity.finish() //TODO recreate with the same parameters
+
+                        val intent = activity.intent
+                        activity.finish()
+                        startActivity(intent)
                     }
 
                     override fun onCancelled(p0: DatabaseError?) {}

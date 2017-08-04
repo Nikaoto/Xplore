@@ -8,16 +8,20 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.DatePicker
+import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.xplore.*
 import com.xplore.database.DBManager
 import com.xplore.reserve.ReserveInfoActivity
-import com.xplore.user.User
 
 import java.util.ArrayList
 
 import com.xplore.General.currentUserId
+import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
 import kotlin.collections.HashMap
 
@@ -77,6 +81,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var groupPrefs: String = ""
     private var extraInfo: String = ""
 
+    private var invitedMemberIds = ArrayList<String>()
 
     //Stores start/end dates and times
     private object date {
@@ -155,17 +160,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     companion object {
         @JvmStatic
-        var invitedMembers = ArrayList<User>()
-
-        @JvmStatic
         fun getStartIntent(context: Context): Intent {
             return Intent(context, CreateGroupActivity::class.java)
         }
     }
 
     init {
-        invitedMembers.clear()
-
         //Refreshing server timeStamp
         TimeManager.refreshGlobalTimeStamp()
     }
@@ -215,8 +215,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         inviteButton.setOnClickListener {
-            val intent = Intent(this@CreateGroupActivity, SearchUsersActivity::class.java)
-            startActivityForResult(intent, INVITE_USERS_ACTIVITY_CODE)
+            startActivityForResult(SearchUsersActivity.getStartIntent(this, invitedMemberIds),
+                                   INVITE_USERS_ACTIVITY_CODE)
         }
 
         prefs_help!!.setOnClickListener {
@@ -237,6 +237,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 uploadGroupData(key)
                 addLeaderToGroup(key)
                 sendInvites(key)
+                Toast.makeText(this, "The group has been created!", Toast.LENGTH_SHORT).show() //TODO string resources
                 finish()
             }
         }
@@ -315,19 +316,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
                 if (resultCode == Activity.RESULT_OK) {//TODO remove chosenMembers static and get intarray of UserIds from SearchUsersActivity. Return RESULT_CANCELED when no member selected
                     if (data.getBooleanExtra("member_added", false)) {//checking if members added
-                        PopulateMembersList()
+                        invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
+                        populateMembersList(invitedMemberIds)
                     }
                 }
             }
         }
-    }
-
-    private fun getUserIds(invitedUsers: ArrayList<User>): ArrayList<String> {
-        val ans = ArrayList<String>()
-        for (user in invitedUsers) {
-            ans.add(user.id)
-        }
-        return ans
     }
 
     fun ArrayList<String>.toMap(): HashMap<String, Boolean> {
@@ -343,7 +337,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         //Member ids of the group
         val member_ids = HashMap<String, Boolean>(1)
         member_ids.put(currentUserId, true) //Adding leader to members list
-        val invited_member_ids = getUserIds(invitedMembers).toMap() //Adding invited members
 
         //get experience question
         val exp = experienceAns != EXPERIENCE_ANS_NO
@@ -359,7 +352,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
                 member_ids, //Group Member Ids (only the leader)
-                invited_member_ids) //Invited members
+                invitedMemberIds.toMap()) //Invited members
     }
 
     private fun addLeaderToGroup(key: String) {
@@ -375,16 +368,35 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun sendInvites(groupId: String) {
-        val memberIds = getUserIds(invitedMembers)
-        for (memberId in memberIds) {
+        for (memberId in invitedMemberIds) {
             usersRef.child(memberId).child("invited_group_ids").child("/" + groupId).setValue(true)
         }
     }
 
-    private fun PopulateMembersList() {
-        invitedMemberList.visibility = View.VISIBLE
-        val adapter = MemberListAdapter(this, invitedMembers, true)
-        invitedMemberList.adapter = adapter
+    private fun populateMembersList(memberIds: ArrayList<String>) {
+        val membersToDisplay = ArrayList<User>(memberIds.size)
+        var memberCount = memberIds.size
+        for (memberId in memberIds) {
+            usersRef.child(memberId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(userSnapshot: DataSnapshot?) {
+                    if (userSnapshot != null) {
+                        val member = userSnapshot.getValue(User::class.java)
+                        member?.id = userSnapshot.key
+                        if (member != null) {
+                            membersToDisplay.add(member)
+                            memberCount--
+                            if (memberCount == 0) {
+                                //Display list
+                                invitedMemberList.visibility = View.VISIBLE
+                                val adapter = MemberListAdapter(this@CreateGroupActivity, membersToDisplay, true, invitedMemberIds)
+                                invitedMemberList.adapter = adapter
+                            }
+                        }
+                    }
+                }
+                override fun onCancelled(p0: DatabaseError?) {}
+            })
+        }
     }
 
     private fun getDescriptions() {

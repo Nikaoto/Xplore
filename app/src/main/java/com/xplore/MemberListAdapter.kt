@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso
 
 import java.util.ArrayList
 
-import com.xplore.groups.create.CreateGroupActivity.Companion.invitedMembers
 import com.xplore.user.User
 
 /**
@@ -31,11 +30,10 @@ import com.xplore.user.User
  */
 
 class MemberListAdapter(private val context: Context,
-                        private val users: ArrayList<User>,
-                        private val allowUserRemoval: Boolean = false)
+                        private var users: ArrayList<User>,
+                        private val allowUserRemoval: Boolean = false,
+                        var userIds: ArrayList<String>? = null)
     : RecyclerView.Adapter<MemberListAdapter.MemberViewHolder>() {
-
-    private var currentMember = User()
 
     override fun getItemCount() = users.size
 
@@ -51,7 +49,7 @@ class MemberListAdapter(private val context: Context,
 
     //After inflating user layout and binding with the holder
     override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
-        currentMember = users[position]
+        var currentMember = users[position]
 
         //Loading Member Reputation
         holder.rep_txt.text = currentMember.getReputation().toString()
@@ -87,9 +85,10 @@ class MemberListAdapter(private val context: Context,
                         .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
                         .setPositiveButton("Yes") { _, _ ->
                             //Removing user and updating recycler view
-                            invitedMembers.removeAt(position)
+                            users.removeAt(position)
+                            userIds?.removeAt(position)
                             notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, invitedMembers.size)
+                            notifyItemRangeChanged(position, users.size)
                             Toast.makeText(context, R.string.member_removed, Toast.LENGTH_SHORT).show()
                         }
                         .create().show()
