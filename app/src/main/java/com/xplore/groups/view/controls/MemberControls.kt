@@ -35,6 +35,7 @@ class MemberControls : Fragment() {
 
     //Firebase
     val FIREBASE_TAG_MEMBER_IDS = "member_ids"
+    val FIREBASE_TAG_GROUP_IDS = "group_ids"
     val currentUserRef = FirebaseDatabase.getInstance().reference
             .child("users")
             .child(General.currentUserId)
@@ -101,37 +102,19 @@ class MemberControls : Fragment() {
     }
 
     private fun leaveGroup() {
-        currentGroupRef.child(FIREBASE_TAG_MEMBER_IDS).orderByValue().equalTo(General.currentUserId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        if (dataSnapshot != null) {
-                            //Removing userId from group
-                            for (itemSnapshot in dataSnapshot.children) {
-                                itemSnapshot.ref.removeValue()
-                            }
+        //Removing userId from group
+        currentGroupRef.child(FIREBASE_TAG_MEMBER_IDS).child(General.currentUserId).removeValue()
+        //Removing groupId from user
+        currentUserRef.child(FIREBASE_TAG_GROUP_IDS).child(groupId).removeValue()
+        //TODO string resources
+        Toast.makeText(activity, "You have left the group", Toast.LENGTH_SHORT).show()
+        refresh()
+    }
 
-                            //Removing groupId from user
-                            currentUserRef.child("group_ids").child(groupId).removeValue()
-
-                            //TODO sort member ids
-                            //TODO string resources
-                            Toast.makeText(activity, "You have left the group", Toast.LENGTH_SHORT)
-                                    .show()
-
-                        } else {
-                            //TODO string resources
-                            Toast.makeText(activity,
-                                    "Server error: couldn't leave group. Please try again later",
-                                    Toast.LENGTH_SHORT).show()
-                        }
-
-                        val intent = activity.intent
-                        activity.finish()
-                        startActivity(intent)
-                    }
-
-                    override fun onCancelled(p0: DatabaseError?) {}
-                })
+    private fun refresh() {
+        val intent = activity.intent
+        activity.finish()
+        startActivity(intent)
     }
 
 }

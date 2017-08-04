@@ -27,6 +27,8 @@ import kotlinx.android.synthetic.main.invited_controls.*
 class InvitedControls : Fragment() {
 
     //Firebase
+    private val FIREBASE_MEMBER_IDS_TAG  = "member_ids"
+    private val FIREBASE_INVITED_MEMBER_IDS_TAG  = "invited_member_ids"
     private val currentUserRef = FirebaseDatabase.getInstance().reference
             .child("users").child(General.currentUserId)
     private val invitedGroupIdsRef = currentUserRef.child("invited_group_ids")
@@ -69,8 +71,10 @@ class InvitedControls : Fragment() {
         joinedGroupIdsRef.child(groupId).setValue(false)
         //Remove from invited groups
         invitedGroupIdsRef.child(groupId).removeValue()
+        //Remove user id from group's invited_member_ids
+        currentGroupRef.child(FIREBASE_INVITED_MEMBER_IDS_TAG).child(General.currentUserId).removeValue()
         //Add user id to group's memberIds
-        currentGroupRef.child("member_ids").child(General.currentUserId).setValue(false)
+        currentGroupRef.child(FIREBASE_MEMBER_IDS_TAG).child(General.currentUserId).setValue(false)
         activity.finish() //TODO recreate with new arguments
     }
 
