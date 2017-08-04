@@ -16,10 +16,10 @@ import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 
 import java.util.ArrayList
-import java.util.HashMap
 
 import com.xplore.General.currentUserId
 import kotlinx.android.synthetic.main.create_group.*
+import kotlin.collections.HashMap
 
 /**
  * Created by Nikaoto on 2/18/2017.
@@ -330,11 +330,20 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         return ans
     }
 
+    fun ArrayList<String>.toMap(): HashMap<String, Boolean> {
+        val temp = HashMap<String, Boolean>(this.size)
+        for(item in this) {
+            temp.put(item, true)
+        }
+        return temp
+    }
+
     //Creates uploadable group
     private fun createUploadGroup(key: String): UploadableGroup {
         //Member ids of the group
-        val member_ids = arrayListOf<String>(currentUserId) //Adding leader to members list
-        val invited_member_ids = getUserIds(invitedMembers) //Adding invited members
+        val member_ids = HashMap<String, Boolean>(1)
+        member_ids.put(currentUserId, true) //Adding leader to members list
+        val invited_member_ids = getUserIds(invitedMembers).toMap() //Adding invited members
 
         //get experience question
         val exp = experienceAns != EXPERIENCE_ANS_NO

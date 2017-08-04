@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
-import com.xplore.groups.search.GroupInfoActivity
+import com.xplore.groups.view.GroupInfoActivity
 
 import java.util.ArrayList
 import kotlinx.android.synthetic.main.group_card.view.*

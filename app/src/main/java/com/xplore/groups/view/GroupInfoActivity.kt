@@ -1,4 +1,4 @@
-package com.xplore.groups.search
+package com.xplore.groups.view
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -14,10 +14,12 @@ import com.xplore.*
 import com.xplore.R
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
+import com.xplore.groups.view.controls.InvitedControls
+import com.xplore.groups.view.controls.LeaderControls
+import com.xplore.groups.view.controls.MemberControls
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
-import com.xplore.user.UserProfileActivity
 
 import java.util.ArrayList
 
@@ -43,6 +45,7 @@ class GroupInfoActivity : Activity() {
     private var reserveID = 0 //TODO remove this and load submitted image or map image instead
     private var memberCount = 1
     private val members = ArrayList<User>()
+    private lateinit var leader: User
 
     //The variables which contain the current group/member info
     private var currentGroup = Group()
@@ -75,29 +78,37 @@ class GroupInfoActivity : Activity() {
         applyReserveData()
     }
 
-    /* Only runs when a member from the current group is viewing it.
-        Adds buttons like "leave group" or "invite members" */
-    private fun configureGroupLayoutForMember() {
-        leaveGroupButton.visibility = View.VISIBLE
-        leaveGroupButton.setOnClickListener {
-            popLeaveGroupConfirmationDialog()
+    private fun configureControls(group: Group) {
+        if (group.leaderId == General.currentUserId) {
+            configureLeaderControls()
+        } else if(group.getMember_ids().contains(General.currentUserId)) {
+            configureMemberControls()
+        } else if (group.getInvited_member_ids() != null
+                && group.getInvited_member_ids().keys.contains(General.currentUserId)) {
+            configureInvitedControls()
+        } else {
+            configureOutsiderControls()
         }
-        //TODO add discussion
-        //TODO add invite members button
     }
 
-    /* Runs when the current user is viewing a group he's not in */
-    private fun configureGroupLayoutForOutsider() {
-        //TODO add join button
+    private fun configureMemberControls() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.controls_container, MemberControls.newInstance(groupId)).commit()
     }
 
-    /* Runs when the current user is viewing the group is the leader */
-    private fun configureGroupLayoutForLeader() {
-        //TODO add discussion
-        //TODO add control panel card
-            //TODO add remove members button
-            //TODO add invite members button
-            //TODO add onlongclick to cards to edit them
+    private fun configureInvitedControls() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.controls_container, InvitedControls.newInstance(groupId)).commit()
+    }
+
+    private fun configureOutsiderControls() {
+        /*fragmentManager.beginTransaction()
+                .replace(R.id.controls_container, OutsiderControls.newInstance(groupId)).commit()*/
+    }
+
+    private fun configureLeaderControls() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
     }
 
     //Gets reserve data from local database and displays it on the reserve card
@@ -153,20 +164,15 @@ class GroupInfoActivity : Activity() {
                     currentGroup.setGroup_id(dataSnapshot.key)
                     memberCount = currentGroup.getMember_ids().size
 
-                    if (currentGroup.getMember_ids()[0] == General.currentUserId) {
-                        configureGroupLayoutForLeader()
-                    } else {
-                        //Checking if current user is a member and configuring layout accordingly
-                        if (currentGroup.getMember_ids().contains(General.currentUserId)) {
-                            configureGroupLayoutForMember()
-                        } else {
-                            configureGroupLayoutForOutsider()
-                        }
-                    }
+                    configureControls(currentGroup)
 
-                    for (memberId in currentGroup.getMember_ids()) {
+                    for (memberId in currentGroup.getMember_ids().keys) {
                         if (memberId != null) {
-                            getUserInfo(memberId)
+                            if (memberId == currentGroup.leaderId) {
+                                getLeaderInfo(memberId)
+                            } else {
+                                getUserInfo(memberId)
+                            }
                         } else {
                             memberCount--
                             if (memberCount == 0) {
@@ -187,25 +193,34 @@ class GroupInfoActivity : Activity() {
         })
     }
 
+    private fun getLeaderInfo(id: String) {
+        firebaseUsersRef.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    leader = dataSnapshot.getValue(User::class.java)!!
+                    leader.id = dataSnapshot.key
+                    decrementMemberCount()
+                } else {
+                    notFound()
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
+    }
+
     //Gets user info from Firebase using userId
     private fun getUserInfo(userId: String) {
         firebaseUsersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if member exists
-                if (dataSnapshot!!.exists()) {
+                if (dataSnapshot != null) {
                     tempMember = dataSnapshot.getValue(User::class.java)!! //Getting member info
                     tempMember.setId(userId) //Setting user Id
                     members.add(tempMember) //Setting member info
-                    memberCount-- //Iterating member index
-                    if (memberCount == 0) { //Checking if member list retrieval finished
-                        applyGroupData()
-                    }
+                    decrementMemberCount()
                 } else {
-                    //TODO string resources
-                    Toast.makeText(applicationContext,
-                            "There was an error retreiving the members",
-                            Toast.LENGTH_SHORT).show()
-                    finish()
+                    notFound()
                 }
             }
 
@@ -213,12 +228,25 @@ class GroupInfoActivity : Activity() {
         })
     }
 
+    private fun decrementMemberCount() {
+        memberCount--
+        if (memberCount == 0) {
+            applyGroupData()
+        }
+    }
+
+    private fun notFound() {
+        //TODO string resources
+        Toast.makeText(applicationContext,
+                "There was an error retreiving the members",
+                Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
     //Displays the already-retrieved data of the group
     private fun applyGroupData() {
-        val leader = members[0];
 
         //Displaying leader
-
         //Profile picture
         Picasso.with(this).invalidate(leader.getProfile_picture_url())
         Picasso.with(this)
@@ -263,55 +291,12 @@ class GroupInfoActivity : Activity() {
         preferencesTextView.text = currentGroup.group_preferences
 
         //Displaying members
-        val adapter = MemberListAdapter(this, members)
-        membersRecyclerView.adapter = adapter
-    }
-
-    private fun popLeaveGroupConfirmationDialog() {
-        val builder = AlertDialog.Builder(this)
-        //TODO string resources
-        builder.setTitle("Leave Group?")
-                .setMessage("Are you sure you want to leave this group?")
-                .setPositiveButton("Yes", { _, _ -> leaveGroup() })
-                .setNegativeButton("No", null)
-        builder.show()
-    }
-
-    private fun leaveGroup() {
-        firebaseGroupsRef.child("$groupId/$FIREBASE_TAG_MEMBER_IDS")
-                .orderByValue().equalTo(General.currentUserId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        if (dataSnapshot != null) {
-                            //Removing userId from group
-                            for (itemSnapshot in dataSnapshot.children) {
-                                itemSnapshot.ref.removeValue()
-                            }
-
-                            //Removing groupId from user
-                            firebaseUsersRef
-                                    .child(General.currentUserId)
-                                    .child(FIREBASE_TAG_GROUP_IDS)
-                                    .child(groupId)
-                                    .removeValue()
-
-                            //TODO resort member ids
-                            //TODO string resources
-                            Toast.makeText(this@GroupInfoActivity,
-                                    "You have left the group",
-                                    Toast.LENGTH_SHORT).show()
-
-                        } else {
-                            //TODO string resources
-                            Toast.makeText(this@GroupInfoActivity,
-                                    "Server error: couldn't leave group. Please try again later",
-                                    Toast.LENGTH_SHORT).show()
-                        }
-                        finish() //TODO recreate with the same parameters
-                    }
-
-                    override fun onCancelled(p0: DatabaseError?) {}
-                })
+        if (members.isEmpty()) {
+            memberListCardView.visibility = View.GONE
+        } else {
+            val adapter = MemberListAdapter(this, members)
+            membersRecyclerView.adapter = adapter
+        }
     }
 
     //Displays information about the experience icon (X and tick)

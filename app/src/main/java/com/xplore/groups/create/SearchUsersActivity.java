@@ -114,11 +114,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                     }
                     if (dataFound && displayData) {
                         displayUserList();
-                    } else if (!dataFound) {
-                        nothingFound();
                     }
-                } else {
-                    nothingFound();
                 }
             }
 
@@ -142,8 +138,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                         tempUser.setId(userSnapshot.getKey());
                         userList.add(tempUser);
                     }
-                } else if (!resummon && !dataFound) {
-                    nothingFound();
                 } else if(resummon) {
                     dataFound = false;
                 }
@@ -189,11 +183,11 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void nothingFound() {
+/*    private void nothingFound() {
         Toast.makeText(SearchUsersActivity.this, R.string.search_no_results,
                 Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.INVISIBLE);
-    }
+    }*/
 
     private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
 
@@ -302,9 +296,13 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         if(searchQuery.contains(" ")) {
             String[] parts = searchQuery.split(" ",2);
             loadUsersWithFullName(firstLetterUpper(parts[0]), firstLetterUpper(parts[1]), true);
+            loadUsersWithFullName(parts[0], parts[1], true);
 
             //TODO add fname search with lname filter (reverse loadUsersWithFullName, in case they type lname first, then fname)
         } else {
+            loadUsersWithTag(searchQuery, FIREBASE_FNAME_TAG, true,
+                    searchQuery, FIREBASE_LNAME_TAG);
+
             loadUsersWithTag(firstLetterUpper(searchQuery), FIREBASE_FNAME_TAG, true,
                     firstLetterUpper(searchQuery), FIREBASE_LNAME_TAG);
         }

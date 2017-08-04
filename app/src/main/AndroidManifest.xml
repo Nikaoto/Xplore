@@ -53,7 +53,7 @@
             android:label="@string/activity_library_title"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".groups.search.GroupInfoActivity"
+            android:name=".groups.view.GroupInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.create.SearchDestinationActivity"

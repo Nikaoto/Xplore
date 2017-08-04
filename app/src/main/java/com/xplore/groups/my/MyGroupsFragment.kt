@@ -76,7 +76,7 @@ class MyGroupsFragment() : Fragment() {
         loadGroups(joinedGroups, false)
     }
 
-    fun loadGroups(groupMap: HashMap<String, Boolean>, invited: Boolean) {
+    private fun loadGroups(groupMap: HashMap<String, Boolean>, invited: Boolean) {
         for (groupId in groupMap.keys) {
             firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(
                     object : ValueEventListener {
@@ -85,11 +85,11 @@ class MyGroupsFragment() : Fragment() {
                                 val groupCard = dataSnapshot.getValue(GroupCard::class.java)
                                 if (groupCard != null) {
                                     groupCard.id = dataSnapshot.key
-                                    val leaderId = dataSnapshot.child(FIREBASE_TAG_MEMBER_IDS)
-                                            .child("0").getValue(String::class.java)!!
-
                                     groupCard.invite = invited
-                                    loadLeaderCard(leaderId, groupCard)
+                                    val leaderId = getLeaderIdFromGroupSnapshot(dataSnapshot)
+                                    if (leaderId != null) {
+                                        loadLeaderCard(leaderId, groupCard)
+                                    } else { printError() }
                                 } else { printError() }
                             } else { printError() }
                         }
@@ -100,8 +100,17 @@ class MyGroupsFragment() : Fragment() {
         }
     }
 
+    private fun getLeaderIdFromGroupSnapshot(groupSnapshot: DataSnapshot): String? {
+        for (snapshot in groupSnapshot.child(FIREBASE_TAG_MEMBER_IDS).children) {
+            if (snapshot.getValue(Boolean::class.java)!!) {
+                return snapshot.key
+            }
+        }
+        return null
+    }
+
     //Used to load leader info, assign it to a group AND UPDATE THE RECYCLERVIEW
-    fun loadLeaderCard(leaderId: String, groupCard: GroupCard) {
+    private fun loadLeaderCard(leaderId: String, groupCard: GroupCard) {
         firebaseUsersRef.child(leaderId).addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {

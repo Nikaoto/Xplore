@@ -160,6 +160,7 @@
 
             <!-- Member List -->
             <android.support.v7.widget.CardView
+                android:id="@+id/memberListCardView"
                 style="@style/InfoCardView_noContentPadding"
                 android:layout_width="match_parent"
                 android:layout_height="185dp">
@@ -220,18 +221,19 @@
                 TODO add long press edit info on each cardview (only leeader)
             -->
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/leaveGroupButton"
-                android:visibility="gone"
-                android:layout_marginLeft="15dp"
-                android:padding="15dp"
-                tools:visibility="visible"
-                android:text="Leave Group"
-                android:fontFamily="sans-serif-medium"
-                app:backgroundTint="@color/colorAccent"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!-- Control buttons cardview. Changes depending on user -->
+            <android.support.v7.widget.CardView
+                style="@style/InfoCardView_noContentPadding"
+                app:contentPadding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/controls_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.v7.widget.CardView>
 
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"

@@ -1,6 +1,9 @@
 package com.xplore.groups;
 
+import com.xplore.user.User;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Nikaoto on 2/8/2017.
@@ -11,11 +14,20 @@ public class Group {
     public long start_date, end_date;
     public String start_time, end_time;
     protected String destination_id, group_id, extra_info, group_preferences;
-    public ArrayList<String> member_ids;
-    public ArrayList<String> invited_member_ids;
+    public HashMap<String, Boolean> member_ids;
+    public HashMap<String, Boolean> invited_member_ids;
 
     public Group() {
         //LEAVE EMPTY
+    }
+
+    public String getLeaderId() {
+        for (String userId : member_ids.keySet()) {
+            if (member_ids.get(userId)) {
+                return userId;
+            }
+        }
+        return "";
     }
 
     public String getExtra_info() {
@@ -66,11 +78,11 @@ public class Group {
         this.experienced = experienced;
     }
 
-    public ArrayList<String> getMember_ids() {
+    public HashMap<String, Boolean> getMember_ids() {
         return member_ids;
     }
 
-    public void setMember_ids(ArrayList<String> member_ids) {
+    public void setMember_ids(HashMap<String, Boolean> member_ids) {
         this.member_ids = member_ids;
     }
 
@@ -98,11 +110,11 @@ public class Group {
         this.end_time = end_time;
     }
 
-    public ArrayList<String> getInvited_member_ids() {
+    public HashMap<String, Boolean> getInvited_member_ids() {
         return invited_member_ids;
     }
 
-    public void setInvited_member_ids(ArrayList<String> invited_member_ids) {
+    public void setInvited_member_ids(HashMap<String, Boolean> invited_member_ids) {
         this.invited_member_ids = invited_member_ids;
     }
 }

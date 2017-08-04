@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for invited user when viewing group -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Accept Invite -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/acceptInviteButton"
+        android:text="@string/accept_invite"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/subtleGreen"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Decline Invite -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/declineInviteButton"
+        android:text="@string/decline_invite"
+        android:padding="15dp"
+        android:layout_below="@id/acceptInviteButton"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/subtleRed"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

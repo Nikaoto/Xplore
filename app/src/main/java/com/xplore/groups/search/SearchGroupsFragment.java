@@ -123,11 +123,14 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     GroupCard tempCard = snapshot.getValue(GroupCard.class);
                     //group id
                     tempCard.setId(snapshot.getKey());
-                    //leader id
-                    tempCard.setLeaderId(
-                            snapshot.child(FIREBASE_TAG_MEMBER_IDS).getChildren()
-                                    .iterator().next().getValue(String.class)
-                    );
+
+                    //Leader id
+                    //TODO change when multiple leaders are added
+                    for (DataSnapshot memberId : snapshot.child(FIREBASE_TAG_MEMBER_IDS).getChildren()) {
+                        if (memberId.getValue(Boolean.class)) {
+                            tempCard.setLeaderId(memberId.getKey());
+                        }
+                    }
 
                     //adding it to the list
                     groupCards.add(tempCard);

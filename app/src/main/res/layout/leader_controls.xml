@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for leader when viewing group -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Delete Group -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/deleteGroupButton"
+        android:text="@string/delete_group"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/subtleRed"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Edit Group -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/editGroupButton"
+        android:text="@string/edit_group"
+        android:padding="15dp"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/colorAccent"
+        android:layout_toLeftOf="@id/deleteGroupButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

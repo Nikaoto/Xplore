@@ -26,7 +26,7 @@ class UploadableGroup extends Group {
     UploadableGroup(String group_id, boolean experienced,
                     long start_date, String start_time, long end_date, String end_time,
                     String destination_id, String extra_info, String group_preferences,
-                    ArrayList<String> member_ids, ArrayList<String> invited_member_ids) {
+                    HashMap<String, Boolean> member_ids, HashMap<String, Boolean> invited_member_ids) {
         this.setGroup_id(group_id);
         this.setExperienced(experienced);
         this.setStart_date(start_date);

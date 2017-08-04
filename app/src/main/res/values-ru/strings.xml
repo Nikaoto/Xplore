@@ -119,5 +119,11 @@
     <string name="end_time">Время Окончания</string>
     <string name="start_time">Время Начала</string>
     <string name="meetup_time">Время Встречи</string>
+    <string name="join_group">Вступить в группу</string>
+    <string name="google_maps_key" translatable="false"></string>
+    <string name="edit_group">Изменить группу</string>
+    <string name="delete_group">Удалить группу</string>
+    <string name="decline_invite">Отклонить приглашение</string>
+    <string name="accept_invite">Принять приглашение</string>
     <!-- -->
 </resources>
