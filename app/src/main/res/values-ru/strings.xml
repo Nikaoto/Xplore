@@ -54,7 +54,6 @@
     <string name="birth_date">Дата рождения</string>
     <string name="tel">Тел</string>
     <string name="activity_choose_destination_title">Выберите Пункт Назначения</string>
-    <string name="invite_members">Приглашать</string>
     <string name="question_has_visited">Известно ли местность для этой группы?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
@@ -125,5 +124,7 @@
     <string name="delete_group">Удалить группу</string>
     <string name="decline_invite">Отклонить приглашение</string>
     <string name="accept_invite">Принять приглашение</string>
+    <string name="invite">Приглашать</string>
+    <string name="invite_members">Пригласить Людей</string>
     <!-- -->
 </resources>

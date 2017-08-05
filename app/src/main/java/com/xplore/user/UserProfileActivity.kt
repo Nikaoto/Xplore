@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
+import kotlinx.android.synthetic.main.generic_toolbar.*
 import kotlinx.android.synthetic.main.user_profile.*
 
 /**

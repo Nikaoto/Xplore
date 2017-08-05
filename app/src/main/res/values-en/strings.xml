@@ -54,7 +54,7 @@
     <string name="birth_date">Birth date</string>
     <string name="tel">Tel</string>
     <string name="activity_choose_destination_title">Choose Destination</string>
-    <string name="invite_members">Invite</string>
+    <string name="invite_members">Invite Members</string>
     <string name="question_has_visited">Is the group familiar with this reserve?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -125,5 +125,6 @@
     <string name="delete_group">Delete Group</string>
     <string name="edit_group">Edit Group</string>
     <string name="join_group">Join Group</string>
+    <string name="invite">Invite</string>
     <!-- -->
 </resources>
