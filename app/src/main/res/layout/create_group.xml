@@ -235,7 +235,7 @@
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/inviteButton"
-                    android:text="@string/invite_members"
+                    android:text="@string/invite"
                     android:textSize="15sp"
                     app:backgroundTint="@color/colorAccent"
                     android:layout_marginRight="20dp"

@@ -3,6 +3,7 @@ package com.xplore.groups.view.controls
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +13,8 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
-import com.xplore.groups.create.SearchUsersActivity
 
 import kotlinx.android.synthetic.main.member_controls.*
-import javax.xml.transform.Result
 
 /**
  * Created by Nikaoto on 8/4/2017.
@@ -31,8 +30,6 @@ import javax.xml.transform.Result
 
 class MemberControls : Fragment() {
 
-    private val INVITE_USERS_ACTIVITY_CODE = 1
-
     //Firebase
     val FIREBASE_TAG_MEMBER_IDS = "member_ids"
     val FIREBASE_TAG_GROUP_IDS = "group_ids"
@@ -42,7 +39,6 @@ class MemberControls : Fragment() {
     private lateinit var currentGroupRef: DatabaseReference;
     //
     private lateinit var groupId: String
-    private var invitedMemberIds = ArrayList<String>()
 
     //TODO add discussion
     //TODO add invite members button
@@ -75,21 +71,8 @@ class MemberControls : Fragment() {
     }
 
     private fun startInvitingMembers() {
-        //TODO create new activity which contains a member list + invite button which opens SearchUsersActivity
-        /*val i = Intent(activity, SearchUsersActivity::class.java)
-        startActivityForResult(i, INVITE_USERS_ACTIVITY_CODE)*/
+        startActivity(InviteMembersActivity.getStartIntent(activity, groupId))
     }
-
-/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
-                if (resultCode == Activity.RESULT_OK) {
-                    invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
-                }
-            }
-        }
-    }*/
 
     private fun popLeaveGroupConfirmationDialog() {
         val builder = AlertDialog.Builder(activity)

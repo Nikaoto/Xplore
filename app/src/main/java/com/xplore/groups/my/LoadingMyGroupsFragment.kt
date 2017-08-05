@@ -45,6 +45,7 @@ class LoadingMyGroupsFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
                     val groups = UserGroups()
+                    //TODO remove hardcodes
                     val joinedSnapshot = dataSnapshot.child("group_ids")
                     val invitedSnapshot = dataSnapshot.child("invited_group_ids")
 

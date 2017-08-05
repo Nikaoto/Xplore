@@ -175,10 +175,7 @@ class GroupInfoActivity : Activity() {
                                 getUserInfo(memberId)
                             }
                         } else {
-                            memberCount--
-                            if (memberCount == 0) {
-                                applyGroupData()
-                            }
+                            decrementMemberCount()
                         }
                     }
                 } else {

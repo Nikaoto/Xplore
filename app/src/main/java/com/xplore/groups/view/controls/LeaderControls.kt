@@ -49,6 +49,10 @@ class LeaderControls : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         groupId = arguments.getString("groupId")
 
+        inviteMembersButton.setOnClickListener {
+            //startInvitingMembers()
+        }
+
         editGroupButton.setOnClickListener {
             //startEditingGroup()
         }

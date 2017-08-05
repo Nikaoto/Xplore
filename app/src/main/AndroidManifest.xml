@@ -80,6 +80,9 @@
             android:name=".groups.create.CreateGroupActivity"
             android:label="@string/activity_create_group_title"
             android:screenOrientation="portrait" />
+        <activity android:name=".groups.view.controls.InviteMembersActivity"
+            android:label="@string/invite_members"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings_title" />
