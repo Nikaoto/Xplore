@@ -4,10 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.groups.SelectUsersAdapter
+import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.generic_toolbar.*
 import kotlinx.android.synthetic.main.search_layout.*
 
@@ -21,7 +25,7 @@ import kotlinx.android.synthetic.main.search_layout.*
  * Opens when inviting members to a group.
  *
  */
-class InviteMembersActivity : Activity() {
+class InviteMembersActivity : Activity(), TextView.OnEditorActionListener {
 
     //TODO get friends list
     //TODO display friends and add suggestions
@@ -31,6 +35,7 @@ class InviteMembersActivity : Activity() {
     private lateinit var currentGroupRef: DatabaseReference
 
     private lateinit var groupId: String
+    private var displayUserCards = ArrayList<UserCard>()
     private var excludedMemberIds = ArrayList<String>()
     private var selectedMemberIds = ArrayList<String>()
 
@@ -78,15 +83,21 @@ class InviteMembersActivity : Activity() {
 
     private fun loadLayout() {
         setContentView(R.layout.search_layout)
+        searchEditText.setSingleLine(true)
         searchEditText.setHint(R.string.search_name_hint)
+        searchEditText.setOnEditorActionListener(this)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-
-
+        resultsListView.adapter = SelectUsersAdapter(this, displayUserCards, selectedMemberIds)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.invite_members, menu)
         return true
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        TODO("add functionality here")
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

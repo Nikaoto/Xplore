@@ -58,9 +58,6 @@
                     android:textStyle="bold"
                     android:layout_marginRight="5dp"/>
 
-                <!--
-                TODO ribbonRecyclerView to right of reputation text wich has ribbons and markers (team exp, cost?,
-                -->
             </RelativeLayout>
 
             <LinearLayout

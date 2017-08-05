@@ -1,5 +1,8 @@
 package com.xplore.user
 
+import android.content.Context
+import com.xplore.R
+
 /**
  * Created by Nikaoto on 3/1/2017.
  */
@@ -13,4 +16,8 @@ class UserCard(
         val lname: String = "",
         val reputation: Int = -1,
         val profile_picture_url: String = ""
-)
+) {
+    fun getFullName() = "$fname $lname"
+    fun getCombinedReputationText(context: Context)
+            = context.resources.getString(R.string.reputation) + " " + reputation
+}

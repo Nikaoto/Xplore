@@ -195,7 +195,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         private final ArrayList<User> userList;
 
         public UserListAdapter(ArrayList<User> userList) {
-            super(SearchUsersActivity.this, R.layout.group_list_item, userList);
+            super(SearchUsersActivity.this, R.layout.user_list_item, userList);
             this.userList = userList;
         }
 

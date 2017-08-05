@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/user_profile_image_tiny_size">
 
     <ImageView
+        android:id="@+id/userImageView"
+        tools:src="@drawable/user_default_profile_image"
         android:layout_width="@dimen/user_profile_image_tiny_size"
-        android:layout_height="@dimen/user_profile_image_tiny_size" />
+        android:layout_height="@dimen/user_profile_image_tiny_size"
+        android:layout_marginRight="20dp"
+        android:scaleType="centerCrop"/>
 
+
+    <TextView
+        android:id="@+id/userRepCombinedTextView"
+        tools:text="100 რეპუტაცია"
+        android:layout_toRightOf="@id/userImageView"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:textSize="13sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGreyText"
+        android:layout_marginBottom="3dp"/>
+
+    <TextView
+        android:id="@+id/userFullNameTextView"
+        tools:text="ნიკოლოზ ოთიაშვილი"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/userImageView"
+        android:layout_below="@id/userRepCombinedTextView"
+        android:layout_centerVertical="@id/userImageView"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginRight="5dp"/>
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>
