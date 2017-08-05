@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -12,7 +13,6 @@ import com.google.firebase.database.*
 import com.xplore.R
 import com.xplore.groups.SelectUsersAdapter
 import com.xplore.user.UserCard
-import kotlinx.android.synthetic.main.generic_toolbar.*
 import kotlinx.android.synthetic.main.search_layout.*
 
 /**
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.search_layout.*
  * Opens when inviting members to a group.
  *
  */
-class InviteMembersActivity : Activity(), TextView.OnEditorActionListener {
+class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListener {
 
     //TODO get friends list
     //TODO display friends and add suggestions
@@ -82,15 +82,16 @@ class InviteMembersActivity : Activity(), TextView.OnEditorActionListener {
     }
 
     private fun loadLayout() {
-        setContentView(R.layout.search_layout)
+        setContentView(R.layout.invite_members)
         searchEditText.setSingleLine(true)
         searchEditText.setHint(R.string.search_name_hint)
         searchEditText.setOnEditorActionListener(this)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         resultsListView.adapter = SelectUsersAdapter(this, displayUserCards, selectedMemberIds)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.invite_members, menu)
         return true
     }
@@ -109,7 +110,8 @@ class InviteMembersActivity : Activity(), TextView.OnEditorActionListener {
             } else {
                 onBackPressed()
             }
-            return true
+        } else {
+            onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }

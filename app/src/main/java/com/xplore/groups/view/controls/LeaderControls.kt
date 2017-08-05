@@ -50,7 +50,7 @@ class LeaderControls : Fragment() {
         groupId = arguments.getString("groupId")
 
         inviteMembersButton.setOnClickListener {
-            //startInvitingMembers()
+            startInvitingMembers()
         }
 
         editGroupButton.setOnClickListener {
@@ -60,6 +60,10 @@ class LeaderControls : Fragment() {
         deleteGroupButton.setOnClickListener {
             confirmGroupDeletion()
         }
+    }
+
+    private fun startInvitingMembers() {
+        startActivity(InviteMembersActivity.getStartIntent(activity, groupId))
     }
 
     private fun confirmGroupDeletion() {
