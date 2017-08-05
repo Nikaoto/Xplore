@@ -2,6 +2,8 @@ package com.xplore.user
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.user_profile.*
  */
 
 //TODO open registration when not signed in
-class UserProfileActivity : Activity() {
+class UserProfileActivity : AppCompatActivity() {
 
     private val userId: String by lazy { getPassedUserId() }
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
@@ -37,8 +39,8 @@ class UserProfileActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_profile)
-
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        setTitle("")
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //Start load animation
         imageProgressBar.visibility = View.VISIBLE
@@ -95,5 +97,10 @@ class UserProfileActivity : Activity() {
     fun printError() {
         Toast.makeText(this@UserProfileActivity, "User does not exist", Toast.LENGTH_SHORT).show()
         //TODO String resources
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 }
