@@ -1,6 +1,7 @@
 package com.xplore.groups
 
 import android.app.Activity
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -37,6 +38,7 @@ class SelectUsersAdapter(val activity: Activity,
                 .into(itemView.userImageView)
         //Profile pic onclick
         itemView.userImageView.setOnClickListener {
+            Log.println(Log.INFO, "bloop", "uid=${userCard.id}")
             General.openUserProfile(activity, userCard.id)
         }
         //Full name

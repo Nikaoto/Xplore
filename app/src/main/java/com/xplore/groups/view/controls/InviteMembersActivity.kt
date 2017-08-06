@@ -9,8 +9,10 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.database.FirebaseUserSearch
 import com.xplore.groups.SelectUsersAdapter
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.search_layout.*
@@ -35,9 +37,13 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     private lateinit var currentGroupRef: DatabaseReference
 
     private lateinit var groupId: String
+
     private var displayUserCards = ArrayList<UserCard>()
     private var excludedMemberIds = ArrayList<String>()
     private var selectedMemberIds = ArrayList<String>()
+    private val listAdapter by lazy { SelectUsersAdapter(this, displayUserCards, selectedMemberIds) }
+
+    private val fUserSearch = FirebaseUserSearch( displayUserCards, {displayUserList()} )
 
     companion object {
         @JvmStatic
@@ -56,6 +62,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_layout)
+        setTitle(R.string.invite_members)
         loadExcludeList()
     }
 
@@ -88,7 +95,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         searchEditText.setOnEditorActionListener(this)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        resultsListView.adapter = SelectUsersAdapter(this, displayUserCards, selectedMemberIds)
+        resultsListView.adapter = listAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -104,10 +111,27 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
 
         if (searchQuery.contains(" ")) {
             val parts = searchQuery.split(" ".toRegex(), 2)
-
+            fUserSearch.loadUsersWithFullName(parts[0], parts[1], true)
         }
+/*            val parts = searchQuery.split(" ".toRegex(), 2)
+            //Search with 1 -> 2
+            loadUsersWithFullName(firstLetterUpper(parts[0]), firstLetterUpper(parts[1]), true)
+            loadUsersWithFullName(parts[0], parts[1], true)
+            //Now the other way around (2 -> 1)
+            loadUsersWithFullName(firstLetterUpper(parts[1]), firstLetterUpper(parts[0]), true)
+            loadUsersWithFullName(parts[1], parts[0], true)
+        } else run {
+            loadUsersWithTag(searchQuery, FIREBASE_FNAME_TAG, true,
+                    searchQuery, FIREBASE_LNAME_TAG)
 
+            loadUsersWithTag(firstLetterUpper(searchQuery), FIREBASE_FNAME_TAG, true,
+                    firstLetterUpper(searchQuery), FIREBASE_LNAME_TAG)
+        }*/
         return false
+    }
+
+    private fun displayUserList() {
+        listAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
