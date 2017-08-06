@@ -96,8 +96,17 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         return true
     }
 
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        TODO("add functionality here")
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+
+        val searchQuery = v.text.toString().toLowerCase()
+
+        //TODO search by..
+
+        if (searchQuery.contains(" ")) {
+            val parts = searchQuery.split(" ".toRegex(), 2)
+
+        }
+
         return false
     }
 

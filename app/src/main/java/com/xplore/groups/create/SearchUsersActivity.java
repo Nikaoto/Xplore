@@ -296,10 +296,12 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         //If searchQuery has both first and last names
         if(searchQuery.contains(" ")) {
             String[] parts = searchQuery.split(" ",2);
+            //Search with 1 -> 2
             loadUsersWithFullName(firstLetterUpper(parts[0]), firstLetterUpper(parts[1]), true);
             loadUsersWithFullName(parts[0], parts[1], true);
-
-            //TODO add fname search with lname filter (reverse loadUsersWithFullName, in case they type lname first, then fname)
+            //Now the other way around (2 -> 1)
+            loadUsersWithFullName(firstLetterUpper(parts[1]), firstLetterUpper(parts[0]), true);
+            loadUsersWithFullName(parts[1], parts[0], true);
         } else {
             loadUsersWithTag(searchQuery, FIREBASE_FNAME_TAG, true,
                     searchQuery, FIREBASE_LNAME_TAG);
