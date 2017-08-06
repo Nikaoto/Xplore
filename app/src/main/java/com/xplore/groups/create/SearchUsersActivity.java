@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,9 +125,18 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
         });
     }
 
+    /*
+    *  Searches queries with given tags.
+    *  Do not change this code in any way. Implementing a for-each loop is a great idea, but it
+    *  won't work because the requests are sent much quicker than firebase is able to respond, so
+    *  it ends up responding too late to every request. You can't display the correct results
+    *  without sending a request after a response has been received from the previous request.
+    *  Requests need to be sent one step at a time. This is crap, I know, but we can't do anything
+    *  about it until we get a normal backend for this app.
+    */
     private void loadUsersWithTag(final String query, final String tag, final boolean resummon,
                                   final String query2, final String tag2) {
-        //if resummon == true, do NOT display data
+        //if resummon == true, do NOT display data yet
         Query dbQuery = firebaseUsersRef.orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
         dbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -139,8 +149,6 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
                         tempUser.setId(userSnapshot.getKey());
                         userList.add(tempUser);
                     }
-                } else if(resummon) {
-                    dataFound = false;
                 }
 
                 if (resummon) {
@@ -158,21 +166,23 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
     //Filters duplicate users from given array and returns filtered list
     // Also removes the currently logged in user from the list
     private ArrayList<User> filterDuplicates(ArrayList<User> list) {
-        boolean foundDuplicate;
         ArrayList<User> ansList = new ArrayList<>();
+        boolean foundDuplicate;
         //Filtering duplicates into ansList
         for(int i = 0; i < list.size(); i++) {
-            foundDuplicate = false;
-            //Checking if list[i] is a duplicate
-            for(int j = i; j < list.size(); j++) {
-                if(i!= j && list.get(j).getId().equals(list.get(i).getId())) {
-                    foundDuplicate = true;
-                    break;
+            if (!list.get(i).getId().equals(General.currentUserId)) {
+                foundDuplicate = false;
+                //Checking if list[i] is a duplicate
+                for (int j = i + 1; j < list.size(); j++) {
+                    if (list.get(j).getId().equals(list.get(i).getId())) {
+                        foundDuplicate = true;
+                        break;
+                    }
                 }
-            }
-            //If we have a user that is not a duplicate and not the user itself
-            if(!foundDuplicate && (!(list.get(i).getId().equals(General.currentUserId)))) {
-                ansList.add(list.get(i));
+                //If we have a user that is not a duplicate and not the user itself
+                if (!foundDuplicate) {
+                    ansList.add(list.get(i));
+                }
             }
         }
         return ansList;

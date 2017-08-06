@@ -38,7 +38,6 @@ class SelectUsersAdapter(val activity: Activity,
                 .into(itemView.userImageView)
         //Profile pic onclick
         itemView.userImageView.setOnClickListener {
-            Log.println(Log.INFO, "bloop", "uid=${userCard.id}")
             General.openUserProfile(activity, userCard.id)
         }
         //Full name
@@ -46,6 +45,9 @@ class SelectUsersAdapter(val activity: Activity,
         //Reputation
         itemView.userRepCombinedTextView.text = userCard.getCombinedReputationText(activity)
         //Checkbox
+        if (selectedUserIds.contains(userCard.id)) {
+            itemView.checkbox.isChecked = true
+        }
         itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
             val userCard = userCardList[position]
             if (isChecked) {
