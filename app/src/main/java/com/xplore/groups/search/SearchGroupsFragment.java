@@ -109,6 +109,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private void prepareToLoadData() {
         progressBar.setVisibility(View.VISIBLE);
         groupCards.clear();
+        displayCards.clear();
         firstLoad = true;
 
         //Displaying list already

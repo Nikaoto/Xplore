@@ -1,6 +1,5 @@
 package com.xplore.groups.view.controls
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +11,9 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
-import com.xplore.General
 import com.xplore.R
 import com.xplore.database.FirebaseUserSearch
-import com.xplore.groups.GroupAllMemberIds
+import com.xplore.groups.AllMemberIdsForGroup
 import com.xplore.groups.SelectUsersAdapter
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.search_layout.*
@@ -76,7 +74,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val allMemberIds = dataSnapshot.getValue(GroupAllMemberIds::class.java)
+                    val allMemberIds = dataSnapshot.getValue(AllMemberIdsForGroup::class.java)
                     if (allMemberIds != null) {
                         excludedMemberIds.addAll(allMemberIds.member_ids.keys)
                         excludedMemberIds.addAll(allMemberIds.invited_member_ids.keys)

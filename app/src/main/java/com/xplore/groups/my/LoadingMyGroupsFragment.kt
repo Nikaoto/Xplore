@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.General
 import com.xplore.R
+import com.xplore.groups.AllGroupIdsForMember
 
 /**
  * Created by Nikaoto on 7/17/2017.
@@ -31,12 +32,6 @@ class LoadingMyGroupsFragment : Fragment() {
 
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
-    //Used to only get group info, instead of everything. Speeds up loading
-    private class UserGroups (
-            val group_ids: HashMap<String, Boolean> = HashMap(),
-            val invited_group_ids: HashMap<String, Boolean> = HashMap()
-    )
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
             = inflater.inflate(R.layout.loading_layout, container, false)
 
@@ -48,27 +43,14 @@ class LoadingMyGroupsFragment : Fragment() {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val groups = UserGroups()
-                    //TODO remove hardcodes
-                    val joinedSnapshot = dataSnapshot.child("group_ids")
-                    val invitedSnapshot = dataSnapshot.child("invited_group_ids")
+                    val groupIds = dataSnapshot.getValue(AllGroupIdsForMember::class.java)
+                    if (groupIds != null) {
+                        if (groupIds.group_ids.isNotEmpty() || groupIds.invited_group_ids.isNotEmpty()) {
 
-                    if (joinedSnapshot != null) {
-                        for (group in joinedSnapshot.children) {
-                            groups.group_ids.put(group.key, group.getValue(Boolean::class.java)!!)
-                        }
-                    }
-                    if (invitedSnapshot != null) {
-                        for (group in invitedSnapshot.children) {
-                            groups.invited_group_ids.put(group.key, group.getValue(Boolean::class.java)!!)
-                        }
-                    }
+                            loadMyGroupsLayout(groupIds.group_ids, groupIds.invited_group_ids)
 
-                    if (groups.group_ids.isEmpty() && groups.invited_group_ids.isEmpty()) {
-                        loadEmptyLayout()
-                    } else {
-                        loadMyGroupsLayout(groups.group_ids, groups.invited_group_ids)
-                    }
+                        } else { loadEmptyLayout() }
+                    } else { loadEmptyLayout() }
                 } else { printError() }
             }
             override fun onCancelled(p0: DatabaseError?) { }

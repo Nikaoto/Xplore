@@ -2,7 +2,6 @@ package com.xplore.groups.view.controls
 
 import android.app.AlertDialog
 import android.app.Fragment
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.database.*
 import com.xplore.R
-import com.xplore.groups.GroupAllMemberIds
+import com.xplore.groups.AllMemberIdsForGroup
 
 import kotlinx.android.synthetic.main.leader_controls.*
 
@@ -92,7 +91,7 @@ class LeaderControls : Fragment() {
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val allMemberIds = dataSnapshot.getValue(GroupAllMemberIds::class.java)
+                    val allMemberIds = dataSnapshot.getValue(AllMemberIdsForGroup::class.java)
                     if (allMemberIds != null) {
                         //Joined
                         for (memberId in allMemberIds.member_ids.keys) {

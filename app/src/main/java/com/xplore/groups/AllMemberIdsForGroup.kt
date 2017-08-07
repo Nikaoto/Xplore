@@ -5,7 +5,7 @@ package com.xplore.groups
  *
  * A class to just fetch the invited and joined member ids for group
  */
-class GroupAllMemberIds (
+class AllMemberIdsForGroup(
         val member_ids: HashMap<String, Boolean> = HashMap<String, Boolean>(),
         val invited_member_ids: HashMap<String, Boolean> = HashMap<String,Boolean>()
 )
