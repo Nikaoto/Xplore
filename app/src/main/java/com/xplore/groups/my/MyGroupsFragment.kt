@@ -143,6 +143,7 @@ class MyGroupsFragment() : Fragment() {
                                         dbManager.getImageId(groupCard.destination_id.toInt())
 
                                 groupCards.add(groupCard)
+                                loadingbar.visibility = View.INVISIBLE
                                 myGroupsRecyclerView.adapter.notifyDataSetChanged()
                             } else { printError() }
                         } else { printError() }

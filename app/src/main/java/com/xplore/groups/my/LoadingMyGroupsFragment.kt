@@ -1,9 +1,7 @@
 package com.xplore.groups.my
 
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +18,13 @@ import com.xplore.groups.AllGroupIdsForMember
  * Created by Nikaoto on 7/17/2017.
  *
  * აღწერა:
- * ეს კლასი რთავს ჩატვირთვის ანიმაციას სანამ ტვირთავს მომხმარებლის ჯგუფებს. თუ მომხმარებელი არის
- * ჯგუფებში, გახსნის MyGroupsFragment-ს და აჩვენებს ჯუფებს, თუ არა - EmptyGroupsFragment-ს
+ * ეს კლასი რთავს ჩატვირთვის ანიმაციას სანამ ტვირთავს მომხმარებლის ჯგუფებს. ვიყენებთ რომ ჩავტვირთოთ
+ * MyGroupsFragment ან EmptyGroupsFragment. თუ მომხმარებელი არის ჯგუფებში, გახსნის MyGroupsFragment-ს
+ * და უჩვენებს ჯუფებს, თუ არა EmptyGroupsFragment-ს
  *
  * Description:
- * This class opens a loading animation while it loads the user's joined groups. If the user has
+ * This class opens a loading animation while it loads the user's joined groups. We use it to
+ * determine which of MyGroupsFragment and EmptyGroupsFragment should be loaded. If the user has
  * groups, it opens the MyGroupsFragment, otherwise, it opens EmptyMyGroupsFragment
  *
  */
