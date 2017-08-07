@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.group_card.view.*
  */
 
 class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
-                                           private val activity: Activity)
+                                   private val activity: Activity)
     : RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder>() {
 
     class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,6 +46,8 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         //Group marks
         internal val beenHereMark: ImageView = itemView.beenHereMark
         internal val invitedMark: ImageView = itemView.invitedMark
+        //Footer marks
+        internal val memberCount: TextView = itemView.memberCountTextView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultsViewHolder {
@@ -92,9 +94,12 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         //TODO change this to just map or submitted image
         holder.groupImage.setImageResource(group.reserveImageId)
 
-        //Displaying marks
+        //Marks
         if (group.invite) { holder.invitedMark.visibility = View.VISIBLE }
         if (group.experienced) { holder.beenHereMark.visibility = View.VISIBLE }
+
+        //Member count
+        holder.memberCount.text = group.memberCount.toString()
     }
 
     override fun getItemCount(): Int {

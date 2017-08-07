@@ -1,7 +1,6 @@
 package com.xplore.groups.search;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -45,8 +44,8 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     private static final DatabaseReference firebaseGroupsRef
             = FirebaseDatabase.getInstance().getReference().child("groups");
     //Firebase Tags
-    private static final String FIREBASE_TAG_START_DATE = "start_date";
-    private static final String FIREBASE_TAG_MEMBER_IDS = "member_ids";
+    private static final String FIREBASE_START_DATE_TAG = "start_date";
+    private static final String FIREBASE_MEMBER_IDS_TAG = "member_ids";
 
     private String searchQuery;
     private boolean firstLoad;
@@ -116,9 +115,13 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         resultsRV.setAdapter(new GroupCardRecyclerViewAdapter(displayCards, getActivity()));
     }
 
+    private int getMemberCount(DataSnapshot groupSnapshot) {
+        return (int) groupSnapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildrenCount();
+    }
+
     private void loadData() {
         //TODO change this after adding sort by options
-        firebaseGroupsRef.orderByChild(FIREBASE_TAG_START_DATE).limitToFirst(100)
+        firebaseGroupsRef.orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,10 +130,10 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     GroupCard tempCard = snapshot.getValue(GroupCard.class);
                     //group id
                     tempCard.setId(snapshot.getKey());
-
+                    tempCard.setMemberCount(getMemberCount(snapshot));
                     //Leader id
                     //TODO change when multiple leaders are added
-                    for (DataSnapshot memberId : snapshot.child(FIREBASE_TAG_MEMBER_IDS).getChildren()) {
+                    for (DataSnapshot memberId : snapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildren()) {
                         if (memberId.getValue(Boolean.class)) {
                             tempCard.setLeaderId(memberId.getKey());
                         }
@@ -179,7 +182,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 tempGroupCard.setLeaderReputation(leader.getReputation());
                                 tempGroupCard.setLeaderImageUrl(
                                         userSnapshot.getValue(User.class).getProfile_picture_url());
-
 /*                                //Setting reserve name
                                 //TODO remove this and just get tour name from firebase
                                 groupCard.setName(

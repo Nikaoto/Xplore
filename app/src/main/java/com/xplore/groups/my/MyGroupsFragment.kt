@@ -1,7 +1,6 @@
 package com.xplore.groups.my
 
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -88,8 +87,9 @@ class MyGroupsFragment() : Fragment() {
                                 val groupCard = dataSnapshot.getValue(GroupCard::class.java)
                                 if (groupCard != null) {
                                     groupCard.id = dataSnapshot.key
+                                    groupCard.memberCount = getMemberCount(dataSnapshot)
                                     groupCard.invite = invited
-                                    val leaderId = getLeaderIdFromGroupSnapshot(dataSnapshot)
+                                    val leaderId = getLeaderId(dataSnapshot)
                                     if (leaderId != null) {
                                         loadLeaderCard(leaderId, groupCard)
                                     } else { printError() }
@@ -103,7 +103,7 @@ class MyGroupsFragment() : Fragment() {
         }
     }
 
-    private fun getLeaderIdFromGroupSnapshot(groupSnapshot: DataSnapshot): String? {
+    private fun getLeaderId(groupSnapshot: DataSnapshot): String? {
         for (snapshot in groupSnapshot.child(FIREBASE_TAG_MEMBER_IDS).children) {
             if (snapshot.getValue(Boolean::class.java)!!) {
                 return snapshot.key
@@ -111,6 +111,9 @@ class MyGroupsFragment() : Fragment() {
         }
         return null
     }
+
+    private fun getMemberCount(groupSnapshot: DataSnapshot)
+            = groupSnapshot.child(FIREBASE_TAG_MEMBER_IDS).childrenCount.toInt()
 
     override fun onResume() {
         super.onResume()

@@ -99,14 +99,57 @@
             android:scaleType="centerCrop"/>
 
         <View style="@style/Divider"
-            android:layout_marginTop="1dp"/>
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"/>
 
         <RelativeLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="24dp">
+
+            <!-- Member count-->
+            <ImageView
+                android:id="@+id/memberCountIcon"
+                android:src="@drawable/ic_person_outline"
+                android:layout_centerVertical="true"
+                android:layout_width="22dp"
+                android:layout_height="22dp" />
+
+            <TextView
+                android:id="@+id/memberCountTextView"
+                tools:text="4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/memberCountIcon"
+                android:layout_marginLeft="4dp"
+                android:maxEms="4"/>
+
+
+            <!-- Start date -->
+<!--            <TextView
+                android:id="@+id/startDateTextView"
+                tools:text="in 4 days"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                android:paddingBottom="2dp"
+                android:layout_marginLeft="4dp"
+                android:layout_alignParentRight="true"/>
+
+            <ImageView
+                android:id="@+id/startDateIcon"
+                android:src="@drawable/ic_date"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/startDateTextView"/>-->
+
+
             <!--
-            TODO add member count (curr / max)
-            TODO add start time (in days)
             TODO add duration (in days)
             -->
         </RelativeLayout>

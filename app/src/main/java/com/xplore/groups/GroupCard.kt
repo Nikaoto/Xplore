@@ -25,6 +25,7 @@ data class GroupCard(
         var leaderImageUrl: String = "",
         var reserveImageId: Int = 0,
         var invite: Boolean = false,
+        var memberCount: Int = 0,
         //Values intended for Firebase data mapping
         val destination_id: String = "",
         val start_date: Int = 0,
@@ -33,7 +34,5 @@ data class GroupCard(
 
 //TODO add tour name to firebase
 //TODO remove reserveImageId
-//TODO add ribbons
 //TODO add current & max groupmates
 //TODO add duration
-//TODO add start time
