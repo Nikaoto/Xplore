@@ -10,10 +10,12 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
 import com.xplore.database.FirebaseUserSearch
+import com.xplore.groups.GroupAllMemberIds
 import com.xplore.groups.SelectUsersAdapter
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.search_layout.*
@@ -37,6 +39,9 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     private val F_GROUPS_TAG = "groups"
     private val F_FNAME_TAG = "fname"
     private val F_LNAME_TAG = "lname"
+    private val F_INVITED_MEMBER_IDS_TAG = "invited_member_ids"
+    private val F_INVITED_GROUP_IDS_TAG = "invited_group_ids"
+    private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
     private lateinit var currentGroupRef: DatabaseReference
 
     private lateinit var groupId: String
@@ -56,12 +61,6 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         }
     }
 
-    //Class to just fetch members to exclude when inviting
-    private class AllMemberIds(
-            val member_ids: HashMap<String, Boolean> = HashMap<String, Boolean>(),
-            val invited_member_ids: HashMap<String, Boolean> = HashMap<String,Boolean>()
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_layout)
@@ -77,7 +76,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
-                    val allMemberIds = dataSnapshot.getValue(AllMemberIds::class.java)
+                    val allMemberIds = dataSnapshot.getValue(GroupAllMemberIds::class.java)
                     if (allMemberIds != null) {
                         excludedMemberIds.addAll(allMemberIds.member_ids.keys)
                         excludedMemberIds.addAll(allMemberIds.invited_member_ids.keys)
@@ -149,7 +148,6 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
                     }
                 }
                 if (!duplicate) {
-                    Log.println(Log.INFO, "brejk", "adding ${userCardList[i].fname}")
                     ans.add(userCardList[i])
                 }
             }
@@ -157,25 +155,40 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
         return ans
     }
 
+    private fun sendInvitations(memberIds: ArrayList<String>) {
+        if (memberIds.isNotEmpty()) {
+            for (memberId in memberIds) {
+
+                Log.println(Log.INFO, "brejk", "sending invitation to $memberId")
+
+                //Adding member id to group
+                currentGroupRef.child(F_INVITED_MEMBER_IDS_TAG).child(memberId).setValue(true)
+                //Adding group id to member
+                usersRef.child(memberId).child(F_INVITED_GROUP_IDS_TAG).child(groupId).setValue(true)
+            }
+            //TODO string resources
+            Toast.makeText(this, "Invitations sent!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_done) {
-            if (selectedMemberIds.isNotEmpty()) {
-                val resultIntent = Intent().putExtra("selectedMemberIds", selectedMemberIds)
-                setResult(Activity.RESULT_OK, resultIntent)
-                finish()
-            } else {
-                onBackPressed()
-            }
+            sendInvitations(selectedMemberIds)
+            finish()
         } else {
-            onBackPressed()
+            finish()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        setResult(Activity.RESULT_CANCELED)
         finish()
     }
 
-    private fun firstLetterUpper(s: String) = s.substring(0, 1).toUpperCase() + s.substring(1)
+    private fun firstLetterUpper(s: String): String {
+        if (s.isEmpty() || s == " ") {
+            return s
+        }
+        return s.substring(0, 1).toUpperCase() + s.substring(1)
+    }
 }

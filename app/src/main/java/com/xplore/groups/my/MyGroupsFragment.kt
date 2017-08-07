@@ -1,6 +1,7 @@
 package com.xplore.groups.my
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -42,6 +43,8 @@ class MyGroupsFragment() : Fragment() {
     private var invitedGroups = HashMap<String, Boolean>()
     private val groupCards = ArrayList<GroupCard>()
     private val userCards = ArrayList<UserCard>()
+
+    private var allowRefresh = false
 
     //For reserve image loading
     private val dbManager: DBManager by lazy { DBManager(activity) }
@@ -107,6 +110,19 @@ class MyGroupsFragment() : Fragment() {
             }
         }
         return null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        //Checking if refresh needed
+        if (allowRefresh) {
+            allowRefresh = false
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
+        } else {
+            allowRefresh = true
+        }
     }
 
     //Used to load leader info, assign it to a group AND UPDATE THE RECYCLERVIEW

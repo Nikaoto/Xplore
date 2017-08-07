@@ -52,8 +52,10 @@ class SelectUsersAdapter(val activity: Activity,
             val userCard = userCardList[position]
             if (isChecked) {
                 selectedUserIds.add(userCard.id)
+                Log.println(Log.INFO, "brejk", "selecting ${userCard.fname}")
             } else {
                 selectedUserIds.remove(userCard.id)
+                Log.println(Log.INFO, "brejk", "removing ${userCard.fname}")
             }
         }
 

@@ -2,11 +2,15 @@ package com.xplore.groups.view.controls
 
 import android.app.AlertDialog
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.groups.GroupAllMemberIds
 
 import kotlinx.android.synthetic.main.leader_controls.*
 
@@ -25,7 +29,13 @@ import kotlinx.android.synthetic.main.leader_controls.*
 
 class LeaderControls : Fragment() {
 
+    //Firebase
+    private val F_INVITED_GROUP_IDS = "invited_group_ids"
+    private val F_GROUP_IDS = "group_ids"
+    private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
+    private val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupId: String
+    private lateinit var currentGroupRef: DatabaseReference
 
     //TODO add discussion
     //TODO add remove members button
@@ -48,6 +58,7 @@ class LeaderControls : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = arguments.getString("groupId")
+        currentGroupRef = groupsRef.child(groupId)
 
         inviteMembersButton.setOnClickListener {
             startInvitingMembers()
@@ -77,6 +88,40 @@ class LeaderControls : Fragment() {
     }
 
     private fun deleteGroup() {
+        //Removing group id from other members
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    val allMemberIds = dataSnapshot.getValue(GroupAllMemberIds::class.java)
+                    if (allMemberIds != null) {
+                        //Joined
+                        for (memberId in allMemberIds.member_ids.keys) {
+                            removeGroupIdFromMember(memberId, groupId)
+                        }
+                        //Invited
+                        for (invMemberId in allMemberIds.invited_member_ids.keys) {
+                            uninvite(invMemberId, groupId)
+                        }
 
+
+                        //Removing the group node
+                        currentGroupRef.removeValue()
+
+                        activity.finish()
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) { }
+        })
+    }
+
+    private fun removeGroupIdFromMember(memberId: String, groupId: String) {
+        Log.println(Log.INFO, "brejk", "removing $memberId from $groupId")
+        usersRef.child(memberId).child(F_GROUP_IDS).child(groupId).removeValue()
+    }
+
+    private fun uninvite(memberId: String, groupId: String) {
+        usersRef.child(memberId).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
     }
 }

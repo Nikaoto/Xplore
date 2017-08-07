@@ -1,6 +1,7 @@
 package com.xplore.groups.search;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -56,6 +57,8 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
+
+    private Boolean allowRefresh = false;
 
     @Nullable
     @Override
@@ -218,10 +221,18 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     @Override
     public void onResume() {
+        super.onResume();
         if(!firstLoad) {
             postLoadData();
         }
-        super.onResume();
+
+        //Checking if refresh needed
+        if (allowRefresh) {
+            allowRefresh = false;
+            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        } else {
+            allowRefresh = true;
+        }
     }
 
     /*
