@@ -93,6 +93,7 @@ public class General {
     }
 
     //TODO remove this after switching to UNIX time
+    //Gets long date from unix long milliseconds
     public static int getDateLong(Long timeStamp) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(timeStamp));

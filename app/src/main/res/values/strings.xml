@@ -73,6 +73,15 @@
     <string name="start_time">დაწყების დრო</string>
     <string name="end_time">დასასრულის დრო</string>
 
+    <!-- Times for GroupCards -->
+    <string name="today">დღეს</string>
+    <string name="tomorrow">ხვალ</string>
+    <string name="overmorrow">ზეგ</string>
+    <string name="overovermorrow">მაზეგ</string>
+    <string name="group_card_start_date_prefix"/>
+    <string name="group_card_start_date_suffix">დღეში</string>
+    <string name="group_card_start_date_month_suffix">თვეში</string>
+
     <!-- Group Controls -->
     <string name="accept_invite">მოწვევის მიღება</string>
     <string name="decline_invite">მოწვევის გაუქმება</string>

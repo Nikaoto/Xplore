@@ -102,6 +102,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"/>
 
+        <!-- Footer -->
         <RelativeLayout
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
@@ -112,32 +113,28 @@
             <ImageView
                 android:id="@+id/memberCountIcon"
                 android:src="@drawable/ic_person_outline"
-                android:layout_centerVertical="true"
                 android:layout_width="22dp"
                 android:layout_height="22dp" />
 
             <TextView
                 android:id="@+id/memberCountTextView"
-                tools:text="4"
+                tools:text="5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
+                android:paddingTop="3dp"
                 android:layout_toRightOf="@id/memberCountIcon"
                 android:layout_marginLeft="4dp"
                 android:maxEms="4"/>
 
 
             <!-- Start date -->
-<!--            <TextView
+            <TextView
                 android:id="@+id/startDateTextView"
-                tools:text="in 4 days"
+                tools:text="in 10 days"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                android:paddingBottom="2dp"
-                android:layout_marginLeft="4dp"
+                android:paddingTop="1.5dp"
+                android:layout_marginLeft="3dp"
                 android:layout_alignParentRight="true"/>
 
             <ImageView
@@ -145,8 +142,7 @@
                 android:src="@drawable/ic_date"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/startDateTextView"/>-->
+                android:layout_toLeftOf="@id/startDateTextView"/>
 
 
             <!--

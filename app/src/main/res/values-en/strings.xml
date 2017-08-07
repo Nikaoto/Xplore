@@ -111,7 +111,6 @@
     <string name="leave_group">Leave Group</string>
     <string name="click_to_change">Click to change</string>
     <string name="date_format">yyyy/mm/dd</string>
-    <string name="firebase_appid" translatable="false"></string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="mobile_number">Mobile Number</string>
@@ -126,5 +125,12 @@
     <string name="edit_group">Edit Group</string>
     <string name="join_group">Join Group</string>
     <string name="invite">Invite</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="overmorrow">In 2 days</string>
+    <string name="overovermorrow">In 3 days</string>
+    <string name="group_card_start_date_prefix">In</string>
+    <string name="group_card_start_date_suffix">days</string>
+    <string name="group_card_start_date_month_suffix">months</string>
     <!-- -->
 </resources>

@@ -98,7 +98,6 @@
 
     <!-- Settings resources -->
     <string name="settings_title">Настройки</string>
-    <string name="settings_account_title">Account</string>
     <string name="settings_language_title">Язык</string>
     <!-- language preference screen -->
     <string name="current_language_georgian">ქართული</string>
@@ -119,12 +118,19 @@
     <string name="start_time">Время Начала</string>
     <string name="meetup_time">Время Встречи</string>
     <string name="join_group">Вступить в группу</string>
-    <string name="google_maps_key" translatable="false"></string>
     <string name="edit_group">Изменить группу</string>
     <string name="delete_group">Удалить группу</string>
     <string name="decline_invite">Отклонить приглашение</string>
     <string name="accept_invite">Принять приглашение</string>
     <string name="invite">Приглашать</string>
     <string name="invite_members">Пригласить Людей</string>
+    <string name="today">Cегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="overmorrow">Через 2 дня</string>
+    <string name="overovermorrow">Через 3 дня</string>
+    <string name="settings_account_title">Пользователь</string>
+    <string name="group_card_start_date_prefix">Через</string>
+    <string name="group_card_start_date_suffix">дня</string>
+    <string name="group_card_start_date_month_suffix">месяц</string>
     <!-- -->
 </resources>

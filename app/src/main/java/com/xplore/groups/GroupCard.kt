@@ -1,5 +1,9 @@
 package com.xplore.groups
 
+import com.xplore.General
+import com.xplore.TimeManager
+import java.util.*
+
 /**
  * Created by Nika on 7/12/2017.
  *
@@ -30,7 +34,23 @@ data class GroupCard(
         val destination_id: String = "",
         val start_date: Int = 0,
         val end_date: Int = 0,
-        val experienced: Boolean = false)
+        val experienced: Boolean = false) {
+
+    //Gets start time in days
+    fun getStartInDays(): Int {
+        //Start date
+        val sYear = start_date.toString().substring(0, 4).toInt()
+        val sMonth = start_date.toString().substring(4, 6).toInt()
+        val sDay = start_date.toString().substring(6).toInt()
+        //Start date calendar
+        val startCalendar = Calendar.getInstance()
+        startCalendar.set(sYear, sMonth - 1, sDay)
+
+        val diffInMillis = startCalendar.timeInMillis - TimeManager.globalTimeStamp
+
+        return (diffInMillis / 1000 / 3600 / 24).toInt()
+    }
+}
 
 //TODO add tour name to firebase
 //TODO remove reserveImageId

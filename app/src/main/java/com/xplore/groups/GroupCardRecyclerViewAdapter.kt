@@ -2,6 +2,7 @@ package com.xplore.groups
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.groups.view.GroupInfoActivity
 
 import java.util.ArrayList
@@ -35,6 +37,26 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                                    private val activity: Activity)
     : RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder>() {
 
+    val startDatePrefix: String
+    val startDateSuffix: String
+
+    init {
+        TimeManager.refreshGlobalTimeStamp()
+
+        val prefix = activity.resources.getString(R.string.group_card_start_date_prefix)
+        if (prefix.isNotEmpty()) {
+            startDatePrefix = prefix + " "
+        }
+        else
+            startDatePrefix = ""
+
+        val suffix = activity.resources.getString(R.string.group_card_start_date_suffix)
+        if (suffix.isNotEmpty())
+            startDateSuffix = " " + suffix
+        else
+            startDateSuffix = ""
+    }
+
     class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //Leader
         internal val leaderLayout: RelativeLayout = itemView.leaderLayout
@@ -48,6 +70,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         internal val invitedMark: ImageView = itemView.invitedMark
         //Footer marks
         internal val memberCount: TextView = itemView.memberCountTextView
+        internal val startDate: TextView = itemView.startDateTextView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultsViewHolder {
@@ -100,6 +123,18 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
         //Member count
         holder.memberCount.text = group.memberCount.toString()
+        val days = group.getStartInDays()
+        if (days < 30) {
+            when (days) {
+                0 -> holder.startDate.text = activity.resources.getString(R.string.today)
+                1 -> holder.startDate.text = activity.resources.getString(R.string.tomorrow)
+                2 -> holder.startDate.text = activity.resources.getString(R.string.overmorrow)
+                3 -> holder.startDate.text = activity.resources.getString(R.string.overovermorrow)
+                else -> holder.startDate.text = "$startDatePrefix$days$startDateSuffix"
+            }
+        } else {
+            holder.startDate.text = "$startDatePrefix${days/30} ${activity.resources.getString(R.string.group_card_start_date_month_suffix)}"
+        }
     }
 
     override fun getItemCount(): Int {
