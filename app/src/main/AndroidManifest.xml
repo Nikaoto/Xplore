@@ -83,6 +83,10 @@
         <activity android:name=".groups.view.controls.InviteMembersActivity"
             android:label="@string/invite_members"
             android:screenOrientation="portrait"/>
+        <activity android:name=".groups.requests.ManageRequestsActivity"
+            android:label="Manage Requests"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings_title" />

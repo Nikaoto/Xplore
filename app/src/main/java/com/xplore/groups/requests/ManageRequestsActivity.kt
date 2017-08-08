@@ -47,6 +47,8 @@ class ManageRequestsActivity : AppCompatActivity() {
                 .getReference("groups/$groupId/invited_member_ids")
 
 
+        toolbar.setNavigationOnClickListener { finish() }
+
         page_container.adapter = RequestsPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(page_container)
     }
