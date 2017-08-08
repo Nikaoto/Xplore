@@ -1,5 +1,6 @@
 package com.xplore.groups
 
+import android.util.Log
 import com.xplore.General
 import com.xplore.TimeManager
 import java.util.*
@@ -42,13 +43,16 @@ data class GroupCard(
         val sYear = start_date.toString().substring(0, 4).toInt()
         val sMonth = start_date.toString().substring(4, 6).toInt()
         val sDay = start_date.toString().substring(6).toInt()
-        //Start date calendar
-        val startCalendar = Calendar.getInstance()
-        startCalendar.set(sYear, sMonth - 1, sDay)
+        val sInDays = sDay + sMonth * 30 + sYear * 365
 
-        val diffInMillis = startCalendar.timeInMillis - TimeManager.globalTimeStamp
+        //Now date
+        val nowInt = TimeManager.intTimeStamp
+        val nowYear = nowInt.toString().substring(0, 4).toInt()
+        val nowMonth = nowInt.toString().substring(4, 6).toInt()
+        val nowDay = nowInt.toString().substring(6).toInt()
+        val nowInDays = nowDay + nowMonth * 30 + nowYear * 365
 
-        return (diffInMillis / 1000 / 3600 / 24).toInt()
+        return sInDays - nowInDays
     }
 }
 

@@ -3,6 +3,7 @@ package com.xplore.groups.my
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.database.DBManager
 import com.xplore.groups.GroupCard
 import com.xplore.groups.GroupCardRecyclerViewAdapter
@@ -66,6 +68,7 @@ class MyGroupsFragment() : Fragment() {
             = inflater.inflate(R.layout.my_groups, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        TimeManager.refreshGlobalTimeStamp()
         //Getting bundle arguments
         joinedGroups = arguments.getSerializable("joinedGroupIds") as HashMap<String, Boolean>
         invitedGroups = arguments.getSerializable("invitedGroupIds") as HashMap<String, Boolean>
@@ -115,19 +118,6 @@ class MyGroupsFragment() : Fragment() {
     private fun getMemberCount(groupSnapshot: DataSnapshot)
             = groupSnapshot.child(FIREBASE_TAG_MEMBER_IDS).childrenCount.toInt()
 
-    override fun onResume() {
-        super.onResume()
-
-        //Checking if refresh needed
-        if (allowRefresh) {
-            allowRefresh = false
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
-        } else {
-            allowRefresh = true
-        }
-    }
-
     //Used to load leader info, assign it to a group AND UPDATE THE RECYCLERVIEW
     private fun loadLeaderCard(leaderId: String, groupCard: GroupCard) {
         firebaseUsersRef.child(leaderId).addListenerForSingleValueEvent(
@@ -159,5 +149,18 @@ class MyGroupsFragment() : Fragment() {
 
     fun printError() {
         Toast.makeText(activity, "Error loading data", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        //Checking if refresh needed
+        if (allowRefresh) {
+            allowRefresh = false
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
+        } else {
+            allowRefresh = true
+        }
     }
 }

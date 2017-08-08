@@ -38,7 +38,7 @@ class LoadingMyGroupsFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        //Loads joined group Ids for current user
+        //Loads joined and invited group Ids for current user
         val query = firebaseUsersRef.child(General.currentUserId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {

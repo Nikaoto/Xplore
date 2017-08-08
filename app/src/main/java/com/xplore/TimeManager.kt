@@ -50,7 +50,7 @@ class TimeManager {
             val y = calendar.get(Calendar.YEAR)
             val m = calendar.get(Calendar.MONTH) + 1
             val d = calendar.get(Calendar.DAY_OF_MONTH)
-            intTimeStamp = y*1000 + m*100 + d
+            intTimeStamp = y*10000 + m*100 + d
         }
     }
 }
