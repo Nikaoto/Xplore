@@ -132,5 +132,6 @@
     <string name="group_card_start_date_prefix">In</string>
     <string name="group_card_start_date_suffix">days</string>
     <string name="group_card_start_date_month_suffix">months</string>
+    <string name="group_card_start_date_one_month">In 1 month</string>
     <!-- -->
 </resources>

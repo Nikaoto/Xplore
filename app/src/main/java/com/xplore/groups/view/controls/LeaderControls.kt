@@ -38,7 +38,6 @@ class LeaderControls : Fragment() {
 
     //TODO add discussion
     //TODO add remove members button
-    //TODO add invite members button
 
     companion object {
         @JvmStatic
@@ -116,7 +115,6 @@ class LeaderControls : Fragment() {
     }
 
     private fun removeGroupIdFromMember(memberId: String, groupId: String) {
-        Log.println(Log.INFO, "brejk", "removing $memberId from $groupId")
         usersRef.child(memberId).child(F_GROUP_IDS).child(groupId).removeValue()
     }
 

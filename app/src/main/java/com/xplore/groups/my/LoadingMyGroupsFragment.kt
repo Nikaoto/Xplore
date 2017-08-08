@@ -57,15 +57,21 @@ class LoadingMyGroupsFragment : Fragment() {
         })
     }
 
-    fun loadEmptyLayout()
-         = fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()
+    fun loadEmptyLayout() {
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()
+        }
+    }
 
     fun loadMyGroupsLayout(joinedGroupIds: HashMap<String, Boolean>,
-                           invitedGroupIds: HashMap<String, Boolean>)
-         = fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds))
-                .commit()
+                           invitedGroupIds: HashMap<String, Boolean>) {
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds))
+                    .commit()
+        }
+    }
 
     fun printError() = Toast.makeText(activity, "Error retrieving data", Toast.LENGTH_SHORT).show()
 }

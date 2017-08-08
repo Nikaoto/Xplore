@@ -132,6 +132,8 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                 3 -> holder.startDate.text = activity.resources.getString(R.string.overovermorrow)
                 else -> holder.startDate.text = "$startDatePrefix$days$startDateSuffix"
             }
+        } else if (days/30 == 1) {
+            holder.startDate.text = activity.resources.getString(R.string.group_card_start_date_one_month)
         } else {
             holder.startDate.text = "$startDatePrefix${days/30} ${activity.resources.getString(R.string.group_card_start_date_month_suffix)}"
         }

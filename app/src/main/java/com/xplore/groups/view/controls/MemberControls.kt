@@ -41,7 +41,6 @@ class MemberControls : Fragment() {
     private lateinit var groupId: String
 
     //TODO add discussion
-    //TODO add invite members button
 
     companion object {
         @JvmStatic

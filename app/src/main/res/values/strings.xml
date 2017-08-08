@@ -80,6 +80,7 @@
     <string name="overovermorrow">მაზეგ</string>
     <string name="group_card_start_date_prefix"/>
     <string name="group_card_start_date_suffix">დღეში</string>
+    <string name="group_card_start_date_one_month">1 თვეში</string>
     <string name="group_card_start_date_month_suffix">თვეში</string>
 
     <!-- Group Controls -->
