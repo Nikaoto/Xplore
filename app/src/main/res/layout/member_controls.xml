@@ -10,12 +10,12 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/leaveGroupButton"
             android:text="@string/leave_group"
-            android:padding="15dp"
+            android:padding="@dimen/controls_button_text_padding"
             android:fontFamily="sans-serif-medium"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             app:backgroundTint="@color/subtleRed"
-            android:textSize="16sp"
+            android:textSize="@dimen/controls_button_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -26,10 +26,10 @@
             android:layout_toLeftOf="@id/leaveGroupButton"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:padding="15dp"
+            android:padding="@dimen/controls_button_text_padding"
             android:fontFamily="sans-serif-medium"
             app:backgroundTint="@color/colorAccent"
-            android:textSize="16sp"
+            android:textSize="@dimen/controls_button_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

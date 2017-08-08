@@ -69,7 +69,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TimeManager.Companion.refreshGlobalTimeStamp();
+        TimeManager.refreshGlobalTimeStamp();
 
         //RecyclerView
         resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);

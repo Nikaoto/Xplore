@@ -6,32 +6,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v4.widget.Space
+        android:id="@+id/separator"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
     <!-- Invite Members -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/inviteMembersButton"
         android:text="@string/invite_members"
-        android:layout_toLeftOf="@id/leaveGroupButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:padding="15dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toLeftOf="@id/separator"
+        android:padding="@dimen/controls_button_text_padding"
         android:fontFamily="sans-serif-medium"
         app:backgroundTint="@color/colorAccent"
-        android:textSize="16sp"
+        android:textSize="@dimen/controls_button_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <!-- Manage Requests -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/manageRequestsButton"
+        android:text="თხოვნების ნახვა"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="2dp"
+        android:layout_toRightOf="@id/separator"
+        android:padding="@dimen/controls_button_text_padding"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/colorAccent"
+        android:textSize="@dimen/controls_button_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 
     <!-- Delete Group -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/deleteGroupButton"
         android:text="@string/delete_group"
-        android:padding="15dp"
+        android:padding="@dimen/controls_button_text_padding"
         android:fontFamily="sans-serif-medium"
         app:backgroundTint="@color/subtleRed"
-        android:layout_below="@id/inviteMembersButton"
+        android:layout_below="@id/manageRequestsButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="16sp"
+        android:textSize="@dimen/controls_button_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -39,14 +62,14 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/editGroupButton"
         android:text="@string/edit_group"
-        android:padding="15dp"
+        android:padding="@dimen/controls_button_text_padding"
         android:fontFamily="sans-serif-medium"
         app:backgroundTint="@color/colorAccent"
         android:layout_toLeftOf="@id/deleteGroupButton"
         android:layout_alignBaseline="@id/deleteGroupButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="16sp"
+        android:textSize="@dimen/controls_button_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

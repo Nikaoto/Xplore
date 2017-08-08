@@ -17,6 +17,7 @@ import com.xplore.groups.Group
 import com.xplore.groups.view.controls.InvitedControls
 import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
+import com.xplore.groups.view.controls.OutsiderControls
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
@@ -103,8 +104,8 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun configureOutsiderControls() {
-        /*fragmentManager.beginTransaction()
-                .replace(R.id.controls_container, OutsiderControls.newInstance(groupId)).commit()*/
+        fragmentManager.beginTransaction()
+                .replace(R.id.controls_container, OutsiderControls.newInstance(groupId)).commit()
     }
 
     private fun configureLeaderControls() {

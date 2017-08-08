@@ -20,6 +20,7 @@ import com.xplore.groups.GroupCardRecyclerViewAdapter
 import com.xplore.user.UserCard
 
 import kotlinx.android.synthetic.main.my_groups.*
+import kotlinx.android.synthetic.main.loading_layout.*
 
 /**
  * Created by Nika on 7/14/2017.

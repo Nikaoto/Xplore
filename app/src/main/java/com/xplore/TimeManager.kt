@@ -5,7 +5,13 @@ import java.util.*
 
 /**
 * Created by Nikaoto on 6/17/2017.
-* TODO write description of this class - what it does and why.
+*
+* აღწერა:
+* სინგლტონი, რომელიც მთლიან აპლიკაციას აძლევს ახლანდელ დროს მილიწამებში
+*
+* Description:
+* A singleton that provides the current time for the entire application
+*
 */
 
 class TimeManager {
@@ -15,12 +21,15 @@ class TimeManager {
 
     companion object {
         //UNIX timestamp used for current server (global) time
+        @JvmField
         var globalTimeStamp: Long = 0L
 
         //Integer timestamp used for calculating age and simple things...
+        @JvmField
         var intTimeStamp: Int = 0
 
         //Refreshes the timestamp
+        @JvmStatic
         fun refreshGlobalTimeStamp() {
             val ref = FirebaseDatabase.getInstance().reference
             val dateValue = HashMap<String, Any>()

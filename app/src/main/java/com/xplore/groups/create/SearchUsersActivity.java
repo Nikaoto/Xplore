@@ -76,7 +76,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             invitedMemberIds = getIntent().getStringArrayListExtra("invitedMemberIds");
         }
 
-        TimeManager.Companion.refreshGlobalTimeStamp();
+        TimeManager.refreshGlobalTimeStamp();
 
         listView = (ListView) findViewById(R.id.resultsListView);
         progressBar = (ProgressBar) findViewById(R.id.searchProgressBar);
@@ -238,7 +238,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
             //Age
             TextView age_text = (TextView) itemView.findViewById(R.id.user_age_text);
             age_text.setText(getResources().getString(R.string.age) +": "+
-                    General.calculateAge(TimeManager.Companion.getGlobalTimeStamp(), currentUser.getBirth_date()));
+                    General.calculateAge(TimeManager.globalTimeStamp, currentUser.getBirth_date()));
 
             //Profile Picture
             final ImageView userImage = (ImageView) itemView.findViewById(R.id.user_profile_image);

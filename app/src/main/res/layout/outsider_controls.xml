@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for outsiders when viewing a group -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Join Group -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/joinGroupButton"
+        android:text="@string/join_group"
+        android:padding="@dimen/controls_button_text_padding"
+        android:textSize="@dimen/controls_button_text_size"
+        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

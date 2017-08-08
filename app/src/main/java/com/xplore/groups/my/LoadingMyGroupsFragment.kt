@@ -1,6 +1,7 @@
 package com.xplore.groups.my
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,12 +33,10 @@ class LoadingMyGroupsFragment : Fragment() {
 
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
-            = inflater.inflate(R.layout.loading_layout, container, false)
+    //Start loading ASAP
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        
         //Loads joined and invited group Ids for current user
         val query = firebaseUsersRef.child(General.currentUserId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -56,6 +55,9 @@ class LoadingMyGroupsFragment : Fragment() {
             override fun onCancelled(p0: DatabaseError?) { }
         })
     }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
+            = inflater.inflate(R.layout.loading_layout, container, false)
 
     fun loadEmptyLayout() {
         if (fragmentManager != null) {
