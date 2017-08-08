@@ -159,6 +159,23 @@ public class General {
         return calculateAge(timeStamp, String.valueOf(birthDate));
     }
 
+    //Gets the difference of given dates in days (doesn't need to be accurate)
+    public static int getDateDiffInDays(int now, int then) {
+        //Now dates
+        final int nowYear = Integer.valueOf(String.valueOf(now).substring(0, 4));
+        final int nowMonth = Integer.valueOf(String.valueOf(now).substring(4, 6));
+        final int nowDay = Integer.valueOf(String.valueOf(now).substring(6));
+        final int nowInDays = nowDay + nowMonth * 30 + nowYear * 365;
+
+        //Then dates
+        final int thenYear = Integer.valueOf(String.valueOf(then).substring(0, 4));
+        final int thenMonth = Integer.valueOf(String.valueOf(then).substring(4, 6));
+        final int thenDay = Integer.valueOf(String.valueOf(then).substring(6));
+        final int thenInDays = thenDay + thenMonth * 30 + thenYear * 365;
+
+        return thenInDays - nowInDays;
+    }
+
     //Adds slashes to a date given in int (yyyy.mm.dd) without dots
     public static String putSlashesInDate(int date) {
         String dateStr = String.valueOf(date);

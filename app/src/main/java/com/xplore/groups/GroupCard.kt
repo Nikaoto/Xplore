@@ -37,26 +37,13 @@ data class GroupCard(
         val end_date: Int = 0,
         val experienced: Boolean = false) {
 
-    //Gets start time in days
-    fun getStartInDays(): Int {
-        //Start date
-        val sYear = start_date.toString().substring(0, 4).toInt()
-        val sMonth = start_date.toString().substring(4, 6).toInt()
-        val sDay = start_date.toString().substring(6).toInt()
-        val sInDays = sDay + sMonth * 30 + sYear * 365
+    //Gets start time in days from current date
+    fun getStartInDays() = General.getDateDiffInDays(TimeManager.intTimeStamp, start_date)
 
-        //Now date
-        val nowInt = TimeManager.intTimeStamp
-        val nowYear = nowInt.toString().substring(0, 4).toInt()
-        val nowMonth = nowInt.toString().substring(4, 6).toInt()
-        val nowDay = nowInt.toString().substring(6).toInt()
-        val nowInDays = nowDay + nowMonth * 30 + nowYear * 365
-
-        return sInDays - nowInDays
-    }
+    //Gets duration of the trip in days
+    fun getDurationInDays() = General.getDateDiffInDays(start_date, end_date)
 }
 
 //TODO add tour name to firebase
 //TODO remove reserveImageId
-//TODO add current & max groupmates
 //TODO add duration
