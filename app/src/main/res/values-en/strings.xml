@@ -105,6 +105,8 @@
     <string name="current_language_georgian">ქართული</string>
     <string name="current_language_english">English</string>
     <string name="current_language_russian">Русский</string>
+
+
     <string name="activity_library_title">Library</string>
     <string name="location">Location</string>
     <string name="leader">Leader</string>
@@ -133,5 +135,7 @@
     <string name="group_card_start_date_suffix">days</string>
     <string name="group_card_start_date_month_suffix">months</string>
     <string name="group_card_start_date_one_month">In 1 month</string>
+    <string name="duration_zero_day">&lt; 1 day</string>
+    <string name="duration_days">days</string>
     <!-- -->
 </resources>

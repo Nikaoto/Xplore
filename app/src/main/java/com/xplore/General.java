@@ -161,6 +161,9 @@ public class General {
 
     //Gets the difference of given dates in days (doesn't need to be accurate)
     public static int getDateDiffInDays(int now, int then) {
+        if (now == then) {
+            return 0;
+        }
         //Now dates
         final int nowYear = Integer.valueOf(String.valueOf(now).substring(0, 4));
         final int nowMonth = Integer.valueOf(String.valueOf(now).substring(4, 6));

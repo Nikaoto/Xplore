@@ -133,5 +133,7 @@
     <string name="group_card_start_date_suffix">дня</string>
     <string name="group_card_start_date_month_suffix">месяц</string>
     <string name="group_card_start_date_one_month">Через 1 месяц</string>
+    <string name="duration_zero_day">&lt; 1 день</string>
+    <string name="duration_days">дня</string>
     <!-- -->
 </resources>

@@ -2,7 +2,6 @@ package com.xplore.groups
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +70,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         //Footer marks
         internal val memberCount: TextView = itemView.memberCountTextView
         internal val startDate: TextView = itemView.startDateTextView
+        internal val duration: TextView = itemView.durationTextView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultsViewHolder {
@@ -123,19 +123,27 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
         //Member count
         holder.memberCount.text = group.memberCount.toString()
-        val days = group.getStartInDays()
-        if (days < 30) {
-            when (days) {
+        //Days from today
+        val daysFromNow = group.getStartInDays()
+        if (daysFromNow < 30) {
+            when (daysFromNow) {
                 0 -> holder.startDate.text = activity.resources.getString(R.string.today)
                 1 -> holder.startDate.text = activity.resources.getString(R.string.tomorrow)
                 2 -> holder.startDate.text = activity.resources.getString(R.string.overmorrow)
                 3 -> holder.startDate.text = activity.resources.getString(R.string.overovermorrow)
-                else -> holder.startDate.text = "$startDatePrefix$days$startDateSuffix"
+                else -> holder.startDate.text = "$startDatePrefix$daysFromNow$startDateSuffix"
             }
-        } else if (days/30 == 1) {
-            holder.startDate.text = activity.resources.getString(R.string.group_card_start_date_one_month)
+        } else if (daysFromNow/30 == 1) {
+            holder.startDate.setText(R.string.group_card_start_date_one_month)
         } else {
-            holder.startDate.text = "$startDatePrefix${days/30} ${activity.resources.getString(R.string.group_card_start_date_month_suffix)}"
+            holder.startDate.text = "$startDatePrefix${daysFromNow/30} ${activity.resources.getString(R.string.group_card_start_date_month_suffix)}"
+        }
+        //Duration
+        val durationInDays = group.getDurationInDays()
+        if (durationInDays == 0) {
+            holder.duration.setText(R.string.duration_zero_day)
+        } else {
+            holder.duration.text = "$durationInDays ${activity.resources.getString(R.string.duration_days)}"
         }
     }
 

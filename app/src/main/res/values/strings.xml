@@ -82,6 +82,8 @@
     <string name="group_card_start_date_suffix">დღეში</string>
     <string name="group_card_start_date_one_month">1 თვეში</string>
     <string name="group_card_start_date_month_suffix">თვეში</string>
+    <string name="duration_zero_day">&lt; 1 დღე</string>
+    <string name="duration_days">დღე</string>
 
     <!-- Group Controls -->
     <string name="accept_invite">მოწვევის მიღება</string>
