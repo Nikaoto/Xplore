@@ -73,13 +73,12 @@ class ReceivedRequestsFragment() : Fragment() {
 
         //Start loading
         for (userId in userIds) {
-            print(userId)
             usersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot?) {
                     if (dataSnapshot != null) {
                         val userCard = dataSnapshot.getValue(UserCard::class.java)
                         if (userCard != null) {
-                            print(userCard.fname)
+                            userCard.id = dataSnapshot.key
                             userCards.add(userCard)
                         }
                     }
@@ -96,7 +95,6 @@ class ReceivedRequestsFragment() : Fragment() {
     private fun print(s: String) = Log.println(Log.INFO, "brejk", s)
 
     private fun displayCards() {
-        print("displaying cards")
         userCardRecyclerView.layoutManager = LinearLayoutManager(activity)
         userCardRecyclerView.adapter = ReceivedRequestAdapter()
         loadingbar.visibility = View.INVISIBLE
@@ -159,7 +157,7 @@ class ReceivedRequestsFragment() : Fragment() {
 
             //Accept join request button
             holder.acceptButton.setOnClickListener {
-                acceptRequest(currentCard.id, position)
+                acceptRequest(userCards[position].id, position)
             }
             //Reject join request button
             holder.rejectButton.setOnClickListener {
@@ -169,14 +167,14 @@ class ReceivedRequestsFragment() : Fragment() {
 
         private fun acceptRequest(userId: String, userCardPosition: Int) {
             //Removing join request from group
-            currentGroupRef.child("$F_INVITED_MEMBER_IDS/$userId").removeValue()
+            currentGroupRef.child(F_INVITED_MEMBER_IDS).child(userId).removeValue()
             //Adding user to group's joined members
-            currentGroupRef.child("$F_MEMBER_IDS/$userId").setValue(false)
+            currentGroupRef.child(F_MEMBER_IDS).child(userId).setValue(false)
 
             //Removing join request from user
-            usersRef.child("$userId/$F_INVITED_GROUP_IDS/$groupId").removeValue()
+            usersRef.child(userId).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
             //Adding groupId to user joined groups
-            usersRef.child("$userId/$F_GROUP_IDS/$groupId").setValue(false)
+            usersRef.child(userId).child(F_GROUP_IDS).child(groupId).setValue(false)
 
             //TODO string resources
             Toast.makeText(activity, "Member added", Toast.LENGTH_SHORT).show()

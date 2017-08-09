@@ -124,7 +124,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/memberCountIcon"
                 android:maxEms="4"
-                android:paddingTop="3dp"
+                android:paddingTop="2dp"
                 tools:text="5" />
 
             <!-- Start date -->
