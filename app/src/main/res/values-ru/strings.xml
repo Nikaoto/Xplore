@@ -135,5 +135,8 @@
     <string name="group_card_start_date_one_month">Через 1 месяц</string>
     <string name="duration_zero_day">&lt; 1 день</string>
     <string name="duration_days">дня</string>
+    <string name="accept">Принимать</string>
+    <string name="reject">Отклонять</string>
+    <string name="nothing_here">Здесь ничего</string>
     <!-- -->
 </resources>

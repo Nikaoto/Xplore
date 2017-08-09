@@ -32,8 +32,11 @@
     <string name="okay">გასაგებია</string>
     <string name="remove">წაშლა</string>
     <string name="cancel">გაუქმება</string>
+    <string name="accept">მიღება</string>
+    <string name="reject">უარყოფა</string>
 
     <!-- Texts -->
+    <string name="nothing_here">აქ არაფერია</string>
     <string name="search_tags_hint">მოძებნეთ ტეგები</string>
     <string name="search_name_hint">მოძებნეთ სახელით</string>
     <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>

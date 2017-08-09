@@ -9,9 +9,10 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.empty.EmptyFragmentFactory
+import com.xplore.groups.AllMemberIdsForGroup
 
 import kotlinx.android.synthetic.main.manage_requests.*
 
@@ -22,13 +23,13 @@ import kotlinx.android.synthetic.main.manage_requests.*
 class ManageRequestsActivity : AppCompatActivity() {
 
     //Firebase
-    lateinit private var invitedMembersRef: DatabaseReference
+    lateinit private var currentGroupRef: DatabaseReference
 
     lateinit private var groupId: String
 
     private val invitedMemberIds = ArrayList<String>()
     //A list of ids of members who want to join the group
-    private val joinMemberIds = ArrayList<String>()
+    private val joinRequestMemberIds = ArrayList<String>()
 
     companion object {
         @JvmStatic
@@ -43,15 +44,38 @@ class ManageRequestsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         groupId = intent.getStringExtra("groupId")
-        invitedMembersRef = FirebaseDatabase.getInstance()
-                .getReference("groups/$groupId/invited_member_ids")
+        currentGroupRef = FirebaseDatabase.getInstance()
+                .getReference("groups/$groupId")
 
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    val allMemberIds = dataSnapshot.getValue(AllMemberIdsForGroup::class.java)
+                    if (allMemberIds != null) {
+                        for (memberId in allMemberIds.invited_member_ids) {
+                            if (memberId.value) {
+                                invitedMemberIds.add(memberId.key)
+                            }
+                            else {
+                                joinRequestMemberIds.add(memberId.key)
+                            }
+                        }
+                        displayTabs()
+                    } else { displayTabs() }
+                } else { displayTabs() }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
 
         toolbar.setNavigationOnClickListener { finish() }
+    }
 
+    private fun displayTabs() {
         page_container.adapter = RequestsPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(page_container)
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
@@ -67,12 +91,12 @@ class ManageRequestsActivity : AppCompatActivity() {
         override fun getCount() = 2
 
         override fun getItem(position: Int): Fragment {
-            if (position == 0) {
-                return ReceivedRequestsFragment.newInstance(groupId, joinMemberIds)
-            } /*else if (position == 0) {
-                return
-            }*/
-            return Fragment()
+            if (position == 0 && joinRequestMemberIds.isNotEmpty()) {
+                return ReceivedRequestsFragment.newInstance(groupId, joinRequestMemberIds)
+            } else if (position == 1 && invitedMemberIds.isNotEmpty()) {
+                //return SentRequestsFragment.newInstance(groupId, invitedMemberIds)
+            }
+            return EmptyFragmentFactory().getSupportFragment()
         }
 
         override fun getPageTitle(position: Int): CharSequence {

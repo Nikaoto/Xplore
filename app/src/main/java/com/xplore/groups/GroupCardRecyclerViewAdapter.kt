@@ -123,9 +123,12 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
         //Member count
         holder.memberCount.text = group.memberCount.toString()
+
         //Days from today
         val daysFromNow = group.getStartInDays()
-        if (daysFromNow < 30) {
+        if (daysFromNow < 0) {
+            holder.startDate.text = "-"
+        } else if (daysFromNow < 30) {
             when (daysFromNow) {
                 0 -> holder.startDate.text = activity.resources.getString(R.string.today)
                 1 -> holder.startDate.text = activity.resources.getString(R.string.tomorrow)
@@ -138,6 +141,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         } else {
             holder.startDate.text = "$startDatePrefix${daysFromNow/30} ${activity.resources.getString(R.string.group_card_start_date_month_suffix)}"
         }
+
         //Duration
         val durationInDays = group.getDurationInDays()
         if (durationInDays == 0) {

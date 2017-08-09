@@ -10,7 +10,7 @@ import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
 import com.xplore.user.UserCard
-import kotlinx.android.synthetic.main.user_list_item2.view.*
+import kotlinx.android.synthetic.main.select_user_list_item.view.*
 
 /**
  * Created by Nikaoto on 8/6/2017.
@@ -19,12 +19,12 @@ import kotlinx.android.synthetic.main.user_list_item2.view.*
 class SelectUsersAdapter(val activity: Activity,
                          val userCardList: ArrayList<UserCard>,
                          var selectedUserIds: ArrayList<String>)
-    : ArrayAdapter<UserCard>(activity, R.layout.user_list_item2, userCardList) {
+    : ArrayAdapter<UserCard>(activity, R.layout.select_user_list_item, userCardList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView: View
         if (convertView == null) {
-            itemView = activity.layoutInflater.inflate(R.layout.user_list_item2, parent, false)
+            itemView = activity.layoutInflater.inflate(R.layout.select_user_list_item, parent, false)
         } else {
             itemView = convertView
         }

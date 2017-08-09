@@ -19,5 +19,5 @@ class UserCard(
 ) {
     fun getFullName() = "$fname $lname"
     fun getCombinedReputationText(context: Context)
-            = context.resources.getString(R.string.reputation) + " " + reputation
+            = "$reputation ${context.resources.getString(R.string.reputation)}"
 }
