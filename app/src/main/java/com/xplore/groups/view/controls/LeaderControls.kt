@@ -66,6 +66,7 @@ class LeaderControls : Fragment() {
             //startEditingGroup()
         }
 
+        //TODO add red badge for total request count
         manageRequestsButton.setOnClickListener {
             startActivity(ManageRequestsActivity.getStartIntent(activity, groupId))
         }

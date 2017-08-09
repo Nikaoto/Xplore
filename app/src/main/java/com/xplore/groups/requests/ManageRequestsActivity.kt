@@ -94,6 +94,7 @@ class ManageRequestsActivity : AppCompatActivity() {
             if (position == 0 && joinRequestMemberIds.isNotEmpty()) {
                 return ReceivedRequestsFragment.newInstance(groupId, joinRequestMemberIds)
             } else if (position == 1 && invitedMemberIds.isNotEmpty()) {
+                //TODO setRequests
                 //return SentRequestsFragment.newInstance(groupId, invitedMemberIds)
             }
             return EmptyFragmentFactory().getSupportFragment()

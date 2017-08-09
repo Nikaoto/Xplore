@@ -89,6 +89,7 @@ class GroupInfoActivity : Activity() {
                 && group.getInvited_member_ids().get(General.currentUserId) == true) {
             configureInvitedControls()
         } else {
+            //TODO add join request sent controls
             configureOutsiderControls()
         }
     }

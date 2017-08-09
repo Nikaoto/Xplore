@@ -161,7 +161,7 @@ class ReceivedRequestsFragment() : Fragment() {
             }
             //Reject join request button
             holder.rejectButton.setOnClickListener {
-                //rejectRequest(currentCard.id)
+                rejectRequest(userCards[position].id, position)
             }
         }
 
@@ -182,6 +182,19 @@ class ReceivedRequestsFragment() : Fragment() {
             //Remove user card from list
             removeCardAt(userCardPosition)
         }
+
+        private fun rejectRequest(userId: String, userCardPosition: Int) {
+            //Removing join request from group
+            currentGroupRef.child(F_INVITED_MEMBER_IDS).child(userId).removeValue()
+
+            //Removing join request from user
+            usersRef.child(userId).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
+
+            //Remove user card from list
+            removeCardAt(userCardPosition)
+        }
+
+
 
         override fun getItemCount() = userCards.size
     }
