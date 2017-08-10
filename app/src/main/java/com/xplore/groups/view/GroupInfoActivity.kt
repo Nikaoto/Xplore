@@ -85,11 +85,15 @@ class GroupInfoActivity : Activity() {
         } else if(group.getMember_ids().contains(General.currentUserId)) {
             configureMemberControls()
         } else if (group.getInvited_member_ids() != null
-                && group.getInvited_member_ids().get(General.currentUserId) != null
-                && group.getInvited_member_ids().get(General.currentUserId) == true) {
-            configureInvitedControls()
+                && group.getInvited_member_ids().get(General.currentUserId) != null) {
+            if (group.getInvited_member_ids().get(General.currentUserId) == true) {
+                //Invited to group
+                configureInvitedControls()
+            } else if (group.getInvited_member_ids().get(General.currentUserId) == false) {
+                //Sent join request to group
+                configureOutsiderControls(true)
+            }
         } else {
-            //TODO add join request sent controls
             configureOutsiderControls()
         }
     }
@@ -104,9 +108,10 @@ class GroupInfoActivity : Activity() {
                 .replace(R.id.controls_container, InvitedControls.newInstance(groupId)).commit()
     }
 
-    private fun configureOutsiderControls() {
+    private fun configureOutsiderControls(awaitingRequest: Boolean = false) {
         fragmentManager.beginTransaction()
-                .replace(R.id.controls_container, OutsiderControls.newInstance(groupId)).commit()
+                .replace(R.id.controls_container,
+                        OutsiderControls.newInstance(groupId, awaitingRequest)).commit()
     }
 
     private fun configureLeaderControls() {

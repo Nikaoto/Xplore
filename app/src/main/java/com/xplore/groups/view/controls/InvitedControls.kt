@@ -75,7 +75,8 @@ class InvitedControls : Fragment() {
         currentGroupRef.child(FIREBASE_INVITED_MEMBER_IDS_TAG).child(General.currentUserId).removeValue()
         //Add user id to group's memberIds
         currentGroupRef.child(FIREBASE_MEMBER_IDS_TAG).child(General.currentUserId).setValue(false)
-        activity.finish() //TODO recreate with new arguments
+
+        refresh()
     }
 
     private fun declineInvite() {
@@ -83,6 +84,13 @@ class InvitedControls : Fragment() {
         invitedGroupIdsRef.child(groupId).removeValue()
         //Remove this user from group's invited users
         currentGroupRef.child("invited_member_ids").child(General.currentUserId).removeValue()
-        activity.finish() //TODO recreate with arguments
+
+        refresh()
+    }
+
+    private fun refresh() {
+        val intent = activity.intent
+        activity.finish()
+        startActivity(intent)
     }
 }

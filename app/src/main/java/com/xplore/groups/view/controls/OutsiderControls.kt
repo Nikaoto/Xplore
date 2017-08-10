@@ -35,10 +35,11 @@ class OutsiderControls : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(groupId: String): OutsiderControls {
+        fun newInstance(groupId: String, awaitingRequest: Boolean = false): OutsiderControls {
             val fragment = OutsiderControls()
             val args = Bundle()
             args.putString("groupId", groupId)
+            args.putBoolean("awaitingRequest", awaitingRequest)
             fragment.arguments = args
             return fragment
         }
@@ -50,11 +51,18 @@ class OutsiderControls : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        groupId = arguments.getString("groupId")
-        currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS_TAG/$groupId")
-
-        joinGroupButton.setOnClickListener {
-            sendJoinRequest(groupId)
+        if (!arguments.getBoolean("awaitingRequest")) {
+            groupId = arguments.getString("groupId")
+            currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS_TAG/$groupId")
+            joinGroupButton.setOnClickListener {
+                sendJoinRequest(groupId)
+            }
+        } else {
+            //Remove button
+            joinGroupButton.isEnabled = false
+            joinGroupButton.visibility = View.GONE
+            //Show request sent text
+            requestSentTextView.visibility = View.VISIBLE
         }
     }
 
@@ -65,5 +73,11 @@ class OutsiderControls : Fragment() {
         //Adding group id to member's invited group ids WITH FALSE VALUE
         usersRef.child(General.currentUserId).child(F_INVITED_GROUP_IDS).child(groupId)
                 .setValue(false)
+
+        refresh()
+    }
+
+    private fun refresh() {
+        fragmentManager.beginTransaction().detach(this).attach(newInstance(groupId, true)).commit()
     }
 }

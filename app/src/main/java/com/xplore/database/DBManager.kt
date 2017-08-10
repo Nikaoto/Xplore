@@ -26,7 +26,7 @@ internal class DBManager(private val mContext: Context,
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
     //Path of the database that will be created
-    private val DB_PATH = "/data/data/${mContext?.packageName}/databases/$DB_NAME"
+    private val DB_PATH = "/data/data/${mContext.packageName}/databases/$DB_NAME"
     val GENERAL_TABLE = "general"
 
     companion object ColumnNames {

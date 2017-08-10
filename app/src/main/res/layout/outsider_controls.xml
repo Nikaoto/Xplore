@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Layout for outsiders when viewing a group -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/requestSentTextView"
+        android:text="Join request sent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-medium"/>
+
 
     <!-- Join Group -->
     <android.support.v7.widget.AppCompatButton
@@ -17,4 +30,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</RelativeLayout>
+</FrameLayout>
