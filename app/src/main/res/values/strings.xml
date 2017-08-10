@@ -34,6 +34,7 @@
     <string name="cancel">გაუქმება</string>
     <string name="accept">მიღება</string>
     <string name="reject">უარყოფა</string>
+    <string name="refresh">განახლება</string>
 
     <!-- Texts -->
     <string name="nothing_here">აქ არაფერია</string>

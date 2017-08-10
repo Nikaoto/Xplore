@@ -2,10 +2,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +13,6 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <android.support.v7.widget.Toolbar
@@ -22,10 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:title="ASKJLKDSGLKSDJ"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material">
-            </android.support.v7.widget.Toolbar>
+                app:navigationIcon="@drawable/abc_ic_ab_back_material"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -35,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -214,11 +211,8 @@
             </android.support.v7.widget.CardView>
 
             <!--
-             TODO add controls cardview for members and leader
-                TODO add invite members btn
                 TODO add uninvite members btn (only for pending invite requests)
                 TODO add remove members btn (only leader)
-                TODO add long press edit info on each cardview (only leeader)
             -->
 
             <!-- Control buttons cardview. Changes depending on user -->

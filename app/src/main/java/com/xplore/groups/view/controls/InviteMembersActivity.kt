@@ -62,7 +62,6 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_layout)
-        setTitle(R.string.invite_members)
         loadExcludeList()
     }
 
@@ -90,6 +89,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
 
     private fun loadLayout() {
         setContentView(R.layout.invite_members)
+        setTitle(R.string.invite_members)
         searchEditText.setSingleLine(true)
         searchEditText.setHint(R.string.search_name_hint)
         searchEditText.setOnEditorActionListener(this)

@@ -130,6 +130,7 @@ class GroupInfoActivity : Activity() {
         }
         reserveNameTextView.text = tempReserveCard.name
         reserveImageView.setImageResource(tempReserveCard.imageId)
+        //groupImageView.setImageResource(tempReserveCard.imageId)
         reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
     }
 
@@ -311,5 +312,11 @@ class GroupInfoActivity : Activity() {
                 .setMessage(R.string.group_exp_help)
                 .setPositiveButton(R.string.okay, null)
         builder.show()
+    }
+
+    private fun refresh() {
+        val intent = intent
+        finish()
+        startActivity(intent)
     }
 }
