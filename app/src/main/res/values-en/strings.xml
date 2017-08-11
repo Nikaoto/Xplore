@@ -141,5 +141,6 @@
     <string name="reject">Reject</string>
     <string name="nothing_here">Nothing here</string>
     <string name="refresh">Refresh</string>
+    <string name="cancel_invitation">Cancel Invitation</string>
     <!-- -->
 </resources>

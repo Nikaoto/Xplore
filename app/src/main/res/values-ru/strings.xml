@@ -139,5 +139,6 @@
     <string name="reject">Отклонять</string>
     <string name="nothing_here">Здесь ничего</string>
     <string name="refresh">Обновить</string>
+    <string name="cancel_invitation">Отменить приглашение</string>
     <!-- -->
 </resources>

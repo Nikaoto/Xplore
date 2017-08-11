@@ -50,6 +50,7 @@
     <!-- Searching & Inviting Users -->
     <string name="invite">დაპატიჟე</string>
     <string name="invite_members">დაპატიჟე წევრები</string>
+    <string name="cancel_invitation">მოწვევის გაუქმება</string>
     <string name="member_already_added">მომხმარებელი უკვე გუნდშია</string>
     <string name="member_added">გუნდის წევრი დაემატა</string>
     <string name="member_removed">გუნდის წევრი ამოიშალა</string>
