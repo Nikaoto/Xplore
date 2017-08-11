@@ -17,7 +17,7 @@ import com.xplore.groups.AllMemberIdsForGroup
 import kotlinx.android.synthetic.main.manage_requests.*
 
 /**
- * Created by Nika on 8/8/2017.
+ * Created by Nikaoto on 8/8/2017.
  * TODO write description of this class - what it does and why.
  */
 class ManageRequestsActivity : AppCompatActivity() {
@@ -78,13 +78,23 @@ class ManageRequestsActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.refresh_menu, menu)
         return super.onCreateOptionsMenu(menu)
-        //TODO menu with refresh button
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_refresh) {
+            refresh()
+        } else {
+            onBackPressed()
+        }
         return super.onOptionsItemSelected(item)
-        //TODO refresh button
+    }
+
+    private fun refresh() {
+        val intent = intent
+        finish()
+        startActivity(intent)
     }
 
     private inner class RequestsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {

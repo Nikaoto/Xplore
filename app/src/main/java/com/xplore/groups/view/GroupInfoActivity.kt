@@ -48,6 +48,8 @@ class GroupInfoActivity : Activity() {
     private val members = ArrayList<User>()
     private lateinit var leader: User
 
+    private var allowRefresh = false
+
     //The variables which contain the current group/member info
     private var currentGroup = Group()
     private var tempMember = User()
@@ -77,6 +79,22 @@ class GroupInfoActivity : Activity() {
         initMemberList()
         loadGroupData(groupId)
         applyReserveData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (allowRefresh) {
+            allowRefresh = false
+            refresh()
+        } else {
+            allowRefresh = true
+        }
+    }
+
+    private fun refresh() {
+        val intent = intent
+        finish()
+        startActivity(intent)
     }
 
     private fun configureControls(group: Group) {
@@ -312,11 +330,5 @@ class GroupInfoActivity : Activity() {
                 .setMessage(R.string.group_exp_help)
                 .setPositiveButton(R.string.okay, null)
         builder.show()
-    }
-
-    private fun refresh() {
-        val intent = intent
-        finish()
-        startActivity(intent)
     }
 }

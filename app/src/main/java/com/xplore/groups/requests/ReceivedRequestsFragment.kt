@@ -110,15 +110,7 @@ class ReceivedRequestsFragment() : Fragment() {
         userCardRecyclerView.adapter.notifyItemRemoved(position)
         userCardRecyclerView.adapter.notifyItemRangeChanged(position, userCards.size)
         if (userCards.isEmpty()) {
-            displayEmptyLayout()
-        }
-    }
-
-    private fun displayEmptyLayout() {
-        if (fragmentManager != null) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.page_container, EmptyFragmentFactory(0).getSupportFragment())
-                    .commit()
+            //TODO display empty layout (replacing fragment doesn't work)
         }
     }
 
