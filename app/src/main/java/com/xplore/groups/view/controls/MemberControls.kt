@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
+import com.xplore.groups.discussion.DiscussionActivity
 
 import kotlinx.android.synthetic.main.member_controls.*
 
@@ -60,6 +61,10 @@ class MemberControls : Fragment() {
         groupId = arguments.getString("groupId")
         currentGroupRef = FirebaseDatabase.getInstance().reference.child("groups").child(groupId)
 
+        openDiscussionButton.setOnClickListener {
+            startActivity(DiscussionActivity.getStartIntent(activity, groupId))
+        }
+
         inviteMembersButton.setOnClickListener {
             startInvitingMembers()
         }
@@ -67,6 +72,7 @@ class MemberControls : Fragment() {
         leaveGroupButton.setOnClickListener {
             popLeaveGroupConfirmationDialog()
         }
+
     }
 
     private fun startInvitingMembers() {

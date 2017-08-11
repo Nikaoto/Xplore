@@ -55,6 +55,7 @@
         <activity
             android:name=".groups.view.GroupInfoActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".groups.discussion.DiscussionActivity"/>
         <activity
             android:name=".groups.create.SearchDestinationActivity"
             android:label="@string/activity_choose_destination_title"

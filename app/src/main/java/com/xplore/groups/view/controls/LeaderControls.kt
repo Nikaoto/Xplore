@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.google.firebase.database.*
 import com.xplore.R
 import com.xplore.groups.AllMemberIdsForGroup
+import com.xplore.groups.discussion.DiscussionActivity
 import com.xplore.groups.requests.ManageRequestsActivity
 
 import kotlinx.android.synthetic.main.leader_controls.*
@@ -57,6 +58,10 @@ class LeaderControls : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         groupId = arguments.getString("groupId")
         currentGroupRef = groupsRef.child(groupId)
+
+        openDiscussionButton.setOnClickListener {
+            startActivity(DiscussionActivity.getStartIntent(activity, groupId))
+        }
 
         inviteMembersButton.setOnClickListener {
             startInvitingMembers()

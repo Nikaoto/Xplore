@@ -23,19 +23,17 @@ class DiscussionActivity : Activity() {
 
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String): Intent {
-            return Intent(context, DiscussionActivity::class.java)
-                    .putExtra("groupId", groupId)
-        }
+        fun getStartIntent(context: Context, groupId: String)
+            = Intent(context, DiscussionActivity::class.java).putExtra("groupId", groupId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.discussion)
 
         groupId = intent.getStringExtra("groupId")
         currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS/$groupId")
 
-        setContentView(R.layout.discussion)
         startListeningForMessages()
     }
 
