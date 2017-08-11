@@ -142,5 +142,6 @@
     <string name="nothing_here">Nothing here</string>
     <string name="refresh">Refresh</string>
     <string name="cancel_invitation">Cancel Invitation</string>
+    <string name="manage_requests">Manage Requests</string>
     <!-- -->
 </resources>

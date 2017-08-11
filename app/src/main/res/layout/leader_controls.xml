@@ -30,7 +30,7 @@
     <!-- Manage Requests -->
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/manageRequestsButton"
-        android:text="თხოვნების ნახვა"
+        android:text="@string/manage_requests"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="2dp"

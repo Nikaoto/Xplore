@@ -104,14 +104,7 @@ class OutsiderControls : Fragment() {
             }
         }
 
-        //When invite was canceled from leader while this user was viewing the group
-        override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-            if (dataSnapshot != null) {
-                if (dataSnapshot.key == General.currentUserId) {
-                    refresh()
-                }
-            }
-        }
+        override fun onChildRemoved(dataSnapshot: DataSnapshot?) {}
 
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
 
