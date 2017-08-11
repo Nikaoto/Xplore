@@ -52,7 +52,6 @@ class GroupInfoActivity : Activity() {
 
     //The variables which contain the current group/member info
     private var currentGroup = Group()
-    private var tempMember = User()
 
     companion object {
         @JvmStatic
@@ -239,9 +238,12 @@ class GroupInfoActivity : Activity() {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if member exists
                 if (dataSnapshot != null) {
-                    tempMember = dataSnapshot.getValue(User::class.java)!! //Getting member info
-                    tempMember.setId(userId) //Setting user Id
-                    members.add(tempMember) //Setting member info
+                    val tempMember = dataSnapshot.getValue(User::class.java)
+                    //Getting member info
+                    tempMember?.let {
+                        tempMember.setId(userId) //Setting user Id
+                        members.add(tempMember) //Setting member info
+                    }
                     decrementMemberCount()
                 } else {
                     notFound()
