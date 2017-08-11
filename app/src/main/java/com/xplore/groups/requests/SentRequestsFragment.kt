@@ -1,13 +1,10 @@
 package com.xplore.groups.requests
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
@@ -16,8 +13,9 @@ import kotlinx.android.synthetic.main.request_list.*
 import kotlinx.android.synthetic.main.sent_invite_list_item.view.*
 
 /**
- * Created by Nika on 8/11/2017.
+ * Created by Nikaoto on 8/11/2017.
  *
+ * Description:
  * The leader can manage sent invite requests from this class
  *
  */

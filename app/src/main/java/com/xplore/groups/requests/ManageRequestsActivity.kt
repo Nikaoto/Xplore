@@ -18,7 +18,13 @@ import kotlinx.android.synthetic.main.manage_requests.*
 
 /**
  * Created by Nikaoto on 8/8/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * აღწერა:
+ *
+ *
+ * Description:
+ *
+ *
  */
 class ManageRequestsActivity : AppCompatActivity() {
 

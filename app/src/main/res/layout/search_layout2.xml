@@ -15,7 +15,7 @@
             android:id="@+id/searchIconImageView"
             android:layout_width="@dimen/search_ic_wh"
             android:layout_height="@dimen/search_ic_wh"
-            android:src="@drawable/ic_search_36dp"
+            android:src="@drawable/ic_search_black_36dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
