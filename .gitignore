@@ -2,6 +2,7 @@
 ## Secret Stuff
 #################
 app.iml
+xplore.iml
 Xplore_Demo.iml
 .idea/libraries
 *.kml
