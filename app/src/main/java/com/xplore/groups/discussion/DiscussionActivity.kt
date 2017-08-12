@@ -66,9 +66,7 @@ class DiscussionActivity : Activity() {
 
         checkIfDiscussionExists()
 
-        val llm = LinearLayoutManager(this)
-        llm.reverseLayout = true
-        messagesRecyclerView.layoutManager = llm
+        messagesRecyclerView.layoutManager = LinearLayoutManager(this)
         messagesRecyclerView.adapter = MessageListAdapter()
 
         //Gets all members from the group and stores them in groupMembers
@@ -159,6 +157,7 @@ class DiscussionActivity : Activity() {
                     messageCards.add(key, message)
                     messagesRecyclerView.adapter.notifyItemInserted(key)
                     messagesRecyclerView.adapter.notifyItemRangeChanged(key, messageCards.size)
+                    messagesRecyclerView.scrollToPosition(key)
 
                     if (initialMessageCount == 0) {
                         messageCount++
@@ -230,6 +229,10 @@ class DiscussionActivity : Activity() {
                         .load(currentUser.profile_picture_url)
                         .transform(ImageUtil.tinyCircle(this@DiscussionActivity))
                         .into(holder.userImageView)
+                holder.userImageView.setOnClickListener {
+                    General.openUserProfile(this@DiscussionActivity, currentUser.id)
+                }
+
 
                 //Full name
                 holder.userFullName.text = currentUser.getFullName()
