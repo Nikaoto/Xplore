@@ -31,13 +31,16 @@ class LeaderControls : Fragment() {
 
     //Firebase
     private val F_INVITED_GROUP_IDS = "invited_group_ids"
+    private val F_INVITED_MEMBER_IDS = "invited_member_ids"
     private val F_GROUP_IDS = "group_ids"
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
     private val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupId: String
     private lateinit var currentGroupRef: DatabaseReference
+    //
+    private var listeningForJoinRequests = false
+    private var joinRequestCount = 0
 
-    //TODO add discussion
     //TODO add remove members button
 
     companion object {
@@ -59,6 +62,8 @@ class LeaderControls : Fragment() {
         groupId = arguments.getString("groupId")
         currentGroupRef = groupsRef.child(groupId)
 
+        startListeningForJoinRequests()
+
         openDiscussionButton.setOnClickListener {
             startActivity(DiscussionActivity.getStartIntent(activity, groupId))
         }
@@ -71,13 +76,61 @@ class LeaderControls : Fragment() {
             //startEditingGroup()
         }
 
-        //TODO add red badge for total request count
         manageRequestsButton.setOnClickListener {
             startActivity(ManageRequestsActivity.getStartIntent(activity, groupId))
         }
 
         deleteGroupButton.setOnClickListener {
             confirmGroupDeletion()
+        }
+    }
+
+    private val joinRequestListener  = object : ChildEventListener {
+        //When new join request is received
+        override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
+            updateRequestCount(dataSnapshot, 1)
+        }
+
+        //When join request is removed
+        override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
+            updateRequestCount(dataSnapshot, -1)
+        }
+
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+
+        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {}
+
+        override fun onCancelled(p0: DatabaseError?) {}
+    }
+
+    private fun updateRequestCount(dataSnapshot: DataSnapshot?, change: Int) {
+        dataSnapshot?.let {
+            it.getValue(Boolean::class.java)?.let {
+                if (!it) joinRequestCount += change
+            }
+        }
+        if (joinRequestCount > 0) {
+            requestCountBadge.visibility = View.VISIBLE
+            requestCountBadge.text = joinRequestCount.toString()
+        } else {
+            requestCountBadge.visibility = View.INVISIBLE
+            requestCountBadge.text = ""
+        }
+    }
+
+    //Starts listening for new join requests and updates notif count
+    private fun startListeningForJoinRequests() {
+        if (!listeningForJoinRequests) {
+            listeningForJoinRequests = true
+            currentGroupRef.child(F_INVITED_MEMBER_IDS).addChildEventListener(joinRequestListener)
+        }
+    }
+
+    //Gee, I wonder what this does...
+    private fun stopListeningForJoinRequests(){
+        if (listeningForJoinRequests) {
+            listeningForJoinRequests = false
+            currentGroupRef.child(F_INVITED_MEMBER_IDS).removeEventListener(joinRequestListener)
         }
     }
 
@@ -130,5 +183,10 @@ class LeaderControls : Fragment() {
 
     private fun uninvite(memberId: String, groupId: String) {
         usersRef.child(memberId).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        stopListeningForJoinRequests()
     }
 }
