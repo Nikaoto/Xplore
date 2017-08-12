@@ -77,9 +77,10 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var chosenDestId = CHOSEN_DEST_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
 
+    private var groupName = ""
     //Descriptions
-    private var groupPrefs: String = ""
-    private var extraInfo: String = ""
+    private var groupPrefs = ""
+    private var extraInfo = ""
 
     private var invitedMemberIds = ArrayList<String>()
 
@@ -188,6 +189,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun initClickEvents() {
+
+        groupNameHelpButton.setOnClickListener {
+            showHelp(R.string.group_name, R.string.group_name_help, R.string.okay)
+        }
+
         chooseReserveButton.setOnClickListener {
             val intent = Intent(this@CreateGroupActivity, SearchDestinationActivity::class.java)
             startActivityForResult(intent, SEARCH_DESTINATION_ACTIVITY_CODE)
@@ -219,14 +225,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                                    INVITE_USERS_ACTIVITY_CODE)
         }
 
-        prefs_help!!.setOnClickListener {
-            showHelp(R.string.group_preferences, R.string.group_prefs_help, R.string.okay,
-                    resources)
+        prefs_help.setOnClickListener {
+            showHelp(R.string.group_preferences, R.string.group_prefs_help, R.string.okay)
         }
 
         extraInfo_help.setOnClickListener {
-            showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay,
-                    resources)
+            showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay)
         }
 
         doneButton.setOnClickListener {
@@ -341,6 +345,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
         return UploadableGroup(
                 key, //Firebase Unique Group Key
+                groupName,
                 exp, //Group Experienced Boolean
                 date.getStartDate(), //Start Date
                 date.startTime, //Start Time
@@ -398,11 +403,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun getDescriptions() {
+        groupName = groupNameEditText.text.toString()
         groupPrefs = groupPrefs_editText.text.toString()
         extraInfo = extraInfo_editText.text.toString()
     }
 
-    private fun showHelp(title: Int, text: Int, butt_text: Int, resources: Resources) {
+    private fun showHelp(title: Int, text: Int, butt_text: Int) {
         val alert = AlertDialog.Builder(this)
                 .setMessage(resources.getString(text))
                 .setTitle(resources.getString(title))

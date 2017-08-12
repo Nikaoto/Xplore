@@ -117,6 +117,8 @@
     <string name="show_on_map">იხილეთ რუკაზე</string>
 
     <!-- Create Group -->
+    <string name="group_name">ჯგუფის დასახელება</string>
+    <string name="group_name_help">დაარქვით ჯგუფს ისეთი სახელი რომელიც აღწერს ჯგუფის გეზს ისეთი რამ, რაც გუნდის წევრებს აქვთ საერთო.</string>
     <string name="question_choose_reserve">დარწმუნებული ხართ რომ გინდათ ამოირჩიოთ</string>
     <string name="question_has_visited">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
     <string name="group_prefs_help">ამ ველში უნდა მიუთითოთ როგორი გუნდის წევრებია თქვენი

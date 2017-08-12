@@ -145,5 +145,7 @@
     <string name="manage_requests">Manage Requests</string>
     <string name="cancel_join_request">Cancel Join Request</string>
     <string name="join_request_sent">Join request sent</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_name_help">"You should name your group something that either describes the hiking destination of the group or something that the groupmates have in common. "</string>
     <!-- -->
 </resources>

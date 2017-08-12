@@ -11,8 +11,9 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <android.support.v7.widget.Toolbar
@@ -21,7 +22,19 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"/>
+                app:navigationIcon="@drawable/abc_ic_ab_back_material">
+
+                <TextView
+                    android:id="@+id/groupNameTextView"
+                    android:gravity="fill"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

@@ -36,8 +36,11 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                                    private val activity: Activity)
     : RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder>() {
 
-    val startDatePrefix: String
-    val startDateSuffix: String
+    private val GROUP_NAME_MAX_CHARS = 35
+    private val LEADER_NAME_MAX_CHARS = 20
+
+    private val startDatePrefix: String
+    private val startDateSuffix: String
 
     init {
         TimeManager.refreshGlobalTimeStamp()
@@ -63,6 +66,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         internal val leaderImage: ImageView = itemView.leaderImageView
         internal val leaderReputation: TextView = itemView.leaderRepCombinedTextView
         //Group
+        internal val groupName: TextView = itemView.groupNameTextView
         internal val groupImage: ImageView = itemView.reserveImageView
         //Group marks
         internal val beenHereMark: ImageView = itemView.beenHereMark
@@ -101,7 +105,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         }
 
         //Leader name
-        holder.leaderName.text = group.leaderName
+        holder.leaderName.setText(group.leaderName, LEADER_NAME_MAX_CHARS)
 
         //Leader reputation
         holder.leaderReputation.text = "${group.leaderReputation} ${activity.resources.getString(R.string.reputation)}"
@@ -112,6 +116,9 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                 .transform(ImageUtil.tinyCircle(activity))
                 .into(holder.leaderImage)
         holder.leaderImage.setOnClickListener { General.openUserProfile(activity, group.leaderId) }
+
+        //Group name
+        holder.groupName.setText(group.name, GROUP_NAME_MAX_CHARS)
 
         //Group image
         //TODO change this to just map or submitted image
@@ -148,6 +155,14 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
             holder.duration.setText(R.string.duration_zero_day)
         } else {
             holder.duration.text = "$durationInDays ${activity.resources.getString(R.string.duration_days)}"
+        }
+    }
+
+    fun TextView.setText(s: String, limitChars: Int) {
+        if (s.length < limitChars) {
+            this.text = s
+        } else {
+            this.text = "${s.substring(0, limitChars)}..."
         }
     }
 

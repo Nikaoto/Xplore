@@ -44,6 +44,4 @@ data class GroupCard(
     fun getDurationInDays() = General.getDateDiffInDays(start_date, end_date)
 }
 
-//TODO add tour name to firebase
 //TODO remove reserveImageId
-//TODO add duration

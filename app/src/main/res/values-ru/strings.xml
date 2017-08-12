@@ -143,5 +143,7 @@
     <string name="manage_requests">Управлять Запросы</string>
     <string name="cancel_join_request">Отменить запрос</string>
     <string name="join_request_sent">Запрос на соединение отправлен</string>
+    <string name="group_name">Название Группы</string>
+    <string name="group_name_help">Выберите имя для своей группы, которое описывает точку назначения группы или что-то общее, что у членов группы.</string>
     <!-- -->
 </resources>

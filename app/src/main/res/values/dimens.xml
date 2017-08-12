@@ -11,6 +11,7 @@
     <dimen name="party_button_height">110dp</dimen>
     <dimen name="fab_size">70dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="group_card_image_height">85dp</dimen>
     <dimen name="activity_horizontal_margin">3dp</dimen>
     <dimen name="activity_vertical_margin">2dp</dimen>
     <dimen name="lib_button_text_padding_bottom">4dp</dimen>

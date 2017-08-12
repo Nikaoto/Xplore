@@ -13,7 +13,7 @@ public class Group {
     public boolean experienced;
     public long start_date, end_date;
     public String start_time, end_time;
-    protected String destination_id, group_id, extra_info, group_preferences;
+    protected String name, destination_id, group_id, extra_info, group_preferences;
     public HashMap<String, Boolean> member_ids;
     public HashMap<String, Boolean> invited_member_ids;
 
@@ -28,6 +28,14 @@ public class Group {
             }
         }
         return "";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getExtra_info() {

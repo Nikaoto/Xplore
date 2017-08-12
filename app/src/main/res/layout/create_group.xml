@@ -7,7 +7,55 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+
+            <TextView
+                android:id="@+id/groupNameLabel"
+                android:text="@string/group_name"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:id="@+id/groupNameHelpButton"
+                android:src="@drawable/ic_help"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/groupNameLabel"
+                android:layout_width="@dimen/ic_help_wh"
+                android:layout_height="@dimen/ic_help_wh" />
+
+            <EditText
+                android:id="@+id/groupNameEditText"
+                android:layout_below="@id/groupNameLabel"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:inputType="textShortMessage"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_border"
+                android:maxLines="1"
+                android:minEms="15"
+                android:maxEms="30"
+                android:textSize="@dimen/reg_text_size"
+                android:paddingLeft="@dimen/reg_text_padding_left"
+                android:paddingBottom="@dimen/reg_text_padding_top_bot"
+                android:paddingTop="@dimen/reg_text_padding_top_bot"/>
+
+        </RelativeLayout>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/chooseReserveButton"

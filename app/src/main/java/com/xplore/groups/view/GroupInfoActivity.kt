@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.*
@@ -157,50 +158,30 @@ class GroupInfoActivity : Activity() {
         membersRecyclerView.layoutManager = layoutManager
     }
 
-    /*
-    //IN CASE WE'RE USING A SECOND FIREBASE DATABASE FOR USERS
-    private void buildUserBase()
-    {
-    USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
-    USERBASE_APPID = getResources().getString(R.string.firebase_appid);
-    USERBASE_URL = getResources().getString(R.string.user_firebase_url);
-    userBaseOptions = new FirebaseOptions.Builder()
-    .setApiKey(USERBASE_KEY)
-    .setApplicationId(USERBASE_APPID)
-    .setDatabaseUrl(USERBASE_URL)
-    .build();
-    try {
-    if (FirebaseApp.getApps(getActivity()).get(1).equals(null)) {
-    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-    } catch (IndexOutOfBoundsException e) {
-    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-    }
-    userBaseApp = FirebaseApp.getInstance("userbase");
-    userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }
-    */
-
     private fun loadGroupData(groupId: String) {
         firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if group exists
                 if (dataSnapshot != null) {
                     //creating the temporary (current) group
-                    currentGroup = dataSnapshot.getValue(Group::class.java)!!
-                    currentGroup.setGroup_id(dataSnapshot.key)
-                    memberCount = currentGroup.getMember_ids().size
+                    dataSnapshot.getValue(Group::class.java)?.let {
+                        currentGroup = it
+                        groupNameTextView.text = currentGroup.name
+                        currentGroup.setGroup_id(dataSnapshot.key)
+                        memberCount = currentGroup.getMember_ids().size
 
-                    configureControls(currentGroup)
+                        configureControls(currentGroup)
 
-                    for (memberId in currentGroup.getMember_ids().keys) {
-                        if (memberId != null) {
-                            if (memberId == currentGroup.leaderId) {
-                                getLeaderInfo(memberId)
+                        for (memberId in currentGroup.getMember_ids().keys) {
+                            if (memberId != null) {
+                                if (memberId == currentGroup.leaderId) {
+                                    getLeaderInfo(memberId)
+                                } else {
+                                    getUserInfo(memberId)
+                                }
                             } else {
-                                getUserInfo(memberId)
+                                decrementMemberCount()
                             }
-                        } else {
-                            decrementMemberCount()
                         }
                     }
                 } else {

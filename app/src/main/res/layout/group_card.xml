@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/groupCardView"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="210dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="3dp"
     app:cardElevation="4dp"
@@ -60,6 +60,7 @@
 
             </RelativeLayout>
 
+            <!-- Marks -->
             <LinearLayout
                 android:id="@+id/groupMarksLayout"
                 android:layout_width="match_parent"
@@ -91,17 +92,31 @@
 
         </RelativeLayout>
 
+        <!-- Group Image -->
         <ImageView
             android:id="@+id/reserveImageView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/reserve_image_height"
+            android:layout_height="@dimen/group_card_image_height"
             android:scaleType="centerCrop"
             tools:src="@drawable/algeti" />
 
+        <!-- Group Name -->
+        <TextView
+            android:id="@+id/groupNameTextView"
+            tools:text="Kojorisken heri heri"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textStyle="bold" />
+
+        <!-- Separator -->
         <View
             style="@style/Divider"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
+            android:layout_marginBottom="2dp"/>
 
         <!-- Footer -->
         <RelativeLayout
