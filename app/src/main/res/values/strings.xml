@@ -78,6 +78,7 @@
     <string name="meetup_time">შეხვედრის დრო</string>
     <string name="start_time">დაწყების დრო</string>
     <string name="end_time">დასასრულის დრო</string>
+    <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
 
     <!-- Times for GroupCards -->
     <string name="today">დღეს</string>
@@ -98,7 +99,7 @@
     <string name="leave_group">ჯგუფის დატოვება</string>
     <string name="delete_group">ჯგუფის წაშლა</string>
     <string name="edit_group">ჯგუფის შეცვლა</string>
-
+    <string name="join_request_sent">გაწევრიანების თხოვნა გაგზავნილია</string>
 
     <!-- Map -->
     <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>

@@ -54,6 +54,11 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"/>
 
+
+        <View style="@style/Divider"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -61,161 +66,169 @@
             <!-- Start Date -->
             <TextView
                 android:id="@+id/startDateLabel"
-                android:text="@string/date_start"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/startDateButton"
-                android:layout_alignBaseline="@+id/startDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/startDateButton"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/startDateButton"
+                android:text="@string/date_start"
+                android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/startDateTextView"
-                android:layout_below="@id/startDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/startDateLabel"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/startDateButton"
-                android:text="@string/set"
-                android:textSize="15sp"
-                app:backgroundTint="@color/colorAccent"
-                android:layout_marginRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent" />
 
             <!-- Start Time -->
             <TextView
                 android:id="@+id/startTimeLabel"
-                android:text="@string/start_time"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/startTimeButton"
-                android:layout_alignBaseline="@+id/startTimeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/startTimeButton"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/startDateTextView"
                 android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/startTimeButton"
+                android:text="@string/start_time"
+                android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/startTimeTextView"
-                android:layout_below="@id/startTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/startTimeLabel"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/startTimeButton"
-                android:text="@string/set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/startDateTextView"
-                android:textSize="15sp"
-                app:backgroundTint="@color/colorAccent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent" />
 
 
-            <View style="@style/dashed_divider"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/startTimeTextView"/>
+            <View
+                android:id="@+id/start_end_divider"
+                style="@style/dashed_divider"
+                android:layout_below="@id/startTimeTextView"
+                android:layout_marginTop="5dp" />
 
 
             <!-- End Date -->
             <TextView
                 android:id="@+id/endDateLabel"
-                android:text="@string/date_end"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/endDateButton"
-                android:layout_alignBaseline="@+id/endDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/start_end_divider"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:layout_toLeftOf="@+id/endDateButton"
+                android:text="@string/date_end"
+                android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/endDateTextView"
-                android:layout_below="@id/endDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/endDateLabel"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/endDateButton"
-                android:layout_below="@id/startTimeButton"
-                android:text="@string/set"
-                android:textSize="15sp"
-                app:backgroundTint="@color/colorAccent"
-                android:layout_marginRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/start_end_divider"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent" />
 
             <!-- End Time -->
             <TextView
                 android:id="@+id/endTimeLabel"
-                android:text="@string/end_time"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/endTimeButton"
-                android:layout_alignBaseline="@+id/endTimeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/endDateTextView"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/endTimeButton"
+                android:text="@string/end_time"
+                android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/endTimeTextView"
-                android:layout_below="@id/endTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/endTimeLabel"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="11dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/endTimeButton"
-                android:text="@string/set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/endDateTextView"
-                android:textSize="15sp"
-                app:backgroundTint="@color/colorAccent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent" />
 
         </RelativeLayout>
-
-
-        <View style="@style/Divider"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"/>
 
         <RelativeLayout
             android:layout_marginTop="25dp"

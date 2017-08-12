@@ -143,5 +143,7 @@
     <string name="refresh">Refresh</string>
     <string name="cancel_invitation">Cancel Invitation</string>
     <string name="manage_requests">Manage Requests</string>
+    <string name="cancel_join_request">Cancel Join Request</string>
+    <string name="join_request_sent">Join request sent</string>
     <!-- -->
 </resources>

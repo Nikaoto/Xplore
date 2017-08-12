@@ -64,8 +64,12 @@ class OutsiderControls : Fragment() {
             //Remove button
             joinGroupButton.isEnabled = false
             joinGroupButton.visibility = View.GONE
-            //Show request sent text
+
             requestSentTextView.visibility = View.VISIBLE
+            cancelJoinRequestButton.visibility = View.VISIBLE
+            cancelJoinRequestButton.setOnClickListener {
+                cancelJoinRequest(groupId)
+            }
         } else {
             startListeningForInvites()
             joinGroupButton.setOnClickListener {
@@ -85,7 +89,20 @@ class OutsiderControls : Fragment() {
         usersRef.child(General.currentUserId).child(F_INVITED_GROUP_IDS).child(groupId)
                 .setValue(false)
 
-        refreshControls()
+        refreshControls(true)
+    }
+
+    private fun cancelJoinRequest(groupId: String) {
+        stopListeningForInvites()
+
+        //Removing group id from member
+        usersRef.child(General.currentUserId).child(F_INVITED_GROUP_IDS).child(groupId)
+                .removeValue()
+
+        //Removing member id from group
+        currentGroupRef.child(F_INVITED_MEMBER_IDS).child(General.currentUserId).removeValue()
+
+        refreshControls(false)
     }
 
     private val onInviteListener = object : ChildEventListener {
@@ -160,9 +177,9 @@ class OutsiderControls : Fragment() {
     }
 
     //Refreshes only the fragment containing the controls
-    private fun refreshControls() {
+    private fun refreshControls(awaitingRequest: Boolean) {
         fragmentManager.beginTransaction().detach(this)
-                .replace(R.id.controls_container, newInstance(groupId, true)).commit()
+                .replace(R.id.controls_container, newInstance(groupId, awaitingRequest)).commit()
     }
 
     override fun onDetach() {
