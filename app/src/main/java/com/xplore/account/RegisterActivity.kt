@@ -17,6 +17,7 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
@@ -109,7 +110,15 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
         //TODO AI check for face in photo?
 
-        if(userProfilePicUrl != "") {
+        Picasso.with(this@RegisterActivity).invalidate(userProfilePicUrl)
+
+        if (userProfilePicUrl == null || userProfilePicUrl == "null"
+                || userProfilePicUrl.isEmpty()) {
+            Picasso.with(this@RegisterActivity)
+                    .load(R.drawable.user_default_profile_image)
+                    .transform(ImageUtil.mediumCircle(this))
+                    .into(profileImageView)
+        } else {
             Picasso.with(this@RegisterActivity)
                     .load(userProfilePicUrl)
                     .transform(ImageUtil.mediumCircle(this))

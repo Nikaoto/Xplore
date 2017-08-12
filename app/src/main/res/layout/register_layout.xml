@@ -174,9 +174,9 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:minEms="6"
-                android:layout_toRightOf="@id/bdateLabelTextView"
+                android:maxEms="12"
                 android:layout_marginLeft="@dimen/reg_text_margin_left"
-                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/bdateLabelTextView"
                 android:background="@drawable/edit_text_border"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,11 +185,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             <TextView
+                android:text="@string/date_format"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/date_format"
                 android:layout_below="@id/bdateTextView"
-                android:layout_alignParentRight="true"
+                android:layout_alignRight="@id/bdateTextView"
                 android:textSize="14sp" />
         </RelativeLayout>
 
@@ -223,7 +223,7 @@
             android:text="@string/click_to_change"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"/>
 
         <RelativeLayout
