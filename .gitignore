@@ -5,6 +5,7 @@ app.iml
 xplore.iml
 Xplore_Demo.iml
 .idea/libraries
+.idea/modules.xml
 *.kml
 secrets.xml
 app/src/main/assets/*.db
