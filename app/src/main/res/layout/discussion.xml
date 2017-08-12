@@ -18,7 +18,7 @@
             android:src="@drawable/ic_send"
             android:layout_below="@id/divider"
             android:foreground="?android:attr/selectableItemBackground"
-            android:layout_margin="10dp"
+            android:padding="10dp"
             android:background="?android:attr/selectableItemBackground"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"

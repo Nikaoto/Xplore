@@ -66,7 +66,9 @@ class DiscussionActivity : Activity() {
 
         checkIfDiscussionExists()
 
-        messagesRecyclerView.layoutManager = LinearLayoutManager(this)
+        val llm = LinearLayoutManager(this)
+        llm.reverseLayout = true
+        messagesRecyclerView.layoutManager = llm
         messagesRecyclerView.adapter = MessageListAdapter()
 
         //Gets all members from the group and stores them in groupMembers
@@ -194,12 +196,15 @@ class DiscussionActivity : Activity() {
     private fun enableMessaging() {
         sendMessageButton.setOnClickListener {
             sendMessage(MessageCard(General.currentUserId, sendMessageEditText.text.toString()))
+            sendMessageEditText.setText("")
         }
     }
 
     private fun sendMessage(message: MessageCard) {
-        //Add message with messageCount index
-        discussionRef.child(messageCount.toString()).setValue(message)
+        if (message.message.isNotEmpty()) {
+            //Add message with messageCount index
+            discussionRef.child(messageCount.toString()).setValue(message)
+        }
     }
 
     private inner class MessageListAdapter
