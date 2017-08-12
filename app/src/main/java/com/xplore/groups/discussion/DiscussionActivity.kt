@@ -31,7 +31,6 @@ class DiscussionActivity : Activity() {
     private val F_GROUPS = "groups"
     private val F_MEMBER_IDS = "member_ids"
     private val F_DISCUSSION = "discussion"
-    private val F_MESSAGE_COUNT = "message_count"
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var currentGroupRef: DatabaseReference
     private lateinit var discussionRef: DatabaseReference
@@ -44,6 +43,7 @@ class DiscussionActivity : Activity() {
     private val messageCards = ArrayList<MessageCard>()
 
     private var messageCount = 0
+    private var initialMessageCount = 0
 
     private var listening = false
     private var memberCount = 0 //To find out when all members have been retrieved
@@ -86,6 +86,21 @@ class DiscussionActivity : Activity() {
 
                     override fun onCancelled(p0: DatabaseError?) {}
                 })
+
+        initMessageCount()
+    }
+
+    private fun initMessageCount() {
+        discussionRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    initialMessageCount = dataSnapshot.childrenCount.toInt()
+                    messageCount = initialMessageCount
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
     }
 
     //Gets info of an user with given Id
@@ -97,7 +112,6 @@ class DiscussionActivity : Activity() {
                     userCard?.let {
                         userCard.id = dataSnapshot.key
                         groupMembers.add(userCard)
-                        Log.i("brejk", "member = ${userId}")
 
                         memberCount--
                         if(memberCount == 0) {
@@ -121,7 +135,6 @@ class DiscussionActivity : Activity() {
                         val newDiscussion = ArrayList<MessageCard>()
                         newDiscussion.add(MessageCard("1", "Feel free to start chatting :^)"))
                         discussionRef.setValue(newDiscussion)
-                        currentGroupRef.child(F_MESSAGE_COUNT).setValue(1)
                     }
                 }
             }
@@ -144,6 +157,12 @@ class DiscussionActivity : Activity() {
                     messageCards.add(key, message)
                     messagesRecyclerView.adapter.notifyItemInserted(key)
                     messagesRecyclerView.adapter.notifyItemRangeChanged(key, messageCards.size)
+
+                    if (initialMessageCount == 0) {
+                        messageCount++
+                    } else {
+                        initialMessageCount--
+                    }
                 }
             }
         }
@@ -157,37 +176,16 @@ class DiscussionActivity : Activity() {
         override fun onCancelled(p0: DatabaseError?) {}
     }
 
-    private val messageCountListener = object : ChildEventListener {
-        override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
-            if (dataSnapshot != null) {
-                val temp = dataSnapshot.getValue(Int::class.java)
-                if (temp != null) {
-                    messageCount = temp
-                }
-            }
-        }
-
-        override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {}
-
-        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-
-        override fun onChildRemoved(p0: DataSnapshot?) {}
-
-        override fun onCancelled(p0: DatabaseError?) {}
-    }
-
     private fun startListeningForMessages() {
         if (!listening) {
             listening = true
-            currentGroupRef.child(F_MESSAGE_COUNT).addChildEventListener(messageCountListener)
-            discussionRef.limitToLast(MESSAGE_LIMIT).addChildEventListener(messageListener)
+            discussionRef.addChildEventListener(messageListener)
         }
     }
 
     private fun stopListeningForMessages() {
         if (listening) {
             listening = false
-            currentGroupRef.child(F_MESSAGE_COUNT).removeEventListener(messageCountListener)
             discussionRef.removeEventListener(messageListener)
         }
     }
@@ -200,10 +198,6 @@ class DiscussionActivity : Activity() {
     }
 
     private fun sendMessage(message: MessageCard) {
-        //Update firebase value
-        currentGroupRef.child(F_MESSAGE_COUNT).setValue(messageCount + 1)
-        //messageCount increments by 1 automatically because onChilcChanged fires
-
         //Add message with messageCount index
         discussionRef.child(messageCount.toString()).setValue(message)
     }

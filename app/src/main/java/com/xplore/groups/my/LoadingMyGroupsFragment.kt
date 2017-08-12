@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Fragment
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,7 +48,9 @@ class LoadingMyGroupsFragment : Fragment() {
     @SuppressWarnings("deprecation")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
-        startLoading()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            startLoading()
+        }
     }
 
     //Loads joined and invited group Ids for current user
