@@ -1,8 +1,11 @@
 package com.xplore.groups.my
 
+import android.annotation.TargetApi
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -34,25 +37,39 @@ class LoadingMyGroupsFragment : Fragment() {
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
 
     //Start loading ASAP
+
+    @TargetApi(23)
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        startLoading()
+    }
 
-        //Loads joined and invited group Ids for current user
-        val query = firebaseUsersRef.child(General.currentUserId)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                if (dataSnapshot != null) {
-                    val groupIds = dataSnapshot.getValue(AllGroupIdsForMember::class.java)
-                    if (groupIds != null) {
-                        if (groupIds.group_ids.isNotEmpty() || groupIds.invited_group_ids.isNotEmpty()) {
+    @SuppressWarnings("deprecation")
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        startLoading()
+    }
 
-                            loadMyGroupsLayout(groupIds.group_ids, groupIds.invited_group_ids)
+    //Loads joined and invited group Ids for current user
+    private fun startLoading() {
+        firebaseUsersRef.child(General.currentUserId).addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                        if (dataSnapshot != null) {
+                            val groupIds = dataSnapshot.getValue(AllGroupIdsForMember::class.java)
+                            if (groupIds != null) {
+                                if (groupIds.group_ids.isNotEmpty()
+                                        || groupIds.invited_group_ids.isNotEmpty()) {
 
-                        } else { loadEmptyLayout() }
-                    } else { loadEmptyLayout() }
-                } else { printError() }
-            }
-            override fun onCancelled(p0: DatabaseError?) { }
+                                    loadMyGroupsLayout(groupIds.group_ids,
+                                            groupIds.invited_group_ids)
+
+                                } else { loadEmptyLayout() }
+                            } else { loadEmptyLayout() }
+                        } else { printError() }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError?) { }
         })
     }
 
@@ -65,8 +82,7 @@ class LoadingMyGroupsFragment : Fragment() {
                     .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()*/
 
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, EmptyFragmentFactory().getFragment())
-                    .commit()
+                    .replace(R.id.fragment_container, EmptyFragmentFactory().getFragment()).commit()
         }
     }
 
@@ -74,8 +90,8 @@ class LoadingMyGroupsFragment : Fragment() {
                            invitedGroupIds: HashMap<String, Boolean>) {
         if (fragmentManager != null) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds))
-                    .commit()
+                    .replace(R.id.fragment_container,
+                            MyGroupsFragment.newInstance(joinedGroupIds, invitedGroupIds)).commit()
         }
     }
 

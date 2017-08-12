@@ -22,6 +22,7 @@
             android:id="@+id/about_banner_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:scaleX="0.90"
             android:scaleY="0.90"
             android:layout_below="@id/about_header_text"
@@ -48,7 +49,7 @@
             android:layout_below="@id/about_text" />
 
         <TextView
-            android:text="მთელი გუნდი მადლობას გიხდოთ რომ ალფა ტესტირებაში მონაწილეობთ!"
+            android:text="მთელი გუნდი მადლობას გიხდით რომ ალფა ტესტირებაში მონაწილეობთ!"
             android:layout_marginLeft="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

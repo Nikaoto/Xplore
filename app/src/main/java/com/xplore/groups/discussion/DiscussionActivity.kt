@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
+import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
 import com.xplore.user.UserCard
@@ -30,8 +31,10 @@ class DiscussionActivity : Activity() {
     private val F_GROUPS = "groups"
     private val F_MEMBER_IDS = "member_ids"
     private val F_DISCUSSION = "discussion"
+    private val F_MESSAGE_COUNT = "message_count"
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var currentGroupRef: DatabaseReference
+    private lateinit var discussionRef: DatabaseReference
     //
     private val  MESSAGE_LIMIT = 50
 
@@ -39,6 +42,8 @@ class DiscussionActivity : Activity() {
 
     private val groupMembers = ArrayList<UserCard>()
     private val messageCards = ArrayList<MessageCard>()
+
+    private var messageCount = 0
 
     private var listening = false
     private var memberCount = 0 //To find out when all members have been retrieved
@@ -57,6 +62,7 @@ class DiscussionActivity : Activity() {
 
         groupId = intent.getStringExtra("groupId")
         currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS/$groupId")
+        discussionRef = currentGroupRef.child(F_DISCUSSION)
 
         checkIfDiscussionExists()
 
@@ -96,6 +102,7 @@ class DiscussionActivity : Activity() {
                         memberCount--
                         if(memberCount == 0) {
                             startListeningForMessages()
+                            enableMessaging()
                         }
                     }
                 }
@@ -113,7 +120,8 @@ class DiscussionActivity : Activity() {
                     if (!dataSnapshot.hasChild(F_DISCUSSION)) {
                         val newDiscussion = ArrayList<MessageCard>()
                         newDiscussion.add(MessageCard("1", "Feel free to start chatting :^)"))
-                        currentGroupRef.child(F_DISCUSSION).setValue(newDiscussion)
+                        discussionRef.setValue(newDiscussion)
+                        currentGroupRef.child(F_MESSAGE_COUNT).setValue(1)
                     }
                 }
             }
@@ -149,21 +157,55 @@ class DiscussionActivity : Activity() {
         override fun onCancelled(p0: DatabaseError?) {}
     }
 
-    private fun startListeningForMessages() {
-        Log.i("brejk", "listening")
+    private val messageCountListener = object : ChildEventListener {
+        override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
+            if (dataSnapshot != null) {
+                val temp = dataSnapshot.getValue(Int::class.java)
+                if (temp != null) {
+                    messageCount = temp
+                }
+            }
+        }
 
+        override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {}
+
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+
+        override fun onChildRemoved(p0: DataSnapshot?) {}
+
+        override fun onCancelled(p0: DatabaseError?) {}
+    }
+
+    private fun startListeningForMessages() {
         if (!listening) {
             listening = true
-            currentGroupRef.child(F_DISCUSSION).limitToLast(MESSAGE_LIMIT)
-                    .addChildEventListener(messageListener)
+            currentGroupRef.child(F_MESSAGE_COUNT).addChildEventListener(messageCountListener)
+            discussionRef.limitToLast(MESSAGE_LIMIT).addChildEventListener(messageListener)
         }
     }
 
     private fun stopListeningForMessages() {
         if (listening) {
             listening = false
-            currentGroupRef.child(F_DISCUSSION).removeEventListener(messageListener)
+            currentGroupRef.child(F_MESSAGE_COUNT).removeEventListener(messageCountListener)
+            discussionRef.removeEventListener(messageListener)
         }
+    }
+
+    //Adds a click listener to the send button; Call this only after message retrieval is finished.
+    private fun enableMessaging() {
+        sendMessageButton.setOnClickListener {
+            sendMessage(MessageCard(General.currentUserId, sendMessageEditText.text.toString()))
+        }
+    }
+
+    private fun sendMessage(message: MessageCard) {
+        //Update firebase value
+        currentGroupRef.child(F_MESSAGE_COUNT).setValue(messageCount + 1)
+        //messageCount increments by 1 automatically because onChilcChanged fires
+
+        //Add message with messageCount index
+        discussionRef.child(messageCount.toString()).setValue(message)
     }
 
     private inner class MessageListAdapter
@@ -182,8 +224,6 @@ class DiscussionActivity : Activity() {
         override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
             val currentCard = messageCards[position]
             val currentUser = getMemberById(currentCard.user_id)
-
-            Log.i("brejk", "onBindViewHolder")
 
             currentUser?.let {
                 //Profile pic
