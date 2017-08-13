@@ -8,7 +8,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import com.xplore.database.DBManager
 import com.xplore.R
-import com.xplore.maps.MapsActivity
+import com.xplore.maps.MapActivity
 
 import kotlinx.android.synthetic.main.reserve_info.*
 
@@ -90,7 +90,7 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
 
         showonmapButton.setOnClickListener() {
             mActivity.startActivity(
-                    MapsActivity.getStartIntent(
+                    MapActivity.getStartIntent(
                             mActivity,
                             true,
                             reserve.name,

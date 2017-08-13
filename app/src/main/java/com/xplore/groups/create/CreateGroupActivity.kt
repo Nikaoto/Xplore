@@ -3,7 +3,6 @@ package com.xplore.groups.create
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -14,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.database.DBManager
 import com.xplore.reserve.ReserveInfoActivity
@@ -21,6 +21,7 @@ import com.xplore.reserve.ReserveInfoActivity
 import java.util.ArrayList
 
 import com.xplore.General.currentUserId
+import com.xplore.maps.MapActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
 import kotlin.collections.HashMap
@@ -42,6 +43,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     //TODO replace reserveButton with reserveCard
 
+    //Request codes
+    private val SEARCH_DESTINATION_REQ_CODE = 1
+    private val SELECT_FROM_MAP_REQ_CODE = 2
+    private val INVITE_USERS_REQ_CODE = 4
+
     //Database
     private val dbManager: DBManager by lazy { DBManager(this) }
 
@@ -52,10 +58,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             .child("users")
             .child(General.currentUserId)
             .child("group_ids")
-
-    //Activity Codes
-    private val SEARCH_DESTINATION_ACTIVITY_CODE = 1
-    private val INVITE_USERS_ACTIVITY_CODE = 4
 
     //Limits and restrictions to fields
     private val CHOSEN_DEST_DEFAULT = -1
@@ -77,8 +79,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var chosenDestId = CHOSEN_DEST_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
 
+    private var groupImageUrl = ""
     private var groupName = ""
-    //Descriptions
     private var groupPrefs = ""
     private var extraInfo = ""
 
@@ -176,10 +178,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_group)
 
-
         setTitle(R.string.activity_create_group_title)
-        dbManager.openDataBase()
-
 
         initMemberRecyclerView()
         initClickEvents()
@@ -198,13 +197,16 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         chooseDestinationButton.setOnClickListener {
-            val intent = Intent(this@CreateGroupActivity, SearchDestinationActivity::class.java)
-            startActivityForResult(intent, SEARCH_DESTINATION_ACTIVITY_CODE)
+            showDestinationDialog()
         }
 
-        reserveButton.setOnClickListener {
-            if (chosenDestId != CHOSEN_DEST_DEFAULT)
-                startActivity(ReserveInfoActivity.getStartIntent(this@CreateGroupActivity, chosenDestId))
+        groupImageView.setOnClickListener {
+            if (chosenDestId != CHOSEN_DEST_DEFAULT) {
+                startActivity(ReserveInfoActivity.getStartIntent(this, chosenDestId))
+            } else if (groupImageUrl.isNotEmpty()) {
+                startActivityForResult(MapActivity.getStartIntent(this, true),
+                        SELECT_FROM_MAP_REQ_CODE)
+            }
         }
 
         startDateButton.setOnClickListener {
@@ -225,7 +227,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
         inviteButton.setOnClickListener {
             startActivityForResult(SearchUsersActivity.getStartIntent(this, invitedMemberIds),
-                                   INVITE_USERS_ACTIVITY_CODE)
+                    INVITE_USERS_REQ_CODE)
         }
 
         prefs_help.setOnClickListener {
@@ -255,6 +257,23 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             else if (i == R.id.no_rb)
                 experienceAns = EXPERIENCE_ANS_NO
         }
+    }
+
+    private fun showDestinationDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.activity_choose_destination_title)
+                .setMessage(R.string.choose_from)
+                .setPositiveButton(R.string.activity_library_title) {_, _ ->
+                    startActivityForResult(
+                            Intent(this@CreateGroupActivity, SearchDestinationActivity::class.java),
+                            SEARCH_DESTINATION_REQ_CODE)
+                }
+                .setNegativeButton(R.string.activity_maps_title) {_, _ ->
+                    startActivityForResult(
+                            MapActivity.getStartIntent(this, true),
+                            SELECT_FROM_MAP_REQ_CODE)
+                }
+                .create().show()
     }
 
     private fun showDatePicker(code: String) {
@@ -306,25 +325,47 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
         if (!General.isNetConnected(this)) {
             General.createNetErrorDialog(this)
-        } else if (chosenDestId != CHOSEN_DEST_DEFAULT) {
-            //TODO make a separate method for displaying the reserve
-            reserveButton.setBackgroundResource(dbManager.getImageId(chosenDestId))
-            reserveButton.text = dbManager.getStr(chosenDestId, DBManager.NAME, General.DB_TABLE)
         }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode == SEARCH_DESTINATION_ACTIVITY_CODE) {
-                if (resultCode == Activity.RESULT_OK) {
-                    chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
-                }
-            } else if (requestCode == INVITE_USERS_ACTIVITY_CODE) {
-                if (resultCode == Activity.RESULT_OK) {
-                    invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
-                    populateMembersList(invitedMemberIds)
-                }
+
+            when (requestCode) {
+                SEARCH_DESTINATION_REQ_CODE ->
+                    if (resultCode == Activity.RESULT_OK) {
+                        groupImageUrl = ""
+
+                        chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
+
+                        dbManager.openDataBase()
+                        Picasso.with(this).load(dbManager.getImageId(chosenDestId))
+                                .into(groupImageView)
+                        dbManager.close()
+                    }
+                SELECT_FROM_MAP_REQ_CODE ->
+                    if (resultCode == Activity.RESULT_OK) {
+                        chosenDestId = CHOSEN_DEST_DEFAULT
+
+                        //Getting image
+                        val lat = data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 1.0)
+                        val lng = data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 1.0)
+
+                        //Checking if data retrieval failed
+                        if (lat != 1.0 && lng != 1.0) {
+                            groupImageUrl = MapUtil.getMapUrl(lat, lng)
+
+                            Picasso.with(this).load(groupImageUrl).into(groupImageView)
+                        } else {
+                            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                INVITE_USERS_REQ_CODE ->
+                    if (resultCode == Activity.RESULT_OK) {
+                        invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
+                        populateMembersList(invitedMemberIds)
+                    }
             }
         }
     }

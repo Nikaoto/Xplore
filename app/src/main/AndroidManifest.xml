@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".maps.MapsActivity"
+            android:name=".maps.MapActivity"
             android:label="@string/activity_maps_title" />
         <activity
             android:name=".reserve.ReserveInfoActivity"

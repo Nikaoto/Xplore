@@ -37,6 +37,7 @@
     <string name="refresh">განახლება</string>
 
     <!-- Texts -->
+    <string name="error">მოხდა შეცდომა</string>
     <string name="nothing_here">აქ არაფერია</string>
     <string name="search_tags_hint">მოძებნეთ ტეგები</string>
     <string name="search_name_hint">მოძებნეთ სახელით</string>
@@ -107,6 +108,8 @@
     <string name="wifi_connect_dialog_maps">
         გთხოვთ ჩართოთ ინტერნეტკავშირი რუკების გადმოსაწერად. ეს მხოლოდ ერთჯერადად არის საჭირო.
     </string>
+    <string name="drop_pin_help">მიმართულების მისათითებლად რუკაზე დააჭირეთ თითი დიდი ხნით.
+        უკვე დაგდებული პინის გადასაადგილებლად ასევე დააჭირეთ მას დიდი ხნით.</string>
 
     <!-- Library & Reserve -->
     <string name="lib_fauna_header">ფაუნა</string>
@@ -118,9 +121,13 @@
 
     <!-- Create Group -->
     <string name="group_name">ჯგუფის დასახელება</string>
-    <string name="group_name_help">დაარქვით ჯგუფს ისეთი სახელი რომელიც აღწერს ჯგუფის გეზს ისეთი რამ, რაც გუნდის წევრებს აქვთ საერთო.</string>
+    <string name="group_name_help">
+        დაარქვით ჯგუფს ისეთი სახელი რომელიც აღწერს ჯგუფის გეზს ისეთი რამ, რაც გუნდის წევრებს აქვთ საერთო.
+    </string>
+    <string name="choose_destination">ამოირჩიეთ მიმართულება</string>
+    <string name="choose_from">ამოირჩიეთ ერთ-ერთიდან…</string>
     <string name="question_choose_reserve">დარწმუნებული ხართ რომ გინდათ ამოირჩიოთ</string>
-    <string name="question_has_visited">ნაცნობია გუნდისთვის ეს ნაკრძალი?</string>
+    <string name="question_has_visited">ნაცნობია გუნდისთვის ეს ადგილი?</string>
     <string name="group_prefs_help">ამ ველში უნდა მიუთითოთ როგორი გუნდის წევრებია თქვენი
         გუნდისთვის სასურველი.\n\nმაგ: ვინმე, ვინც გამოცდილია და გუნდს არ ჩამორჩება…</string>
     <string name="extra_info_help">ამ ველში უნდა მიუთითოთ დამატებით ინფორმაცია რაც შეიძლება ახალ

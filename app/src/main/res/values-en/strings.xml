@@ -55,7 +55,7 @@
     <string name="tel">Tel</string>
     <string name="activity_choose_destination_title">Choose Destination</string>
     <string name="invite_members">Invite Members</string>
-    <string name="question_has_visited">Is the group familiar with this reserve?</string>
+    <string name="question_has_visited">Is the group familiar with this place?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="done">Done</string>
@@ -147,5 +147,9 @@
     <string name="join_request_sent">Join request sent</string>
     <string name="group_name">Group Name</string>
     <string name="group_name_help">"You should name your group something that either describes the hiking destination of the group or something that the groupmates have in common. "</string>
+    <string name="choose_destination">Choose Destination</string>
+    <string name="choose_from">Choose from…</string>
+    <string name="drop_pin_help">To choose a destination just long press on the map. Dropped pins can be selected with a long press as well.</string>
+    <string name="error">Error</string>
     <!-- -->
 </resources>

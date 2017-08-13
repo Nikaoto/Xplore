@@ -1,6 +1,7 @@
 package com.xplore.groups.my
 
 import android.app.Fragment
+import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -159,6 +160,7 @@ class MyGroupsFragment() : Fragment() {
         if (allowRefresh) {
             allowRefresh = false
             fragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
         } else {
             allowRefresh = true

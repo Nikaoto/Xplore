@@ -98,7 +98,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.invite_members, menu)
+        menuInflater.inflate(R.menu.done, menu)
         return true
     }
 

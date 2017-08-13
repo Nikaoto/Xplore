@@ -1,6 +1,7 @@
 package com.xplore.groups.search;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -232,7 +233,9 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         //Checking if refresh needed
         if (allowRefresh) {
             allowRefresh = false;
-            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+            getFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .detach(this).attach(this).commit();
         } else {
             allowRefresh = true;
         }

@@ -57,13 +57,16 @@
 
         </RelativeLayout>
 
+        <View style="@style/dashed_divider"
+            android:layout_marginTop="5dp"/>
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/chooseDestinationButton"
-            android:text="@string/activity_choose_destination_title"
+            android:text="@string/choose_destination"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:layout_width="wrap_content"
@@ -76,26 +79,16 @@
             android:layout_marginLeft="5dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"
+            android:layout_marginTop="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat"/>
 
-        <Button
-            android:id="@+id/reserveButton"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lib_button_height"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:fontFamily="sans-serif-condensed"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="8"
-            android:textSize="@dimen/lib_button_text_size"
-            android:textAllCaps="true"
-            android:textColor="@color/colorLibText"
-            android:gravity="bottom|left"
-            android:paddingLeft="@dimen/lib_text_padding_left"
-            android:paddingRight="@dimen/lib_text_padding_left"
-            android:paddingBottom="@dimen/lib_button_text_padding_bottom"
+        <ImageView
+            android:id="@+id/groupImageView"
+            android:src="@color/colorGrey"
+            android:scaleType="centerCrop"
             android:layout_marginTop="@dimen/lib_button_margin_top"
-            android:textStyle="bold"/>
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/create_group_image_height" />
 
         <View style="@style/Divider"
             android:layout_marginTop="20dp"

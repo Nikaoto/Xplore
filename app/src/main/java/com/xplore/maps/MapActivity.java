@@ -2,13 +2,13 @@ package com.xplore.maps;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -18,6 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -51,11 +54,14 @@ import com.xplore.R;
 * experimental mode.
 */
 
-public class MapsActivity extends AppCompatActivity
+public class MapActivity extends AppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int ZOOM_AMOUNT = 15;
     private static final int REQUEST_LOCATION_CODE = 1140;
+
+    public static final String RESULT_DEST_LAT = "destinationLat";
+    public static final String RESULT_DEST_LNG = "destinationLng";
 
     private GoogleApiClient googleApiClient;
     private GoogleMap googleMap;
@@ -71,19 +77,19 @@ public class MapsActivity extends AppCompatActivity
     private String reserveName;
 
     public static Intent getStartIntent(Context context) {
-        return new Intent(context, MapsActivity.class);
+        return new Intent(context, MapActivity.class);
     }
 
     //When choosing destination for group
     public static Intent getStartIntent(Context context, Boolean choosingDestination) {
-        return new Intent(context, MapsActivity.class)
+        return new Intent(context, MapActivity.class)
                 .putExtra("choosingDestination", choosingDestination);
     }
 
     //When showing reserve
     public static Intent getStartIntent(Context context, Boolean showReserve,
                                         String reserveName, double lat, double lng) {
-        return new Intent(context, MapsActivity.class)
+        return new Intent(context, MapActivity.class)
                 .putExtra("showReserve", showReserve)
                 .putExtra("reserveName", reserveName)
                 .putExtra("reserveLat", lat)
@@ -93,11 +99,11 @@ public class MapsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        choosingDestination = getIntent().getBooleanExtra("choosingDestination", false);
         setContentView(R.layout.activity_maps);
 
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         checkFirstBoot(getSharedPreferences("firstBoot", 0));
@@ -105,12 +111,14 @@ public class MapsActivity extends AppCompatActivity
         //TODO KML button onclick w/ smart loading
         ImageButton KMLButton = (ImageButton) findViewById(R.id.KMLButton);
 
-        choosingDestination = getIntent().getBooleanExtra("choosingDestination", false);
         //choosingDestination = true; //temp
         if (choosingDestination) {
+            showReserve = false;
+            setTitle(R.string.activity_choose_destination_title);
+
             KMLButton.setVisibility(View.GONE);
             KMLButton.setEnabled(false);
-            setTitle(R.string.activity_choose_destination_title);
+            showPinDropHelp();
         } else {
             setTitle(R.string.activity_maps_title);
             showReserve = getIntent().getBooleanExtra("showReserve", false);
@@ -120,6 +128,23 @@ public class MapsActivity extends AppCompatActivity
         }
 
         initMap();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (choosingDestination) {
+            getMenuInflater().inflate(R.menu.done, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Displays a dialog with instructions to choose destination
+    private void showPinDropHelp() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.choose_destination)
+                .setMessage(R.string.drop_pin_help)
+                .setPositiveButton(R.string.okay, null)
+                .create().show();
     }
 
     private void initReserve() {
@@ -137,7 +162,7 @@ public class MapsActivity extends AppCompatActivity
             editor.putBoolean("firstBoot", false);
             editor.commit();
 
-            if(!General.isNetConnected(MapsActivity.this)) {
+            if(!General.isNetConnected(MapActivity.this)) {
                 createNetErrorDialog();
             }
         }
@@ -148,12 +173,14 @@ public class MapsActivity extends AppCompatActivity
         checkLocationPermission();
 
         //Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
+        Log.i("brejk", "map ready");
         googleMap = map;
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         googleMap.setOnMyLocationButtonClickListener(
@@ -163,7 +190,9 @@ public class MapsActivity extends AppCompatActivity
                         checkLocationPermission();
                         if(!isLocationEnabled(getApplicationContext())) {
                             createLocationDialog();
-                        }
+                        }/* else {
+                            moveCameraToUser();
+                        }*/
                         return false;
                     }
                 });
@@ -172,6 +201,7 @@ public class MapsActivity extends AppCompatActivity
             googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(LatLng latLng) {
+                    General.vibrateDevice(MapActivity.this, 20L);
                     if (destinationMarker != null) {
                         destinationMarker.remove();
                     }
@@ -195,6 +225,7 @@ public class MapsActivity extends AppCompatActivity
 
     //Building google location api
     protected synchronized void buildGoogleApiClient() {
+        Log.i("brejk", "building google api client");
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -343,16 +374,23 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.i("brejk", "Connected");
         if(showReserve) {
             showReserveOnMap(reserveName, reserveLocation);
-        }
-        else {
+        } else {
+            Log.i("brejk", "starting loc updates");
             startLocationUpdates();
-            //Move camera to user position
-            if(lastLocation !=null) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
-                googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
-            }
+            moveCameraToUser();
+        }
+    }
+
+    public void moveCameraToUser() {
+        Log.i("brejk", "moving camera to user");
+        //Move camera to user position
+        if (lastLocation != null) {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
+                    new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
         }
     }
 
@@ -391,12 +429,37 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        onBackPressed();
+        if (choosingDestination) {
+            if (item.getItemId() == R.id.action_done) {
+                Intent resultIntent = new Intent()
+                        .putExtra(RESULT_DEST_LAT, destinationMarker.getPosition().latitude)
+                        .putExtra(RESULT_DEST_LNG, destinationMarker.getPosition().longitude);
+
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } else {
+                onBackPressed();
+            }
+        } else {
+            onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         createNetErrorDialog();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (destinationMarker != null) {
+            destinationMarker.remove();
+        }
+        Fragment f = getFragmentManager().findFragmentById(R.id.map);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+        super.onDestroy();
     }
 }

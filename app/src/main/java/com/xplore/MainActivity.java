@@ -1,6 +1,7 @@
 package com.xplore;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,10 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.xplore.account.RegisterActivity;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
-import com.xplore.maps.MapsActivity;
+import com.xplore.maps.MapActivity;
 import com.xplore.notifications.BadgeDrawerArrowDrawable;
 import com.xplore.notifications.NotificationManager;
 import com.xplore.reserve.LibraryFragment;
@@ -258,7 +258,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openHomePage() {
-        fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragment_container, new AboutFragment()).commit();
         navigationView.setCheckedItem(R.id.nav_about);
         fm.executePendingTransactions();
     }
@@ -310,16 +312,18 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.nav_library : {
                 fm.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.fragment_container, new LibraryFragment()).commit();
                 break;
             }
             case R.id.nav_map : {
-                startActivity(MapsActivity.getStartIntent(this, false));
+                startActivity(MapActivity.getStartIntent(this, false));
                 break;
             }
             case R.id.nav_my_groups : {
                 if (General.isUserSignedIn()) {
                     fm.beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .replace(R.id.fragment_container, new LoadingMyGroupsFragment()).commit();
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);
@@ -329,6 +333,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_find_create_groups : {
                 if (General.isUserSignedIn()) {
                     fm.beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .replace(R.id.fragment_container, new SearchGroupsFragment()).commit();
                 } else {
                     General.popSignInMenu(0.8, 0.6, getCurrentFocus(), this);

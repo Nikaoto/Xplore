@@ -145,5 +145,9 @@
     <string name="join_request_sent">Запрос на соединение отправлен</string>
     <string name="group_name">Название Группы</string>
     <string name="group_name_help">Выберите имя для своей группы, которое описывает точку назначения группы или что-то общее, что у членов группы.</string>
+    <string name="choose_destination">Выберите Пункт Назначения</string>
+    <string name="choose_from">Выберите…</string>
+    <string name="drop_pin_help">"Чтобы выбрать местоположение, нажмите на карту подольше. Продолжительном нажатии вы также можете перемещать передвинуть пина. "</string>
+    <string name="error">Произошла ошибка</string>
     <!-- -->
 </resources>
