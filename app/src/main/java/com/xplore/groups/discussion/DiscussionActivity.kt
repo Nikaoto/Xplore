@@ -133,7 +133,8 @@ class DiscussionActivity : Activity() {
                 dataSnapshot?.let {
                     if (!dataSnapshot.hasChild(F_DISCUSSION)) {
                         val newDiscussion = ArrayList<MessageCard>()
-                        newDiscussion.add(MessageCard("1", "Feel free to start chatting :^)"))
+                        newDiscussion.add(
+                                MessageCard(General.currentUserId, "- has started the discussion."))
                         discussionRef.setValue(newDiscussion)
                     }
                 }

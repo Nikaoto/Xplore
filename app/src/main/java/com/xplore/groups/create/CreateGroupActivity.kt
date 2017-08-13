@@ -84,6 +84,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     private var invitedMemberIds = ArrayList<String>()
 
+    //TODO remove dependenies and inner objects/classes as much as possible
     //Stores start/end dates and times
     private object date {
         //Start
@@ -175,8 +176,10 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_group)
 
+
         setTitle(R.string.activity_create_group_title)
         dbManager.openDataBase()
+
 
         initMemberRecyclerView()
         initClickEvents()
@@ -194,7 +197,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             showHelp(R.string.group_name, R.string.group_name_help, R.string.okay)
         }
 
-        chooseReserveButton.setOnClickListener {
+        chooseDestinationButton.setOnClickListener {
             val intent = Intent(this@CreateGroupActivity, SearchDestinationActivity::class.java)
             startActivityForResult(intent, SEARCH_DESTINATION_ACTIVITY_CODE)
         }

@@ -58,7 +58,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/chooseReserveButton"
+            android:id="@+id/chooseDestinationButton"
             android:text="@string/activity_choose_destination_title"
             android:textSize="16sp"
             app:backgroundTint="@color/colorAccent"
@@ -84,7 +84,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/lib_button_height"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:text="."
             android:fontFamily="sans-serif-condensed"
             android:shadowColor="@android:color/black"
             android:shadowRadius="8"

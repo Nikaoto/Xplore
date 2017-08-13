@@ -1,7 +1,9 @@
 package com.xplore.groups.view.controls
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,8 @@ import android.view.ViewGroup
 import com.google.firebase.database.*
 import com.xplore.R
 import com.xplore.groups.AllMemberIdsForGroup
+import com.xplore.groups.create.CreateGroupActivity
+import com.xplore.groups.create.EditGroupActivity
 import com.xplore.groups.discussion.DiscussionActivity
 import com.xplore.groups.requests.ManageRequestsActivity
 
@@ -28,6 +32,9 @@ import kotlinx.android.synthetic.main.leader_controls.*
  */
 
 class LeaderControls : Fragment() {
+
+    //Activity codes
+    private val REQ_CODE_EDIT_GROUP = 1
 
     //Firebase
     private val F_INVITED_GROUP_IDS = "invited_group_ids"
@@ -138,6 +145,24 @@ class LeaderControls : Fragment() {
         startActivity(InviteMembersActivity.getStartIntent(activity, groupId))
     }
 
+    private fun startEditingGroup() {
+        startActivityForResult(EditGroupActivity.getStartIntent(activity, groupId),
+                REQ_CODE_EDIT_GROUP)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        data?.let {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            if (requestCode == REQ_CODE_EDIT_GROUP) {
+                if (resultCode == Activity.RESULT_OK) {
+                    refresh()
+                }
+            }
+        }
+
+    }
+
     private fun confirmGroupDeletion() {
         val builder = AlertDialog.Builder(activity)
         //TODO string resources
@@ -183,6 +208,12 @@ class LeaderControls : Fragment() {
 
     private fun uninvite(memberId: String, groupId: String) {
         usersRef.child(memberId).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
+    }
+
+    private fun refresh() {
+        val intent = activity.intent
+        activity.finish()
+        startActivity(intent)
     }
 
     override fun onDetach() {

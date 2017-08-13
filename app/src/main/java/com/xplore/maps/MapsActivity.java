@@ -50,34 +50,39 @@ import com.xplore.R;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
-//TODO also implement OnConnectionFailedListener
-    //TODO extend AppCompatActivity, http://stackoverflow.com/questions/34582370/how-can-i-show-current-location-on-a-google-map-on-android-marshmallow/34582595#34582595
+
     private static final int REQUEST_LOCATION_CODE = 1140;
 
-    private GoogleMap mMap;
+    private GoogleMap googleMap;
     private final int ZOOM_AMOUNT = 15;
     private LocationManager locationManager;
 
-    Location lastLocation;
-    Marker currLocationMarker;
-    Marker reserveMarker;
-    SharedPreferences prefs;
-    ImageButton KMLButton;
+    private Location lastLocation;
+    private Marker currLocationMarker;
+    private Marker reserveMarker;
+    private SharedPreferences prefs;
+    private ImageButton KMLButton;
 
-    protected GoogleApiClient googleApiClient;
-    protected LocationRequest locationRequest;
-    SupportMapFragment mapFragment;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private SupportMapFragment mapFragment;
 
     private boolean showReserve;
 
     private LatLng reserveLocation;
     private String reserveName;
 
-    public static Intent getStartIntent(Context context, Boolean showReserve) {
-        return new Intent(context, MapsActivity.class)
-                .putExtra("showReserve", showReserve);
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, MapsActivity.class);
     }
 
+    //When choosing destination for group
+    public static Intent getStartIntent(Context context, Boolean choosingDestination) {
+        return new Intent(context, MapsActivity.class)
+                .putExtra("choosingDestination", choosingDestination);
+    }
+
+    //When showing reserve
     public static Intent getStartIntent(Context context, Boolean showReserve,
                                         String reserveName, double lat, double lng) {
         return new Intent(context, MapsActivity.class)
@@ -94,7 +99,10 @@ public class MapsActivity extends AppCompatActivity
 
         setTitle(R.string.activity_maps_title);
 
-        InitReserve();
+        Intent intent = getIntent();
+        showReserve = intent.getBooleanExtra("showReserve", false);
+
+        initReserve();
 
         prefs = getSharedPreferences("firstBoot",0);
 
@@ -119,20 +127,18 @@ public class MapsActivity extends AppCompatActivity
         /*KMLButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoadKML();
+                loadKML();
             }//TODO uncomment this and do smart loading
         });
         */
-        InitMap();
+        initMap();
     }
 
-    private void InitReserve()
-    {
+    private void initReserve() {
         Intent intent = this.getIntent();
-        showReserve = intent.getBooleanExtra("showReserve",false);
+        showReserve = intent.getBooleanExtra("showReserve", false);
 
-        if(showReserve)
-        {
+        if(showReserve) {
             reserveName = intent.getStringExtra("reserveName");
             reserveLocation = new LatLng(
                     intent.getDoubleExtra("reserveLat",0),
@@ -141,13 +147,12 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    private void InitMap()
-    {
+    private void initMap() {
         locationManager = (LocationManager) getSystemService((Context.LOCATION_SERVICE));
 
         //Check Permissions
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CheckLocationPermission();
+            checkLocationPermission();
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -161,13 +166,13 @@ public class MapsActivity extends AppCompatActivity
     }
 
     private static int getLocationMode(Context context) {
-        return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
+        return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE,
+                Settings.Secure.LOCATION_MODE_OFF);
     }
 
     //TODO STOP pestering the user to allow location, if they deny -> show dialog explaining why they should enable it
     //TODO keep pestering the user to turn on location
-    public boolean CheckLocationPermission()
-    {
+    public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -186,7 +191,6 @@ public class MapsActivity extends AppCompatActivity
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_LOCATION_CODE);
 
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -198,15 +202,14 @@ public class MapsActivity extends AppCompatActivity
             return true;
     }
 
-    public void showReserveOnMap(String rName, LatLng loc)
-    {
+    public void showReserveOnMap(String rName, LatLng loc) {
         //TODO load KML file and remove reserveName
         //Place current location marker
         placeMarker(loc,reserveMarker,rName);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
     }
 
     protected void createLocationDialog() {
@@ -268,24 +271,21 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-            InitMap();
+        initMap();
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(reserveMarker != null)
+        if (reserveMarker != null) {
             reserveMarker.remove();
-        if (getFragmentManager().getBackStackEntryCount() > 0 && !showReserve) { //TODO if this fails, turn back fragManager static in MainAct
-            getFragmentManager().popBackStack();
         }
-        showReserve = false;
     }
 
-    private void LoadKML() {
+    private void loadKML() {
         try {
-            KmlLayer kmlLayer = new KmlLayer(mMap, R.raw.testeroni, getApplicationContext());
+            KmlLayer kmlLayer = new KmlLayer(googleMap, R.raw.testeroni, getApplicationContext());
             kmlLayer.addLayerToMap();
         } catch (Exception e) {
             e.printStackTrace();
@@ -294,15 +294,15 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+        this.googleMap = googleMap;
+        this.googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        this.googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
                 if(!isLocationEnabled(getApplicationContext())) {
                     createLocationDialog();
                 }
-                CheckLocationPermission();
+                checkLocationPermission();
 
                 return false;
             }
@@ -313,11 +313,11 @@ public class MapsActivity extends AppCompatActivity
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
+                this.googleMap.setMyLocationEnabled(true);
             }
         } else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+            this.googleMap.setMyLocationEnabled(true);
         }
     }
 
@@ -329,19 +329,6 @@ public class MapsActivity extends AppCompatActivity
                 .addApi(LocationServices.API).build();
         googleApiClient.connect();
     }
-
-    /*
-    void requestLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if(lastLocation !=null)
-            {
-                mMap.setMyLocationEnabled(true);
-                //Myl
-            }
-        }
-    }
-    */
 
     private void startLocationUpdates() {
         locationRequest = new LocationRequest();
@@ -367,8 +354,8 @@ public class MapsActivity extends AppCompatActivity
             startLocationUpdates();
             //move map camera to my position
             if(lastLocation !=null) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
             }
         }
     }
@@ -378,19 +365,17 @@ public class MapsActivity extends AppCompatActivity
         createNetErrorDialog();
     }
 
-    private void placeMarker(LatLng location, Marker marker, String markerTitle)
-    {
+    private void placeMarker(LatLng location, Marker marker, String markerTitle) {
         MarkerOptions markerOptions = new MarkerOptions();//TODO change markerOptions
         markerOptions.position(location);
         if(markerTitle != null && markerTitle != "")
             markerOptions.title(markerTitle);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));//TODO add color?
-        marker = mMap.addMarker(markerOptions);
+        marker = googleMap.addMarker(markerOptions);
     }
 
     @Override
-    public void onLocationChanged(Location location)
-    {
+    public void onLocationChanged(Location location) {
             lastLocation = location;
             if (currLocationMarker != null) {
                 currLocationMarker.remove();
@@ -401,8 +386,8 @@ public class MapsActivity extends AppCompatActivity
             //get current location
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
 
             //place marker on current location
             //PlaceMarker(latLng,currLocationMarker,"");
