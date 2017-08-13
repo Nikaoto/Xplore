@@ -16,7 +16,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -51,24 +54,19 @@ import com.xplore.R;
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int ZOOM_AMOUNT = 15;
     private static final int REQUEST_LOCATION_CODE = 1140;
 
-    private GoogleMap googleMap;
-    private final int ZOOM_AMOUNT = 15;
-    private LocationManager locationManager;
-
-    private Location lastLocation;
-    private Marker currLocationMarker;
-    private Marker reserveMarker;
-    private SharedPreferences prefs;
-    private ImageButton KMLButton;
-
     private GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private SupportMapFragment mapFragment;
+    private GoogleMap googleMap;
+    private Location lastLocation;
 
-    private boolean showReserve;
+    //When choosing destination
+    private boolean choosingDestination = false;
+    private Marker destinationMarker = null;
 
+    //When viewing reserve
+    private boolean showReserve = false;
     private LatLng reserveLocation;
     private String reserveName;
 
@@ -97,68 +95,111 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        setTitle(R.string.activity_maps_title);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
-        Intent intent = getIntent();
-        showReserve = intent.getBooleanExtra("showReserve", false);
+        checkFirstBoot(getSharedPreferences("firstBoot", 0));
 
-        initReserve();
+        //TODO KML button onclick w/ smart loading
+        ImageButton KMLButton = (ImageButton) findViewById(R.id.KMLButton);
 
-        prefs = getSharedPreferences("firstBoot",0);
-
-        //Check in prefs if first boot
-        if(prefs.getBoolean("firstBoot",true)) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstBoot",false);
-            editor.commit();
-
-/*
-            if(!isLocationEnabled(getApplicationContext())) {
-                createLocationDialog();
-            }
-*/
-
-            if(!General.isNetConnected(MapsActivity.this))
-            {
-                createNetErrorDialog();
+        choosingDestination = getIntent().getBooleanExtra("choosingDestination", false);
+        //choosingDestination = true; //temp
+        if (choosingDestination) {
+            KMLButton.setVisibility(View.GONE);
+            KMLButton.setEnabled(false);
+            setTitle(R.string.activity_choose_destination_title);
+        } else {
+            setTitle(R.string.activity_maps_title);
+            showReserve = getIntent().getBooleanExtra("showReserve", false);
+            if (showReserve) {
+                initReserve();
             }
         }
-        KMLButton = (ImageButton) findViewById(R.id.KMLButton);
-        /*KMLButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadKML();
-            }//TODO uncomment this and do smart loading
-        });
-        */
+
         initMap();
     }
 
     private void initReserve() {
         Intent intent = this.getIntent();
-        showReserve = intent.getBooleanExtra("showReserve", false);
+        reserveName = intent.getStringExtra("reserveName");
+        reserveLocation = new LatLng(
+                intent.getDoubleExtra("reserveLat", 0),
+                intent.getDoubleExtra("reserveLng", 0));
+    }
 
-        if(showReserve) {
-            reserveName = intent.getStringExtra("reserveName");
-            reserveLocation = new LatLng(
-                    intent.getDoubleExtra("reserveLat",0),
-                    intent.getDoubleExtra("reserveLng",0)
-            );
+    //Check in prefs if first boot and start pop net error if not connected
+    private void checkFirstBoot(SharedPreferences prefs) {
+        if (prefs.getBoolean("fistBoot", true)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstBoot", false);
+            editor.commit();
+
+            if(!General.isNetConnected(MapsActivity.this)) {
+                createNetErrorDialog();
+            }
         }
     }
 
     private void initMap() {
-        locationManager = (LocationManager) getSystemService((Context.LOCATION_SERVICE));
+        //locationManager = (LocationManager) getSystemService((Context.LOCATION_SERVICE));
+        checkLocationPermission();
 
-        //Check Permissions
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission();
+        //Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        googleMap.setOnMyLocationButtonClickListener(
+                new GoogleMap.OnMyLocationButtonClickListener() {
+                    @Override
+                    public boolean onMyLocationButtonClick() {
+                        checkLocationPermission();
+                        if(!isLocationEnabled(getApplicationContext())) {
+                            createLocationDialog();
+                        }
+                        return false;
+                    }
+                });
+
+        if (choosingDestination) {
+            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    if (destinationMarker != null) {
+                        destinationMarker.remove();
+                    }
+                    destinationMarker = placeMarker(getString(R.string.destination), latLng);
+                }
+            });
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //Start location updates
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                googleMap.setMyLocationEnabled(true);
+            }
+        } else {
+            buildGoogleApiClient();
+            googleMap.setMyLocationEnabled(true);
+        }
+    }
+
+    //Building google location api
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
     }
 
     public static boolean isLocationEnabled(Context context) {
@@ -171,47 +212,48 @@ public class MapsActivity extends AppCompatActivity
     }
 
     //TODO STOP pestering the user to allow location, if they deny -> show dialog explaining why they should enable it
-    //TODO keep pestering the user to turn on location
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+    //TODO finish() if location req denied twice
+    //Checks location permission if Android version is 5.0+
+    public void checkLocationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //Check if we should show explanation
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                //TODO:
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                    //TODO:
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
 
-                //Prompt the user once explanation has been shown
-                //(just doing it here for now, note that with this code, no explanation is shown)
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_LOCATION_CODE);
+                    //Prompt the user once explanation has been shown
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_LOCATION_CODE);
 
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_LOCATION_CODE);
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_LOCATION_CODE);
+                }
             }
-            return false;
         }
-            return true;
     }
 
-    public void showReserveOnMap(String rName, LatLng loc) {
-        //TODO load KML file and remove reserveName
+    public void showReserveOnMap(String name, LatLng location) {
+        //TODO smart load KML file
         //Place current location marker
-        placeMarker(loc,reserveMarker,rName);
+        placeMarker(name, location);
 
         //move map camera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
     }
 
+    //Prompts the user to enable location on the device
     protected void createLocationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.please_enable_location)
@@ -275,14 +317,6 @@ public class MapsActivity extends AppCompatActivity
         super.onResume();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (reserveMarker != null) {
-            reserveMarker.remove();
-        }
-    }
-
     private void loadKML() {
         try {
             KmlLayer kmlLayer = new KmlLayer(googleMap, R.raw.testeroni, getApplicationContext());
@@ -292,46 +326,8 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-        this.googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        this.googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                if(!isLocationEnabled(getApplicationContext())) {
-                    createLocationDialog();
-                }
-                checkLocationPermission();
-
-                return false;
-            }
-        });
-        //Init Google Play Serices
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                buildGoogleApiClient();
-                this.googleMap.setMyLocationEnabled(true);
-            }
-        } else {
-            buildGoogleApiClient();
-            this.googleMap.setMyLocationEnabled(true);
-        }
-    }
-
-    //Building google location api
-    protected synchronized void buildGoogleApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
-        googleApiClient.connect();
-    }
-
     private void startLocationUpdates() {
-        locationRequest = new LocationRequest();
+        LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -352,7 +348,7 @@ public class MapsActivity extends AppCompatActivity
         }
         else {
             startLocationUpdates();
-            //move map camera to my position
+            //Move camera to user position
             if(lastLocation !=null) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
@@ -365,24 +361,23 @@ public class MapsActivity extends AppCompatActivity
         createNetErrorDialog();
     }
 
-    private void placeMarker(LatLng location, Marker marker, String markerTitle) {
+    private Marker placeMarker(String markerTitle, LatLng location) {
         MarkerOptions markerOptions = new MarkerOptions();//TODO change markerOptions
+        markerOptions.draggable(true);
         markerOptions.position(location);
-        if(markerTitle != null && markerTitle != "")
+        if(markerTitle != null && !markerTitle.isEmpty()) {
             markerOptions.title(markerTitle);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));//TODO add color?
-        marker = googleMap.addMarker(markerOptions);
+        }
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        return googleMap.addMarker(markerOptions);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-            lastLocation = location;
-            if (currLocationMarker != null) {
-                currLocationMarker.remove();
-            }
+        lastLocation = location;
 
-            //auto-moving the camera
-/*        if(!showReserve) {
+        //auto-moving the camera
+        /*if(!showReserve) {
             //get current location
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -392,6 +387,12 @@ public class MapsActivity extends AppCompatActivity
             //place marker on current location
             //PlaceMarker(latLng,currLocationMarker,"");
         }*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
