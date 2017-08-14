@@ -10,10 +10,15 @@ import java.util.HashMap;
  */
 
 public class Group {
-    public boolean experienced;
+    public static final int DESTINATION_DEFAULT = -1;
+
+    protected String group_id, name;
     public long start_date, end_date;
     public String start_time, end_time;
-    protected String name, destination_id, group_id, extra_info, group_preferences;
+    public boolean experienced;
+    protected int destination_id;
+    public double destination_latitude, destination_longitude;
+    protected String group_image_url, extra_info, group_preferences;
     public HashMap<String, Boolean> member_ids;
     public HashMap<String, Boolean> invited_member_ids;
 
@@ -94,12 +99,12 @@ public class Group {
         this.member_ids = member_ids;
     }
 
-    public String getDestination_id() {
-        return destination_id;
+    public String getGroup_image_url() {
+        return group_image_url;
     }
 
-    public void setDestination_id(String destination_id) {
-        this.destination_id = destination_id;
+    public void setGroup_image_url(String group_image_url) {
+        this.group_image_url = group_image_url;
     }
 
     public String getStart_time() {
@@ -124,5 +129,29 @@ public class Group {
 
     public void setInvited_member_ids(HashMap<String, Boolean> invited_member_ids) {
         this.invited_member_ids = invited_member_ids;
+    }
+
+    public int getDestination_id() {
+        return destination_id;
+    }
+
+    public void setDestination_id(int destination_id) {
+        this.destination_id = destination_id;
+    }
+
+    public Double getDestination_latitude() {
+        return destination_latitude;
+    }
+
+    public void setDestination_latitude(Double destination_latitude) {
+        this.destination_latitude = destination_latitude;
+    }
+
+    public double getDestination_longitude() {
+        return destination_longitude;
+    }
+
+    public void setDestination_longitude(double destination_longitude) {
+        this.destination_longitude = destination_longitude;
     }
 }

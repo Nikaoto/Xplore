@@ -156,9 +156,6 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
     private fun sendInvitations(memberIds: ArrayList<String>) {
         if (memberIds.isNotEmpty()) {
             for (memberId in memberIds) {
-
-                Log.println(Log.INFO, "brejk", "sending invitation to $memberId")
-
                 //Adding member id to group
                 currentGroupRef.child(F_INVITED_MEMBER_IDS_TAG).child(memberId).setValue(true)
                 //Adding group id to member

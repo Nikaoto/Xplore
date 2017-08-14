@@ -2,6 +2,7 @@ package com.xplore.groups
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,11 +97,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
             //Starting intent
             activity.startActivity(
-                    GroupInfoActivity.getStartIntent(
-                            activity,
-                            group.id,
-                            Integer.valueOf(group.destination_id)
-                    )
+                    GroupInfoActivity.getStartIntent(activity, group.id)
             )
         }
 
@@ -121,8 +118,11 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         holder.groupName.setText(group.name, GROUP_NAME_MAX_CHARS)
 
         //Group image
-        //TODO change this to just map or submitted image
-        holder.groupImage.setImageResource(group.reserveImageId)
+        if (group.destination_id == Group.DESTINATION_DEFAULT) {
+            Picasso.with(activity).load(group.group_image_url).into(holder.groupImage)
+        } else {
+            Picasso.with(activity).load(group.group_image_url.toInt()).into(holder.groupImage)
+        }
 
         //Marks
         if (group.invite) { holder.invitedMark.visibility = View.VISIBLE }

@@ -75,7 +75,6 @@ class DiscussionActivity : Activity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         if (dataSnapshot != null) {
                             memberCount = dataSnapshot.childrenCount.toInt()
-                            Log.i("brejk", "memberCount=$memberCount")
                             for (memberId in dataSnapshot.children) {
                                 getUserInfo(memberId.key)
                             }

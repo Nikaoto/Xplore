@@ -16,10 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,7 +178,6 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap map) {
-        Log.i("brejk", "map ready");
         googleMap = map;
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         googleMap.setOnMyLocationButtonClickListener(
@@ -191,7 +188,7 @@ public class MapActivity extends AppCompatActivity
                         if(!isLocationEnabled(getApplicationContext())) {
                             createLocationDialog();
                         }/* else {
-                            moveCameraToUser();
+                            moveCameraToUser();gi
                         }*/
                         return false;
                     }
@@ -225,7 +222,6 @@ public class MapActivity extends AppCompatActivity
 
     //Building google location api
     protected synchronized void buildGoogleApiClient() {
-        Log.i("brejk", "building google api client");
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -374,18 +370,15 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.i("brejk", "Connected");
         if(showReserve) {
             showReserveOnMap(reserveName, reserveLocation);
         } else {
-            Log.i("brejk", "starting loc updates");
             startLocationUpdates();
             moveCameraToUser();
         }
     }
 
     public void moveCameraToUser() {
-        Log.i("brejk", "moving camera to user");
         //Move camera to user position
         if (lastLocation != null) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(

@@ -134,8 +134,6 @@ class MyGroupsFragment() : Fragment() {
                                 groupCard.leaderName = leaderCard.fname + " " + leaderCard.lname
                                 groupCard.leaderReputation = leaderCard.reputation
                                 groupCard.leaderImageUrl = leaderCard.profile_picture_url
-                                groupCard.reserveImageId =
-                                        dbManager.getImageId(groupCard.destination_id.toInt())
 
                                 groupCards.add(groupCard)
                                 loadingbar.visibility = View.INVISIBLE

@@ -21,6 +21,7 @@ import com.xplore.reserve.ReserveInfoActivity
 import java.util.ArrayList
 
 import com.xplore.General.currentUserId
+import com.xplore.groups.Group
 import com.xplore.maps.MapActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
@@ -60,7 +61,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             .child("group_ids")
 
     //Limits and restrictions to fields
-    private val CHOSEN_DEST_DEFAULT = -1
     private val EXPERIENCE_ANS_DEFAULT = -1
     private val EXPERIENCE_ANS_NO = 0
     private val EXPERIENCE_ANS_YES = 1
@@ -76,8 +76,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var selecting = SELECTION_NONE
 
     //Setting chosen answer and destination to default
-    private var chosenDestId = CHOSEN_DEST_DEFAULT
+    private var chosenDestId = Group.DESTINATION_DEFAULT
     private var experienceAns = EXPERIENCE_ANS_DEFAULT
+
+    private var destinationLat = 0.0
+    private var destinationLng = 0.0
 
     private var groupImageUrl = ""
     private var groupName = ""
@@ -201,7 +204,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         groupImageView.setOnClickListener {
-            if (chosenDestId != CHOSEN_DEST_DEFAULT) {
+            if (chosenDestId != Group.DESTINATION_DEFAULT) {
                 startActivity(ReserveInfoActivity.getStartIntent(this, chosenDestId))
             } else if (groupImageUrl.isNotEmpty()) {
                 startActivityForResult(MapActivity.getStartIntent(this, true),
@@ -335,26 +338,26 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             when (requestCode) {
                 SEARCH_DESTINATION_REQ_CODE ->
                     if (resultCode == Activity.RESULT_OK) {
-                        groupImageUrl = ""
+                        chosenDestId = data.getIntExtra("chosen_destination_id", Group.DESTINATION_DEFAULT)
 
-                        chosenDestId = data.getIntExtra("chosen_destination_id", CHOSEN_DEST_DEFAULT)
-
+                        //Loading image id
                         dbManager.openDataBase()
-                        Picasso.with(this).load(dbManager.getImageId(chosenDestId))
-                                .into(groupImageView)
+                        groupImageUrl = dbManager.getImageId(chosenDestId).toString()
                         dbManager.close()
+
+                        Picasso.with(this).load(groupImageUrl.toInt()).into(groupImageView)
                     }
                 SELECT_FROM_MAP_REQ_CODE ->
                     if (resultCode == Activity.RESULT_OK) {
-                        chosenDestId = CHOSEN_DEST_DEFAULT
+                        chosenDestId = Group.DESTINATION_DEFAULT
 
                         //Getting image
-                        val lat = data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 1.0)
-                        val lng = data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 1.0)
+                        destinationLat = data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 0.0)
+                        destinationLng = data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 0.0)
 
                         //Checking if data retrieval failed
-                        if (lat != 1.0 && lng != 1.0) {
-                            groupImageUrl = MapUtil.getMapUrl(lat, lng)
+                        if (destinationLat != 0.0 && destinationLng != 0.0) {
+                            groupImageUrl = MapUtil.getMapUrl(destinationLat, destinationLng)
 
                             Picasso.with(this).load(groupImageUrl).into(groupImageView)
                         } else {
@@ -395,7 +398,9 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                 date.startTime, //Start Time
                 date.getEndDate(), //End Date
                 date.endTime,
-                chosenDestId.toString(), //Chosen Destination Id
+                chosenDestId, //Chosen Destination Id
+                destinationLat, destinationLng, //Destination location
+                groupImageUrl, //Image url
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
                 member_ids, //Group Member Ids (only the leader)
@@ -465,7 +470,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         val builder = AlertDialog.Builder(this)
         builder.setPositiveButton(R.string.okay, null)
 
-        if (chosenDestId == CHOSEN_DEST_DEFAULT) {
+        if (chosenDestId == Group.DESTINATION_DEFAULT && groupImageUrl.isEmpty()) {
             builder.setMessage(R.string.dest_field_incomplete)
                     .show()
             return false

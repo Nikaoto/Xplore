@@ -19,6 +19,7 @@ import com.xplore.groups.view.controls.InvitedControls
 import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
+import com.xplore.maps.MapActivity
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
@@ -44,7 +45,6 @@ class GroupInfoActivity : Activity() {
     private val firebaseUsersRef = DBref.child("users")
 
     private var groupId = ""
-    private var reserveID = 0 //TODO remove this and load submitted image or map image instead
     private var memberCount = 1
     private val members = ArrayList<User>()
     private lateinit var leader: User
@@ -56,10 +56,8 @@ class GroupInfoActivity : Activity() {
 
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String, reserveId: Int)
-                = Intent(context, GroupInfoActivity::class.java)
-                        .putExtra("group_id", groupId)
-                        .putExtra("reserve_id", reserveId)
+        fun getStartIntent(context: Context, groupId: String)
+                = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,12 +71,10 @@ class GroupInfoActivity : Activity() {
 
         //Receives group data from last intent
         val intent = this.intent
-        groupId = intent.getStringExtra("group_id")
-        reserveID = intent.getIntExtra("reserve_id", 0)
+        groupId = intent.getStringExtra("groupId")
 
         initMemberList()
         loadGroupData(groupId)
-        applyReserveData()
     }
 
     override fun onResume() {
@@ -137,19 +133,36 @@ class GroupInfoActivity : Activity() {
                 .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
     }
 
-    //Gets reserve data from local database and displays it on the reserve card
-    private fun applyReserveData() {
-        val dbManager = DBManager(this)
-        dbManager.openDataBase()
-        val tempReserveCard = dbManager.getReserveCard(reserveID)
+    //Gets destination data (reserve id or custom location latlng) and displays it as the image
+    private fun applyDestinationData() {
 
-        reserveCardView.setOnClickListener {
-            startActivity(ReserveInfoActivity.getStartIntent(this, reserveID))
+        if (currentGroup.destination_id != Group.DESTINATION_DEFAULT) {
+            val dbManager = DBManager(this)
+            dbManager.openDataBase()
+            val tempReserveCard = dbManager.getReserveCard(currentGroup.destination_id)
+            dbManager.close()
+
+            reserveCardView.setOnClickListener {
+                startActivity(ReserveInfoActivity.getStartIntent(this, currentGroup.destination_id))
+            }
+            reserveNameTextView.text = tempReserveCard.name
+            reserveImageView.setImageResource(tempReserveCard.imageId)
+            //groupImageView.setImageResource(tempReserveCard.imageId)
+            reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
+        } else {
+            //Destination name
+            reserveNameTextView.text = currentGroup.name
+
+            //Destination image
+            Picasso.with(this).load(currentGroup.group_image_url).into(reserveImageView)
+            reserveCardView.setOnClickListener {
+                startActivity(MapActivity.getStartIntent(this, true, currentGroup.name,
+                        currentGroup.destination_latitude, currentGroup.destination_longitude))
+            }
+
+            //Remove reserve type
+            reserveIconImageView.visibility = View.INVISIBLE
         }
-        reserveNameTextView.text = tempReserveCard.name
-        reserveImageView.setImageResource(tempReserveCard.imageId)
-        //groupImageView.setImageResource(tempReserveCard.imageId)
-        reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
     }
 
     private fun initMemberList() {
@@ -169,6 +182,8 @@ class GroupInfoActivity : Activity() {
                         groupNameTextView.text = currentGroup.name
                         currentGroup.setGroup_id(dataSnapshot.key)
                         memberCount = currentGroup.getMember_ids().size
+
+                        applyDestinationData()
 
                         configureControls(currentGroup)
 

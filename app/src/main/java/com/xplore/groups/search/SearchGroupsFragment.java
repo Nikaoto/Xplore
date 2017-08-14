@@ -40,19 +40,18 @@ import java.util.ArrayList;
 public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
 
     //Firebase References
-    private static final DatabaseReference firebaseUsersRef
+    private static final DatabaseReference usersRef
             = FirebaseDatabase.getInstance().getReference().child("users");
-    private static final DatabaseReference firebaseGroupsRef
+    private static final DatabaseReference groupsRef
             = FirebaseDatabase.getInstance().getReference().child("groups");
     //Firebase Tags
-    private static final String FIREBASE_START_DATE_TAG = "start_date";
-    private static final String FIREBASE_MEMBER_IDS_TAG = "member_ids";
+    private static final String F_START_DATE = "start_date";
+    private static final String F_MEMBER_IDS = "member_ids";
 
     private String searchQuery;
     private boolean firstLoad;
 
     private RecyclerView resultsRV;
-    private EditText searchBar;
     private ProgressBar progressBar;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
@@ -62,7 +61,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle instState) {
         return inflater.inflate(R.layout.search_layout2, container, false);
     }
 
@@ -77,7 +76,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //Search EditText
-        searchBar = (EditText) view.findViewById(R.id.searchEditText);
+        EditText searchBar = (EditText) view.findViewById(R.id.searchEditText);
         searchBar.setSingleLine(true);
         searchBar.setHint(R.string.search_groups_hint);
         searchBar.setOnEditorActionListener(this);
@@ -112,17 +111,17 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         displayCards.clear();
         firstLoad = true;
 
-        //Displaying list already
+        //Displaying list already (empty)
         resultsRV.setAdapter(new GroupCardRecyclerViewAdapter(displayCards, getActivity()));
     }
 
     private int getMemberCount(DataSnapshot groupSnapshot) {
-        return (int) groupSnapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildrenCount();
+        return (int) groupSnapshot.child(F_MEMBER_IDS).getChildrenCount();
     }
 
     private void loadData() {
         //TODO change this after adding sort by options
-        firebaseGroupsRef.orderByChild(FIREBASE_START_DATE_TAG).limitToFirst(100)
+        groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,7 +133,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                     tempCard.setMemberCount(getMemberCount(snapshot));
                     //Leader id
                     //TODO change when multiple leaders are added
-                    for (DataSnapshot memberId : snapshot.child(FIREBASE_MEMBER_IDS_TAG).getChildren()) {
+                    for (DataSnapshot memberId : snapshot.child(F_MEMBER_IDS).getChildren()) {
                         if (memberId.getValue(Boolean.class)) {
                             tempCard.setLeaderId(memberId.getKey());
                         }
@@ -159,7 +158,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
         dbManager.openDataBase();
 
-        firebaseUsersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -169,13 +168,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                             if(groupCard.getLeaderId().equals(userSnapshot.getKey())) { //checking if leader
                                 //TODO change database calls
                                 GroupCard tempGroupCard = groupCard;
-                                //Setting reserve id
-                                //TODO remove this and just set display image url
-                                tempGroupCard.setReserveImageId(
-                                        dbManager.getImageId(
-                                                Integer.valueOf(tempGroupCard.getDestination_id()),
-                                                getActivity(),
-                                                dbManager.getGENERAL_TABLE()));
 
                                 //Setting leader info
                                 User leader = userSnapshot.getValue(User.class);
@@ -183,13 +175,6 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
                                 tempGroupCard.setLeaderReputation(leader.getReputation());
                                 tempGroupCard.setLeaderImageUrl(
                                         userSnapshot.getValue(User.class).getProfile_picture_url());
-/*                                //Setting reserve name
-                                //TODO remove this and just get tour name from firebase
-                                groupCard.setName(
-                                        dbManager.getStr(
-                                                Integer.valueOf(groupCard.getDestination_id()),
-                                                DBManager.ColumnNames.getNAME(),
-                                                General.DB_TABLE));*/
 
                                 displayCards.add(tempGroupCard); //TODO maybe remove displaycards? needs testing :P
                                 resultsRV.getAdapter().notifyDataSetChanged();
@@ -240,27 +225,4 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             allowRefresh = true;
         }
     }
-
-    /*
-    IN CASE WE'RE USING A SECOND FIREBASE DATABASE FOR USERS
-    private void buildUserBase()
-    {
-    USERBASE_KEY = getResources().getString(R.string.user_firebase_key);
-    USERBASE_APPID = getResources().getString(R.string.firebase_appid);
-    USERBASE_URL = getResources().getString(R.string.user_firebase_url);
-    userBaseOptions = new FirebaseOptions.Builder()
-    .setApiKey(USERBASE_KEY)
-    .setApplicationId(USERBASE_APPID)
-    .setDatabaseUrl(USERBASE_URL)
-    .build();
-    try {
-    if (FirebaseApp.getApps(getActivity()).get(1).equals(null)) {
-    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-    } catch (IndexOutOfBoundsException e) {
-    FirebaseApp.initializeApp(getActivity(), userBaseOptions, "userbase");
-    }
-    userBaseApp = FirebaseApp.getInstance("userbase");
-    userDB = FirebaseDatabase.getInstance(userBaseApp);
-    }
-    */
 }

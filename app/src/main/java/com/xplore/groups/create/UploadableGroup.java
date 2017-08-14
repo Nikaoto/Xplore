@@ -25,7 +25,8 @@ class UploadableGroup extends Group {
 
     UploadableGroup(String group_id, String name, boolean experienced,
                     long start_date, String start_time, long end_date, String end_time,
-                    String destination_id, String extra_info, String group_preferences,
+                    int destination_id, double destination_latitude, double destination_longitude,
+                    String group_image_url, String extra_info, String group_preferences,
                     HashMap<String, Boolean> member_ids, HashMap<String, Boolean> invited_member_ids) {
         this.setGroup_id(group_id);
         this.setName(name);
@@ -35,6 +36,9 @@ class UploadableGroup extends Group {
         this.setEnd_date(end_date);
         this.setEnd_time(end_time);
         this.setDestination_id(destination_id);
+        this.setDestination_latitude(destination_latitude);
+        this.setDestination_longitude(destination_longitude);
+        this.setGroup_image_url(group_image_url);
         this.setExtra_info(extra_info);
         this.setGroup_preferences(group_preferences);
         this.setMember_ids(member_ids);
@@ -45,7 +49,10 @@ class UploadableGroup extends Group {
     @Exclude
     Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("group_image_url", this.getGroup_image_url());
         result.put("destination_id", this.getDestination_id());
+        result.put("destination_latitude", this.getDestination_latitude());
+        result.put("destination_longitude", this.getDestination_longitude());
         result.put("name", this.getName());
         result.put("start_date", this.getStart_date());
         result.put("start_time", this.getStart_time());

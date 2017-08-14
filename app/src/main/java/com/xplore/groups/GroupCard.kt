@@ -28,11 +28,11 @@ data class GroupCard(
         var leaderReputation: Int = 0,
         var leaderName: String = "",
         var leaderImageUrl: String = "",
-        var reserveImageId: Int = 0,
         var invite: Boolean = false,
         var memberCount: Int = 0,
         //Values intended for Firebase data mapping
-        val destination_id: String = "",
+        val destination_id: Int = 0,
+        val group_image_url: String = "",
         val start_date: Int = 0,
         val end_date: Int = 0,
         val experienced: Boolean = false) {
