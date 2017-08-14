@@ -43,8 +43,6 @@ class ReceivedRequestsFragment() : RequestListFragment() {
         super.onAttach(context)
     }*/
 
-    private fun print(s: String) = Log.println(Log.INFO, "brejk", s)
-
     override fun displayCards() {
         super.displayCards()
         userCardRecyclerView.adapter = ReceivedRequestAdapter()

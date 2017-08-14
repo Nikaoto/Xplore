@@ -15,6 +15,7 @@ import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
 import com.xplore.TimeManager
+import com.xplore.database.DBManager
 import com.xplore.groups.view.GroupInfoActivity
 
 import java.util.ArrayList
@@ -37,6 +38,8 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
                                    private val activity: Activity)
     : RecyclerView.Adapter<GroupCardRecyclerViewAdapter.ResultsViewHolder>() {
 
+    private val dbManager = DBManager(activity)
+
     private val GROUP_NAME_MAX_CHARS = 35
     private val LEADER_NAME_MAX_CHARS = 20
 
@@ -45,6 +48,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
     init {
         TimeManager.refreshGlobalTimeStamp()
+        dbManager.openDataBase()
 
         val prefix = activity.resources.getString(R.string.group_card_start_date_prefix)
         if (prefix.isNotEmpty()) {
@@ -121,7 +125,9 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
         if (group.destination_id == Group.DESTINATION_DEFAULT) {
             Picasso.with(activity).load(group.group_image_url).into(holder.groupImage)
         } else {
-            Picasso.with(activity).load(group.group_image_url.toInt()).into(holder.groupImage)
+            Picasso.with(activity)
+                    .load(dbManager.getImageId(group.destination_id))
+                    .into(holder.groupImage)
         }
 
         //Marks
@@ -155,6 +161,10 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
             holder.duration.setText(R.string.duration_zero_day)
         } else {
             holder.duration.text = "$durationInDays ${activity.resources.getString(R.string.duration_days)}"
+        }
+
+        if (position == groupCards.size -1) {
+            dbManager.close()
         }
     }
 

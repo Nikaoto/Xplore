@@ -92,7 +92,7 @@ internal class DBManager(private val mContext: Context,
     fun Cursor.getImageId(context: Context = mContext) =
             convertFromDrawableNameToId(this.getStr(IMAGE), context)
 
-    //Custom extension so writing "null" every time becomes unnecessary
+    //Custom extension so we don't have to write "null" every time
     fun SQLiteDatabase.doQuery(q: String) = this.rawQuery(q, null)
 
     //Assembles and returns Reserve object from Database by Id (FASTER)
@@ -247,7 +247,6 @@ internal class DBManager(private val mContext: Context,
             return convertFromDrawableNameToId(getStr(id, IMAGE, table), context)
         } else return 0
     }
-
 
     //Finds the Id of an entry by every field in Database and returns it
     fun getIdFromQuery(query: String, table: String): List<Int> {

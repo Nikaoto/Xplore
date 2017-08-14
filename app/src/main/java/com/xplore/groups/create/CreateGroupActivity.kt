@@ -340,11 +340,6 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     if (resultCode == Activity.RESULT_OK) {
                         chosenDestId = data.getIntExtra("chosen_destination_id", Group.DESTINATION_DEFAULT)
 
-                        //Loading image id
-                        dbManager.openDataBase()
-                        groupImageUrl = dbManager.getImageId(chosenDestId).toString()
-                        dbManager.close()
-
                         Picasso.with(this).load(groupImageUrl.toInt()).into(groupImageView)
                     }
                 SELECT_FROM_MAP_REQ_CODE ->

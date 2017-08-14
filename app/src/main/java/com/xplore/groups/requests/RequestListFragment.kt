@@ -83,8 +83,6 @@ open class RequestListFragment : Fragment() {
         }
     }
 
-    private fun print(s: String) = Log.println(Log.INFO, "brejk", s)
-
     open fun displayCards() {
         userCardRecyclerView.layoutManager = LinearLayoutManager(activity)
         loadingbar.visibility = View.INVISIBLE

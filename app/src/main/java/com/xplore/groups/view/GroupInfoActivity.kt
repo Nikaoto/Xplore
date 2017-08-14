@@ -135,7 +135,6 @@ class GroupInfoActivity : Activity() {
 
     //Gets destination data (reserve id or custom location latlng) and displays it as the image
     private fun applyDestinationData() {
-
         if (currentGroup.destination_id != Group.DESTINATION_DEFAULT) {
             val dbManager = DBManager(this)
             dbManager.openDataBase()
