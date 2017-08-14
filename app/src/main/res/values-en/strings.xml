@@ -151,5 +151,6 @@
     <string name="choose_from">Choose from…</string>
     <string name="drop_pin_help">To choose a destination just long press on the map. Dropped pins can be selected with a long press as well.</string>
     <string name="error">Error</string>
+    <string name="open_discussion">Open Discussion</string>
     <!-- -->
 </resources>

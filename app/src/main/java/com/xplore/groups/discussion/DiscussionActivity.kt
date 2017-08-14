@@ -3,6 +3,7 @@ package com.xplore.groups.discussion
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -36,6 +37,8 @@ class DiscussionActivity : Activity() {
     private lateinit var discussionRef: DatabaseReference
     //
     private val  MESSAGE_LIMIT = 50
+
+    private val mediaPlayer: MediaPlayer by lazy { MediaPlayer.create(this, R.raw.message_sound) }
 
     private lateinit var groupId: String
 
@@ -161,6 +164,7 @@ class DiscussionActivity : Activity() {
 
                     if (initialMessageCount == 0) {
                         messageCount++
+                        mediaPlayer.start()
                     } else {
                         initialMessageCount--
                     }

@@ -80,6 +80,7 @@
     <string name="start_time">დაწყების დრო</string>
     <string name="end_time">დასასრულის დრო</string>
     <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
+    <string name="open_discussion">დისკუსიის ნახვა</string>
 
     <!-- Times for GroupCards -->
     <string name="today">დღეს</string>

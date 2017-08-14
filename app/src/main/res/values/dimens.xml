@@ -39,4 +39,9 @@
     <dimen name="group_info_single_card_header_min_height">46dp</dimen>
     <dimen name="controls_button_text_size">14sp</dimen>
     <dimen name="controls_button_text_padding">9dp</dimen>
+
+    <!-- -->
+    <dimen name="badge_size_small">15dp</dimen>
+    <dimen name="badge_size_medium">20dp</dimen>
+    <dimen name="badge_size_large">25dp</dimen>
 </resources>
