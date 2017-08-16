@@ -1,6 +1,5 @@
 package com.xplore.user
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -14,7 +13,6 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
-import kotlinx.android.synthetic.main.generic_toolbar.*
 import kotlinx.android.synthetic.main.user_profile.*
 
 /**
@@ -80,13 +78,13 @@ class UserProfileActivity : AppCompatActivity() {
         Picasso.with(this)
                 .load(user.getProfile_picture_url())
                 .transform(ImageUtil.largeCircle(this))
-                .into(profileImageView)
+                .into(userImageView)
 
-        nameTextView.text = "${user.getFname()} ${user.getLname()}"
-        repTextView.text = user.getReputation().toString()
-        birthDateTextView.text =
-                "${getString(R.string.birth_date)}: ${General.putSlashesInDate(user.getBirth_date())}"
-        telTextView.text = "${getString(R.string.tel)}: ${user.getTel_num()}"
+        fullNameTextView.text = "${user.getFname()} ${user.getLname()}"
+        reputationCombinedTextView.text = user.getReputation().toString() +
+                " " + resources.getString(R.string.reputation)
+        birthDateTextView.text = General.putSlashesInDate(user.getBirth_date())
+        telephoneTextView.text = user.getTel_num()
         emailTextView.text = user.getEmail()
 
         //Stop loading animation
