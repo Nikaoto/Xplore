@@ -213,6 +213,13 @@ class EditGroupActivity : Activity() {
         //end time
         endTimeTextView.text = General.putColonInTime(currentGroup.end_time)
 
+        //Experience
+        if (currentGroup.experienced) {
+            radioGroup.check(R.id.yes_rb)
+        } else {
+            radioGroup.check(R.id.no_rb)
+        }
+
         //Description
         descriptionEditText.setText(currentGroup.extra_info)
         //Preferences
