@@ -70,8 +70,7 @@
         одногруппники хотели бы знать.\n\nНапример: Мы отправляемся в 11 утра от станции метро
         Руставели…</string>
     <string name="what_is_this">Что это значит?</string>
-    <string name="group_exp_help">X значит что местность неизвестно для этой группы.\n\n
-        ✓ - местность известно по крайней мере для одного человека из группы.</string>
+    <string name="group_exp_help">Это значит, что местность известно для этой группы.</string>
     <string name="activity_search_users_title">Найдите Пользователей</string>
     <string name="dest_field_incomplete">Пожалуйста, выберите пункт назначения.</string>
     <string name="exp_field_incomplete">Пожалуйста, ответьте на вопрос.</string>

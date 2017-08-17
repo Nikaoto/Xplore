@@ -182,6 +182,13 @@ class GroupInfoActivity : Activity() {
                         currentGroup.setGroup_id(dataSnapshot.key)
                         memberCount = currentGroup.getMember_ids().size
 
+                        if (currentGroup.experienced) {
+                            beenHereMark.visibility = View.VISIBLE
+                            beenHereMark.setOnClickListener {
+                                popExperienceInfoDialog()
+                            }
+                        }
+
                         applyDestinationData()
 
                         configureControls(currentGroup)

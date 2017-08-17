@@ -74,8 +74,9 @@
     <string name="date_start">დაწყების თარიღი</string>
     <string name="date_end">დასასრულის თარიღი</string>
     <string name="extra_info">დამატებით ინფო</string>
-    <string name="group_exp_help">X ნიშნავს, რომ გუნდისთვის ნაკრძალი არ არის ნაცნობი.\n\n
-        ✓ - გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.</string>
+    <string name="group_exp_help">
+        ეს ნიშნავს, რომ გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.
+    </string>
     <string name="meetup_time">შეხვედრის დრო</string>
     <string name="start_time">დაწყების დრო</string>
     <string name="end_time">დასასრულის დრო</string>

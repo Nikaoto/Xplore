@@ -71,8 +71,7 @@
         would prefer to know.\n\nex: We\'re departing together at 11am from Rustaveli metro station…
     </string>
     <string name="what_is_this">What is this?</string>
-    <string name="group_exp_help">X means that the group is not familiar with the reserve.\n\n
-        ✓ - at least one person in the group has been to the reserve.</string>
+    <string name="group_exp_help">This means that at least one person in the group has been to the reserve.</string>
     <string name="dest_field_incomplete">Please choose a destination.</string>
     <string name="exp_field_incomplete">Please answer the question.</string>
     <string name="date_start_field_incomplete">Please select the starting date of the trip.</string>
