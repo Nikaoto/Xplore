@@ -42,8 +42,6 @@ import kotlin.collections.HashMap
 
 class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
-    //TODO replace reserveButton with reserveCard
-
     //Request codes
     private val SEARCH_DESTINATION_REQ_CODE = 1
     private val SELECT_FROM_MAP_REQ_CODE = 2
@@ -95,9 +93,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context): Intent {
-            return Intent(context, CreateGroupActivity::class.java)
-        }
+        fun getStartIntent(context: Context) = Intent(context, CreateGroupActivity::class.java)
     }
 
     init {
@@ -165,7 +161,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             showHelp(R.string.group_preferences, R.string.group_prefs_help, R.string.okay)
         }
 
-        extraInfo_help.setOnClickListener {
+        description_help.setOnClickListener {
             showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay)
         }
 
@@ -260,12 +256,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null) {
+        data?.let {
             super.onActivityResult(requestCode, resultCode, data)
 
-            when (requestCode) {
-                SEARCH_DESTINATION_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
+                when (requestCode) {
+                    SEARCH_DESTINATION_REQ_CODE -> {
                         chosenDestId = data.getIntExtra("chosen_destination_id",
                                 Group.DESTINATION_DEFAULT)
 
@@ -276,8 +272,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         dbManager.close()
                     }
 
-                SELECT_FROM_MAP_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+                    SELECT_FROM_MAP_REQ_CODE -> {
                         chosenDestId = Group.DESTINATION_DEFAULT
 
                         //Getting image
@@ -294,11 +289,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         }
                     }
 
-                INVITE_USERS_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+                    INVITE_USERS_REQ_CODE -> {
                         invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
                         populateMembersList(invitedMemberIds)
                     }
+                }
             }
         }
     }
@@ -383,8 +378,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     private fun getDescriptions() {
         groupName = groupNameEditText.text.toString()
-        groupPrefs = groupPrefs_editText.text.toString()
-        extraInfo = extraInfo_editText.text.toString()
+        groupPrefs = preferencesEditText.text.toString()
+        extraInfo = descriptionEditText.text.toString()
     }
 
     private fun showHelp(title: Int, text: Int, butt_text: Int) {
