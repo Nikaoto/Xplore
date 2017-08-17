@@ -1,5 +1,7 @@
 package com.xplore.groups.create
 
+import java.lang.StringBuilder
+
 /**
  * Created by Nikaoto on 8/15/2017.
  *
@@ -28,10 +30,22 @@ class Date {
         this.startDay = d
     }
 
+    fun setStartDate(date: Long) {
+        val s = StringBuilder(date.toString())
+        this.setStartDate(s.substring(0, 4).toInt(), s.substring(4, 6).toInt(),
+                s.substring(6).toInt())
+    }
+
     fun setEndDate(y: Int, m: Int, d: Int) {
         this.endYear = y
         this.endMonth = m
         this.endDay = d
+    }
+
+    fun setEndDate(date: Long) {
+        val s = StringBuilder(date.toString())
+        this.setEndDate(s.substring(0, 4).toInt(), s.substring(4, 6).toInt(),
+                s.substring(6).toInt())
     }
 
     //Setting times
@@ -51,6 +65,7 @@ class Date {
     fun setStartTime(hour: Int, minute: Int) {
         startTime = setTime(hour, minute)
     }
+
     fun setEndTime(hour: Int, minute: Int) {
         endTime = setTime(hour, minute)
     }

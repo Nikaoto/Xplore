@@ -20,7 +20,7 @@ import java.util.ArrayList
 * TODO write description of this class - what it does and why.
 */
 
-internal class DBManager(private val mContext: Context,
+class DBManager(private val mContext: Context,
                          DB_NAME: String = "reserveDB.db",
                          private val TABLE: String = General.DB_TABLE)
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {

@@ -2,24 +2,34 @@ package com.xplore.groups.create
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.DatePicker
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
-import com.xplore.General
-import com.xplore.MemberListAdapter
+import com.xplore.*
 import com.xplore.R
-import com.xplore.TimeManager
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.maps.MapActivity
 import com.xplore.user.User
+import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MAX
+import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MIN
+import com.xplore.groups.create.CreateGroupActivity.Companion.E_INFO_CHAR_MAX
+import com.xplore.groups.create.CreateGroupActivity.Companion.E_INFO_CHAR_MIN
+import com.xplore.groups.create.CreateGroupActivity.Companion.INVITE_USERS_REQ_CODE
+import com.xplore.groups.create.CreateGroupActivity.Companion.SEARCH_DESTINATION_REQ_CODE
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_END
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_NONE
 
 import kotlinx.android.synthetic.main.create_group.*
 
@@ -28,19 +38,18 @@ import kotlinx.android.synthetic.main.create_group.*
  * TODO write description of this class - what it does and why.
  */
 
-class EditGroupActivity : Activity() {
+class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
+
+    //TODO extend CreateGroupActivity and just set every field in onCreate()
 
     private val dbManager: DBManager by lazy { DBManager(this)}
 
     //Firebase
+    private val F_INVITED_GROUP_IDS = "invited_group_ids"
+    private val F_GROUP_IDS = "group_ids"
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var groupId: String
     private lateinit var currentGroupRef: DatabaseReference
-
-    //Activity codes
-    private val SEARCH_DESTINATION_REQ_CODE = 1
-    private val SELECT_FROM_MAP_REQ_CODE = 2
-    private val INVITE_USERS_REQ_CODE = 4
 
     private lateinit var currentGroup: Group
 
@@ -49,12 +58,18 @@ class EditGroupActivity : Activity() {
     private val invitedMembers = ArrayList<User>()
     private val invitedMemberIds = ArrayList<String>()
 
+    //Used to find out which members were uninvited/removed
+    private val initialMemberIds = ArrayList<String>()
+    private val initialInvitedMemberIds = ArrayList<String>()
+
+
+    private val date = Date()
+    private var selecting = SELECTION_NONE
+
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String): Intent {
-            return Intent(context, EditGroupActivity::class.java)
-                    .putExtra("groupId", groupId)
-        }
+        fun getStartIntent(context: Context, groupId: String)
+                = Intent(context, EditGroupActivity::class.java).putExtra("groupId", groupId)
     }
 
     init {
@@ -72,8 +87,10 @@ class EditGroupActivity : Activity() {
         joinedMembersLayout.visibility = View.VISIBLE
 
         //Setting up RecyclerViews
-        joinedMemberList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        invitedMemberList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        joinedMemberList.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        invitedMemberList.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         getGroupData()
     }
@@ -84,15 +101,26 @@ class EditGroupActivity : Activity() {
                 if (dataSnapshot != null) {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null) {
+                        //Getting group
                         currentGroup = group
-                        if (currentGroup.member_ids == null) {
+                        currentGroup.group_id = dataSnapshot.key
+
+                        //Getting members and setting initial member ids
+                        if (currentGroup.member_ids != null) {
+                            initialMemberIds.addAll(currentGroup.member_ids.keys)
+                        } else {
                             currentGroup.member_ids = HashMap<String, Boolean>()
                         }
-                        if (currentGroup.invited_member_ids == null) {
+                        if (currentGroup.invited_member_ids != null) {
+                            initialInvitedMemberIds.addAll(currentGroup.invited_member_ids.keys)
+                        } else {
                             currentGroup.invited_member_ids = HashMap<String, Boolean>()
                         }
+
+                        //Displaying members
                         populateJoinedMemberList()
                         populateInvitedMemberList()
+
                         fillFields()
                         initClickEvents()
                     } else {
@@ -107,39 +135,43 @@ class EditGroupActivity : Activity() {
         })
     }
 
+    private fun ArrayList<String>.toMap(value: Boolean): HashMap<String, Boolean> {
+        val output = HashMap<String, Boolean>(this.size)
+        this.forEach {
+            output.put(it, value)
+        }
+        return output
+    }
+
     private fun populateJoinedMemberList() {
         //Setting up RecyclerView
         joinedMemberList.adapter = MemberListAdapter(this, joinedMembers, true, joinedMemberIds)
-        //TODO check for member removal
-
-        //Checking if list is empty
-        if (currentGroup.member_ids.isNotEmpty()) {
+        if (joinedMemberIds.isEmpty()) {
             joinedMemberIds.addAll(currentGroup.member_ids.keys)
+        }
 
-            //Getting member info
-            for (mId in currentGroup.member_ids) {
-                usersRef.child(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                        dataSnapshot?.let {
-                            val tempUser = dataSnapshot.getValue(User::class.java)
-                            tempUser?.let {
-                                tempUser.id = dataSnapshot.key
-                                joinedMembers.add(tempUser)
-                                joinedMemberList.adapter.notifyDataSetChanged()
-                            }
+        //Getting member info
+        for (mId in currentGroup.member_ids) {
+            usersRef.child(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                    dataSnapshot?.let {
+                        val tempUser = dataSnapshot.getValue(User::class.java)
+                        tempUser?.let {
+                            tempUser.id = dataSnapshot.key
+                            joinedMembers.add(tempUser)
+                            joinedMemberList.adapter.notifyDataSetChanged()
                         }
                     }
+                }
 
-                    override fun onCancelled(p0: DatabaseError?) {}
-                })
-            }
+                override fun onCancelled(p0: DatabaseError?) {}
+            })
         }
-    }
+        }
 
     private fun populateInvitedMemberList() {
         //Setting up RecyclerView
         invitedMemberList.adapter = MemberListAdapter(this, invitedMembers, true, invitedMemberIds)
-        //TODO check for invite removal
 
         for (mId in invitedMemberIds) {
             currentGroup.invited_member_ids.put(mId, true)
@@ -178,15 +210,22 @@ class EditGroupActivity : Activity() {
         onBackPressed()
     }
 
+    //When the destination is a reserve
+    private val onReserveClickListener = View.OnClickListener {
+        General.openReserveInfoFragment(currentGroup.destination_id, this@EditGroupActivity)
+    }
+
+    private val onMapClickListener = View.OnClickListener {
+        startActivity(MapActivity.getStartIntent(this@EditGroupActivity, true, currentGroup.name,
+                currentGroup.destination_latitude, currentGroup.destination_longitude))
+    }
+
     //Fills the fields with gathered group data
     private fun fillFields() {
         groupNameEditText.setText(currentGroup.name)
         //Configuring Image
         if (currentGroup.destination_id != Group.DESTINATION_DEFAULT) {
-            //Setting OnClickListener
-            groupImageView.setOnClickListener {
-                General.openReserveInfoFragment(currentGroup.destination_id, this)
-            }
+            groupImageView.setOnClickListener(onReserveClickListener)
             //Loading image
             dbManager.openDataBase()
             Picasso.with(this)
@@ -194,24 +233,29 @@ class EditGroupActivity : Activity() {
                     .into(groupImageView)
             dbManager.close()
         } else {
-            //Setting OnClickListener
-            groupImageView.setOnClickListener {
-                startActivity(MapActivity.getStartIntent(this, true, currentGroup.name,
-                        currentGroup.destination_latitude, currentGroup.destination_longitude))
-            }
+            groupImageView.setOnClickListener(onMapClickListener)
             //Loading image
             Picasso.with(this).load(currentGroup.group_image_url).into(groupImageView)
         }
 
         //Start date
         startDateTextView.text = General.putSlashesInDate(currentGroup.start_date)
+        date.setStartDate(currentGroup.start_date)
+        Log.i("brejk", "startDate ${date.getStartDate()}")
         //Start time
         startTimeTextView.text = General.putColonInTime(currentGroup.start_time)
+        date.startTime = currentGroup.start_time
+        Log.i("brejk", "startTime ${date.startTime}")
 
         //End date
         endDateTextView.text = General.putSlashesInDate(currentGroup.end_date)
+        date.setEndDate(currentGroup.end_date)
+        Log.i("brejk", "endDate ${date.getEndDate()}")
+
         //end time
         endTimeTextView.text = General.putColonInTime(currentGroup.end_time)
+        date.endTime = currentGroup.end_time
+        Log.i("brejk", "endTime ${date.endTime}")
 
         //Experience
         if (currentGroup.experienced) {
@@ -227,6 +271,51 @@ class EditGroupActivity : Activity() {
     }
 
     private fun initClickEvents() {
+        chooseDestinationButton.setOnClickListener {
+            //Opens choose destination dialog
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.activity_choose_destination_title)
+                    .setMessage(R.string.choose_from)
+                    .setPositiveButton(R.string.activity_library_title) {_, _ ->
+                        startActivityForResult(
+                                Intent(this@EditGroupActivity, SearchDestinationActivity::class.java),
+                                SEARCH_DESTINATION_REQ_CODE)
+                    }
+                    .setNegativeButton(R.string.activity_maps_title) {_, _ ->
+                        startActivityForResult(MapActivity.getStartIntent(this, true),
+                                SELECT_FROM_MAP_REQ_CODE)
+                    }
+                    .create().show()
+        }
+
+        startDateButton.setOnClickListener {
+            showDatePicker(SELECTION_START)
+        }
+
+        startTimeButton.setOnClickListener {
+            showTimePicker(SELECTION_START)
+        }
+
+        endDateButton.setOnClickListener {
+            showDatePicker(SELECTION_END)
+        }
+
+        endTimeButton.setOnClickListener {
+            showTimePicker(SELECTION_END)
+        }
+
+        prefs_help.setOnClickListener {
+            showHelp(R.string.group_preferences, R.string.group_prefs_help, R.string.okay)
+        }
+
+        description_help.setOnClickListener {
+            showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay)
+        }
+
+        radioGroup.setOnCheckedChangeListener {
+            _, i -> currentGroup.experienced = (i == R.id.yes_rb)
+        }
+
         //Invite members
         inviteButton.setOnClickListener {
             invitedMemberIds.clear()
@@ -237,7 +326,56 @@ class EditGroupActivity : Activity() {
         //Done
         doneButton.setOnClickListener {
             if (fieldsValid()) {
-                uploadGroup()
+                gatherGroupData()
+                uploadGroupData()
+                sendInvites()
+                checkRemovedMembers()
+                checkUninvitedMembers()
+                finish()
+            }
+        }
+    }
+
+    private fun showDatePicker(code: String) {
+        if (TimeManager.globalTimeStamp != 0L) {
+            selecting = code
+            DatePickerFragment(this@EditGroupActivity, TimeManager.globalTimeStamp, 0)
+                    .show(fragmentManager, "")
+        }
+    }
+
+    private fun showTimePicker(code: String) {
+        selecting = code
+        TimePickerFragment(onTimeSetListener).show(fragmentManager, "")
+    }
+
+    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        when (selecting) {
+            SELECTION_START -> {
+                selecting = SELECTION_NONE
+                date.setStartTime(hourOfDay, minute)
+                startTimeTextView.text = date.getStartTimeText()
+            }
+            SELECTION_END -> {
+                selecting = SELECTION_NONE
+                date.setEndTime(hourOfDay, minute)
+                endTimeTextView.text = date.getStartTimeText()
+            }
+        }
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, receivedMonth: Int, day: Int) {
+        val month  = receivedMonth + 1 //+1 is necessary because 0 is January
+        when (selecting) {
+            SELECTION_START -> {
+                selecting = SELECTION_NONE
+                date.setStartDate(year, month, day)
+                startDateTextView.text = date.getStartDateString()
+            }
+            SELECTION_END -> {
+                selecting = SELECTION_NONE
+                date.setEndDate(year, month, day)
+                endDateTextView.text = date.getEndDateString()
             }
         }
     }
@@ -258,11 +396,43 @@ class EditGroupActivity : Activity() {
                     }
 
                     SEARCH_DESTINATION_REQ_CODE -> {
+                        currentGroup.destination_id = data.getIntExtra("chosen_destination_id",
+                                Group.DESTINATION_DEFAULT)
 
+                        dbManager.openDataBase()
+                        Picasso.with(this)
+                                .load(dbManager.getImageId(currentGroup.destination_id))
+                                .into(groupImageView)
+                        dbManager.close()
+
+                        groupImageView.setOnClickListener(onReserveClickListener)
                     }
 
                     SELECT_FROM_MAP_REQ_CODE -> {
+                        currentGroup.destination_id = Group.DESTINATION_DEFAULT
 
+                        //Getting image
+                        currentGroup.destination_latitude =
+                                data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 0.0)
+                        currentGroup.destination_longitude =
+                                data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 0.0)
+
+                        //Checking if data retrieval failed
+                        if (currentGroup.destination_latitude != 0.0
+                                && currentGroup.destination_longitude != 0.0) {
+
+                            currentGroup.group_image_url = MapUtil.getMapUrl(
+                                    currentGroup.destination_latitude,
+                                    currentGroup.destination_longitude
+                            )
+
+                            Picasso.with(this)
+                                    .load(currentGroup.group_image_url)
+                                    .into(groupImageView)
+                            groupImageView.setOnClickListener(onMapClickListener)
+                        } else {
+                            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
@@ -270,13 +440,105 @@ class EditGroupActivity : Activity() {
     }
 
     private fun fieldsValid(): Boolean {
+        TimeManager.refreshGlobalTimeStamp()
         val builder = AlertDialog.Builder(this)
         builder.setPositiveButton(R.string.okay, null)
-        return true
+
+        if (currentGroup.destination_id == Group.DESTINATION_DEFAULT
+                && currentGroup.group_image_url.isEmpty()) {
+            builder.setMessage(R.string.dest_field_incomplete)
+                    .show()
+            return false
+        } else if (date.startYear == 0) {
+            builder.setMessage(R.string.date_start_field_incomplete)
+                    .show()
+            return false
+        } else if (date.endYear == 0) {
+            builder.setMessage(R.string.date_end_field_incomplete)
+                    .show()
+            return false
+        } else if (date.getStartDate() > date.getEndDate()) {
+            builder.setMessage(R.string.date_invalid)
+                    .show()
+            return false
+        } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
+            builder.setMessage("Please fix the start and end times.") //TODO string resources
+                    .show()
+            return false
+        } else if (currentGroup.group_preferences.length < G_PREFS_CHAR_MIN
+                || currentGroup.group_preferences.length > G_PREFS_CHAR_MAX
+                || currentGroup.extra_info.length < E_INFO_CHAR_MIN
+                || currentGroup.extra_info.length > E_INFO_CHAR_MAX) {
+            builder.setMessage(R.string.text_field_incomplete)
+                    .show()
+            return false
+        } else if (date.getStartDate() < General.getDateLong(TimeManager.globalTimeStamp)
+                || date.getEndDate() < General.getDateLong(TimeManager.globalTimeStamp)) {
+            Log.i("brejk", "nowTime ${General.getDateLong(TimeManager.globalTimeStamp)}")
+            builder.setMessage(R.string.date_past_invalid)
+                    .show()
+            return false
+        } else {
+            return true
+        }
     }
 
-    private fun uploadGroup() {
-        Log.i("brejk", "uploading group!")
+    private fun gatherGroupData() {
+        currentGroup.name = groupNameEditText.text.toString()
+        currentGroup.extra_info = descriptionEditText.text.toString()
+        currentGroup.group_preferences = preferencesEditText.text.toString()
+
+        currentGroup.start_date = date.getStartDate()
+        currentGroup.start_time = date.startTime
+        currentGroup.end_date = date.getEndDate()
+        currentGroup.end_time = date.startTime
+
+        //Refreshing invited members list
+        currentGroup.invited_member_ids.clear()
+        currentGroup.invited_member_ids.putAll(invitedMemberIds.toMap(true))
+
+        //Refreshing members list
+        currentGroup.member_ids.clear()
+        currentGroup.member_ids.putAll(joinedMemberIds.toMap(false))
+        //Setting leader
+        currentGroup.member_ids[General.currentUserId] = true
+    }
+
+    private fun uploadGroupData() {
+        currentGroupRef.setValue(currentGroup)
+    }
+
+    private fun sendInvites() {
+        for (memberId in currentGroup.invited_member_ids.keys) {
+            usersRef.child(memberId).child(F_INVITED_GROUP_IDS).child("/" + groupId).setValue(true)
+        }
+    }
+
+    //Finds out which members were removed and sets Firebase values accordingly
+    private fun checkRemovedMembers() {
+        initialMemberIds.forEach {
+            if (!currentGroup.member_ids.contains(it)) {
+                usersRef.child(it).child(F_GROUP_IDS).child(groupId).removeValue()
+            }
+        }
+    }
+
+    //Finds out which invited members were removed and sets Firebase values accordingly
+    private fun checkUninvitedMembers() {
+        initialInvitedMemberIds.forEach {
+            if (!currentGroup.invited_member_ids.contains(it)) {
+                usersRef.child(it).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
+            }
+        }
+    }
+
+    private fun showHelp(title: Int, text: Int, butt_text: Int) {
+        val alert = AlertDialog.Builder(this)
+                .setMessage(resources.getString(text))
+                .setTitle(resources.getString(title))
+                .setCancelable(false)
+                .setPositiveButton(resources.getString(butt_text), null)
+        alert.show()
     }
 
     override fun onBackPressed() {
