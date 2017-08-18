@@ -16,5 +16,6 @@
     <color name="colorGrey">#BDBDBD</color>
     <color name="colorRepNumGrey">#151515</color>
     <color name="colorDarkGrey">#3F3F3F</color>
+    <color name="orange">#ff9605</color>
     <color name="white">#FFFFFF</color>
 </resources>

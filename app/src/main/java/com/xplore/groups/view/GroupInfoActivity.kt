@@ -65,6 +65,8 @@ class GroupInfoActivity : Activity() {
         setContentView(R.layout.group_info2)
         //buildUserBase();
 
+        TimeManager.refreshGlobalTimeStamp()
+
         toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -94,6 +96,7 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun configureControls(group: Group) {
+        //Conf depending on viewer type
         if (group.leaderId == General.currentUserId) {
             configureLeaderControls()
         } else if(group.getMember_ids().contains(General.currentUserId)) {
@@ -109,6 +112,16 @@ class GroupInfoActivity : Activity() {
             }
         } else {
             configureOutsiderControls()
+        }
+
+        //Show map button if mid trip
+        if (TimeManager.intTimeStamp >= currentGroup.start_date
+                && TimeManager.intTimeStamp <= currentGroup.end_date) {
+
+            openMapButton.visibility = View.VISIBLE
+            openMapButton.setOnClickListener {
+                showTripOnMap()
+            }
         }
     }
 
@@ -181,13 +194,6 @@ class GroupInfoActivity : Activity() {
                         groupNameTextView.text = currentGroup.name
                         currentGroup.setGroup_id(dataSnapshot.key)
                         memberCount = currentGroup.getMember_ids().size
-
-                        if (currentGroup.experienced) {
-                            beenHereMark.visibility = View.VISIBLE
-                            beenHereMark.setOnClickListener {
-                                popExperienceInfoDialog()
-                            }
-                        }
 
                         applyDestinationData()
 
@@ -273,7 +279,6 @@ class GroupInfoActivity : Activity() {
 
     //Displays the already-retrieved data of the group
     private fun applyGroupData() {
-
         //Displaying leader
         //Profile picture
         Picasso.with(this).invalidate(leader.getProfile_picture_url())
@@ -297,18 +302,15 @@ class GroupInfoActivity : Activity() {
 
         //Reputation
         leaderRepCombinedTextView.text = "${leader.reputation} ${resources.getString(R.string.reputation)}"
+        //
 
-        //Setting experienced icon
-        //TODO experienced icon
-/*        if (currentGroup.isExperienced) {
-            groupExpImageView.setImageResource(R.drawable.ic_check)
-        } else {
-            groupExpImageView.setImageResource(R.drawable.ic_x)
+        //Experienced
+        if (currentGroup.experienced) {
+            beenHereMark.visibility = View.VISIBLE
+            beenHereMark.setOnClickListener {
+                popExperienceInfoDialog()
+            }
         }
-
-        groupExpImageView.setOnClickListener {
-            popExperienceInfoDialog()
-        }*/
 
         //Dates
         dateCombinedTextView.text = General.putSlashesInDate(currentGroup.getStart_date()) + " - " +
@@ -325,6 +327,10 @@ class GroupInfoActivity : Activity() {
             val adapter = MemberListAdapter(this, members)
             membersRecyclerView.adapter = adapter
         }
+    }
+
+    private fun showTripOnMap() {
+        //startActivity(MapActivity)
     }
 
     //Displays information about the experience icon (X and tick)

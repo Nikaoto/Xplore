@@ -202,7 +202,7 @@ public class MapActivity extends AppCompatActivity
                     if (destinationMarker != null) {
                         destinationMarker.remove();
                     }
-                    destinationMarker = placeMarker(getString(R.string.destination), latLng);
+                    destinationMarker = placeMarker(getString(R.string.destination), latLng, true);
                 }
             });
         }
@@ -273,7 +273,7 @@ public class MapActivity extends AppCompatActivity
     public void showReserveOnMap(String name, LatLng location) {
         //TODO smart load KML file
         //Place current location marker
-        placeMarker(name, location);
+        placeMarker(name, location, false);
 
         //move map camera
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
@@ -392,9 +392,9 @@ public class MapActivity extends AppCompatActivity
         createNetErrorDialog();
     }
 
-    private Marker placeMarker(String markerTitle, LatLng location) {
+    private Marker placeMarker(String markerTitle, LatLng location, Boolean draggable) {
         MarkerOptions markerOptions = new MarkerOptions();//TODO change markerOptions
-        markerOptions.draggable(true);
+        markerOptions.draggable(draggable);
         markerOptions.position(location);
         if(markerTitle != null && !markerTitle.isEmpty()) {
             markerOptions.title(markerTitle);

@@ -149,5 +149,6 @@
     <string name="drop_pin_help">"Чтобы выбрать местоположение, нажмите на карту подольше. Продолжительном нажатии вы также можете перемещать передвинуть пина. "</string>
     <string name="error">Произошла ошибка</string>
     <string name="open_discussion">Открыть Дискуссию</string>
+    <string name="see_on_map">Посмотреть на карте</string>
     <!-- -->
 </resources>

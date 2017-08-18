@@ -82,6 +82,7 @@
     <string name="end_time">დასასრულის დრო</string>
     <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
     <string name="open_discussion">დისკუსიის ნახვა</string>
+    <string name="see_on_map">ლაშქრობის რუკაზე ნახვა</string>
 
     <!-- Times for GroupCards -->
     <string name="today">დღეს</string>
