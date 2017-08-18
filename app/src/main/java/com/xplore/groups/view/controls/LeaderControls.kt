@@ -33,9 +33,6 @@ import kotlinx.android.synthetic.main.leader_controls.*
 
 class LeaderControls : Fragment() {
 
-    //Activity codes
-    private val REQ_CODE_EDIT_GROUP = 1
-
     //Firebase
     private val F_INVITED_GROUP_IDS = "invited_group_ids"
     private val F_INVITED_MEMBER_IDS = "invited_member_ids"
@@ -80,7 +77,7 @@ class LeaderControls : Fragment() {
         }
 
         editGroupButton.setOnClickListener {
-            //startEditingGroup()
+            startEditingGroup()
         }
 
         manageRequestsButton.setOnClickListener {
@@ -146,21 +143,7 @@ class LeaderControls : Fragment() {
     }
 
     private fun startEditingGroup() {
-        startActivityForResult(EditGroupActivity.getStartIntent(activity, groupId),
-                REQ_CODE_EDIT_GROUP)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        data?.let {
-            super.onActivityResult(requestCode, resultCode, data)
-
-            if (requestCode == REQ_CODE_EDIT_GROUP) {
-                if (resultCode == Activity.RESULT_OK) {
-                    refresh()
-                }
-            }
-        }
-
+        startActivity(EditGroupActivity.getStartIntent(activity, groupId))
     }
 
     private fun confirmGroupDeletion() {

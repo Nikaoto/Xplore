@@ -72,22 +72,26 @@ class MemberListAdapter(private val context: Context,
             //Pops up "remove?" dialog
             holder.memberImage.setOnLongClickListener {
                 currentMember = users[position]
-                General.vibrateDevice(context, null)
-                //TODO string resources
-                AlertDialog.Builder(context)
-                        .setTitle("Remove " + currentMember.getFname() + " " + currentMember.getLname())
-                        .setMessage("Do you wish to remove this member from your group?")
-                        .setCancelable(false)
-                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
-                        .setPositiveButton("Yes") { _, _ ->
-                            //Removing user and updating recycler view
-                            users.removeAt(position)
-                            userIds?.removeAt(position)
-                            notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, users.size)
-                            Toast.makeText(context, R.string.member_removed, Toast.LENGTH_SHORT).show()
-                        }
-                        .create().show()
+                if (currentMember.id != General.currentUserId) {
+                    General.vibrateDevice(context, null)
+                    //TODO string resources
+                    AlertDialog.Builder(context)
+                            .setTitle("Remove " + currentMember.getFname() +
+                                    " " + currentMember.getLname())
+                            .setMessage("Do you wish to remove this member from your group?")
+                            .setCancelable(false)
+                            .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+                            .setPositiveButton("Yes") { _, _ ->
+                                //Removing user and updating recycler view
+                                users.removeAt(position)
+                                userIds?.removeAt(position)
+                                notifyItemRemoved(position)
+                                notifyItemRangeChanged(position, users.size)
+                                Toast.makeText(context, R.string.member_removed,
+                                        Toast.LENGTH_SHORT).show()
+                            }
+                            .create().show()
+                }
                 false
             }
         }

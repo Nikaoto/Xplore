@@ -12,13 +12,13 @@ import java.util.HashMap;
 public class Group {
     public static final int DESTINATION_DEFAULT = -1;
 
-    protected String group_id, name;
+    public String group_id, name;
     public long start_date, end_date;
     public String start_time, end_time;
     public boolean experienced;
-    protected int destination_id;
+    public int destination_id;
     public double destination_latitude, destination_longitude;
-    protected String group_image_url, extra_info, group_preferences;
+    public String group_image_url, extra_info, group_preferences;
     public HashMap<String, Boolean> member_ids;
     public HashMap<String, Boolean> invited_member_ids;
 

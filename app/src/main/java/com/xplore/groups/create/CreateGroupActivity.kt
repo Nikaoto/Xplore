@@ -40,40 +40,43 @@ import kotlin.collections.HashMap
 
  */
 
-class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
-
-    //TODO replace reserveButton with reserveCard
-
-    //Request codes
-    private val SEARCH_DESTINATION_REQ_CODE = 1
-    private val SELECT_FROM_MAP_REQ_CODE = 2
-    private val INVITE_USERS_REQ_CODE = 4
+open class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     //Database
-    private val dbManager: DBManager by lazy { DBManager(this) }
+    val dbManager: DBManager by lazy { DBManager(this) }
 
     //Firebase
-    private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
-    private val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
-    private val joinedGroupsRef = FirebaseDatabase.getInstance().reference
+    val usersRef = FirebaseDatabase.getInstance().reference.child("users")
+    val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
+    val joinedGroupsRef = FirebaseDatabase.getInstance().reference
             .child("users")
             .child(General.currentUserId)
             .child("group_ids")
 
-    //Limits and restrictions to fields
-    private val EXPERIENCE_ANS_DEFAULT = -1
-    private val EXPERIENCE_ANS_NO = 0
-    private val EXPERIENCE_ANS_YES = 1
-    private val G_PREFS_CHAR_MAX = 200
-    private val G_PREFS_CHAR_MIN = 0 //TODO add selection if user doesn't have prefs
-    private val E_INFO_CHAR_MAX = 200
-    private val E_INFO_CHAR_MIN = 5
+    companion object {
+        //Request codes
+        val SEARCH_DESTINATION_REQ_CODE = 1
+        val SELECT_FROM_MAP_REQ_CODE = 2
+        val INVITE_USERS_REQ_CODE = 4
 
-    //Tags for date and time pickers
-    private val SELECTION_NONE = ""
-    private val SELECTION_START = "start"
-    private val SELECTION_END = "end"
-    private var selecting = SELECTION_NONE
+
+        //Limits and restrictions to fields
+        const val EXPERIENCE_ANS_DEFAULT = -1
+        const val EXPERIENCE_ANS_NO = 0
+        const val EXPERIENCE_ANS_YES = 1
+        const val G_PREFS_CHAR_MAX = 200
+        const val G_PREFS_CHAR_MIN = 0
+        const val E_INFO_CHAR_MAX = 200
+        const val E_INFO_CHAR_MIN = 5
+
+        //Tags for date and time pickers
+        const val SELECTION_NONE = ""
+        const val SELECTION_START = "start"
+        const val SELECTION_END = "end"
+
+        @JvmStatic
+        fun getStartIntent(context: Context) = Intent(context, CreateGroupActivity::class.java)
+    }
 
     //Setting chosen answer and destination to default
     private var chosenDestId = Group.DESTINATION_DEFAULT
@@ -82,6 +85,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     private var destinationLat = 0.0
     private var destinationLng = 0.0
 
+    var selecting = SELECTION_NONE
+
     private var groupImageUrl = ""
     private var groupName = ""
     private var groupPrefs = ""
@@ -89,19 +94,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     private var invitedMemberIds = ArrayList<String>()
 
-    private val date = Date()
+    val date = Date()
 
-    //TODO remove dependenies and inner objects/classes as much as possible
-
-    companion object {
-        @JvmStatic
-        fun getStartIntent(context: Context): Intent {
-            return Intent(context, CreateGroupActivity::class.java)
-        }
-    }
+    //TODO remove dependencies and inner objects/classes as much as possible
 
     init {
-        //Refreshing server timeStamp
         TimeManager.refreshGlobalTimeStamp()
     }
 
@@ -165,7 +162,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             showHelp(R.string.group_preferences, R.string.group_prefs_help, R.string.okay)
         }
 
-        extraInfo_help.setOnClickListener {
+        description_help.setOnClickListener {
             showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay)
         }
 
@@ -190,7 +187,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun showDestinationDialog() {
+    fun showDestinationDialog() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.activity_choose_destination_title)
                 .setMessage(R.string.choose_from)
@@ -260,12 +257,12 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null) {
+        data?.let {
             super.onActivityResult(requestCode, resultCode, data)
 
-            when (requestCode) {
-                SEARCH_DESTINATION_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
+                when (requestCode) {
+                    SEARCH_DESTINATION_REQ_CODE -> {
                         chosenDestId = data.getIntExtra("chosen_destination_id",
                                 Group.DESTINATION_DEFAULT)
 
@@ -276,8 +273,7 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         dbManager.close()
                     }
 
-                SELECT_FROM_MAP_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+                    SELECT_FROM_MAP_REQ_CODE -> {
                         chosenDestId = Group.DESTINATION_DEFAULT
 
                         //Getting image
@@ -294,11 +290,11 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         }
                     }
 
-                INVITE_USERS_REQ_CODE ->
-                    if (resultCode == Activity.RESULT_OK) {
+                    INVITE_USERS_REQ_CODE -> {
                         invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
                         populateMembersList(invitedMemberIds)
                     }
+                }
             }
         }
     }
@@ -383,8 +379,8 @@ class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     private fun getDescriptions() {
         groupName = groupNameEditText.text.toString()
-        groupPrefs = groupPrefs_editText.text.toString()
-        extraInfo = extraInfo_editText.text.toString()
+        groupPrefs = preferencesEditText.text.toString()
+        extraInfo = descriptionEditText.text.toString()
     }
 
     private fun showHelp(title: Int, text: Int, butt_text: Int) {

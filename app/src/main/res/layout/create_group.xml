@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
@@ -270,35 +271,82 @@
 
         </RelativeLayout>
 
+        <View style="@style/Divider"
+            android:layout_marginTop="15dp"/>
+
+        <!-- Joined Members -->
+        <LinearLayout
+            android:id="@+id/joinedMembersLayout"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/group_members"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View style="@style/Divider"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/joinedMemberList"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/member_list_item_height"
+                android:layout_marginTop="5dp">
+            </android.support.v7.widget.RecyclerView>
+
+            <View style="@style/Divider"/>
+
+            <!-- TODO string resources -->
+            <TextView
+                android:text="(Press and hold members to remove them)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="4dp"/>
+
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
         <RelativeLayout
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-                <TextView
-                    android:text="@string/group_members"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@+id/inviteButton"
-                    android:layout_alignBaseline="@+id/inviteButton"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textAppearance="@style/TextAppearance.AppCompat"/>
+            <TextView
+                android:text="@string/invite_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/inviteButton"
+                android:layout_alignBaseline="@+id/inviteButton"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/inviteButton"
-                    android:text="@string/invite"
-                    android:textSize="15sp"
-                    app:backgroundTint="@color/colorAccent"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/inviteButton"
+                android:text="@string/invite"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </RelativeLayout>
 
@@ -307,7 +355,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/invitedMemberList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/member_list_item_height"
             android:layout_marginTop="5dp">
         </android.support.v7.widget.RecyclerView>
 
@@ -317,7 +365,7 @@
          TODO string resources
         -->
         <TextView
-            android:text="(Press and hold invited members to remove them)"
+            android:text="(Press and hold members to remove them)"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryDark"
@@ -325,7 +373,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="4dp"/>
 
-        <View style="@style/dashed_divider"/>
+        <View style="@style/dashed_divider"
+            android:layout_marginTop="15dp"/>
 
         <TextView
             android:text="@string/question_has_visited"
@@ -334,7 +383,7 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textColor="@color/black"/>
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -369,7 +418,7 @@
             android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/createGroup_prefs_text"
+            android:id="@+id/preferencesLabel"
             android:text="@string/group_preferences"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -382,13 +431,13 @@
             android:id="@+id/prefs_help"
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_help"
-            android:layout_toRightOf="@id/createGroup_prefs_text"
+            android:layout_toRightOf="@id/preferencesLabel"
             android:layout_width="@dimen/ic_help_wh"
             android:layout_height="@dimen/ic_help_wh" />
         </RelativeLayout>
 
         <EditText
-            android:id="@+id/groupPrefs_editText"
+            android:id="@+id/preferencesEditText"
             android:padding="7dp"
             android:gravity="top"
             android:layout_marginTop="5dp"
@@ -408,7 +457,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/createGroup_extraInfo_text"
+                android:id="@+id/descriptionLabel"
                 android:text="@string/extra_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -418,16 +467,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat"/>
 
             <ImageView
-                android:id="@+id/extraInfo_help"
+                android:id="@+id/description_help"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_help"
-                android:layout_toRightOf="@id/createGroup_extraInfo_text"
+                android:layout_toRightOf="@id/descriptionLabel"
                 android:layout_width="@dimen/ic_help_wh"
                 android:layout_height="@dimen/ic_help_wh" />
         </RelativeLayout>
 
         <EditText
-            android:id="@+id/extraInfo_editText"
+            android:id="@+id/descriptionEditText"
             android:padding="7dp"
             android:gravity="top"
             android:layout_marginTop="5dp"

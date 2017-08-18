@@ -23,6 +23,11 @@ import java.util.Map;
 //Class that gets mapped to a group in Firebase database and is uploaded
 class UploadableGroup extends Group {
 
+    public UploadableGroup() {
+        member_ids = new HashMap<String, Boolean>();
+        invited_member_ids = new HashMap<String, Boolean>();
+    }
+
     UploadableGroup(String group_id, String name, boolean experienced,
                     long start_date, String start_time, long end_date, String end_time,
                     int destination_id, double destination_latitude, double destination_longitude,
