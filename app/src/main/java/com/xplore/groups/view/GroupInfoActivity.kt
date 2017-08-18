@@ -20,15 +20,15 @@ import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
 import com.xplore.maps.MapActivity
+import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 
-import java.util.ArrayList
-
 import kotlinx.android.synthetic.main.group_info2.*
 import kotlinx.android.synthetic.main.reserve_list_item.*
 import kotlinx.android.synthetic.main.leader_profile.*
+import java.util.*
 
 /**
 * Created by Nikaoto on 2/12/2017.
@@ -38,13 +38,14 @@ import kotlinx.android.synthetic.main.leader_profile.*
 class GroupInfoActivity : Activity() {
 
     //Firebase
-    private val FIREBASE_TAG_MEMBER_IDS = "member_ids"
-    private val FIREBASE_TAG_GROUP_IDS = "group_ids"
+    private val F_LOCATIONS = "locations"
+    private val F_FNAME = "fname"
     private val DBref = FirebaseDatabase.getInstance().reference
-    private val firebaseGroupsRef = DBref.child("groups")
-    private val firebaseUsersRef = DBref.child("users")
+    private val groupsRef = DBref.child("groups")
+    private val usersRef = DBref.child("users")
+    private lateinit var currentGroupRef: DatabaseReference
 
-    private var groupId = ""
+    private lateinit var groupId: String
     private var memberCount = 1
     private val members = ArrayList<User>()
     private lateinit var leader: User
@@ -74,9 +75,10 @@ class GroupInfoActivity : Activity() {
         //Receives group data from last intent
         val intent = this.intent
         groupId = intent.getStringExtra("groupId")
+        currentGroupRef = groupsRef.child(groupId)
 
         initMemberList()
-        loadGroupData(groupId)
+        loadGroupData()
     }
 
     override fun onResume() {
@@ -113,8 +115,10 @@ class GroupInfoActivity : Activity() {
         } else {
             configureOutsiderControls()
         }
+    }
 
-        //Show map button if mid trip
+    //Shows map button if now hiking
+    private fun configureShowOnMapButton() {
         if (TimeManager.intTimeStamp >= currentGroup.start_date
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
 
@@ -126,6 +130,7 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun configureMemberControls() {
+        configureShowOnMapButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, MemberControls.newInstance(groupId)).commit()
     }
@@ -142,6 +147,7 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun configureLeaderControls() {
+        configureShowOnMapButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
     }
@@ -183,8 +189,8 @@ class GroupInfoActivity : Activity() {
         membersRecyclerView.layoutManager = layoutManager
     }
 
-    private fun loadGroupData(groupId: String) {
-        firebaseGroupsRef.child(groupId).addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun loadGroupData() {
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if group exists
                 if (dataSnapshot != null) {
@@ -225,7 +231,7 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun getLeaderInfo(id: String) {
-        firebaseUsersRef.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
+        usersRef.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (dataSnapshot != null) {
                     leader = dataSnapshot.getValue(User::class.java)!!
@@ -242,7 +248,7 @@ class GroupInfoActivity : Activity() {
 
     //Gets user info from Firebase using userId
     private fun getUserInfo(userId: String) {
-        firebaseUsersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+        usersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //Checking if member exists
                 if (dataSnapshot != null) {
@@ -329,9 +335,70 @@ class GroupInfoActivity : Activity() {
         }
     }
 
+    private var counter = 0
+
+    /* Opens the map, displaying users and their locations.
+       Creates a 'locations' node in firebase if it doesn't exist */
     private fun showTripOnMap() {
-        //startActivity(MapActivity)
+        counter = currentGroup.member_ids.size
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                Log.i("brejk", "onDataChange")
+                Log.i("brejk", "$memberCount")
+                dataSnapshot?.let {
+                    Log.i("brejk", "snapshot != null")
+                    if (!dataSnapshot.hasChild(F_LOCATIONS)) {
+                        Log.i("brejk", "no child 'locations'")
+                        val locations = HashMap<String, UserMarker>(currentGroup.member_ids.size)
+                        currentGroup.member_ids.forEach {
+                            putUserMarker(locations, it.key)
+                        }
+                    }
+                    startActivity(MapActivity.getStartIntent(applicationContext,
+                            true,
+                            currentGroup.name,
+                            currentGroup.destination_latitude,
+                            currentGroup.destination_longitude,
+                            groupId)
+                    )
+                    //Create hashmap of markers with keys as uids and values as 'locat ion objects'
+                    //Location object has lat, lng, displayName, and color hue
+                    //in maps activity set listeners for each child node and change location depending on data change
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
+        //Check if locations node exists, if not
+        //create locations node
+        //add all user locations with 0,0 as default latlng
+        //each child node has uid as key with latitude, longitude, display anem, and a random marker color hue (0f - 310f)
+        //After creating locations node (or if it's already present)
     }
+
+    //Puts a UserMarker object locations the given hashmap with given uId
+    private fun putUserMarker(locations: HashMap<String, UserMarker>, uId: String) {
+        usersRef.child(uId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    val fname = dataSnapshot.child(F_FNAME).getValue(String::class.java)
+                    if (fname != null) {
+                        locations.put(uId, UserMarker(fname, 0.0, 0.0, getRandomFloat(0F, 330F)))
+                    } else {
+                        locations.put(uId, UserMarker("", 0.0, 0.0, getRandomFloat(0F, 330F)))
+                    }
+                    counter--
+                    if (counter == 0) {
+                        currentGroupRef.child(F_LOCATIONS).setValue(locations)
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
+    }
+
+    private fun getRandomFloat(min: Float, max: Float) = min + Random().nextFloat() * (max - min)
 
     //Displays information about the experience icon (X and tick)
     private fun popExperienceInfoDialog() {

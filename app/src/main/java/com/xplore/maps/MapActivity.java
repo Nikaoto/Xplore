@@ -37,9 +37,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.kml.KmlLayer;
 import com.xplore.General;
 import com.xplore.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 /*
 * Created by Nikaoto
@@ -61,6 +71,19 @@ public class MapActivity extends AppCompatActivity
     public static final String RESULT_DEST_LAT = "destinationLat";
     public static final String RESULT_DEST_LNG = "destinationLng";
 
+    //Firebase
+    private String F_LOCATIONS = "locations";
+    private String F_LATITUDE = "latitude";
+    private String F_LONGITUDE = "longitude";
+    private DatabaseReference currentGroupRef;
+    private DatabaseReference groupLocationsRef;
+    private DatabaseReference currentLocationRef;
+
+    //Meant for realtime hiking tracking
+    private boolean uploadingLocation = false;
+    //private HashMap<String, UserMarker> userMarkers = new HashMap<>();
+    private HashMap<String, Marker> mapMarkers = new HashMap<>();
+
     private GoogleApiClient googleApiClient;
     private GoogleMap googleMap;
     private Location lastLocation;
@@ -73,6 +96,9 @@ public class MapActivity extends AppCompatActivity
     private boolean showReserve = false;
     private LatLng reserveLocation;
     private String reserveName;
+
+    //When hiking
+    private String groupId;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, MapActivity.class);
@@ -94,6 +120,13 @@ public class MapActivity extends AppCompatActivity
                 .putExtra("reserveLng", lng);
     }
 
+    //When hiking and viewing group mates
+    public static Intent getStartIntent(Context context, Boolean showReserve, String reserveName,
+                                        double lat, double lng, String groupId) {
+        return getStartIntent(context, showReserve, reserveName, lat, lng)
+                .putExtra("groupId", groupId);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +142,7 @@ public class MapActivity extends AppCompatActivity
         //TODO KML button onclick w/ smart loading
         ImageButton KMLButton = (ImageButton) findViewById(R.id.KMLButton);
 
-        //choosingDestination = true; //temp
+        //Checking if choosing destination for group
         if (choosingDestination) {
             showReserve = false;
             setTitle(R.string.activity_choose_destination_title);
@@ -123,6 +156,15 @@ public class MapActivity extends AppCompatActivity
             if (showReserve) {
                 initReserve();
             }
+        }
+
+        //Checking if hiking
+        groupId = getIntent().getStringExtra("groupId");
+        currentGroupRef = FirebaseDatabase.getInstance().getReference("groups/"+groupId);
+        if (groupId != null && !groupId.isEmpty()) {
+            groupLocationsRef = currentGroupRef.child(F_LOCATIONS);
+            currentLocationRef = groupLocationsRef.child(General.currentUserId);
+            displayMembersOnMap();
         }
 
         initMap();
@@ -305,6 +347,80 @@ public class MapActivity extends AppCompatActivity
         alert.show();
     }
 
+    private void displayMembersOnMap() {
+        currentGroupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot markerSnapshot
+                            : dataSnapshot.child(F_LOCATIONS).getChildren()) {
+                        startListening(markerSnapshot);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    //This only happens once (starts listening once that is)
+    private void startListening(final DataSnapshot markerSnapshot) {
+        Log.i("brejk", "startlistening");
+        final String key = markerSnapshot.getKey();
+        //Sends location data to firebase
+        if (key.equals(General.currentUserId) && lastLocation != null) {
+            Log.i("brejk", "currentuser");
+            uploadingLocation = true;
+            //Get data from server
+            UserMarker marker = markerSnapshot.getValue(UserMarker.class);
+            //Update data
+            UserMarker newMarker = new UserMarker(marker.getName(), lastLocation.getLatitude(),
+                    lastLocation.getLongitude(), marker.getHue());
+            //Upload updated data
+            currentLocationRef.setValue(newMarker);
+        } else {
+            final UserMarker marker = markerSnapshot.getValue(UserMarker.class);
+            groupLocationsRef.child(key).addChildEventListener(
+                    new ChildEventListener() {
+                        //Updates the markers on map according to the data on the server
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            if (dataSnapshot != null) {
+                                Log.i("brejk", "other user is moving around");
+                                UserMarker newMarker = markerSnapshot.getValue(UserMarker.class);
+                                //userMarkers.get(key).setLocation(newMarker.getLocation());
+                                mapMarkers.get(key).setPosition(newMarker.getLocation());
+                            }
+                        }
+
+                        //This happens only once; Creates markers on map and saves the objects
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            MarkerOptions mo = new MarkerOptions();
+                            mo.title(marker.getName());
+                            mo.position(new LatLng(marker.getLatitude(), marker.getLongitude()));
+                            mo.icon(BitmapDescriptorFactory.defaultMarker(marker.getHue()));
+
+/*                            UserMarker newMarker = new UserMarker(marker.getName(),
+                                    marker.getLatitude(), marker.getLongitude(), marker.getHue());*/
+                            //Adding Marker to list
+                            //userMarkers.put(key, newMarker);
+                            mapMarkers.put(key, googleMap.addMarker(mo));
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+        }
+    }
+
     protected void createNetErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.wifi_connect_dialog_maps)
@@ -406,6 +522,12 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
+
+        Log.i("brejk", "onLocationChanged");
+        if (uploadingLocation) {
+            currentLocationRef.child(F_LATITUDE).setValue(location.getLatitude());
+            currentLocationRef.child(F_LONGITUDE).setValue(location.getLongitude());
+        }
 
         //auto-moving the camera
         /*if(!showReserve) {
