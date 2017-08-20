@@ -19,6 +19,7 @@ import com.xplore.groups.view.controls.InvitedControls
 import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
+import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.MapActivity
 import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
@@ -174,7 +175,7 @@ class GroupInfoActivity : Activity() {
             //Destination image
             Picasso.with(this).load(currentGroup.group_image_url).into(reserveImageView)
             reserveCardView.setOnClickListener {
-                startActivity(MapActivity.getStartIntent(this, true, currentGroup.name,
+                startActivity(GroupMapActivity.getStartIntent(this, true, currentGroup.name,
                         currentGroup.destination_latitude, currentGroup.destination_longitude))
             }
 
@@ -354,12 +355,9 @@ class GroupInfoActivity : Activity() {
                             putUserMarker(locations, it.key)
                         }
                     }
-                    startActivity(MapActivity.getStartIntent(applicationContext,
-                            true,
-                            currentGroup.name,
-                            currentGroup.destination_latitude,
-                            currentGroup.destination_longitude,
-                            groupId)
+                    startActivity(GroupMapActivity.getStartIntent(applicationContext, false,
+                            groupId, currentGroup.name, currentGroup.destination_latitude,
+                            currentGroup.destination_longitude)
                     )
                     //Create hashmap of markers with keys as uids and values as 'locat ion objects'
                     //Location object has lat, lng, displayName, and color hue

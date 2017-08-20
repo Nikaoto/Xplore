@@ -320,8 +320,8 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.nav_map : {
                 //startActivity(MapActivity.getStartIntent(this, false));
-                //startActivity(new Intent(this, BaseMapActivity.class));
-                startActivity(new Intent(this, GroupMapActivity.class));
+                startActivity(new Intent(this, BaseMapActivity.class));
+                //startActivity(new Intent(this, GroupMapActivity.class));
                 break;
             }
             case R.id.nav_my_groups : {

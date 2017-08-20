@@ -10,12 +10,14 @@ import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.MenuItem
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.xplore.R
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 
 /**
@@ -23,10 +25,11 @@ import com.google.android.gms.maps.SupportMapFragment
  * TODO write description of this class - what it does and why.
  */
 
-open class BaseMapActivity : AppCompatActivity() {
+open class BaseMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val TAG = "bmap"
 
+    open val ZOOM_AMOUNT = 15
     open val UPDATE_INTERVAL = 5000L
     open val FASTEST_UPDATE_INTERVAL = 1000L
     open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -58,22 +61,24 @@ open class BaseMapActivity : AppCompatActivity() {
 
     private fun initMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-        mapFragment.getMapAsync{ googleMap ->
-            googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        mapFragment.getMapAsync(this)
+    }
 
-            if (checkPermissions()) {
-                startLocationUpdates()
-                googleMap.isMyLocationEnabled = true
-                googleMap.setOnMyLocationButtonClickListener {
-                    if (!checkPermissions()) {
-                        requestPermissions()
-                    }
-                    checkLocationEnabled()
-                    false
+    override fun onMapReady(googleMap: GoogleMap) {
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+
+        if (checkPermissions()) {
+            startLocationUpdates()
+            googleMap.isMyLocationEnabled = true
+            googleMap.setOnMyLocationButtonClickListener {
+                if (!checkPermissions()) {
+                    requestPermissions()
                 }
-            } else {
-                requestPermissions()
+                checkLocationEnabled()
+                false
             }
+        } else {
+            requestPermissions()
         }
     }
 
@@ -205,6 +210,11 @@ open class BaseMapActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
     private fun stopLocationUpdates() {

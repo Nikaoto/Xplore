@@ -2,10 +2,13 @@ package com.xplore.maps
 
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -22,7 +25,7 @@ class GroupMapActivity : BaseMapActivity() {
 
     private val TAG = "gmtag"
 
-    private val groupId: String by lazy { intent.getStringExtra("groupId") }
+    private val groupId: String? by lazy { intent.getStringExtra("groupId") }
 
     //Firebase
     private val F_GROUPS = "groups"
@@ -39,25 +42,25 @@ class GroupMapActivity : BaseMapActivity() {
     }
 
     companion object {
+        //When opening reserve
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String, destinationName: String,
-                           destinationLng: Double, destinationLat: Double): Intent {
-            return Intent(context, BaseMapActivity::class.java)
-                    .putExtra("groupId", groupId)
+        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
+                           destinationLat: Double, destinationLng: Double): Intent {
+            return Intent(context, GroupMapActivity::class.java)
+                    .putExtra("zoomToDestination", zoomToDestination)
                     .putExtra("destinationName", destinationName)
                     .putExtra("destinationLat", destinationLat)
                     .putExtra("destinationLng", destinationLng)
         }
-    }
 
-    override val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult?.let {
-                super.onLocationResult(locationResult)
-
-                Log.i(TAG, "lat = ${locationResult.lastLocation.latitude}")
-                Log.i(TAG, "lng = ${locationResult.lastLocation.longitude}")
-            }
+        //When opening group
+        @JvmStatic
+        fun getStartIntent(context: Context, zoomToDestination: Boolean, groupId: String,
+                           destinationName: String, destinationLat: Double,
+                           destinationLng: Double): Intent {
+            return getStartIntent(context, zoomToDestination, destinationName, destinationLat,
+                    destinationLng)
+                    .putExtra("groupId", groupId)
         }
     }
 
@@ -74,5 +77,33 @@ class GroupMapActivity : BaseMapActivity() {
         markerOptions.title(intent.getStringExtra("destinationName"))
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
         return markerOptions
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        super.onMapReady(googleMap)
+        googleMap.addMarker(buildDestinationMarker())
+
+        if (intent.getBooleanExtra("zoomToDestination", false)) {
+            //Move camera to destination
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
+                    LatLng(intent.getDoubleExtra("destinationLat", 0.0),
+                            intent.getDoubleExtra("destinationLng", 0.0))))
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT.toFloat()))
+        }
+    }
+
+    override val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            locationResult?.let {
+                super.onLocationResult(locationResult)
+
+                uploadLocation(locationResult.lastLocation)
+            }
+        }
+    }
+
+    private fun uploadLocation(location: Location) {
+        currentUserLocationRef.child(F_LATITUDE).setValue(location.latitude)
+        currentUserLocationRef.child(F_LONGITUDE).setValue(location.longitude)
     }
 }
