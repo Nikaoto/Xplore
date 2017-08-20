@@ -20,7 +20,7 @@ import com.xplore.General
 
 class GroupMapActivity : BaseMapActivity() {
 
-    private val TAG = "groupmap"
+    private val TAG = "gmtag"
 
     private val groupId: String by lazy { intent.getStringExtra("groupId") }
 

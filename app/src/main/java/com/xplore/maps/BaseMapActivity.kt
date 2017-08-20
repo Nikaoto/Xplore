@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
 
 open class BaseMapActivity : AppCompatActivity() {
 
-    private val TAG = "basemaps"
+    private val TAG = "bmap"
 
     private val UPDATE_INTERVAL = 5000L
     private val FASTEST_UPDATE_INTERVAL = 1000L
@@ -74,6 +74,7 @@ open class BaseMapActivity : AppCompatActivity() {
             googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
             if (checkPermissions()) {
+                startLocationUpdates()
                 googleMap.isMyLocationEnabled = true
                 googleMap.setOnMyLocationButtonClickListener {
                     if (!checkPermissions()) {
@@ -219,9 +220,14 @@ open class BaseMapActivity : AppCompatActivity() {
     }
 
     private fun stopLocationUpdates() {
+        Log.i(TAG, "stopLocationUpdates()")
         if (updatingLocation) {
+            Log.i(TAG, "stopping loc updates")
+
             fusedLocationClient.removeLocationUpdates(locationCallback)
-                    .addOnCompleteListener { updatingLocation = false }
+                    .addOnCompleteListener { updatingLocation = false
+                        Log.i(TAG, "stopped loc updates")
+                    }
         }
     }
 
@@ -232,10 +238,15 @@ open class BaseMapActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        stopLocationUpdates()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
-        stopLocationUpdates()
         destroyMap()
     }
 
