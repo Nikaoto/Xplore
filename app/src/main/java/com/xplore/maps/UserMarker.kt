@@ -18,6 +18,5 @@ class UserMarker (var name: String = "",
         this.longitude = lng
     }
 
-    fun setLocation(loc: LatLng) = setLocation(loc.latitude, loc.longitude)
     fun getLocation() = LatLng(latitude, longitude)
 }

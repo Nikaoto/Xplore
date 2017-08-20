@@ -47,9 +47,8 @@ import com.google.maps.android.kml.KmlLayer;
 import com.xplore.General;
 import com.xplore.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
 
 /*
 * Created by Nikaoto
@@ -78,6 +77,7 @@ public class MapActivity extends AppCompatActivity
     private DatabaseReference currentGroupRef;
     private DatabaseReference groupLocationsRef;
     private DatabaseReference currentLocationRef;
+    private HashMap<String, ChildEventListener> listenerMap = new HashMap<>();
 
     //Meant for realtime hiking tracking
     private boolean uploadingLocation = false;
@@ -352,9 +352,68 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    for (DataSnapshot markerSnapshot
+                    for (final DataSnapshot markerSnapshot
                             : dataSnapshot.child(F_LOCATIONS).getChildren()) {
-                        startListening(markerSnapshot);
+
+                        final String key = markerSnapshot.getKey();
+
+                        //Sends location data to firebase if current user
+                        if (key.equals(General.currentUserId) && lastLocation != null) {
+                            Log.i("brejk", "currentuser");
+                            uploadingLocation = true;
+                            //Get data from server
+                            UserMarker marker = markerSnapshot.getValue(UserMarker.class);
+                            //Update data
+                            UserMarker newMarker = new UserMarker(marker.getName(), lastLocation.getLatitude(),
+                                    lastLocation.getLongitude(), marker.getHue());
+                            //Upload updated data
+                            currentLocationRef.setValue(newMarker);
+                        } else {
+                            //Starts listening to others' locations
+                            final UserMarker marker = markerSnapshot.getValue(UserMarker.class);
+                            //Creating listener
+                            ChildEventListener listener = new ChildEventListener() {
+                                //Updates the markers on map according to the data on the server
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                    if (dataSnapshot != null) {
+                                        Log.i("brejk", "other user is moving around");
+                                        UserMarker newMarker
+                                                = markerSnapshot.getValue(UserMarker.class);
+                                        //userMarkers.get(key).setLocation(newMarker.getLocation());
+                                        mapMarkers.get(key).setPosition(newMarker.getLocation());
+                                    }
+                                }
+
+                                //This happens only once; Creates markers on map and saves them
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    MarkerOptions mo = new MarkerOptions();
+                                    mo.title(marker.getName());
+                                    mo.position(new LatLng(marker.getLatitude(), marker.getLongitude()));
+                                    mo.icon(BitmapDescriptorFactory.defaultMarker(marker.getHue()));
+
+    /*                            UserMarker newMarker = new UserMarker(marker.getName(),
+                                        marker.getLatitude(), marker.getLongitude(), marker.getHue());*/
+                                    //Adding Marker to list
+                                    //userMarkers.put(key, newMarker);
+                                    mapMarkers.put(key, googleMap.addMarker(mo));
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            };
+                            startListeningFormMeberLocation(key, listener);
+                        }
                     }
                 }
             }
@@ -364,60 +423,18 @@ public class MapActivity extends AppCompatActivity
         });
     }
 
-    //This only happens once (starts listening once that is)
-    private void startListening(final DataSnapshot markerSnapshot) {
-        Log.i("brejk", "startlistening");
-        final String key = markerSnapshot.getKey();
-        //Sends location data to firebase
-        if (key.equals(General.currentUserId) && lastLocation != null) {
-            Log.i("brejk", "currentuser");
-            uploadingLocation = true;
-            //Get data from server
-            UserMarker marker = markerSnapshot.getValue(UserMarker.class);
-            //Update data
-            UserMarker newMarker = new UserMarker(marker.getName(), lastLocation.getLatitude(),
-                    lastLocation.getLongitude(), marker.getHue());
-            //Upload updated data
-            currentLocationRef.setValue(newMarker);
-        } else {
-            final UserMarker marker = markerSnapshot.getValue(UserMarker.class);
-            groupLocationsRef.child(key).addChildEventListener(
-                    new ChildEventListener() {
-                        //Updates the markers on map according to the data on the server
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            if (dataSnapshot != null) {
-                                Log.i("brejk", "other user is moving around");
-                                UserMarker newMarker = markerSnapshot.getValue(UserMarker.class);
-                                //userMarkers.get(key).setLocation(newMarker.getLocation());
-                                mapMarkers.get(key).setPosition(newMarker.getLocation());
-                            }
-                        }
+    //Adds listener to map
+    private void startListeningFormMeberLocation(String key, ChildEventListener listener) {
+        listenerMap.put(key, listener);
+        groupLocationsRef.child(key).addChildEventListener(listenerMap.get(key));
+    }
 
-                        //This happens only once; Creates markers on map and saves the objects
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            MarkerOptions mo = new MarkerOptions();
-                            mo.title(marker.getName());
-                            mo.position(new LatLng(marker.getLatitude(), marker.getLongitude()));
-                            mo.icon(BitmapDescriptorFactory.defaultMarker(marker.getHue()));
-
-/*                            UserMarker newMarker = new UserMarker(marker.getName(),
-                                    marker.getLatitude(), marker.getLongitude(), marker.getHue());*/
-                            //Adding Marker to list
-                            //userMarkers.put(key, newMarker);
-                            mapMarkers.put(key, googleMap.addMarker(mo));
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    });
+    //Removes every listener from listener map
+    private void stopListeningForAllMemberLocations() {
+        if (listenerMap.size() > 0) {
+            for (Map.Entry<String, ChildEventListener> entry : listenerMap.entrySet()) {
+                groupLocationsRef.child(entry.getKey()).removeEventListener(entry.getValue());
+            }
         }
     }
 
@@ -564,6 +581,12 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         createNetErrorDialog();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopListeningForAllMemberLocations();
     }
 
     @Override

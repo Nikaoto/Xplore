@@ -48,7 +48,6 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
     init {
         TimeManager.refreshGlobalTimeStamp()
-        dbManager.openDataBase()
 
         val prefix = activity.resources.getString(R.string.group_card_start_date_prefix)
         if (prefix.isNotEmpty()) {
@@ -90,6 +89,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
     }
 
     override fun onBindViewHolder(holder: ResultsViewHolder, position: Int) {
+        dbManager.openDataBase()
         val group = groupCards[position]
 
         //Leader layout
@@ -163,9 +163,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
             holder.duration.text = "$durationInDays ${activity.resources.getString(R.string.duration_days)}"
         }
 
-        if (position == groupCards.size -1) {
-            dbManager.close()
-        }
+        dbManager.close()
     }
 
     fun TextView.setText(s: String, limitChars: Int) {
