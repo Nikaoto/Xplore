@@ -47,8 +47,6 @@ open class BaseMapActivity : AppCompatActivity() {
     //Location
     private lateinit var currentLocation: Location
     private var updatingLocation = false
-    private var listeningForGroupLocation = false
-    private var sendingLocationToGroup = false
     private val locationRequest: LocationRequest by lazy { createLocationRequest() }
     private val locationSettingsRequest: LocationSettingsRequest by lazy {
         buildLocationSettingsRequest()
@@ -62,36 +60,11 @@ open class BaseMapActivity : AppCompatActivity() {
         LocationServices.getSettingsClient(this)
     }
 
-    //Firebase
-    private val F_GROUPS = "groups"
-    private val F_LOCATIONS = "locations"
-    private val F_LATITUDE = "latitude"
-    private val F_LONGITUDE = "longitude"
-    private lateinit var currentGroupRef: DatabaseReference
-    private lateinit var groupLocationsRef: DatabaseReference
-    private lateinit var currentUserLocationRef: DatabaseReference
-
-    private lateinit var groupId: String
-
-    companion object {
-        @JvmStatic
-        fun getStartIntent(context: Context, groupId: String, destinationName: String,
-                           destinationLng: Double, destinationLat: Double): Intent {
-            return Intent(context, BaseMapActivity::class.java)
-                    .putExtra("groupId", groupId)
-                    .putExtra("destinationName", destinationName)
-                    .putExtra("destinationLat", destinationLat)
-                    .putExtra("destinationLng", destinationLng)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //buildDestinationMarker()
-        //startListeningForGroupLocations()
         initMap()
     }
 
@@ -115,26 +88,6 @@ open class BaseMapActivity : AppCompatActivity() {
         }
     }
 
-    private fun initFirebaseReferences() {
-        groupId = intent.getStringExtra("groupId")
-
-        //Set firebase references
-        currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS/$groupId")
-        groupLocationsRef = currentGroupRef.child(F_LOCATIONS)
-        currentUserLocationRef = groupLocationsRef.child(General.currentUserId)
-
-    }
-
-    private fun buildDestinationMarker(): MarkerOptions {
-        val pos = LatLng(intent.getDoubleExtra("destinationLat", 0.0),
-                intent.getDoubleExtra("destinationLng", 0.0))
-        val markerOptions = MarkerOptions()
-        markerOptions.position(pos)
-        markerOptions.title(intent.getStringExtra("destinationName"))
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-        return markerOptions
-    }
-
     private fun createLocationRequest(): LocationRequest {
         val temp = LocationRequest()
         temp.interval = UPDATE_INTERVAL
@@ -149,22 +102,13 @@ open class BaseMapActivity : AppCompatActivity() {
         return builder.build()
     }
 
-    private val locationCallback = object : LocationCallback() {
+    open val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult?.let {
                 super.onLocationResult(locationResult)
-
-                currentLocation = locationResult.lastLocation
-                sendLocationData()
             }
-
         }
     }
-
-    private fun sendLocationData() {
-
-    }
-
 
     override fun onResume() {
         super.onResume()

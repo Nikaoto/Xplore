@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
 import com.xplore.maps.BaseMapActivity;
+import com.xplore.maps.GroupMapActivity;
 import com.xplore.maps.MapActivity;
 import com.xplore.notifications.BadgeDrawerArrowDrawable;
 import com.xplore.notifications.NotificationManager;
