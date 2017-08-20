@@ -2,11 +2,9 @@ package com.xplore.maps
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
@@ -15,19 +13,10 @@ import android.util.Log
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.xplore.General
 import com.xplore.R
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.SupportMapFragment
-import kotlinx.android.synthetic.main.activity_maps.*
-
 
 /**
  * Created by Nika on 8/20/2017.
@@ -38,14 +27,13 @@ open class BaseMapActivity : AppCompatActivity() {
 
     private val TAG = "bmap"
 
-    private val UPDATE_INTERVAL = 5000L
-    private val FASTEST_UPDATE_INTERVAL = 1000L
-    private val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
-    private val REQUEST_PERMISSION_REQ_CODE = 1
-    private val REQUEST_CHECK_SETTINGS = 0x1
+    open val UPDATE_INTERVAL = 5000L
+    open val FASTEST_UPDATE_INTERVAL = 1000L
+    open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
+    open val REQUEST_PERMISSION_REQ_CODE = 1
+    open val REQUEST_CHECK_SETTINGS = 0x1
 
     //Location
-    private lateinit var currentLocation: Location
     private var updatingLocation = false
     private val locationRequest: LocationRequest by lazy { createLocationRequest() }
     private val locationSettingsRequest: LocationSettingsRequest by lazy {
@@ -238,15 +226,10 @@ open class BaseMapActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        stopLocationUpdates()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
+        stopLocationUpdates()
         destroyMap()
     }
 
