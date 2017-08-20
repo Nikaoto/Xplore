@@ -45,46 +45,27 @@
             </intent-filter>
         </activity>
 
+        <!-- Maps -->
         <activity android:name=".maps.BaseMapActivity"
+            android:label="@string/activity_maps_title"/>
+        <activity android:name=".maps.GroupMapActivity"
             android:label="@string/activity_maps_title"/>
         <activity
             android:name=".maps.MapActivity"
             android:label="@string/activity_maps_title" />
-        <activity
-            android:name=".reserve.ReserveInfoActivity"
+
+        <!-- Reserves -->
+        <activity android:name=".reserve.ReserveInfoActivity"
             android:label="@string/activity_library_title"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".groups.view.GroupInfoActivity"
+
+        <!-- Groups -->
+        <activity android:name=".groups.view.GroupInfoActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".groups.discussion.DiscussionActivity"/>
-        <activity
-            android:name=".groups.create.SearchDestinationActivity"
-            android:label="@string/activity_choose_destination_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".groups.create.SearchUsersActivity"
-            android:label="@string/activity_search_users_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".account.GoogleSignInActivity"
-            android:label="@string/activity_authorization_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".account.RegisterActivity"
-            android:label="@string/activity_register_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity
-            android:name=".user.UserProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".groups.create.CreateGroupActivity"
+        <activity android:name=".groups.create.CreateGroupActivity"
             android:label="@string/activity_create_group_title"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".groups.create.EditGroupActivity"
+        <activity android:name=".groups.create.EditGroupActivity"
             android:label="@string/edit_group"
             android:screenOrientation="portrait"/>
         <activity android:name=".groups.view.controls.InviteMembersActivity"
@@ -94,11 +75,33 @@
             android:label="Manage Requests"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".settings.SettingsActivity"
+        <activity android:name=".groups.discussion.DiscussionActivity"/>
+
+        <!-- Search -->
+        <activity android:name=".groups.create.SearchDestinationActivity"
+            android:label="@string/activity_choose_destination_title"
+            android:screenOrientation="portrait" />
+        <activity android:name=".groups.create.SearchUsersActivity"
+            android:label="@string/activity_search_users_title"
+            android:screenOrientation="portrait" />
+
+        <!-- User Controls-->
+        <activity android:name=".account.GoogleSignInActivity"
+            android:label="@string/activity_authorization_title"
+            android:screenOrientation="portrait" />
+        <activity android:name=".account.RegisterActivity"
+            android:label="@string/activity_register_title"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
+        <!-- User Profile -->
+        <activity android:name=".user.UserProfileActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- Settings -->
+        <activity android:name=".settings.SettingsActivity"
             android:label="@string/settings_title" />
-        <activity
-            android:name=".settings.LanguageSettingsActivity"
+        <activity android:name=".settings.LanguageSettingsActivity"
             android:label="@string/settings_language_title"/>
 
         <meta-data

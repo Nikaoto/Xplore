@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
  * TODO write description of this class - what it does and why.
  */
 
-class BaseMapActivity : AppCompatActivity() {
+open class BaseMapActivity : AppCompatActivity() {
 
     private val TAG = "basemaps"
 
