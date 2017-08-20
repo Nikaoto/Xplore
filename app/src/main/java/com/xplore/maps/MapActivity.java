@@ -62,7 +62,8 @@ import java.util.Map;
 */
 
 public class MapActivity extends AppCompatActivity
-        implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
+        implements OnMapReadyCallback, ConnectionCallbacks, LocationListener,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final int ZOOM_AMOUNT = 15;
     private static final int REQUEST_LOCATION_CODE = 1140;
@@ -214,7 +215,7 @@ public class MapActivity extends AppCompatActivity
 
         //Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
     }
 
@@ -250,12 +251,10 @@ public class MapActivity extends AppCompatActivity
         }
 
         //Start location updates
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                buildGoogleApiClient();
-                googleMap.setMyLocationEnabled(true);
-            }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            buildGoogleApiClient();
+            googleMap.setMyLocationEnabled(true);
         } else {
             buildGoogleApiClient();
             googleMap.setMyLocationEnabled(true);
@@ -357,17 +356,21 @@ public class MapActivity extends AppCompatActivity
 
                         final String key = markerSnapshot.getKey();
 
+                        Log.i("brejk", "key="+key);
                         //Sends location data to firebase if current user
-                        if (key.equals(General.currentUserId) && lastLocation != null) {
-                            Log.i("brejk", "currentuser");
-                            uploadingLocation = true;
-                            //Get data from server
-                            UserMarker marker = markerSnapshot.getValue(UserMarker.class);
-                            //Update data
-                            UserMarker newMarker = new UserMarker(marker.getName(), lastLocation.getLatitude(),
-                                    lastLocation.getLongitude(), marker.getHue());
-                            //Upload updated data
-                            currentLocationRef.setValue(newMarker);
+                        if (key.equals(General.currentUserId)) {
+                            if (lastLocation != null) {
+                                Log.i("brejk", "currentuser");
+                                uploadingLocation = true;
+                                //Get data from server
+                                UserMarker marker = markerSnapshot.getValue(UserMarker.class);
+                                //Update data
+                                UserMarker newMarker = new UserMarker(marker.getName(),
+                                        lastLocation.getLatitude(), lastLocation.getLongitude(),
+                                        marker.getHue());
+                                //Upload updated data
+                                currentLocationRef.setValue(newMarker);
+                            }
                         } else {
                             //Starts listening to others' locations
                             final UserMarker marker = markerSnapshot.getValue(UserMarker.class);
@@ -494,8 +497,11 @@ public class MapActivity extends AppCompatActivity
         //TODO let user choose BALANCED POWER ACCURACY or HIGH ACURRACY
 
         if (googleApiClient.isConnected()){
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.FusedLocationApi
+                        .requestLocationUpdates(googleApiClient, locationRequest, this, null);
+            }
 
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         }
@@ -594,7 +600,7 @@ public class MapActivity extends AppCompatActivity
         if (destinationMarker != null) {
             destinationMarker.remove();
         }
-        Fragment f = getFragmentManager().findFragmentById(R.id.map);
+        Fragment f = getFragmentManager().findFragmentById(R.id.mapFragment);
         if (f != null) {
             getFragmentManager().beginTransaction().remove(f).commit();
         }

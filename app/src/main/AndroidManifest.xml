@@ -45,6 +45,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".maps.BaseMapActivity"
+            android:label="@string/activity_maps_title"/>
         <activity
             android:name=".maps.MapActivity"
             android:label="@string/activity_maps_title" />

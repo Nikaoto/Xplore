@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
+import com.xplore.maps.BaseMapActivity;
 import com.xplore.maps.MapActivity;
 import com.xplore.notifications.BadgeDrawerArrowDrawable;
 import com.xplore.notifications.NotificationManager;
@@ -317,7 +318,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_map : {
-                startActivity(MapActivity.getStartIntent(this, false));
+                //startActivity(MapActivity.getStartIntent(this, false));
+                startActivity(new Intent(this, BaseMapActivity.class));
                 break;
             }
             case R.id.nav_my_groups : {
