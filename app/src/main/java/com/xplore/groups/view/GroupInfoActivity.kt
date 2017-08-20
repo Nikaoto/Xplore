@@ -99,22 +99,24 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun configureControls(group: Group) {
-        //Conf depending on viewer type
-        if (group.leaderId == General.currentUserId) {
-            configureLeaderControls()
-        } else if(group.getMember_ids().contains(General.currentUserId)) {
-            configureMemberControls()
-        } else if (group.getInvited_member_ids() != null
-                && group.getInvited_member_ids().get(General.currentUserId) != null) {
-            if (group.getInvited_member_ids().get(General.currentUserId) == true) {
-                //Invited to group
-                configureInvitedControls()
-            } else if (group.getInvited_member_ids().get(General.currentUserId) == false) {
-                //Sent join request to group
-                configureOutsiderControls(true)
+        if (this@GroupInfoActivity != null) {
+            //Conf depending on viewer type
+            if (group.leaderId == General.currentUserId) {
+                configureLeaderControls()
+            } else if (group.getMember_ids().contains(General.currentUserId)) {
+                configureMemberControls()
+            } else if (group.getInvited_member_ids() != null
+                    && group.getInvited_member_ids().get(General.currentUserId) != null) {
+                if (group.getInvited_member_ids().get(General.currentUserId) == true) {
+                    //Invited to group
+                    configureInvitedControls()
+                } else if (group.getInvited_member_ids().get(General.currentUserId) == false) {
+                    //Sent join request to group
+                    configureOutsiderControls(true)
+                }
+            } else {
+                configureOutsiderControls()
             }
-        } else {
-            configureOutsiderControls()
         }
     }
 

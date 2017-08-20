@@ -11,9 +11,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.xplore.General
 
 /**
@@ -23,7 +23,12 @@ import com.xplore.General
 
 class GroupMapActivity : BaseMapActivity() {
 
-    private val TAG = "gmtag"
+    private val TAG = "gmap"
+
+    //Markers for member tracking
+    private val mapMarkers = HashMap<String, Marker>()
+    //Holds references to each members' location so we can disable them OnDestroy()
+    private val listenerMap = HashMap<String, ChildEventListener>()
 
     private val groupId: String? by lazy { intent.getStringExtra("groupId") }
 
@@ -66,7 +71,6 @@ class GroupMapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     private fun buildDestinationMarker(): MarkerOptions {
@@ -90,6 +94,10 @@ class GroupMapActivity : BaseMapActivity() {
                             intent.getDoubleExtra("destinationLng", 0.0))))
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT.toFloat()))
         }
+
+        if (groupId != null) {
+            startListeningForGroupLocations(googleMap)
+        }
     }
 
     override val locationCallback = object : LocationCallback() {
@@ -105,5 +113,90 @@ class GroupMapActivity : BaseMapActivity() {
     private fun uploadLocation(location: Location) {
         currentUserLocationRef.child(F_LATITUDE).setValue(location.latitude)
         currentUserLocationRef.child(F_LONGITUDE).setValue(location.longitude)
+    }
+
+    //Sets up listeners for member locations
+    private fun startListeningForGroupLocations(googleMap: GoogleMap) {
+        groupLocationsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    for (markerSnapshot in it.children) {
+                        val key = markerSnapshot.key
+
+                        if (key != General.currentUserId) {
+                            val marker = markerSnapshot.getValue(UserMarker::class.java)
+
+                            if (marker != null) {
+                                val listener = object : ChildEventListener {
+                                    //Creates new UserMarker from data and puts it into the hashmap
+                                    override fun onChildAdded(data: DataSnapshot?, p1: String?) {
+                                        Log.i(TAG, "added child")
+                                            val mo = MarkerOptions()
+                                            mo.title(marker.name)
+                                            mo.position(LatLng(marker.latitude, marker.longitude))
+                                            mo.icon(BitmapDescriptorFactory.defaultMarker(marker.hue))
+                                        if (!mapMarkers.containsKey(key)) {
+                                            mapMarkers.put(key, googleMap.addMarker(mo))
+                                        } else {
+                                            mapMarkers[key]?.position = mo.position
+                                        }
+                                    }
+
+                                    //Updates markers when data changes
+                                    override fun onChildChanged(data: DataSnapshot?, p1: String?) {
+                                        data?.let {
+                                            it.value?.let {
+                                                if (it is Double) {
+                                                    if (data.key == F_LATITUDE) {
+                                                        val lng = mapMarkers[key]?.position?.longitude
+                                                        mapMarkers[key]?.position= LatLng(it, lng!!)
+                                                    } else if (data.key == F_LONGITUDE) {
+                                                        val lat = mapMarkers[key]?.position?.latitude
+                                                        mapMarkers[key]?.position= LatLng(lat!!, it)
+                                                    }
+                                                } else if (it is UserMarker) {
+                                                    mapMarkers[key]?.position = it.getLocation()
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+
+                                    override fun onCancelled(p0: DatabaseError?) {}
+
+                                    override fun onChildRemoved(p0: DataSnapshot?) {}
+                                }
+                                startListeningForMemberLocation(key, listener)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
+    }
+
+    private fun startListeningForMemberLocation(uId: String, listener: ChildEventListener) {
+        listenerMap.put(uId, listener)
+        groupLocationsRef.child(uId).addChildEventListener(listenerMap[uId])
+        /*TODO this^:
+         looks dumb and probably is dumb, but needs testing to confirm that in
+         OnDestroy() the correct listeners are removed (referenced from the map and not the method
+         argument) */
+    }
+
+    private fun stopListeningForMemberLocations() {
+        if (listenerMap.isNotEmpty()) {
+            for (entry in listenerMap) {
+                groupLocationsRef.child(entry.key).removeEventListener(entry.value)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopListeningForMemberLocations()
     }
 }
