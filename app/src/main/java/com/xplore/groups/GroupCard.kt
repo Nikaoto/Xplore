@@ -43,5 +43,3 @@ data class GroupCard(
     //Gets duration of the trip in days
     fun getDurationInDays() = General.getDateDiffInDays(start_date, end_date)
 }
-
-//TODO remove reserveImageId

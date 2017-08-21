@@ -150,5 +150,27 @@
     <string name="error">Произошла ошибка</string>
     <string name="open_discussion">Открыть Дискуссию</string>
     <string name="see_on_map">Посмотреть на карте</string>
+    <string name="to_remove">Удалить</string>
+    <string name="remove_member_question">Хотите ли вы удалить этого участника из группы?</string>
+    <string name="logged_in">Авторизация совершенно</string>
+    <string name="take_picture_from">Возьмите фото из...</string>
+    <string name="gallery">Галерея</string>
+    <string name="camera">Камера</string>
+    <string name="fail_profile_picture_upload">Не удалось загрузить фотографию, попробуйте еще раз.</string>
+    <string name="you_must_be_at_least">Вам должно быть не менее</string>
+    <string name="years_to_use_xplore">лет, чтобы использовать Xplore</string>
+    <string name="group_created">Группа создан!</string>
+    <string name="fix_start_end_times">Пожалуйста исправьте время начала и окончания</string>
+    <string name="sent_requests">Отправленные Запросы</string>
+    <string name="received_requests">Полученные Запросы</string>
+    <string name="invitations_sent">Приглашения отправлены!</string>
+    <string name="delete_group_question">Вы действительно хотите удалить эту группу?</string>
+    <string name="leave_group_question">Вы уверены, что хотите покинуть эту группу?</string>
+    <string name="group_left">Вы покинули группу</string>
+    <string name="request_accepted">Ваш запрос принят!</string>
+    <string name="remove_members_long_press">(Нажмите и удерживайте элементы чтобы удалить их)</string>
+    <string name="log_in_dialog">Пожалуйста, войдите или зарегистрируйтесь, чтобы использовать эту функцию</string>
+    <string name="logged_out">Вы вышли из системы</string>
+    <string name="sign_in_slash_register">Вход / Регистрация</string>
     <!-- -->
 </resources>

@@ -41,8 +41,6 @@ class MemberControls : Fragment() {
     //
     private lateinit var groupId: String
 
-    //TODO add discussion
-
     companion object {
         @JvmStatic
         fun newInstance(currentGroupId: String): MemberControls {
@@ -81,11 +79,10 @@ class MemberControls : Fragment() {
 
     private fun popLeaveGroupConfirmationDialog() {
         val builder = AlertDialog.Builder(activity)
-        //TODO string resources
-        builder.setTitle("Leave Group?")
-                .setMessage("Are you sure you want to leave this group?")
-                .setPositiveButton("Yes", { _, _ -> leaveGroup() })
-                .setNegativeButton("No", null)
+        builder.setTitle(activity.resources.getString(R.string.leave_group) + "?")
+                .setMessage(R.string.leave_group_question)
+                .setPositiveButton(R.string.yes, { _, _ -> leaveGroup() })
+                .setNegativeButton(R.string.no, null)
         builder.show()
     }
 
@@ -94,8 +91,7 @@ class MemberControls : Fragment() {
         currentGroupRef.child(FIREBASE_TAG_MEMBER_IDS).child(General.currentUserId).removeValue()
         //Removing groupId from user
         currentUserRef.child(FIREBASE_TAG_GROUP_IDS).child(groupId).removeValue()
-        //TODO string resources
-        Toast.makeText(activity, "You have left the group", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, R.string.group_left, Toast.LENGTH_SHORT).show()
         refresh()
     }
 

@@ -152,5 +152,27 @@
     <string name="error">Error</string>
     <string name="open_discussion">Open Discussion</string>
     <string name="see_on_map">See trip on map</string>
+    <string name="to_remove">Remove</string>
+    <string name="remove_member_question">Do you wish to remove this member from your group?</string>
+    <string name="logged_in">Logged In</string>
+    <string name="take_picture_from">Take picture from...</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="fail_profile_picture_upload">Failed to upload profile picture, please try again</string>
+    <string name="you_must_be_at_least">You must be at least</string>
+    <string name="years_to_use_xplore">years old to use Xplore.</string>
+    <string name="group_created">Group created!</string>
+    <string name="fix_start_end_times">Please fix the start and end times</string>
+    <string name="sent_requests">Sent Requests</string>
+    <string name="received_requests">Received Requests</string>
+    <string name="invitations_sent">Invitations sent!</string>
+    <string name="delete_group_question">Are you sure you want to delete this group?</string>
+    <string name="leave_group_question">Are you sure you want to leave this group?</string>
+    <string name="group_left">You have left the group</string>
+    <string name="request_accepted">Your request has been accepted!</string>
+    <string name="remove_members_long_press">(Press and hold members to remove them)</string>
+    <string name="log_in_dialog">Please Log in or Register to use this function</string>
+    <string name="logged_out">Logged Out</string>
+    <string name="sign_in_slash_register">Sign In / Register</string>
     <!-- -->
 </resources>

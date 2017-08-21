@@ -65,7 +65,7 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
     val authority = "com.xplore.fileprovider"
 
     //TODO add age restriction constant to resources
-    private val ageRestriction: Int = 16
+    private val ageRestriction: Int = 15
     private var bYear: Int = 0
     private var bMonth: Int = 0
     private var bDay: Int = 0
@@ -126,10 +126,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
         }
 
         profileImageView.setOnClickListener {
-            //TODO string resources
-            val dialog = AlertDialog.Builder(this).setTitle("Take picture from..")
-                    .setNegativeButton("Camera", takeFromCamera)
-                    .setPositiveButton("Gallery", takeFromGallery)
+            val dialog = AlertDialog.Builder(this).setTitle(R.string.take_picture_from)
+                    .setNegativeButton(R.string.camera, takeFromCamera)
+                    .setPositiveButton(R.string.gallery, takeFromGallery)
                     .setNeutralButton(R.string.cancel, null)
                     .create()
             dialog.show()
@@ -160,9 +159,8 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
                         addUserEntryToDataBase(user)
                 }
                 .addOnFailureListener {
-                    //TODO string resources
-                    Toast.makeText(this, "Failed to upload profile picture, please try again",
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.fail_profile_picture_upload, Toast.LENGTH_SHORT)
+                            .show()
                 }
     }
 
@@ -181,9 +179,9 @@ class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
                 bdateTextView.text = "$bYear/${addZero(bMonth)}/${addZero(bDay)}"
             } else {
-                //TODO string resources
-                Toast.makeText(this@RegisterActivity,
-                        "You must be at least $ageRestriction years old to use Xplore",
+                val res = this@RegisterActivity.resources
+                Toast.makeText(this@RegisterActivity, res.getString(R.string.you_must_be_at_least) +
+                        " " + ageRestriction + " " + res.getString(R.string.years_to_use_xplore),
                         Toast.LENGTH_SHORT).show()
             }
         } else

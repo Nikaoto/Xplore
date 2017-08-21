@@ -204,9 +204,7 @@ class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
 
     //Prints error and backs out
     private fun printError() {
-        //TODO string resources
-        Toast.makeText(applicationContext, "Error: Could not load group data",
-                Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
         onBackPressed()
     }
 
@@ -462,7 +460,7 @@ class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
                     .show()
             return false
         } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
-            builder.setMessage("Please fix the start and end times.") //TODO string resources
+            builder.setMessage(R.string.fix_start_end_times)
                     .show()
             return false
         } else if (currentGroup.group_preferences.length < G_PREFS_CHAR_MIN

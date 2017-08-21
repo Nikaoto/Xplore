@@ -174,7 +174,7 @@ open class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener 
                 uploadGroupData(key)
                 addLeaderToGroup(key)
                 sendInvites(key)
-                Toast.makeText(this, "The group has been created!", Toast.LENGTH_SHORT).show() //TODO string resources
+                Toast.makeText(this, R.string.group_created, Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -413,7 +413,7 @@ open class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener 
                     .show()
             return false
         } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
-            builder.setMessage("Please fix the start and end times.") //TODO string resources
+            builder.setMessage(R.string.fix_start_end_times)
                     .show()
             return false
         } else if (experienceAns == EXPERIENCE_ANS_DEFAULT) {

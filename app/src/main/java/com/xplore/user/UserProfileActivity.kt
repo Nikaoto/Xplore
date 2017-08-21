@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.user_profile.*
  *
  */
 
-//TODO open registration when not signed in
 class UserProfileActivity : AppCompatActivity() {
 
     private val userId: String by lazy { getPassedUserId() }
@@ -71,7 +70,6 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun displayUserInfo(user: User){
-        //TODO remove get after converting User class to kotlin
         //Removing small image from cache
         Picasso.with(this).invalidate(user.getProfile_picture_url())
         //Loading profile picture
@@ -93,8 +91,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     fun printError() {
-        Toast.makeText(this@UserProfileActivity, "User does not exist", Toast.LENGTH_SHORT).show()
-        //TODO String resources
+        Toast.makeText(this@UserProfileActivity, R.string.error, Toast.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

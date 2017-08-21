@@ -89,7 +89,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Toast.makeText(GoogleSignInActivity.this, "Logged In", Toast.LENGTH_SHORT).show(); //TODO string resources
+                    Toast.makeText(GoogleSignInActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
 
                     //User signed in
                     currentUserId = user.getUid();

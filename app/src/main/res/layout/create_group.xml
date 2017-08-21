@@ -304,9 +304,8 @@
 
             <View style="@style/Divider"/>
 
-            <!-- TODO string resources -->
             <TextView
-                android:text="(Press and hold members to remove them)"
+                android:text="@string/remove_members_long_press"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
@@ -361,11 +360,8 @@
 
         <View style="@style/Divider"/>
 
-        <!--
-         TODO string resources
-        -->
         <TextView
-            android:text="(Press and hold members to remove them)"
+            android:text="@string/remove_members_long_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryDark"

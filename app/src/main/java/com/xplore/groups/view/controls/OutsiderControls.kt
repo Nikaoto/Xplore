@@ -134,10 +134,7 @@ class OutsiderControls : Fragment() {
         override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
             if (dataSnapshot != null) {
                 if (dataSnapshot.key == General.currentUserId) {
-                    //TODO string resources
-                    Toast.makeText(activity,
-                            "Your join request has been accepted!",
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, R.string.request_accepted, Toast.LENGTH_SHORT).show()
                     refresh()
                 }
             }

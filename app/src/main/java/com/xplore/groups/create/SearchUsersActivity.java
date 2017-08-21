@@ -301,7 +301,7 @@ public class SearchUsersActivity extends Activity implements EditText.OnEditorAc
 
         String searchQuery = v.getText().toString().toLowerCase();
 
-        ////TODO search types (search by..)
+        //TODO search types (search by..)
 
         //If searchQuery has both first and last names
         if(searchQuery.contains(" ")) {

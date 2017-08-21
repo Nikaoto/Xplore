@@ -74,14 +74,14 @@ class MemberListAdapter(private val context: Context,
                 currentMember = users[position]
                 if (currentMember.id != General.currentUserId) {
                     General.vibrateDevice(context, null)
-                    //TODO string resources
                     AlertDialog.Builder(context)
-                            .setTitle("Remove " + currentMember.getFname() +
+                            .setTitle(context.resources.getString(R.string.to_remove)+" "
+                                    + currentMember.getFname() +
                                     " " + currentMember.getLname())
-                            .setMessage("Do you wish to remove this member from your group?")
+                            .setMessage(R.string.remove_member_question)
                             .setCancelable(false)
-                            .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
-                            .setPositiveButton("Yes") { _, _ ->
+                            .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
+                            .setPositiveButton(R.string.yes) { _, _ ->
                                 //Removing user and updating recycler view
                                 users.removeAt(position)
                                 userIds?.removeAt(position)

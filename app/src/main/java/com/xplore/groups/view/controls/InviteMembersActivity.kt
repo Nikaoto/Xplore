@@ -161,8 +161,7 @@ class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListen
                 //Adding group id to member
                 usersRef.child(memberId).child(F_INVITED_GROUP_IDS_TAG).child(groupId).setValue(true)
             }
-            //TODO string resources
-            Toast.makeText(this, "Invitations sent!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.invitations_sent, Toast.LENGTH_SHORT).show()
         }
     }
 

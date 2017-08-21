@@ -60,7 +60,8 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
                 General.currentUserId = ""
                 General.accountStatus = General.NOT_LOGGED_IN
-                Toast.makeText(activity.applicationContext, "Logged Out", Toast.LENGTH_SHORT).show() //TODO string resources
+                Toast.makeText(activity.applicationContext, R.string.logged_out, Toast.LENGTH_SHORT)
+                        .show()
                 activity.finish()
             }
         }

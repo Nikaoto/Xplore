@@ -116,11 +116,10 @@ class ManageRequestsActivity : AppCompatActivity() {
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            //TODO string resources
             if (position == 0) {
-                return "Received Requests"
+                return resources.getString(R.string.received_requests)
             } else if (position == 1) {
-                return "Sent Requests"
+                return resources.getString(R.string.sent_requests)
             }
             return ""
         }

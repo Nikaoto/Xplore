@@ -45,8 +45,6 @@ class LeaderControls : Fragment() {
     private var listeningForJoinRequests = false
     private var joinRequestCount = 0
 
-    //TODO add remove members button
-
     companion object {
         @JvmStatic
         fun newInstance(groupId: String): LeaderControls {
@@ -148,9 +146,8 @@ class LeaderControls : Fragment() {
 
     private fun confirmGroupDeletion() {
         val builder = AlertDialog.Builder(activity)
-        //TODO string resources
         builder.setTitle(R.string.delete_group)
-                .setMessage("Are you sure you want to delete this group?")
+                .setMessage(R.string.delete_group_question)
                 .setPositiveButton(R.string.yes, { _, _ -> deleteGroup() })
                 .setNegativeButton(R.string.no, null)
         builder.show()

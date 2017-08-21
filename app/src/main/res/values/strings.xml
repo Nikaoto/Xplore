@@ -35,6 +35,8 @@
     <string name="accept">მიღება</string>
     <string name="reject">უარყოფა</string>
     <string name="refresh">განახლება</string>
+    <string name="to_remove">ამოშლით</string>
+    <string name="sign_in_slash_register">შესვლა / ავტორიზაცია</string>
 
     <!-- Texts -->
     <string name="error">მოხდა შეცდომა</string>
@@ -47,6 +49,7 @@
         გთხოვთ ჩართოთ ინტერნეტკავშირი ახალი გუნდის შესაქმნელად.
     </string>
     <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
+    <string name="log_in_dialog">გთხოვთ გაიაროთ ავტორიზაცია რომ გამოიყენოთ ეს ფუნქცია</string>
 
     <!-- Searching & Inviting Users -->
     <string name="invite">დაპატიჟე</string>
@@ -56,6 +59,7 @@
     <string name="member_already_added">მომხმარებელი უკვე გუნდშია</string>
     <string name="member_added">გუნდის წევრი დაემატა</string>
     <string name="member_removed">გუნდის წევრი ამოიშალა</string>
+    <string name="invitations_sent">მოსაწვევები გაიგზავნა!</string>
 
     <!-- User -->
     <string name="user">მომხმარებელი</string>
@@ -104,6 +108,13 @@
     <string name="delete_group">ჯგუფის წაშლა</string>
     <string name="edit_group">ჯგუფის შეცვლა</string>
     <string name="join_request_sent">გაწევრიანების თხოვნა გაგზავნილია</string>
+    <string name="remove_member_question">გსურთ ამ გუნდის წევრის წაშლა?</string>
+    <string name="received_requests">მიღებული თხოვნები</string>
+    <string name="sent_requests">გაგზავნილი თხოვნები</string>
+    <string name="delete_group_question">დარწმუნებული ხართ რომ ამ გუნდის წაშლა გსურთ?</string>
+    <string name="leave_group_question">დარწმუნებული ხართ რომ ამ გუნდის დატოვება გსურთ?</string>
+    <string name="group_left">თქვენ დატოვეთ ჯგუფი</string>
+    <string name="request_accepted">თქვენი მოთხოვნა დადასტურდა!</string>
 
     <!-- Map -->
     <string name="enable_location">ჩართეთ ადგლიმდებარეობა</string>
@@ -148,6 +159,9 @@
     <string name="date_past_invalid">
         დასაწყისის ან დასასრული თარიღი ვერ იქნება წარსულში.\n\nგთხოვთ, შეასწოროთ შეცდომა.
     </string>
+    <string name="group_created">ჯგუფი შეიქმნა!</string>
+    <string name="fix_start_end_times">გთხოვთ შეასწოროთ დაწყებისა და დასრულების დროები</string>
+    <string name="remove_members_long_press">(დიდხანს დააჭირეთ წევრს, რომლის ამოშლაც გსურთ)</string>
 
     <!-- Registration -->
     <string name="register">რეგისტრაცია</string>
@@ -157,6 +171,12 @@
     <string name="date_format">წელი/თვე/დღე</string>
     <string name="profile_picture">პროფილის ფოტო</string>
     <string name="click_to_change">დააჭირეთ რომ შეცვალოთ</string>
+    <string name="take_picture_from">აირჩიეთ ფოტო…</string>
+    <string name="camera">კამერა</string>
+    <string name="gallery">გალერეა</string>
+    <string name="fail_profile_picture_upload">ვერ აიტვირთა ფოტო, გთხოვთ სცადოთ თავიდან.</string>
+    <string name="you_must_be_at_least">თქვენ უნდა იყოთ მინიმუმ</string>
+    <string name="years_to_use_xplore">წლის რომ Xplore გამოიყენოთ.</string>
 
     <!-- About -->
     <string name="about_header">შესახებ</string>
@@ -172,6 +192,8 @@
 
     <!-- Account Settings -->
     <string name="log_out">გამოსვლა</string>
+    <string name="logged_in">ავტორიზებულია</string>
+    <string name="logged_out">თქვენ გამოხვედით სისტემიდან</string>
 
     <!-- Language Settings-->
     <string name="current_language_georgian">ქართული</string>

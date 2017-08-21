@@ -17,12 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
-    <!--
-    TODO create string resources for explain_text
-    -->
     <TextView
-        android:text="Before you can utilize user functions in Xplore (like creating or joining groups), you need to create an Xplore account.\n\nIf you have an existing account in Google or Facebook, you can sign in without registering for Xplore"
+        android:text="@string/log_in_dialog"
         android:textSize="18sp"
         android:lineSpacingExtra="2dp"
         android:layout_marginTop="8dp"
@@ -52,7 +48,7 @@
 
         <Button
             android:id="@+id/signin_btn"
-            android:text="Sign In / Register"
+            android:text="@string/sign_in_slash_register"
             android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

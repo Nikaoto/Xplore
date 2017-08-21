@@ -105,8 +105,7 @@ class ReceivedRequestsFragment() : RequestListFragment() {
             //Adding groupId to user joined groups
             usersRef.child(userId).child(F_GROUP_IDS).child(groupId).setValue(false)
 
-            //TODO string resources
-            Toast.makeText(activity, "Member added", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, R.string.member_added, Toast.LENGTH_SHORT).show()
         }
 
         private fun rejectRequest(userId: String) {

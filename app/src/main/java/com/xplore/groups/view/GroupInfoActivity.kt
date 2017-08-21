@@ -221,10 +221,7 @@ class GroupInfoActivity : Activity() {
                         }
                     }
                 } else {
-                    //TODO string resources
-                    Toast.makeText(applicationContext,
-                            "The group does not exist",
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -279,10 +276,7 @@ class GroupInfoActivity : Activity() {
     }
 
     private fun notFound() {
-        //TODO string resources
-        Toast.makeText(applicationContext,
-                "There was an error retreiving the members",
-                Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
         finish()
     }
 
