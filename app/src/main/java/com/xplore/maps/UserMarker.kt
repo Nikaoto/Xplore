@@ -1,6 +1,7 @@
 package com.xplore.maps
 
 import com.google.android.gms.maps.model.LatLng
+import java.util.*
 
 /**
  * Created by Nika on 8/18/2017.
@@ -10,8 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 class UserMarker (var name: String = "",
                   var latitude: Double = 0.0,
                   var longitude: Double = 0.0,
-                  val hue: Float = 0.0F) {
-
+                  val hue: Float = Random(System.currentTimeMillis()).nextFloat() * -330F) {
 
     fun setLocation(lat: Double , lng: Double) {
         this.latitude = lat

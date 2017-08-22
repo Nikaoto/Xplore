@@ -172,5 +172,6 @@
     <string name="log_in_dialog">Пожалуйста, войдите или зарегистрируйтесь, чтобы использовать эту функцию</string>
     <string name="logged_out">Вы вышли из системы</string>
     <string name="sign_in_slash_register">Вход / Регистрация</string>
+    <string name="no_thanks">Нет, спасибо</string>
     <!-- -->
 </resources>

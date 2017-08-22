@@ -174,5 +174,6 @@
     <string name="log_in_dialog">Please Log in or Register to use this function</string>
     <string name="logged_out">Logged Out</string>
     <string name="sign_in_slash_register">Sign In / Register</string>
+    <string name="no_thanks">No, thanks</string>
     <!-- -->
 </resources>

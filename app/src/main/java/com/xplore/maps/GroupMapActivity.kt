@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
+import com.xplore.user.UserCard
 
 /**
  * Created by Nika on 8/20/2017.
@@ -37,11 +38,17 @@ class GroupMapActivity : BaseMapActivity() {
     private val F_LOCATIONS = "locations"
     private val F_LATITUDE = "latitude"
     private val F_LONGITUDE = "longitude"
+    private val F_USERS = "users"
+    private val F_FNAME = "fname"
+    private val F_NAME = "name"
     private val firebaseRef = FirebaseDatabase.getInstance().reference
+    private val currentUserRef = firebaseRef.child(F_USERS).child(General.currentUserId)
     private val currentGroupRef: DatabaseReference by lazy {
         firebaseRef.child("$F_GROUPS/$groupId")
     }
-    private val groupLocationsRef: DatabaseReference by lazy { currentGroupRef.child(F_LOCATIONS) }
+    private val groupLocationsRef: DatabaseReference by lazy {
+        currentGroupRef.child(F_LOCATIONS)
+    }
     private val currentUserLocationRef: DatabaseReference by lazy {
         groupLocationsRef.child(General.currentUserId)
     }
@@ -71,6 +78,34 @@ class GroupMapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firstUploadData()
+    }
+
+    /* Uploads a UserCard to this user's location node if it doesn't exist.
+       When a new user joins a group, a new node isn't created, so we upload a UserMarker in the
+       locations node for the first time */
+    private fun firstUploadData() {
+        currentUserLocationRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(locationSnapshot: DataSnapshot?) {
+                if (locationSnapshot == null || !locationSnapshot.hasChild(F_NAME)) {
+                    currentUserRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                            dataSnapshot?.let {
+                                val fname = it.child(F_FNAME).getValue(String::class.java)
+                                if (fname != null) {
+                                    currentUserLocationRef.setValue(UserMarker(fname))
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(p0: DatabaseError?) {}
+                    })
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
     }
 
     private fun buildDestinationMarker(): MarkerOptions {
