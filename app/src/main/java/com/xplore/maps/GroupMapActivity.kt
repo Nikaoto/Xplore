@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -31,7 +32,19 @@ class GroupMapActivity : BaseMapActivity() {
     //Holds references to each members' location so we can disable them OnDestroy()
     private val listenerMap = HashMap<String, ChildEventListener>()
 
-    private val groupId: String? by lazy { intent.getStringExtra("groupId") }
+    private val groupId: String? by lazy {
+        intent.getStringExtra(ARG_GROUP_ID)
+    }
+    private val destinationLocation: LatLng by lazy {
+        LatLng(intent.getDoubleExtra(ARG_DESTINATION_LAT, 0.0),
+                intent.getDoubleExtra(ARG_DESTINATION_LNG, 0.0))
+    }
+    private val destinationName: String by lazy {
+        intent.getStringExtra(ARG_DESTINATION_NAME)
+    }
+    private val zoomToDestination: Boolean by lazy {
+        intent.getBooleanExtra(ARG_ZOOM_TO_DESTINATION, false)
+    }
 
     //Firebase
     private val F_GROUPS = "groups"
@@ -54,15 +67,22 @@ class GroupMapActivity : BaseMapActivity() {
     }
 
     companion object {
+        //Arguments
+        private const val ARG_GROUP_ID = "groupId"
+        private const val ARG_DESTINATION_NAME = "destinationName"
+        private const val ARG_DESTINATION_LAT = "destinationLat"
+        private const val ARG_DESTINATION_LNG = "destinationLng"
+        private const val ARG_ZOOM_TO_DESTINATION = "zoomToDestination"
+
         //When opening reserve
         @JvmStatic
         fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
                            destinationLat: Double, destinationLng: Double): Intent {
             return Intent(context, GroupMapActivity::class.java)
-                    .putExtra("zoomToDestination", zoomToDestination)
-                    .putExtra("destinationName", destinationName)
-                    .putExtra("destinationLat", destinationLat)
-                    .putExtra("destinationLng", destinationLng)
+                    .putExtra(ARG_ZOOM_TO_DESTINATION, zoomToDestination)
+                    .putExtra(ARG_DESTINATION_NAME, destinationName)
+                    .putExtra(ARG_DESTINATION_LAT, destinationLat)
+                    .putExtra(ARG_DESTINATION_LNG, destinationLng)
         }
 
         //When opening group
@@ -72,7 +92,7 @@ class GroupMapActivity : BaseMapActivity() {
                            destinationLng: Double): Intent {
             return getStartIntent(context, zoomToDestination, destinationName, destinationLat,
                     destinationLng)
-                    .putExtra("groupId", groupId)
+                    .putExtra(ARG_GROUP_ID, groupId)
         }
     }
 
@@ -109,25 +129,30 @@ class GroupMapActivity : BaseMapActivity() {
     }
 
     private fun buildDestinationMarker(): MarkerOptions {
-        val pos = LatLng(intent.getDoubleExtra("destinationLat", 0.0),
-                intent.getDoubleExtra("destinationLng", 0.0))
         val markerOptions = MarkerOptions()
-        markerOptions.position(pos)
-        markerOptions.title(intent.getStringExtra("destinationName"))
+        markerOptions.position(destinationLocation)
+        markerOptions.title(intent.getStringExtra(destinationName))
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
         return markerOptions
+    }
+
+    //Zooms the map to a position
+    private fun zoomTo(location: LatLng?, map: GoogleMap) {
+        if (location != null) {
+            map.moveCamera(CameraUpdateFactory.newLatLng(location))
+            map.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT.toFloat()))
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
         googleMap.addMarker(buildDestinationMarker())
 
-        if (intent.getBooleanExtra("zoomToDestination", false)) {
+        if (zoomToDestination) {
             //Move camera to destination
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(
-                    LatLng(intent.getDoubleExtra("destinationLat", 0.0),
-                            intent.getDoubleExtra("destinationLng", 0.0))))
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT.toFloat()))
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destinationLocation,
+                    ZOOM_AMOUNT.toFloat())
+            googleMap.animateCamera(cameraUpdate)
         }
 
         if (groupId != null) {
