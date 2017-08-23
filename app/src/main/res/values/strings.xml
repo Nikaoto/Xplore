@@ -107,7 +107,7 @@
     <string name="join_group">გჯუფში გაწევრიანება</string>
     <string name="leave_group">ჯგუფის დატოვება</string>
     <string name="delete_group">ჯგუფის წაშლა</string>
-    <string name="edit_group">ჯგუფის შეცვლა</string>
+    <string name="edit_group">ჯგუფის რედაქტირება</string>
     <string name="join_request_sent">გაწევრიანების თხოვნა გაგზავნილია</string>
     <string name="remove_member_question">გსურთ ამ გუნდის წევრის წაშლა?</string>
     <string name="received_requests">მიღებული თხოვნები</string>

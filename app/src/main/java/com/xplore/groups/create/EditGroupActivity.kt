@@ -347,7 +347,7 @@ class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         TimePickerFragment(onTimeSetListener).show(fragmentManager, "")
     }
 
-    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         when (selecting) {
             SELECTION_START -> {
                 selecting = SELECTION_NONE
@@ -357,7 +357,7 @@ class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
             SELECTION_END -> {
                 selecting = SELECTION_NONE
                 date.setEndTime(hourOfDay, minute)
-                endTimeTextView.text = date.getStartTimeText()
+                endTimeTextView.text = date.getEndTimeText()
             }
         }
     }
@@ -489,7 +489,7 @@ class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
         currentGroup.start_date = date.getStartDate()
         currentGroup.start_time = date.startTime
         currentGroup.end_date = date.getEndDate()
-        currentGroup.end_time = date.startTime
+        currentGroup.end_time = date.endTime
 
         //Refreshing invited members list
         currentGroup.invited_member_ids.clear()
