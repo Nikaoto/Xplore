@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
+import com.google.maps.android.MarkerManager
 import com.xplore.General
 import com.xplore.user.UserCard
 
@@ -146,8 +147,10 @@ class GroupMapActivity : BaseMapActivity() {
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
-        googleMap.addMarker(buildDestinationMarker())
 
+        //Displays marker at destinaiton
+        googleMap.addMarker(buildDestinationMarker())
+        //Zooms to destination
         if (zoomToDestination) {
             //Move camera to destination
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destinationLocation,
@@ -191,13 +194,16 @@ class GroupMapActivity : BaseMapActivity() {
                                     //Creates new UserMarker from data and puts it into the hashmap
                                     override fun onChildAdded(data: DataSnapshot?, p1: String?) {
                                         Log.i(TAG, "added child")
-                                            val mo = MarkerOptions()
-                                            mo.title(marker.name)
-                                            mo.position(LatLng(marker.latitude, marker.longitude))
-                                            mo.icon(BitmapDescriptorFactory.defaultMarker(marker.hue))
+                                        val mo = MarkerOptions()
+                                        mo.title(marker.name)
+                                        mo.position(LatLng(marker.latitude, marker.longitude))
+                                        mo.icon(BitmapDescriptorFactory.defaultMarker(marker.hue))
+
                                         if (!mapMarkers.containsKey(key)) {
+                                            //Add marker if it's new
                                             mapMarkers.put(key, googleMap.addMarker(mo))
                                         } else {
+                                            //Update position
                                             mapMarkers[key]?.position = mo.position
                                         }
                                     }

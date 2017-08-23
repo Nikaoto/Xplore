@@ -11,7 +11,7 @@ import java.util.*
 class UserMarker (var name: String = "",
                   var latitude: Double = 0.0,
                   var longitude: Double = 0.0,
-                  val hue: Float = Random(System.currentTimeMillis()).nextFloat() * -330F) {
+                  val hue: Float = Random(System.currentTimeMillis()).nextFloat() * 330F) {
 
     fun setLocation(lat: Double , lng: Double) {
         this.latitude = lat

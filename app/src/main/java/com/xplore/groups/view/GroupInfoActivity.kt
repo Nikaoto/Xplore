@@ -44,9 +44,13 @@ class GroupInfoActivity : Activity() {
     private val DBref = FirebaseDatabase.getInstance().reference
     private val groupsRef = DBref.child("groups")
     private val usersRef = DBref.child("users")
-    private lateinit var currentGroupRef: DatabaseReference
+    private val currentGroupRef: DatabaseReference by lazy {
+        groupsRef.child(groupId)
+    }
 
-    private lateinit var groupId: String
+    private val groupId: String by lazy {
+        intent.getStringExtra("groupId")
+    }
     private var memberCount = 1
     private val members = ArrayList<User>()
     private lateinit var leader: User
@@ -72,11 +76,6 @@ class GroupInfoActivity : Activity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-
-        //Receives group data from last intent
-        val intent = this.intent
-        groupId = intent.getStringExtra("groupId")
-        currentGroupRef = groupsRef.child(groupId)
 
         initMemberList()
         loadGroupData()
@@ -127,7 +126,10 @@ class GroupInfoActivity : Activity() {
 
             openMapButton.visibility = View.VISIBLE
             openMapButton.setOnClickListener {
-                showTripOnMap()
+                //Leave this check, groupId is rarely null, but only when debugging w/ instant run
+                if (groupId != null) {
+                    showTripOnMap()
+                }
             }
         }
     }
