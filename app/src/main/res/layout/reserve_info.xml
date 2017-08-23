@@ -218,7 +218,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <RatingBar
+                    <android.support.v7.widget.AppCompatRatingBar
                         android:id="@+id/difficultyRatingBar"
                         style="@style/Widget.AppCompat.RatingBar.Indicator"
                         android:layout_width="wrap_content"
