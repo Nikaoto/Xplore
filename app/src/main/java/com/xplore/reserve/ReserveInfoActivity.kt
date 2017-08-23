@@ -77,7 +77,7 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
         super.onResume()
     }
 
-    fun setupLayout(reserve: Reserve) {
+    private fun setupLayout(reserve: Reserve) {
         collapsingToolbar.setTitle(reserve.name)
         reserveImageView.setImageResource(reserve.imageId)
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])

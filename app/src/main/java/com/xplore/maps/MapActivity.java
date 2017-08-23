@@ -29,6 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -101,10 +102,6 @@ public class MapActivity extends AppCompatActivity
     //When hiking
     private String groupId;
 
-    public static Intent getStartIntent(Context context) {
-        return new Intent(context, MapActivity.class);
-    }
-
     //When choosing destination for group
     public static Intent getStartIntent(Context context, Boolean choosingDestination) {
         return new Intent(context, MapActivity.class)
@@ -119,13 +116,6 @@ public class MapActivity extends AppCompatActivity
                 .putExtra("reserveName", reserveName)
                 .putExtra("reserveLat", lat)
                 .putExtra("reserveLng", lng);
-    }
-
-    //When hiking and viewing group mates
-    public static Intent getStartIntent(Context context, Boolean showReserve, String reserveName,
-                                        double lat, double lng, String groupId) {
-        return getStartIntent(context, showReserve, reserveName, lat, lng)
-                .putExtra("groupId", groupId);
     }
 
     @Override
@@ -313,12 +303,10 @@ public class MapActivity extends AppCompatActivity
 
     public void showReserveOnMap(String name, LatLng location) {
         //TODO smart load KML file
-        //Place current location marker
         placeMarker(name, location, false);
 
-        //move map camera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT));
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, ZOOM_AMOUNT);
+        googleMap.animateCamera(cameraUpdate);
     }
 
     //Prompts the user to enable location on the device
