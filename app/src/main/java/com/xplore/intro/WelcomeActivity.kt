@@ -8,7 +8,10 @@ import com.xplore.R
 
 /**
  * Created by Nik on 8/24/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * This is the welcome/tutorial screen for first time users; This is the first real interaction that
+ * the user has with Xplore, so make it count! (First impressions'n all, y'know)
+ *
  */
 
 class WelcomeActivity : IntroActivity() {
