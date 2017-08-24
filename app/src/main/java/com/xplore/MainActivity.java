@@ -75,14 +75,11 @@ public class MainActivity extends AppCompatActivity
         General.InitDisplayMetrics(this);
         General.refreshAccountStatus();
 
-        //Set initial Fragment
         fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
 
         //Setting up drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_about);
 
         //Setting up user profile inside drawer header
         View navHeaderView = navigationView.getHeaderView(0);
@@ -135,6 +132,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        openHomePage();
     }
 
     //Sets up the user image inside the drawer
@@ -344,8 +343,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_about : {
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, new AboutFragment()).commit();
+                startActivity(new Intent(this, AboutActivity.class));
             }
         }
         fm.executePendingTransactions();

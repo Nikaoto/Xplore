@@ -11,10 +11,9 @@
     <string name="nav_my_groups">Мои Группы</string>
     <string name="nav_find_create">Найти / Создай</string>
     <string name="nav_settings">Настройки</string>
-    <string name="about">Это приложение только демо-версия Xplore. Любой элемент приложения может
-        быть изменен.\n\nИнформация и ресурсы о парках и заповедниках получена из
-        http://apa.gov.ge/. Они принадлежат их законныx владельцаx.
-    </string>
+    <string name="about">Это только бета-версия Xplore. Любой элемент приложения может быть
+        изменен. Информация и ресурсы о парках и заповедниках получена из http://apa.gov.ge/. Вся
+        информация доступна на сайте бесплатно.</string>
     <string name="search_tags_hint">Искать Метки</string>
     <string name="search_name_hint">Поиск по названию</string>
     <string name="search_groups_hint">Поиск Группы</string>
@@ -174,5 +173,8 @@
     <string name="sign_in_slash_register">Вход / Регистрация</string>
     <string name="no_thanks">Нет, спасибо</string>
     <string name="info_will_be_added">Информация будет добавлена</string>
+    <string name="version_text">Бета Версия (v2.7)</string>
+    <string name="contact_us">Свяжитесь с нами</string>
+    <string name="happy_hiking">Если у вас возникли проблемы с Xplore, пожалуйста сообщите нам. Мы желаем вам счастливых и безопасных походов!</string>
     <!-- -->
 </resources>

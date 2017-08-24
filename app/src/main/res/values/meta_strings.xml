@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xplore_website" translatable="false">http://xplore.ge/</string>
+    <string name="xplore_facebook" translatable="false">xploreapp</string>
+    <string name="xplore_instagram" translatable="false">xploreapp</string>
+    <string name="xplore_email" translatable="false">support@xplore.ge</string>
+</resources>

@@ -103,6 +103,8 @@
             android:label="@string/settings_title" />
         <activity android:name=".settings.LanguageSettingsActivity"
             android:label="@string/settings_language_title"/>
+        <activity android:name=".AboutActivity"
+            android:label="@string/nav_about"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

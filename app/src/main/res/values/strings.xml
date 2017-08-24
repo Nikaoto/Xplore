@@ -181,11 +181,13 @@
     <string name="years_to_use_xplore">წლის რომ Xplore გამოიყენოთ.</string>
 
     <!-- About -->
+    <string name="contact_us">დაგვეკონტაქტეთ</string>
     <string name="about_header">შესახებ</string>
-    <string name="about">ეს აპლიკაცია არის Xplore -ს დემო ვერსია, სადაც ნებისმიერი ელემენტი შეიძლება
-        შეიცვალოს.\n\nპარკების ინფორმაცია და ფოტოები არის სრულიად საჯაროდ გამოქვეყნებული
-        http://apa.gov.ge/ -ზე და ამ აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.
-    </string>
+    <string name="about">ეს არის Xplore-ს ბეტა ვერსია, სადაც ნებისმიერი ელემენტი შეიძლებაშეიცვალოს.
+        პარკების ინფორმაცია და ფოტოები საჯაროდ გამოქვეყნებულია http://apa.gov.ge/-ზე და ამ
+        აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.</string>
+    <string name="happy_hiking">Xplore-თან თუ პრობლემები შეგექმნათ, გთხოვთ გვაცნობოთ უსაფრთხო
+        და ბედნიერ ლაშქრობებს გისურვებთ!</string>
 
     <!-- Settings -->
     <string name="settings_title">რეგულაცია</string>
@@ -212,5 +214,6 @@
     <string name="loading_groups">იტვირთება ჯგუფები</string>
     <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
     <string name="location">ადგილმდებარეობა</string>
+    <string name="version_text">ბეტა ვერსია (v2.7)</string>
 
 </resources>
