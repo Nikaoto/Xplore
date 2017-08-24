@@ -51,6 +51,7 @@
     </string>
     <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
     <string name="log_in_dialog">გთხოვთ გაიაროთ ავტორიზაცია რომ გამოიყენოთ ეს ფუნქცია</string>
+    <string name="info_will_be_added">ინფორმაცია მალე დაემატება</string>
 
     <!-- Searching & Inviting Users -->
     <string name="invite">დაპატიჟე</string>

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
+import android.widget.TextView
 import com.xplore.database.DBManager
 import com.xplore.R
 import com.xplore.maps.MapActivity
@@ -77,15 +78,23 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
         super.onResume()
     }
 
+    private fun TextView.safeSetText(txt: String) {
+        if (txt.isEmpty()) {
+            this.setText(R.string.info_will_be_added)
+        } else {
+            this.text = txt
+        }
+    }
+
     private fun setupLayout(reserve: Reserve) {
-        collapsingToolbar.setTitle(reserve.name)
+        collapsingToolbar.title = reserve.name
         reserveImageView.setImageResource(reserve.imageId)
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
-        descriptionTextView.text = reserve.description
-        faunaTextView.text = reserve.fauna
-        floraTextView.text = reserve.flora
-        equipmentTextView.text = reserve.equipment
-        tagsTextView.text = reserve.extratags
+        descriptionTextView.safeSetText(reserve.description)
+        faunaTextView.safeSetText(reserve.fauna)
+        floraTextView.safeSetText(reserve.flora)
+        equipmentTextView.safeSetText(reserve.equipment)
+        tagsTextView.safeSetText(reserve.extratags)
         difficultyRatingBar.rating = reserve.difficulty.toFloat()
 
         showonmapButton.setOnClickListener() {

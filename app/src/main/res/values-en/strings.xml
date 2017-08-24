@@ -175,5 +175,6 @@
     <string name="logged_out">Logged Out</string>
     <string name="sign_in_slash_register">Sign In / Register</string>
     <string name="no_thanks">No, thanks</string>
+    <string name="info_will_be_added">Information will be added soon</string>
     <!-- -->
 </resources>

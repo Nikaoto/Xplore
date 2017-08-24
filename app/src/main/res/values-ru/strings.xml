@@ -173,5 +173,6 @@
     <string name="logged_out">Вы вышли из системы</string>
     <string name="sign_in_slash_register">Вход / Регистрация</string>
     <string name="no_thanks">Нет, спасибо</string>
+    <string name="info_will_be_added">Информация будет добавлена</string>
     <!-- -->
 </resources>
