@@ -103,6 +103,12 @@
             android:label="@string/settings_title" />
         <activity android:name=".settings.LanguageSettingsActivity"
             android:label="@string/settings_language_title"/>
+
+        <!-- Welcome Screen -->
+        <activity android:name=".intro.WelcomeActivity"
+            android:theme="@style/Theme.Intro"/>
+
+        <!-- About -->
         <activity android:name=".AboutActivity"
             android:label="@string/nav_about"/>
 

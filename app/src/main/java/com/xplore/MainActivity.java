@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
+import com.xplore.intro.WelcomeActivity;
 import com.xplore.maps.BaseMapActivity;
 import com.xplore.maps.GroupMapActivity;
 import com.xplore.maps.MapActivity;

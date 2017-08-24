@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Xplore</string>
 
+    <!-- Welcome Screen -->
+    <string name="welcome">Welcome to Xplore!</string>
+    <string name="screen1">Before you start using Xplore, we\'ll go through a small intro. Slide
+        left to continue.</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="activity_create_group_title">Create group</string>
@@ -178,5 +183,6 @@
     <string name="version_text">Beta version (v2.7)</string>
     <string name="contact_us">Contact us</string>
     <string name="happy_hiking">If you\'re having any issues with Xplore, please inform us. Happy and safe hiking!</string>
+    <string name="settings_tutorial_title">Open tutorial</string>
     <!-- -->
 </resources>

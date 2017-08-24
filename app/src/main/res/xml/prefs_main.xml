@@ -3,10 +3,7 @@
     <PreferenceCategory android:title="@string/settings_title">
         <Preference
             android:key="tutorial"
-            android:title="Tutorial" />
-        <Preference
-            android:key="view_reserve_types"
-            android:title="View reserve types" />
+            android:title="@string/settings_tutorial_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_account_title">

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Xplore</string>
 
+    <!-- Welcome Screen -->
+    <string name="welcome">კეთილი იყოს თქვენი მობრძანება Xplore-ში!</string>
+    <string name="screen1">სანამ Xplore-ის გამოყენებას დაიწყებთ, პატარა შესავალი უნდა გავიაროთ.
+        გაასრიალეთ გვერდი მარცხნივ რომ განაგრძოთ.</string>
+
     <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -191,6 +196,7 @@
 
     <!-- Settings -->
     <string name="settings_title">რეგულაცია</string>
+    <string name="settings_tutorial_title">შესავლის გავლა</string>
     <string name="settings_account_title">მომხმარებელი</string>
     <string name="settings_language_title">ენა</string>
 

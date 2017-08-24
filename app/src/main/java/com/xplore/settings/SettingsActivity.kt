@@ -13,6 +13,7 @@ import com.xplore.General
 
 import com.xplore.R
 import com.xplore.MainActivity
+import com.xplore.intro.WelcomeActivity
 
 class SettingsActivity : AppCompatPreferenceActivity() {
 
@@ -73,16 +74,22 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             addPreferencesFromResource(R.xml.prefs_main)
 
             /* Click Listeners for Log out , tutorial etc , Language  ... */
-            val selectLanguage = findPreference("select_language")
+            findPreference("tutorial").setOnPreferenceClickListener {
+                startActivity(Intent(activity, WelcomeActivity::class.java))
+                true
+            }
+
             findPreference("logout").setOnPreferenceClickListener {
                 logOut()
                 true
             }
 
-            selectLanguage.setOnPreferenceClickListener({
+            findPreference("select_language").setOnPreferenceClickListener({
                 startActivity(Intent(activity, LanguageSettingsActivity::class.java))
                 true
             })
+
+            findPreference("")
         }
     }
 
