@@ -78,11 +78,11 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
         super.onResume()
     }
 
-    private fun TextView.safeSetText(txt: String) {
-        if (txt.isEmpty()) {
-            this.setText(R.string.info_will_be_added)
-        } else {
+    private fun TextView.safeSetText(txt: String?) {
+        if (txt != null && txt.isNotEmpty()) {
             this.text = txt
+        } else {
+            this.setText(R.string.info_will_be_added)
         }
     }
 
