@@ -257,8 +257,8 @@ public class MainActivity extends AppCompatActivity
     public void openHomePage() {
         fm.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragment_container, new AboutFragment()).commit();
-        navigationView.setCheckedItem(R.id.nav_about);
+                .replace(R.id.fragment_container, new LibraryFragment()).commit();
+        navigationView.setCheckedItem(R.id.nav_library);
         fm.executePendingTransactions();
     }
 

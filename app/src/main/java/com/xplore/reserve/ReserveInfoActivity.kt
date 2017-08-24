@@ -9,6 +9,7 @@ import android.support.v4.view.ViewCompat
 import android.widget.TextView
 import com.xplore.database.DBManager
 import com.xplore.R
+import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.MapActivity
 
 import kotlinx.android.synthetic.main.reserve_info.*
@@ -97,9 +98,9 @@ class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
         tagsTextView.safeSetText(reserve.extratags)
         difficultyRatingBar.rating = reserve.difficulty.toFloat()
 
-        showonmapButton.setOnClickListener() {
+        showonmapButton.setOnClickListener {
             mActivity.startActivity(
-                    MapActivity.getStartIntent(
+                    GroupMapActivity.getStartIntent(
                             mActivity,
                             true,
                             reserve.name,
