@@ -47,7 +47,7 @@
     <!-- Texts -->
     <string name="error">მოხდა შეცდომა</string>
     <string name="nothing_here">აქ არაფერია</string>
-    <string name="search_tags_hint">მოძებნეთ ტეგები</string>
+    <string name="search_tags_hint">მოძებნეთ საკვანძო სიტყვებით</string>
     <string name="search_name_hint">მოძებნეთ სახელით</string>
     <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
     <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
@@ -94,6 +94,9 @@
     <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
     <string name="open_discussion">დისკუსიის ნახვა</string>
     <string name="see_on_map">ლაშქრობის რუკაზე ნახვა</string>
+
+    <!-- Discussion -->
+    <string name="discussion_message_hint">დაწერეთ შეტყობინება…</string>
 
     <!-- Times for GroupCards -->
     <string name="today">დღეს</string>

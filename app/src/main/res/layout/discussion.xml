@@ -28,7 +28,7 @@
 
         <EditText
             android:id="@+id/sendMessageEditText"
-            android:hint="Write a message..."
+            android:hint="@string/discussion_message_hint"
             android:layout_marginLeft="10dp"
             android:layout_below="@id/divider"
             android:layout_alignParentStart="true"

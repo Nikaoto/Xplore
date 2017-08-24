@@ -7,6 +7,9 @@
     <string name="screen1">Прежде чем вы начнёте использовать Xplore, мы предлагаем вам небольшое
         введение. Сдвиньте страницу влево, чтобы продолжить</string>
 
+    <!-- Discussion -->
+    <string name="discussion_message_hint">Напишите сообщение…</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="activity_create_group_title">Создать группу</string>
@@ -20,7 +23,6 @@
     <string name="about">Это только бета-версия Xplore. Любой элемент приложения может быть
         изменен. Информация и ресурсы о парках и заповедниках получена из http://apa.gov.ge/. Вся
         информация доступна на сайте бесплатно.</string>
-    <string name="search_tags_hint">Искать Метки</string>
     <string name="search_name_hint">Поиск по названию</string>
     <string name="search_groups_hint">Поиск Группы</string>
     <string name="nav_profile">Профиль</string>
@@ -183,5 +185,6 @@
     <string name="contact_us">Свяжитесь с нами</string>
     <string name="happy_hiking">Если у вас возникли проблемы с Xplore, пожалуйста сообщите нам. Мы желаем вам счастливых и безопасных походов!</string>
     <string name="settings_tutorial_title">Открыть введение</string>
+    <string name="search_tags_hint">Поиск с тегами</string>
     <!-- -->
 </resources>
