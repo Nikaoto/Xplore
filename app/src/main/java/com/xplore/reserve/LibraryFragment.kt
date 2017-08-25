@@ -3,6 +3,7 @@ package com.xplore.reserve
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,12 +13,10 @@ import android.widget.*
 import com.xplore.General
 import com.xplore.R
 import com.xplore.database.DBManager
+import kotlinx.android.synthetic.main.search_layout2.*
 
 import java.util.ArrayList
 
-import kotlinx.android.synthetic.main.search_layout2.resultsRV
-import kotlinx.android.synthetic.main.search_layout2.searchEditText
-import kotlinx.android.synthetic.main.search_layout2.progressBar
 
 /**
  * Created by Nikaoto on 11/9/2016.
@@ -34,7 +33,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
          = inflater.inflate(R.layout.search_layout2, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
         firstDisplayData()
@@ -53,6 +52,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         //Clear answer list
         answerCards.clear()
 
+
         //Setting layoutmanager
         resultsRV.layoutManager = LinearLayoutManager(activity)
     }
@@ -61,7 +61,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         dbManager.openDataBase()
 
         //Load all reserveCards in a separate thread
-          Thread(Runnable {
+          Thread().run {
               //Loading data
               reserveCards = dbManager.getAllReserveCards()
               answerCards.addAll(reserveCards)
@@ -69,7 +69,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
               val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
               resultsRV.post { resultsRV.adapter = adapter }
               progressBar.post { progressBar.visibility = View.INVISIBLE }
-        }).start()
+        }
     }
 
     /*

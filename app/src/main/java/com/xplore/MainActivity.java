@@ -31,10 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.groups.my.LoadingMyGroupsFragment;
 import com.xplore.groups.search.SearchGroupsFragment;
-import com.xplore.intro.WelcomeActivity;
 import com.xplore.maps.BaseMapActivity;
-import com.xplore.maps.GroupMapActivity;
-import com.xplore.maps.MapActivity;
 import com.xplore.notifications.BadgeDrawerArrowDrawable;
 import com.xplore.notifications.NotificationManager;
 import com.xplore.reserve.LibraryFragment;
@@ -58,13 +55,14 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
 
+    private boolean justLaunched = true;
+
     private ImageView userImageView;
     private TextView userFullNameTextView;
     private NavigationView navigationView;
     private FragmentManager fm;
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences prefs;
-    private Menu menu; //TODO check if this is needed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +79,7 @@ public class MainActivity extends AppCompatActivity
         //Setting up drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_library);
 
         //Setting up user profile inside drawer header
         View navHeaderView = navigationView.getHeaderView(0);
@@ -133,16 +132,13 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        openHomePage();
     }
 
     //Sets up the user image inside the drawer
 
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu_) {
-        this.menu = menu_;
+    public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -204,7 +200,7 @@ public class MainActivity extends AppCompatActivity
             General.accountStatus = General.LOGGED_IN;
         }
 
-        if (General.accountStatus == General.NOT_LOGGED_IN) {
+        if (General.accountStatus == General.NOT_LOGGED_IN && !justLaunched) {
             notificationManager.disable();
             openHomePage();
         }
@@ -219,6 +215,11 @@ public class MainActivity extends AppCompatActivity
                         .load(R.drawable.user_default_profile_image)
                         .into(userImageView);
             }
+        }
+
+        if (justLaunched) {
+            justLaunched = false;
+            openHomePage();
         }
     }
 
@@ -255,11 +256,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openHomePage() {
-        fm.beginTransaction()
+        getFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragment_container, new LibraryFragment()).commit();
-        navigationView.setCheckedItem(R.id.nav_library);
-        fm.executePendingTransactions();
     }
 
     @Override
