@@ -12,7 +12,6 @@ import com.xplore.ApiManager
 import com.xplore.General
 
 import com.xplore.R
-import com.xplore.MainActivity
 import com.xplore.intro.WelcomeActivity
 
 class SettingsActivity : AppCompatPreferenceActivity() {

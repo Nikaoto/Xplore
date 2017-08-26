@@ -44,17 +44,17 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
             val preferenceRussian = findPreference("language_russian")
 
             preferenceGeorgian.setOnPreferenceClickListener({
-                onPrefClick(MainActivity.GEORGIAN_LANG_CODE, currentLanguage)
+                onPrefClick(LanguageUtil.GEORGIAN_LANGUAGE_CODE, currentLanguage)
                 true
             })
 
             preferenceEnglish.setOnPreferenceClickListener({
-                onPrefClick(MainActivity.ENGLISH_LANG_CODE, currentLanguage)
+                onPrefClick(LanguageUtil.ENGLISH_LANGUAGE_CODE, currentLanguage)
                 true
             })
 
             preferenceRussian.setOnPreferenceClickListener({
-                onPrefClick(MainActivity.RUSSIAN_LANG_CODE, currentLanguage)
+                onPrefClick(LanguageUtil.RUSSIAN_LANGUAGE_CODE, currentLanguage)
                 true
             })
         }

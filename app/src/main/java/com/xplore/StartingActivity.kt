@@ -1,5 +1,6 @@
 package com.xplore
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -13,8 +14,18 @@ import com.xplore.intro.LanguageSelectActivity
 
 class StartingActivity : AppCompatActivity() {
 
-    private val PREFS_BOOT = "prefs_boot"
-    private val PREFS_BOOLEAN_FIRST_BOOT = "first_boot"
+    companion object {
+        const val PREFS_BOOT = "prefs_boot"
+        const val PREFS_BOOLEAN_FIRST_BOOT = "first_boot"
+
+        @JvmStatic
+        fun stopShowingWelcomeScreen(context: Context) {
+            context.getSharedPreferences(StartingActivity.PREFS_BOOT, 0)
+                    .edit()
+                    .putBoolean(PREFS_BOOLEAN_FIRST_BOOT, false)
+                    .commit()
+        }
+    }
 
     val TAG = "jiga"
 
@@ -38,14 +49,7 @@ class StartingActivity : AppCompatActivity() {
         //finish()
     }
 
-    //Returns true if first ever app boot and opens intro
-    private fun isFirstBoot(): Boolean {
-        val bootPrefs = getSharedPreferences(PREFS_BOOT, 0)
-        if (bootPrefs.getBoolean(PREFS_BOOLEAN_FIRST_BOOT, true)) {
-            bootPrefs.edit().putBoolean(PREFS_BOOLEAN_FIRST_BOOT, true).apply()
-            return true
-        } else {
-            return false
-        }
-    }
+    //Returns true if first ever app boot
+    private fun isFirstBoot()
+            = getSharedPreferences(PREFS_BOOT, 0).getBoolean(PREFS_BOOLEAN_FIRST_BOOT, true)
 }
