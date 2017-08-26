@@ -155,7 +155,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     //Goes over every user in firebase to check which of them are leaders (to get leader image)
     private void sortLeaderInfo() {
         //TODO convert this to Kotlin and skip the other crap arguments
-        final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", General.DB_TABLE);
+        final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", DBManager.DB_TABLE);
         dbManager.openDataBase();
 
         usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {

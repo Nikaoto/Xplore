@@ -98,7 +98,7 @@ class SearchDestinationActivity : Activity() {
         answerCards.clear()
 
         //Searching Database
-        resultIDs = dbManager.getIdFromName(query, General.DB_TABLE)
+        resultIDs = dbManager.getIdFromName(query, DBManager.DB_TABLE)
 
         //Returning Results
         if (!resultIDs.isEmpty()) {

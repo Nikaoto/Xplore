@@ -61,35 +61,8 @@ class LanguageSettingsActivity : AppCompatPreferenceActivity() {
 
         fun onPrefClick(languageCode: String, currentLanguage: String) {
             if (currentLanguage != languageCode) {
-                changeLocale(languageCode)
+                LanguageUtil.changeLocale(languageCode, activity)
             }
-        }
-
-        fun changeLocale(language_code: String) {
-            val preferences = activity.getSharedPreferences("lang", 0)
-            val prefEditor = preferences.edit()
-
-            val res = activity.resources
-            val config = res.configuration
-
-            prefEditor.putString("lang", language_code)
-            prefEditor.commit()
-
-            val locale = Locale(preferences.getString("lang", MainActivity.ENGLISH_LANG_CODE))
-            Locale.setDefault(locale)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                config.setLocale(locale)
-            } else {
-                //Meant for lower-end devices
-                @Suppress("DEPRECATION")
-                config.locale = locale
-                @Suppress("DEPRECATION")
-                resources.updateConfiguration(config, res.displayMetrics)
-            }
-
-            MainActivity.languagePrefsChanged = true
-            activity.finish()
         }
     }
 

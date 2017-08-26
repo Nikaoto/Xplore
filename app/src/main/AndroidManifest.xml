@@ -13,7 +13,7 @@
 
     <application
         android:name=".XploreApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -34,7 +34,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".StartingActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -44,6 +44,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivityK"
+            android:screenOrientation="portrait"/>
+
+        <!-- Language Select -->
+        <activity android:name=".intro.LanguageSelectActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+
+        <!-- Welcome Screen -->
+        <activity android:name=".intro.WelcomeActivity"
+            android:theme="@style/Theme.Intro"/>
+
+        <activity android:name=".MainActivity"
+            android:theme="@style/SplashTheme"/>
 
         <!-- Maps -->
         <activity android:name=".maps.BaseMapActivity"
@@ -103,10 +117,6 @@
             android:label="@string/settings_title" />
         <activity android:name=".settings.LanguageSettingsActivity"
             android:label="@string/settings_language_title"/>
-
-        <!-- Welcome Screen -->
-        <activity android:name=".intro.WelcomeActivity"
-            android:theme="@style/Theme.Intro"/>
 
         <!-- About -->
         <activity android:name=".AboutActivity"

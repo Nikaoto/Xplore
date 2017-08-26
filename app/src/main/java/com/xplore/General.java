@@ -14,7 +14,9 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -53,8 +55,7 @@ public class General {
     public static String currentUserId;
     public static String DB_TABLE; //The language table to use from database
 
-    public static void InitDisplayMetrics(Activity activity)
-    {
+    public static void InitDisplayMetrics(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         appWidth = dm.widthPixels;
@@ -73,12 +74,12 @@ public class General {
         }
     }
 
-    public static void setCurrentTable(Context context)
-    {
-        if(context != null)
-            DB_TABLE = context.getSharedPreferences("lang",0).getString("lang","en");
-        else
+    public static void setCurrentTable(Context context) {
+        if(context != null) {
+            DB_TABLE = context.getSharedPreferences("lang", 0).getString("lang", "en");
+        } else {
             DB_TABLE = "en";
+        }
     }
 
     public static void openReserveInfoFragment(int resId, Context context)
@@ -321,6 +322,39 @@ public class General {
             }
         });
     }
+
+    /*
+    public static void popLogInMenu(final Context context, ViewGroup parent) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View v = LayoutInflater.from(context).inflate(R.layout.signin_dialog, parent);
+        builder.setView(v);
+        final AlertDialog ad =  builder.create();
+        //TODO ad.OnDismiss()
+
+        //No thanks TextView
+        TextView noThanks = (TextView) ad.findViewById(R.id.no_signin_tw);
+        noThanks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ad.dismiss();
+            }
+        });
+
+        //Login / Register Button
+        Button logIn = (Button) ad.findViewById(R.id.signin_btn);
+        logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (General.isNetConnected(context)) {
+                    ad.dismiss();
+                    Intent i = new Intent(context, GoogleSignInActivity.class); //TODO change into SignInActivity
+                    context.startActivity(i);
+                } else
+                    createNetErrorDialog(context);
+            }
+        });
+    }*/
+
 
     public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity, View view) {
         int popWidth = (int) (appWidth * xScale);

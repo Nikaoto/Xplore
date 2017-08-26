@@ -37,6 +37,7 @@ import com.xplore.notifications.NotificationManager;
 import com.xplore.reserve.LibraryFragment;
 import com.xplore.settings.SettingsActivity;
 import com.xplore.user.User;
+import com.xplore.user.UserCard;
 
 import java.util.Locale;
 
@@ -59,16 +60,16 @@ public class MainActivity extends AppCompatActivity
 
     private ImageView userImageView;
     private TextView userFullNameTextView;
-    private NavigationView navigationView;
     private FragmentManager fm;
-    private SharedPreferences.Editor prefEditor;
-    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
+        //TODO test below
+        //setTheme(R.style.Theme_AppCompat_Light_NoActionBar)
+
         super.onCreate(savedInstanceState);
-        InitPreferences(this);
+        initPreferences(this);
         General.setCurrentTable(this);
         setContentView(R.layout.activity_main);
         General.InitDisplayMetrics(this);
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         //Setting up drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_library);
 
         //Setting up user profile inside drawer header
@@ -134,8 +135,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    //Sets up the user image inside the drawer
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -143,13 +142,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Initializes prefrences
-    private void InitPreferences(Context context) {
-        prefs = getSharedPreferences("lang", 0);
+    private void initPreferences(Context context) {
+        SharedPreferences prefs = getSharedPreferences("lang", 0);
 
         //if the pref is not found (means it's the first bootup)
-        if (prefs.getString("lang", "null").equals("null")) {
+        if (prefs.getString("lang", "null").equals("null")) { //TODO check for isEmpty()
+            SharedPreferences.Editor prefEditor = getSharedPreferences("lang", 0).edit();
 
-            prefEditor = getSharedPreferences("lang", 0).edit();
             //TODO do below code for low-end devices
             String config = getResources().getConfiguration().locale.toString().toLowerCase();
 
@@ -228,16 +227,18 @@ public class MainActivity extends AppCompatActivity
                 .equalTo(General.currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && context != null) {
-                    User tempUser = dataSnapshot.getChildren().iterator().next().getValue(User.class);
-                    Picasso.with(context)
-                            .load(tempUser.getProfile_picture_url())
-                            .transform(ImageUtil.mediumCircle(context))
-                            .into(userImageView);
-                    userFullNameTextView.setVisibility(View.VISIBLE);
-                    userFullNameTextView.setText(tempUser.getFname()+" "+tempUser.getLname());
-                } else {
-                    Toast.makeText(context,"Error loading your profile image", Toast.LENGTH_SHORT).show();//TODO String resources
+                if (context != null) {
+                    if (dataSnapshot != null) {
+                        UserCard tempUser = dataSnapshot.getChildren().iterator().next().getValue(UserCard.class);
+                        Picasso.with(context)
+                                .load(tempUser.getProfile_picture_url())
+                                .transform(ImageUtil.mediumCircle(context))
+                                .into(userImageView);
+                        userFullNameTextView.setVisibility(View.VISIBLE);
+                        userFullNameTextView.setText(tempUser.getFullName());
+                    } else {
+                        Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -263,7 +264,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -274,10 +274,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         General.HideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
-            //fm.beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-            return true;
+            startActivity(new Intent(this, SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -296,7 +293,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        //TODO change the nav item names
         switch (id){
             case R.id.nav_profile : {
                 if (General.isUserSignedIn()) {

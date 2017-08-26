@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.xplore.General
 import com.xplore.reserve.Reserve
 import com.xplore.reserve.ReserveCard
+import com.xplore.settings.LanguageUtil
 
 import java.io.IOException
 import java.util.ArrayList
@@ -22,7 +23,7 @@ import java.util.ArrayList
 
 class DBManager(private val mContext: Context,
                          DB_NAME: String = "reserveDB.db",
-                         private val TABLE: String = General.DB_TABLE)
+                         private val TABLE: String = DB_TABLE)
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
     //Path of the database that will be created
@@ -30,20 +31,23 @@ class DBManager(private val mContext: Context,
     val GENERAL_TABLE = "general"
 
     companion object ColumnNames {
-        val ID = "id"
-        val NAME = "name"
-        val DIFFICULTY = "difficulty"
-        val FLORA = "flora"
-        val FAUNA = "fauna"
-        val EQUIPMENT = "equipment"
-        val EXTRATAGS = "extratags"
+        @JvmField
+        var DB_TABLE: String = LanguageUtil.ENGLISH_LANGUAGE_CODE
+
+        const val ID = "id"
+        const val NAME = "name"
+        const val DIFFICULTY = "difficulty"
+        const val FLORA = "flora"
+        const val FAUNA = "fauna"
+        const val EQUIPMENT = "equipment"
+        const val EXTRATAGS = "extratags"
 
         //General Table
-        val TYPE = "type"
-        val DESCRIPTION = "description"
-        val IMAGE = "image"
-        val LATITUDE = "latitude"
-        val LONGITUDE = "longitude"
+        const val TYPE = "type"
+        const val DESCRIPTION = "description"
+        const val IMAGE = "image"
+        const val LATITUDE = "latitude"
+        const val LONGITUDE = "longitude"
     }
 
     val rowCount: Int
@@ -249,7 +253,7 @@ class DBManager(private val mContext: Context,
     }
 
     //Finds the Id of an entry by every field in Database and returns it
-    fun getIdFromQuery(query: String, table: String): List<Int> {
+    fun getIdFromQuery(query: String, table: String): ArrayList<Int> {
         val answers = ArrayList<Int>()
 
         //TODO add categorized search

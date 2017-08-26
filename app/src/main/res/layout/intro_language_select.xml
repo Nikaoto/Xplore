@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    android:background="@color/wallet_holo_blue_light">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <!-- Georgian Language Card -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/georgianCard"
+            style="@style/IntroLanguageCardView">
+
+            <TextView
+                style="@style/IntroLanguageCardViewTextView"
+                android:text="@string/current_language_georgian"/>
+
+        </android.support.v7.widget.CardView>
+
+        <!-- English - -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/englishCard"
+            style="@style/IntroLanguageCardView">
+
+            <TextView
+                style="@style/IntroLanguageCardViewTextView"
+                android:text="@string/current_language_english"/>
+
+        </android.support.v7.widget.CardView>
+
+
+        <!-- Russian - -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/russianCard"
+            style="@style/IntroLanguageCardView">
+
+            <TextView
+                style="@style/IntroLanguageCardViewTextView"
+                android:text="@string/current_language_russian"/>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>
