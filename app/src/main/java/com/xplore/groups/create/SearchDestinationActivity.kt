@@ -18,6 +18,7 @@ import android.widget.TextView
 import com.xplore.database.DBManager
 import com.xplore.General
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.reserve.ReserveCard
 import com.xplore.reserve.Icons
 import kotlinx.android.synthetic.main.reserve_list_item.view.*
@@ -31,7 +32,7 @@ import java.util.ArrayList
 */
 
 
-class SearchDestinationActivity : Activity() {
+class SearchDestinationActivity : BaseActivity() {
 
     private val dbManager: DBManager by lazy { DBManager(this) }
 

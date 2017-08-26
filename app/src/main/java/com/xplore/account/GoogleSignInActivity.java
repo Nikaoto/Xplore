@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.xplore.ApiManager;
 import com.xplore.General;
 import com.xplore.R;
+import com.xplore.base.BaseAppCompatActivity;
 
 import static com.xplore.General.*;
 
@@ -39,7 +40,7 @@ import static com.xplore.General.*;
  * TODO write description of this class - what it does and why.
  */
 
-public class GoogleSignInActivity extends AppCompatActivity {
+public class GoogleSignInActivity extends BaseAppCompatActivity {
 
     private static final int RC_SIGN_IN = 2;
     private static final int RC_REGISTER = 3;

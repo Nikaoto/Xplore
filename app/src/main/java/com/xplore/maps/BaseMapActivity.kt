@@ -19,13 +19,14 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.xplore.base.BaseAppCompatActivity
 
 /**
  * Created by Nika on 8/20/2017.
  * TODO write description of this class - what it does and why.
  */
 
-open class BaseMapActivity : AppCompatActivity(), OnMapReadyCallback {
+open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     private val TAG = "bmap"
 

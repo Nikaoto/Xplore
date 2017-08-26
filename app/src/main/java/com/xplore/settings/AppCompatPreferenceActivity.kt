@@ -1,5 +1,6 @@
 package com.xplore.settings
 
+import android.content.Context
 import android.content.res.Configuration
 import android.preference.PreferenceActivity
 import android.support.v7.app.AppCompatDelegate
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.Toolbar
 import android.view.View
+import com.xplore.base.XploreContextWrapper
 
 
 /**
@@ -18,6 +20,11 @@ import android.view.View
 
 abstract class AppCompatPreferenceActivity : PreferenceActivity() {
     private var mDelegate: AppCompatDelegate? = null
+
+    override fun attachBaseContext(newBase: Context) {
+        val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getDelegate().installViewFactory()

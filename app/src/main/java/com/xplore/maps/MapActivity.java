@@ -47,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.kml.KmlLayer;
 import com.xplore.General;
 import com.xplore.R;
+import com.xplore.base.BaseAppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,7 @@ import java.util.Map;
 * experimental mode.
 */
 
-public class MapActivity extends AppCompatActivity
+public class MapActivity extends BaseAppCompatActivity
         implements OnMapReadyCallback, ConnectionCallbacks, LocationListener,
         GoogleApiClient.OnConnectionFailedListener {
 

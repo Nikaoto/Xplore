@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.discussion.*
 import kotlinx.android.synthetic.main.message_list_item.view.*
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.message_list_item.view.*
  * TODO write description of this class - what it does and why.
  */
 
-class DiscussionActivity : Activity() {
+class DiscussionActivity : BaseActivity() {
 
     //Firebase
     private val F_GROUPS = "groups"

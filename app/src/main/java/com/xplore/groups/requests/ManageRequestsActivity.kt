@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.empty.EmptyFragmentFactory
 import com.xplore.groups.AllMemberIdsForGroup
 
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.manage_requests.*
  *
  *
  */
-class ManageRequestsActivity : AppCompatActivity() {
+class ManageRequestsActivity : BaseAppCompatActivity() {
 
     //Firebase
     lateinit private var currentGroupRef: DatabaseReference

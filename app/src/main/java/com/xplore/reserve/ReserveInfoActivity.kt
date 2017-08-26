@@ -9,6 +9,7 @@ import android.support.v4.view.ViewCompat
 import android.widget.TextView
 import com.xplore.database.DBManager
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.MapActivity
 
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.reserve_info.*
 *
 */
 
-class ReserveInfoActivity() : Activity(), AppBarLayout.OnOffsetChangedListener {
+class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private val IMAGE_SHOW_PERCENT = 45
     private val mActivity = this

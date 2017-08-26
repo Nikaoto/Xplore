@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.MenuItem
+import com.xplore.base.BaseAppCompatActivity
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
@@ -12,7 +13,7 @@ import mehdi.sakout.aboutpage.Element
  * Created by Nikaoto on 11/9/2016.
  */
 
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : BaseAppCompatActivity() {
 
     private infix fun Resources.string(id: Int) = this.getString(id)
 

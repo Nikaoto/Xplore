@@ -13,6 +13,7 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.groups.view.controls.InvitedControls
@@ -36,7 +37,7 @@ import java.util.*
 * TODO write description of this class - what it does and why.
 */
 
-class GroupInfoActivity : Activity() {
+class GroupInfoActivity : BaseActivity() {
 
     //Firebase
     private val F_LOCATIONS = "locations"

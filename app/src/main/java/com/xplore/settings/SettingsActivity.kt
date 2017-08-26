@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MainActivity.languagePrefsChanged) {
+        if (LanguageUtil.languagePrefsChanged) {
             finish()
         }
     }

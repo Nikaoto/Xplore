@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.R
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.FirebaseUserSearch
 import com.xplore.groups.AllMemberIdsForGroup
 import com.xplore.groups.SelectUsersAdapter
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.search_layout.*
  * Opens when inviting members to a group.
  *
  */
-class InviteMembersActivity : AppCompatActivity(), TextView.OnEditorActionListener {
+class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionListener {
 
     //TODO get friends list
     //TODO display friends and add suggestions

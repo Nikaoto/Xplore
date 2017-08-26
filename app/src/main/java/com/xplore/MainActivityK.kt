@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
 import com.xplore.groups.search.SearchGroupsFragment
@@ -39,7 +40,7 @@ import com.xplore.user.UserCard
  * Replacement for MainAct in Kotlin
  */
 
-class MainActivityK : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val PREFS_LANGUAGE = "prefs_lang"
     private val PREFS_STRING_LANGUAGE = "lang"
@@ -179,6 +180,7 @@ class MainActivityK : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             userFullNameTextView.visibility = View.GONE
             Picasso.with(this)
                     .load(R.drawable.user_default_profile_image)
+                    .transform(ImageUtil.mediumCircle(this))
                     .into(userImageView);
         }
 
@@ -199,6 +201,7 @@ class MainActivityK : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 if (tempUser != null) {
                                     Picasso.with(context)
                                             .load(tempUser.profile_picture_url)
+                                            .transform(ImageUtil.mediumCircle(this@MainActivityK))
                                             .into(userImageView)
 
                                     userFullNameTextView.visibility = View.VISIBLE
@@ -250,7 +253,7 @@ class MainActivityK : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
 
-            R.id.nav_about -> startActivity(Intent(this, SettingsActivity::class.java))
+            R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java))
         }
 
         fragmentManager.executePendingTransactions()

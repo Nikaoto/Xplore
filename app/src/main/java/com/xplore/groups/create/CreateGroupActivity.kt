@@ -21,6 +21,7 @@ import com.xplore.reserve.ReserveInfoActivity
 import java.util.ArrayList
 
 import com.xplore.General.currentUserId
+import com.xplore.base.BaseActivity
 import com.xplore.groups.Group
 import com.xplore.maps.MapActivity
 import com.xplore.user.User
@@ -40,7 +41,7 @@ import kotlin.collections.HashMap
 
  */
 
-open class CreateGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
+open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     //Database
     val dbManager: DBManager by lazy { DBManager(this) }

@@ -37,6 +37,7 @@ import java.util.HashMap
 
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
+import com.xplore.base.BaseActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 import java.io.ByteArrayOutputStream
@@ -49,7 +50,7 @@ import java.io.IOException
 * TODO write description of this class - what it does and why.
 */
 
-class RegisterActivity : Activity(), DatePickerDialog.OnDateSetListener {
+class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     /* Request Codes */
     val NONE = 0

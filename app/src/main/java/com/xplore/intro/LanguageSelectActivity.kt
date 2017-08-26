@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import com.xplore.MainActivityK
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.settings.LanguageUtil
 
 import kotlinx.android.synthetic.main.intro_language_select.*
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.intro_language_select.*
  *
  */
 
-class LanguageSelectActivity : Activity() {
+class LanguageSelectActivity : BaseActivity() {
 
     private fun startWelcomeActivity() {
         Log.i(TAG, "language selected, starting main act")

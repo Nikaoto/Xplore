@@ -28,6 +28,7 @@ import com.xplore.General;
 import com.xplore.ImageUtil;
 import com.xplore.R;
 import com.xplore.TimeManager;
+import com.xplore.base.BaseActivity;
 import com.xplore.user.User;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
  *
  */
 
-public class SearchUsersActivity extends Activity implements EditText.OnEditorActionListener{
+public class SearchUsersActivity extends BaseActivity implements EditText.OnEditorActionListener{
 
     private final String FIREBASE_FNAME_TAG = "fname";
     private final String FIREBASE_LNAME_TAG = "lname";

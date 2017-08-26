@@ -1,10 +1,13 @@
 package com.xplore.intro
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import com.heinrichreimersoftware.materialintro.app.IntroActivity
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
 import com.xplore.R
+import com.xplore.base.XploreContextWrapper
+import com.xplore.settings.LanguageUtil
 
 /**
  * Created by Nik on 8/24/2017.
@@ -15,6 +18,11 @@ import com.xplore.R
  */
 
 class WelcomeActivity : IntroActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isFullscreen = true

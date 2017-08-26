@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity
     public static final String GEORGIAN_LANG_CODE = "ka";
     public static final String RUSSIAN_LANG_CODE = "ru";
 
-    //TODO add this in singleton PreferenceManager
-    public static boolean languagePrefsChanged = false;
-
     private NotificationManager notificationManager;
 
     private DrawerLayout drawer;
@@ -187,12 +184,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-        //Checks if language preferences changed and reloads
-        if (languagePrefsChanged) {
-            languagePrefsChanged = false;
-            recreate();
-        }
 
         if (General.accountStatus == General.JUST_LOGGED_IN) {
             notificationManager.reset();

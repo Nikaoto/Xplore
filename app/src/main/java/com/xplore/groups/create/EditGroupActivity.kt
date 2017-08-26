@@ -16,6 +16,7 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.R
+import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.maps.MapActivity
@@ -38,7 +39,7 @@ import kotlinx.android.synthetic.main.create_group.*
  * TODO write description of this class - what it does and why.
  */
 
-class EditGroupActivity : Activity(), DatePickerDialog.OnDateSetListener {
+class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     //TODO extend CreateGroupActivity and just set every field in onCreate()
 
