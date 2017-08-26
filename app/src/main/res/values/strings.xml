@@ -3,8 +3,18 @@
 
     <!-- Welcome Screen -->
     <string name="welcome">კეთილი იყოს თქვენი მობრძანება Xplore-ში!</string>
-    <string name="screen1">სანამ Xplore-ის გამოყენებას დაიწყებთ, პატარა შესავალი უნდა გავიაროთ.
+    <string name="slide1_text">სანამ Xplore-ის გამოყენებას დაიწყებთ, პატარა შესავალი უნდა გავიაროთ.
         გაასრიალეთ გვერდი მარცხნივ რომ განაგრძოთ.</string>
+
+    <string name="slide2_title">ჯგუფები</string>
+    <string name="slide2_text">მთავარ გვერდზე, ‘მოძებნე/შექმენი გუნდები’, შეგიძლიათ მოძებნოთ და
+        დაათვალიეროთ დაგეგმილი ლაშქრობები თქვენს ირგვლივ. მოლაშქრეთა გუნდებს შეიძლება ქონდეთ
+        რამდენიმე ნიშანი:</string>
+    <string name="slide2_example_group_leader_name">დათო ჩხეიძე</string>
+    <string name="slide2_example_group_leader_reputation">100 რეპუტაცია</string>
+    <string name="slide2_example_group_destination_name">დარიალის ხეობა</string>
+    <string name="slide2_example_group_days_left">მაზეგ</string>
+    <string name="slide2_example_group_duration">2 დღე</string>
 
     <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

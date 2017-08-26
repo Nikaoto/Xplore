@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exampleGroupCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/leaderLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/leaderImageView"
+                    android:layout_width="@dimen/user_profile_image_tiny_size"
+                    android:layout_height="@dimen/user_profile_image_tiny_size"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/user_default_profile_image" />
+
+                <TextView
+                    android:id="@+id/leaderRepCombinedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/leaderImageView"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorGreyText"
+                    android:textSize="13sp"
+                    android:text="@string/slide2_example_group_leader_reputation" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/leaderRepCombinedTextView"
+                    android:layout_centerVertical="@id/leaderImageView"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/leaderImageView"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/slide2_example_group_leader_name" />
+
+            </RelativeLayout>
+
+            <!-- Marks -->
+            <LinearLayout
+                android:id="@+id/groupMarksLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/leaderLayout"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/invitedMark"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_mark_invite"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/beenHereMark"
+                    android:layout_width="26dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_mark_beenhere"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!-- Group Image -->
+        <ImageView
+            android:id="@+id/reserveImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/group_card_image_height"
+            android:scaleType="centerCrop"
+            android:src="@drawable/example_group_image" />
+
+        <!-- Group Name -->
+        <TextView
+            android:text="@string/slide2_example_group_destination_name"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textStyle="bold" />
+
+        <!-- Separator -->
+        <View
+            style="@style/Divider"
+            android:layout_marginBottom="2dp"/>
+
+        <!-- Footer -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <!-- Member count-->
+            <ImageView
+                android:id="@+id/memberCountIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_member_count" />
+
+            <TextView
+                android:id="@+id/memberCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/memberCountIcon"
+                android:maxEms="4"
+                android:paddingTop="2dp"
+                android:text="5" />
+
+            <!-- Start date -->
+            <TextView
+                android:id="@+id/startDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="3dp"
+                android:paddingTop="1.5dp"
+                android:text="@string/slide2_example_group_days_left" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_toLeftOf="@id/startDateTextView"
+                android:src="@drawable/ic_date" />
+
+            <!-- Duration in days-->
+            <ImageView
+                android:id="@+id/durationIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/memberCountTextView"
+                android:src="@drawable/ic_clock" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/durationIcon"
+                android:paddingTop="1.5dp"
+                android:text="@string/slide2_example_group_duration" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

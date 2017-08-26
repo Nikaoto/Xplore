@@ -16,7 +16,7 @@ class MapUtil {
                       width: Int = 450, height: Int = 300, zoom: Int = 16,
                       mapType: String = "hybrid", markerColor: String = "orange"): String {
             val coordPair = "$lat,$lng"
-            return "http://maps.googleapis.com/maps/api/staticmap?" +
+                return "http://maps.googleapis.com/maps/api/staticmap?" +
             "&zoom=$zoom" +
             "&size=$width" + "x" + "$height" +
             "&maptype=$mapType" +

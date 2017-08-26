@@ -3,8 +3,17 @@
 
     <!-- Welcome Screen -->
     <string name="welcome">Welcome to Xplore!</string>
-    <string name="screen1">Before you start using Xplore, we\'ll go through a small intro. Slide
+    <string name="slide1_text">Before you start using Xplore, we\'ll go through a small intro. Slide
         left to continue.</string>
+
+    <string name="slide2_title">Groups</string>
+    <string name="slide2_text">On the main page, ‘search/create groups’, you can view and find
+        planned hikes near you. Hiking groups might have different marks:</string>
+    <string name="slide2_example_group_leader_name">David Smith</string>
+    <string name="slide2_example_group_leader_reputation">100 reputation</string>
+    <string name="slide2_example_group_destination_name">Dariali Gorge</string>
+    <string name="slide2_example_group_days_left">in 1 month</string>
+    <string name="slide2_example_group_duration">2 days</string>
 
     <!-- Discussion -->
     <string name="discussion_message_hint">Write a message…</string>

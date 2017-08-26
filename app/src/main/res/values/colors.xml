@@ -7,7 +7,6 @@
     <color name="black">#000000</color>
     <color name="colorLibText">#fffefe</color>
     <color name="colorLibBGTint">#6e3f3e3e</color>
-    <color name="colorLibBGTintClick">#32bcbcbb</color>
     <color name="colorGreyText">#8c8c8c</color>
     <color name="colorGreen">#00E500</color>
     <color name="subtleGreen">#00e64d</color>
@@ -18,4 +17,19 @@
     <color name="colorDarkGrey">#3F3F3F</color>
     <color name="orange">#ff9605</color>
     <color name="white">#FFFFFF</color>
+
+    <!-- Welcome Screen Slide colors -->
+
+    <color name="welcome_screen_slide_title">#FFFFFF</color>
+    <color name="welcome_screen_slide_text">#96ffffff</color>
+
+    <color name="slide1_background">#ff33b5e5</color>
+    <color name="slide1_background_dark">#ff263238</color>
+    <color name="slide2_background">#ff4051</color>
+    <color name="slide2_background_dark">#FFC9323F</color>
+    <color name="slide3_background">#ff33b5e5</color>
+    <color name="slide3_background_dark">#ff263238</color>
+    <color name="slide4_background">#ff33b5e5</color>
+    <color name="slide5_background_dark">#ff263238</color>
+
 </resources>

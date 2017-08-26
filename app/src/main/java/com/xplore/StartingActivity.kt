@@ -18,13 +18,17 @@ class StartingActivity : AppCompatActivity() {
         const val PREFS_BOOT = "prefs_boot"
         const val PREFS_BOOLEAN_FIRST_BOOT = "first_boot"
 
-        @JvmStatic
-        fun stopShowingWelcomeScreen(context: Context) {
-            context.getSharedPreferences(StartingActivity.PREFS_BOOT, 0)
-                    .edit()
-                    .putBoolean(PREFS_BOOLEAN_FIRST_BOOT, false)
-                    .commit()
-        }
+
+        //Returns true if first ever app boot
+        @JvmStatic fun shouldShowWelcomeScreen(context: Context) =
+                context.getSharedPreferences(PREFS_BOOT, 0)
+                        .getBoolean(PREFS_BOOLEAN_FIRST_BOOT, true)
+
+        @JvmStatic fun stopShowingWelcomeScreen(context: Context) =
+                 context.getSharedPreferences(StartingActivity.PREFS_BOOT, 0)
+                         .edit()
+                         .putBoolean(PREFS_BOOLEAN_FIRST_BOOT, false)
+                         .commit()
     }
 
     val TAG = "jiga"
@@ -36,7 +40,7 @@ class StartingActivity : AppCompatActivity() {
 
         finish()
 
-        if (isFirstBoot()) {
+        if (shouldShowWelcomeScreen(this)) {
             Log.i(TAG, "is first boot, starting language select")
 
             startActivity(Intent(this, LanguageSelectActivity::class.java))
@@ -48,8 +52,4 @@ class StartingActivity : AppCompatActivity() {
 
         //finish()
     }
-
-    //Returns true if first ever app boot
-    private fun isFirstBoot()
-            = getSharedPreferences(PREFS_BOOT, 0).getBoolean(PREFS_BOOLEAN_FIRST_BOOT, true)
 }

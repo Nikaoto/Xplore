@@ -1,12 +1,14 @@
 package com.xplore.intro
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.view.ViewPager
 import android.util.Log
 import com.heinrichreimersoftware.materialintro.app.IntroActivity
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
+import com.xplore.MainActivityK
 import com.xplore.R
 import com.xplore.StartingActivity
 import com.xplore.base.XploreContextWrapper
@@ -23,6 +25,9 @@ import com.xplore.settings.LanguageUtil
 class WelcomeActivity : IntroActivity() {
 
     val TAG = "jiga"
+
+    //If this is true, main act is launched when this activity finishes
+    private var shouldOpenMainAct = false
 
     override fun attachBaseContext(newBase: Context) {
         val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))
@@ -46,7 +51,10 @@ class WelcomeActivity : IntroActivity() {
                 if (position == slides.size - 1) {
                     Log.i(TAG, "last slide")
 
-                    StartingActivity.stopShowingWelcomeScreen(this@WelcomeActivity)
+                    if (StartingActivity.shouldShowWelcomeScreen(this@WelcomeActivity)) {
+                        StartingActivity.stopShowingWelcomeScreen(this@WelcomeActivity)
+                        shouldOpenMainAct = true
+                    }
                 }
             }
 
@@ -56,10 +64,42 @@ class WelcomeActivity : IntroActivity() {
         addSlide(SimpleSlide.Builder()
                 .image(R.drawable.about_page_banner)
                 .title(R.string.welcome)
-                .description(R.string.screen1)
-                .background(R.color.wallet_holo_blue_light)
-                .backgroundDark(R.color.material_blue_grey_900)
+                .description(R.string.slide1_text)
+                .background(R.color.slide1_background)
+                .backgroundDark(R.color.slide1_background_dark)
                 .scrollable(false)
                 .build())
+
+        addSlide(FragmentSlide.Builder()
+                .background(R.color.slide2_background)
+                .backgroundDark(R.color.slide2_background_dark)
+                .fragment(R.layout.slide2_fragment, R.style.Theme_AppCompat_Light)
+                .build())
+
+        /*addSlide(SimpleSlide.Builder()
+                .image(R.drawable.about_page_banner)
+                .title(R.string.welcome)
+                .description(R.string.slide1_text)
+                .background(R.color.slide1_background)
+                .backgroundDark(R.color.slide1_background_dark)
+                .scrollable(false)
+                .build())
+
+        addSlide(SimpleSlide.Builder()
+                .image(R.drawable.about_page_banner)
+                .title(R.string.welcome)
+                .description(R.string.slide1_text)
+                .background(R.color.slide1_background)
+                .backgroundDark(R.color.slide1_background_dark)
+                .scrollable(false)
+                .build())*/
+    }
+
+    //Opens main act if shouldOpenMainAct
+    override fun onDestroy() {
+        super.onDestroy()
+        if (shouldOpenMainAct) {
+            startActivity(Intent(this, MainActivityK::class.java))
+        }
     }
 }

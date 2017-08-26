@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.xplore.MainActivityK
 import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.settings.LanguageUtil
@@ -23,9 +22,7 @@ class LanguageSelectActivity : BaseActivity() {
     private fun startWelcomeActivity() {
         Log.i(TAG, "language selected, starting main act")
         finish()
-        startActivity(Intent(this, MainActivityK::class.java))
-        //startActivity(Intent(this, WelcomeActivity::class.java))
-        //finish()
+        startActivity(Intent(this, WelcomeActivity::class.java))
     }
 
     val TAG = "jiga"
