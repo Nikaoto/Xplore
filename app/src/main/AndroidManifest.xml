@@ -50,7 +50,7 @@
 
         <!-- Language Select -->
         <activity android:name=".intro.LanguageSelectActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen"/>
 
         <!-- Welcome Screen -->
         <activity android:name=".intro.WelcomeActivity"

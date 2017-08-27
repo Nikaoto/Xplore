@@ -102,7 +102,7 @@
         <item name="android:layout_marginRight">25dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="IntroLanguageCardViewTextView">
@@ -111,6 +111,25 @@
         <item name="android:textSize">28sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
+<!--    <style name="slide2_icon_description_linear_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+    </style>-->
+
+    <style name="slide2_icon_description_linear_layout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
     </style>
 
 </resources>

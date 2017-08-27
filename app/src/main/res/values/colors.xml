@@ -25,11 +25,11 @@
 
     <color name="slide1_background">#ff33b5e5</color>
     <color name="slide1_background_dark">#ff263238</color>
-    <color name="slide2_background">#ff4051</color>
-    <color name="slide2_background_dark">#FFC9323F</color>
-    <color name="slide3_background">#ff33b5e5</color>
-    <color name="slide3_background_dark">#ff263238</color>
-    <color name="slide4_background">#ff33b5e5</color>
+    <color name="slide2_background">#e94613</color>
+    <color name="slide2_background_dark">#ba4607</color>
+    <color name="slide3_background">#ff4051</color>
+    <color name="slide3_background_dark">#FFC9323F</color>
+    <color name="slide4_background">#F7C873</color>
     <color name="slide5_background_dark">#ff263238</color>
 
 </resources>
