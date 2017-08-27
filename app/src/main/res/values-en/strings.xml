@@ -15,6 +15,13 @@
     <string name="slide2_example_group_destination_name">Dariali Gorge</string>
     <string name="slide2_example_group_days_left">in 1 month</string>
     <string name="slide2_example_group_duration">2 days</string>
+    <string name="slide2_beenhere_description">at least one member is familiar with the group\'s
+        destination</string>
+    <string name="slide2_invite_description">you\'ve received an invite or sent a join request to the
+        group</string>
+    <string name="slide2_group_member_count_description">number of members in the group</string>
+    <string name="slide2_hike_duration_description">duration of the hike</string>
+    <string name="slide2_hike_date">hike starting date</string>
 
     <!-- Discussion -->
     <string name="discussion_message_hint">Write a message…</string>
@@ -168,7 +175,7 @@
     <string name="drop_pin_help">To choose a destination just long press on the map. Dropped pins can be selected with a long press as well.</string>
     <string name="error">Error</string>
     <string name="open_discussion">Open Discussion</string>
-    <string name="see_on_map">See trip on map</string>
+    <string name="see_on_map">See live hike</string>
     <string name="to_remove">Remove</string>
     <string name="remove_member_question">Do you wish to remove this member from your group?</string>
     <string name="logged_in">Logged In</string>
@@ -197,5 +204,14 @@
     <string name="contact_us">Contact us</string>
     <string name="happy_hiking">If you\'re having any issues with Xplore, please inform us. Happy and safe hiking!</string>
     <string name="settings_tutorial_title">Open tutorial</string>
+
+    <string name="slide3_title">Library</string>
+    <string name="slide3_text">You can find information about hiking destinations at the Library.
+        Each destination falls into one of the categories:</string>
+    <string name="slide3_tent_description">National park</string>
+    <string name="slide3_castle_description">Protected area known for historical monuments</string>
+    <string name="slide3_example_reserve_name">Mtirala</string>
+    <string name="slide3_paw_description">Wildlife refuge, has diverse fauna</string>
+    <string name="slide3_tree_description">Protected area, has unique flora</string>
     <!-- -->
 </resources>

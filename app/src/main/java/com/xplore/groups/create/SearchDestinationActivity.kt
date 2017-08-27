@@ -1,7 +1,6 @@
 package com.xplore.groups.create
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -9,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +19,7 @@ import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.reserve.ReserveCard
 import com.xplore.reserve.Icons
-import kotlinx.android.synthetic.main.reserve_list_item.view.*
+import kotlinx.android.synthetic.main.reserve_card.view.*
 import kotlinx.android.synthetic.main.search_layout2.*
 
 import java.util.ArrayList
@@ -128,7 +126,7 @@ class SearchDestinationActivity : BaseActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
                 ResultViewHolder(
                         LayoutInflater.from(parent.context)
-                                .inflate(R.layout.reserve_list_item, parent, false)
+                                .inflate(R.layout.reserve_card, parent, false)
                 )
 
         override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {

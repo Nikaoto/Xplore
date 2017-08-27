@@ -76,13 +76,10 @@ class WelcomeActivity : IntroActivity() {
                 .fragment(R.layout.slide2_fragment, R.style.Theme_AppCompat_Light)
                 .build())
 
-        addSlide(SimpleSlide.Builder()
-                .image(R.drawable.about_page_banner)
-                .title(R.string.welcome)
-                .description(R.string.slide1_text)
+        addSlide(FragmentSlide.Builder()
                 .background(R.color.slide3_background)
                 .backgroundDark(R.color.slide3_background_dark)
-                .scrollable(false)
+                .fragment(R.layout.slide3_fragment, R.style.Theme_AppCompat_Light)
                 .build())
 
         /*addSlide(SimpleSlide.Builder()

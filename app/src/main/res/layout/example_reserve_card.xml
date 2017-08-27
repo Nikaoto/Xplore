@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reserveCardView"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="8dp"
+    android:layout_margin="@dimen/cardview_list_entry_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/reserve_cardview_int_margin">
+
+        <!-- Reserve Image -->
+        <ImageView
+            android:src="@drawable/mtirala"
+            android:id="@+id/reserveImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reserve_image_height"
+            android:scaleType="centerCrop" />
+
+        <!-- Reserve Type Icon -->
+        <ImageView
+            android:id="@+id/reserveIconImageView"
+            android:src="@drawable/ic_tent_grey600_36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignRight="@id/reserveImageView"
+            android:layout_alignParentBottom="true"/>
+
+        <!-- Reserve Name -->
+        <TextView
+            android:text="@string/slide3_example_reserve_name"
+            android:id="@+id/reserveNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/reserveIconImageView"
+            android:layout_below="@id/reserveImageView"
+            android:layout_marginRight="@dimen/reserve_cardview_int_margin"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="2dp"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="21sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

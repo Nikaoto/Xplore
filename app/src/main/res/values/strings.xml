@@ -10,13 +10,27 @@
     <string name="slide2_text2">მთავარ გვერდზე, ‘მოძებნე/შექმენი გუნდები’, შეგიძლიათ მოძებნოთ და
         დაათვალიეროთ დაგეგმილი ლაშქრობები თქვენს ირგვლივ. მოლაშქრეთა გუნდებს შეიძლება ქონდეთ
         რამდენიმე ნიშანი:</string>
-
     <string name="slide2_text">ასე გამოიყურება დაგეგმილი ლაშქრობა</string>
     <string name="slide2_example_group_leader_name">დათო ჩხეიძე</string>
     <string name="slide2_example_group_leader_reputation">100 რეპუტაცია</string>
     <string name="slide2_example_group_destination_name">დარიალის ხეობა</string>
     <string name="slide2_example_group_days_left">მაზეგ</string>
     <string name="slide2_example_group_duration">2 დღე</string>
+    <string name="slide2_beenhere_description">გუნდიდან ერთი წევრი მაინც არის ნამყოფი იქ,
+        სადაც გუნდი მიდის</string>
+    <string name="slide2_invite_description">გუნდისგან მოწვევა გაქვთ მიღებული ან გაგზავნილი</string>
+    <string name="slide2_group_member_count_description">გუნდის წევრების რაოდენობა</string>
+    <string name="slide2_hike_duration_description">ლაშქრობის ხანგრძლივობა</string>
+    <string name="slide2_hike_date">ლაშქრობის დასაწყისის თარიღი</string>
+
+    <string name="slide3_title">ბიბლიოთეკა</string>
+    <string name="slide3_text">ბიბლიოთეკაში შეგიძლიათ ნახოთ სალაშქრო მიმართულებებზე ინფორმაცია.
+        თითოეული მიეკუთვნება კატეგორიას:</string>
+    <string name="slide3_example_reserve_name">მტირალა</string>
+    <string name="slide3_tent_description">ეროვნული პარკი</string>
+    <string name="slide3_castle_description">სახელმწიფო ნაკრძალი, გამოირჩევა ისტორიული ძეგლებით</string>
+    <string name="slide3_paw_description">აღკვეთილი, გამოირჩევა ცხოველების მრავალფეროვნებით</string>
+    <string name="slide3_tree_description">დაცული ლანდშაფტი, გააჩნია უნიკალური ფაუნა</string>
 
     <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -105,7 +119,7 @@
     <string name="end_time">დასასრულის დრო</string>
     <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
     <string name="open_discussion">დისკუსიის ნახვა</string>
-    <string name="see_on_map">ლაშქრობის რუკაზე ნახვა</string>
+    <string name="see_on_map">ლაივ ლაშქრობის ნახვა</string>
 
     <!-- Discussion -->
     <string name="discussion_message_hint">დაწერეთ შეტყობინება…</string>

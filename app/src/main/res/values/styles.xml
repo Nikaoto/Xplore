@@ -122,12 +122,12 @@
         <item name="android:layout_marginRight">20dp</item>
     </style>-->
 
-    <style name="slide2_icon_description_linear_layout">
+    <style name="slide_icon_description_linear_layout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">25dp</item>
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_marginRight">20dp</item>
     </style>

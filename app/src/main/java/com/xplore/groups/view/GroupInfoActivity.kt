@@ -28,7 +28,7 @@ import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 
 import kotlinx.android.synthetic.main.group_info2.*
-import kotlinx.android.synthetic.main.reserve_list_item.*
+import kotlinx.android.synthetic.main.reserve_card.*
 import kotlinx.android.synthetic.main.leader_profile.*
 import java.util.*
 

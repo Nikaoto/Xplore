@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@color/slide2_background"
+    tools:background="@color/slide3_background"
     android:orientation="vertical"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="@string/slide2_title"
+            android:text="@string/slide3_title"
             android:textAlignment="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -25,41 +25,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Example group card -->
-        <include layout="@layout/example_group_card"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
 
-        <!-- Group card description -->
+        <!-- Example reserve card -->
+        <include layout="@layout/example_reserve_card"/>
+
+        <!-- Library description -->
         <TextView
+            android:text="@string/slide3_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="@string/slide2_text"
             android:textAlignment="center"
             android:textColor="@color/welcome_screen_slide_text"
             android:textSize="@dimen/welcome_screen_text_size" />
 
-        <!-- Been here mark description -->
+        <!-- Tent description -->
         <LinearLayout style="@style/slide_icon_description_linear_layout">
 
             <ImageView
-                android:src="@drawable/ic_mark_beenhere"
+                android:src="@drawable/ic_tent_black_48dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/icon_background"
-                android:scaleType="fitXY"
-                android:paddingTop="9dp"
+                android:scaleType="centerCrop"
                 android:layout_width="48dp"
-                android:layout_height="50dp" />
+                android:layout_height="48dp" />
 
             <TextView
-                android:text="@string/slide2_beenhere_description"
+                android:text="@string/slide3_tent_description"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
@@ -70,43 +63,43 @@
 
         </LinearLayout>
 
-        <!-- Invited mark description -->
+        <!-- Castle description -->
         <LinearLayout style="@style/slide_icon_description_linear_layout">
 
             <ImageView
-                android:src="@drawable/ic_mark_invite"
+                android:src="@drawable/ic_castle_black_48dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/icon_background"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:layout_width="48dp"
                 android:layout_height="48dp" />
 
             <TextView
-                android:text="@string/slide2_invite_description"
+                android:text="@string/slide3_castle_description"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
                 android:textColor="@color/welcome_screen_slide_title"
                 android:textSize="@dimen/welcome_screen_text_size" />
 
         </LinearLayout>
 
-        <!-- Member count description -->
+        <!-- Paw description -->
         <LinearLayout style="@style/slide_icon_description_linear_layout">
 
             <ImageView
-                android:src="@drawable/ic_member_count"
+                android:src="@drawable/ic_paw_black_48dp"
                 android:layout_gravity="center_vertical"
                 android:tint="@color/black"
                 android:background="@drawable/icon_background"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:layout_width="48dp"
                 android:layout_height="48dp" />
 
             <TextView
-                android:text="@string/slide2_group_member_count_description"
+                android:text="@string/slide3_paw_description"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
@@ -116,43 +109,20 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- Hike duration description -->
+        <!-- Tree description -->
         <LinearLayout style="@style/slide_icon_description_linear_layout">
 
             <ImageView
-                android:src="@drawable/ic_clock"
+                android:src="@drawable/ic_nature_people_black_48dp"
                 android:layout_gravity="center_vertical"
                 android:tint="@color/black"
                 android:background="@drawable/icon_background"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:layout_width="48dp"
                 android:layout_height="48dp" />
 
             <TextView
-                android:text="@string/slide2_hike_duration_description"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
-                android:textSize="@dimen/welcome_screen_text_size"
-                android:textColor="@color/welcome_screen_slide_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Hike duration description -->
-        <LinearLayout style="@style/slide_icon_description_linear_layout">
-
-            <ImageView
-                android:src="@drawable/ic_calendar"
-                android:layout_gravity="center_vertical"
-                android:tint="@color/black"
-                android:background="@drawable/icon_background"
-                android:scaleType="fitXY"
-                android:layout_width="48dp"
-                android:layout_height="48dp" />
-
-            <TextView
-                android:text="@string/slide2_hike_date"
+                android:text="@string/slide3_tree_description"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
@@ -165,7 +135,7 @@
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_height="25dp" />
-
+git
     </LinearLayout>
 
 </ScrollView>

@@ -53,7 +53,7 @@
             android:orientation="vertical">
 
             <!-- Destination -->
-            <include layout="@layout/reserve_list_item" />
+            <include layout="@layout/reserve_card" />
 
             <!-- Show open map button -->
             <android.support.v7.widget.AppCompatButton

@@ -7,7 +7,6 @@
     <string name="slide1_text">Прежде чем вы начнёте использовать Xplore, мы предлагаем вам небольшое
         введение. Сдвиньте страницу влево, чтобы продолжить</string>
 
-    <string name="slide2_title"></string>
     <string name="slide2_text"></string>
     <string name="slide2_example_group_leader_name">Давит Чхеидзе</string>
     <string name="slide2_example_group_leader_reputation">100 репутация</string>
@@ -40,7 +39,6 @@
     <string name="action_settings">Настройки</string>
     <string name="activity_maps_title">Карта</string>
     <string name="search_no_results">Результатов не найдено</string>
-    <string name="show_on_map">Показать на карту</string>
     <string name="description_header">Описание</string>
     <string name="lib_fauna_header">Фауна</string>
     <string name="lib_flora_header">Флора</string>
@@ -194,5 +192,13 @@
     <string name="happy_hiking">Если у вас возникли проблемы с Xplore, пожалуйста сообщите нам. Мы желаем вам счастливых и безопасных походов!</string>
     <string name="settings_tutorial_title">Открыть введение</string>
     <string name="search_tags_hint">Поиск с тегами</string>
+    <string name="slide3_tent_description">Национальный парк</string>
+    <string name="slide3_castle_description">Природоохранная зона</string>
+    <string name="slide3_example_reserve_name">Мтирала</string>
+    <string name="slide3_paw_description">Природный заповедник, имеет разнообразную фауну</string>
+    <string name="slide2_title">Группы</string>
+    <string name="slide3_tree_description">Природоохранная зона</string>
+    <string name="slide3_title">Библиотека</string>
+    <string name="show_on_map">Показать лайв поход</string>
     <!-- -->
 </resources>
