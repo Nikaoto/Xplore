@@ -142,8 +142,7 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
                     GoogleSignInAccount account = result.getSignInAccount();
                     firebaseAuthWithGoogle(account);
                 } else {
-                    Toast.makeText(GoogleSignInActivity.this, "Could not authenticate", Toast.LENGTH_SHORT).show();
-                    finish();
+                    popupWindow.dismiss();
                 }
                 break;
             }
@@ -191,6 +190,13 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
         super.onStop();
         auth.removeAuthStateListener(authListener);
         googleApiClient.disconnect();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!popupWindow.isShowing()) {
+            super.onBackPressed();
+        }
     }
 
     @Override

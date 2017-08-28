@@ -66,8 +66,6 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
 
-        Log.i(TAG, "oncreate main act")
-
         configureDBLanguage()
 
         setContentView(R.layout.activity_main)
@@ -127,6 +125,10 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         drawer.addDrawerListener(toggle)
         toggle.syncState()
         navigationView.setNavigationItemSelectedListener(this)
+
+        if (General.isUserSignedIn()) {
+            refreshUserProfileViews(this)
+        }
     }
 
     private fun configureDBLanguage() {
@@ -197,7 +199,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         context?.let {
                             if (dataSnapshot != null) {
-                                val gtempUser = dataSnapshot.children.iterator().next().getValue(UserCard::class.java)
+                                val tempUser = dataSnapshot.children.iterator().next().getValue(UserCard::class.java)
                                 if (tempUser != null) {
                                     Picasso.with(context)
                                             .load(tempUser.profile_picture_url)
