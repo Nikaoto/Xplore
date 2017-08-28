@@ -1,8 +1,5 @@
 package com.xplore.groups;
 
-import com.xplore.user.User;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

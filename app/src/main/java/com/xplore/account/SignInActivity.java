@@ -41,7 +41,9 @@ import com.xplore.General;
 import com.xplore.R;
 import com.xplore.base.BaseAppCompatActivity;
 
-import static com.xplore.General.*;
+import static com.xplore.General.JUST_LOGGED_IN;
+import static com.xplore.General.accountStatus;
+import static com.xplore.General.currentUserId;
 
 /**
  * Created by Nikaoto on 3/8/2017.

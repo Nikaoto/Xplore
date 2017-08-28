@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.xplore.General
 import com.xplore.R
 import kotlinx.android.synthetic.main.reserve_card.view.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by Nikaoto on 6/16/2017.

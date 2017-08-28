@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.database.*
@@ -14,7 +13,6 @@ import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.empty.EmptyFragmentFactory
 import com.xplore.groups.AllMemberIdsForGroup
-
 import kotlinx.android.synthetic.main.manage_requests.*
 
 /**
@@ -27,6 +25,7 @@ import kotlinx.android.synthetic.main.manage_requests.*
  *
  *
  */
+
 class ManageRequestsActivity : BaseAppCompatActivity() {
 
     //Firebase

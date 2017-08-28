@@ -1,9 +1,6 @@
 package com.xplore.user;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * Created by Nikaoto on 2/11/2017.
  */

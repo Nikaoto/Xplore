@@ -10,12 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-
 import com.squareup.picasso.Picasso
-
-import java.util.ArrayList
-
 import com.xplore.user.User
+import java.util.*
 
 /**
  * Created by Nikaoto on 3/4/2017.

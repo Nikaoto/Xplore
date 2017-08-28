@@ -1,18 +1,15 @@
 package com.xplore.reserve
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import android.widget.TextView
-import com.xplore.database.DBManager
 import com.xplore.R
 import com.xplore.base.BaseActivity
+import com.xplore.database.DBManager
 import com.xplore.maps.GroupMapActivity
-import com.xplore.maps.MapActivity
-
 import kotlinx.android.synthetic.main.reserve_info.*
 
 /**

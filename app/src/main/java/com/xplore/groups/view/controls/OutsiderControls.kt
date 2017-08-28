@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.outsider_controls.*
  * joined. From this panel, the user can send a join request to the group.
  *
  */
+
 class OutsiderControls : Fragment() {
 
     //Firebase

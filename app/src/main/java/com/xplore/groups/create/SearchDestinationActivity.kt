@@ -13,16 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.xplore.database.DBManager
 import com.xplore.General
 import com.xplore.R
 import com.xplore.base.BaseActivity
-import com.xplore.reserve.ReserveCard
+import com.xplore.database.DBManager
 import com.xplore.reserve.Icons
+import com.xplore.reserve.ReserveCard
 import kotlinx.android.synthetic.main.reserve_card.view.*
 import kotlinx.android.synthetic.main.search_layout2.*
-
-import java.util.ArrayList
+import java.util.*
 
 /**
 * Created by Nikaoto on 2/23/2017.

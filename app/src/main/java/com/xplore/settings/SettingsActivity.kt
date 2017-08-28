@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.view.MenuItem
 import android.widget.Toast
-import com.facebook.CallbackManager
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.xplore.ApiManager
 import com.xplore.General
-
 import com.xplore.R
 import com.xplore.intro.WelcomeActivity
 

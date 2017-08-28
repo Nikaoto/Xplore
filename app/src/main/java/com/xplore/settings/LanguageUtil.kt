@@ -2,8 +2,6 @@ package com.xplore.settings
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
-import java.util.*
 
 /**
  * Created by Nik on 8/25/2017.

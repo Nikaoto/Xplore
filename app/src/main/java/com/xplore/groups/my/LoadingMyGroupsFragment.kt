@@ -6,7 +6,6 @@ import android.app.Fragment
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -33,6 +32,7 @@ import com.xplore.groups.AllGroupIdsForMember
  * groups, it opens the MyGroupsFragment, otherwise, it opens EmptyMyGroupsFragment
  *
  */
+
 class LoadingMyGroupsFragment : Fragment() {
 
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
@@ -45,7 +45,7 @@ class LoadingMyGroupsFragment : Fragment() {
         startLoading()
     }
 
-    @SuppressWarnings("deprecation")
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {

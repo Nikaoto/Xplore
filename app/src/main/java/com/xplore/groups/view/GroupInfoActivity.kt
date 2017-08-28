@@ -1,6 +1,5 @@
 package com.xplore.groups.view
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -21,15 +20,13 @@ import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
 import com.xplore.maps.GroupMapActivity
-import com.xplore.maps.MapActivity
 import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
-
 import kotlinx.android.synthetic.main.group_info2.*
-import kotlinx.android.synthetic.main.reserve_card.*
 import kotlinx.android.synthetic.main.leader_profile.*
+import kotlinx.android.synthetic.main.reserve_card.*
 import java.util.*
 
 /**

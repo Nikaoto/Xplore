@@ -1,7 +1,6 @@
 package com.xplore.groups
 
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.select_user_list_item.view.*
  * Created by Nikaoto on 8/6/2017.
  * TODO write description of this class - what it does and why.
  */
+
 class SelectUsersAdapter(val activity: Activity,
                          val userCardList: ArrayList<UserCard>,
                          var selectedUserIds: ArrayList<String>)
@@ -49,11 +49,11 @@ class SelectUsersAdapter(val activity: Activity,
             itemView.checkbox.isChecked = true
         }
         itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
-            val userCard = userCardList[position]
+            val tempUserCard = userCardList[position]
             if (isChecked) {
-                selectedUserIds.add(userCard.id)
+                selectedUserIds.add(tempUserCard.id)
             } else {
-                selectedUserIds.remove(userCard.id)
+                selectedUserIds.remove(tempUserCard.id)
             }
         }
 

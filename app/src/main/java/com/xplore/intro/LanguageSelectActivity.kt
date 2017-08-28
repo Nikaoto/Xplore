@@ -1,13 +1,11 @@
 package com.xplore.intro
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.settings.LanguageUtil
-
 import kotlinx.android.synthetic.main.intro_language_select.*
 
 /**

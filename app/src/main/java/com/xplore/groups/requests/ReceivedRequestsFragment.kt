@@ -2,7 +2,6 @@ package com.xplore.groups.requests
 
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,7 @@ import kotlinx.android.synthetic.main.request_list.*
  * From here, the leader can manage received join requests from other users for his group
  *
  */
+
 class ReceivedRequestsFragment() : RequestListFragment() {
 
     companion object {

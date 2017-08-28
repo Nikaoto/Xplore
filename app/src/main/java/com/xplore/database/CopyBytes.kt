@@ -1,10 +1,6 @@
 package com.xplore.database
 
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 
 /**
  * Created by Nikaoto on 5/24/2017.

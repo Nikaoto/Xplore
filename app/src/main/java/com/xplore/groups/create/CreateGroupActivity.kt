@@ -1,6 +1,9 @@
 package com.xplore.groups.create
 
-import android.app.*
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,22 +13,19 @@ import android.widget.DatePicker
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.xplore.*
-import com.xplore.database.DBManager
-import com.xplore.reserve.ReserveInfoActivity
-
-import java.util.ArrayList
-
 import com.xplore.General.currentUserId
 import com.xplore.base.BaseActivity
+import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.maps.MapActivity
+import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
+import java.util.ArrayList
 import kotlin.collections.HashMap
 
 /**
@@ -180,7 +180,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             }
         }
 
-        radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+        radioGroup.setOnCheckedChangeListener { _, i ->
             if (i == R.id.yes_rb)
                 experienceAns = EXPERIENCE_ANS_YES
             else if (i == R.id.no_rb)
@@ -234,7 +234,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         TimePickerFragment(onTimeSetListener).show(fragmentManager, "")
     }
 
-    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         when (selecting) {
             SELECTION_START -> {
                 selecting = SELECTION_NONE

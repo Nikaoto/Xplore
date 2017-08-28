@@ -17,11 +17,9 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
-import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
-
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -32,9 +30,6 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
-
-import java.util.HashMap
-
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.base.BaseActivity
@@ -44,6 +39,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
 
 /**
 * Created by Nikaoto on 3/11/2017.

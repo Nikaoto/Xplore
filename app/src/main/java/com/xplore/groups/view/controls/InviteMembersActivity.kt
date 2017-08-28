@@ -3,8 +3,6 @@ package com.xplore.groups.view.controls
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -29,6 +27,7 @@ import kotlinx.android.synthetic.main.search_layout.*
  * Opens when inviting members to a group.
  *
  */
+
 class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionListener {
 
     //TODO get friends list
@@ -137,7 +136,7 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
             : ArrayList<UserCard> {
         val ans = ArrayList<UserCard>(userCardList.size)
         var duplicate = false
-        for (i in 0 .. userCardList.size - 1) {
+        for (i in 0 until userCardList.size) {
             if (!exclude.contains(userCardList[i].id)) {
                 duplicate = false
                 for (j in i + 1 .. userCardList.size - 1) {

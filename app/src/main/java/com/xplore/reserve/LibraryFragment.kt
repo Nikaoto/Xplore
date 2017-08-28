@@ -3,17 +3,16 @@ package com.xplore.reserve
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import com.xplore.R
 import com.xplore.database.DBManager
 import kotlinx.android.synthetic.main.search_layout2.*
-
-import java.util.ArrayList
+import java.util.*
 
 
 /**

@@ -2,14 +2,12 @@ package com.xplore.groups
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-
 import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
@@ -17,9 +15,8 @@ import com.xplore.R
 import com.xplore.TimeManager
 import com.xplore.database.DBManager
 import com.xplore.groups.view.GroupInfoActivity
-
-import java.util.ArrayList
 import kotlinx.android.synthetic.main.group_card.view.*
+import java.util.*
 
 /**
  * Created by Nika on 7/17/2017.

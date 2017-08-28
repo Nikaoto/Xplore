@@ -3,7 +3,6 @@ package com.xplore.groups.create;
 import com.google.firebase.database.Exclude;
 import com.xplore.groups.Group;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

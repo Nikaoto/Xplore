@@ -8,17 +8,15 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.xplore.R
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 
 /**

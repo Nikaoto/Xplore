@@ -1,12 +1,9 @@
 package com.xplore.settings
 
-import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.view.MenuItem
-import com.xplore.MainActivity
 import com.xplore.R
-import java.util.*
 
 /**
  * Created by el on 7/18/17.

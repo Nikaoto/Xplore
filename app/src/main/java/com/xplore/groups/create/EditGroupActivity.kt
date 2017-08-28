@@ -19,19 +19,18 @@ import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
-import com.xplore.maps.MapActivity
-import com.xplore.user.User
-import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MAX
-import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MIN
 import com.xplore.groups.create.CreateGroupActivity.Companion.E_INFO_CHAR_MAX
 import com.xplore.groups.create.CreateGroupActivity.Companion.E_INFO_CHAR_MIN
+import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MAX
+import com.xplore.groups.create.CreateGroupActivity.Companion.G_PREFS_CHAR_MIN
 import com.xplore.groups.create.CreateGroupActivity.Companion.INVITE_USERS_REQ_CODE
 import com.xplore.groups.create.CreateGroupActivity.Companion.SEARCH_DESTINATION_REQ_CODE
-import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
-import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_END
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_NONE
-
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
+import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
+import com.xplore.maps.MapActivity
+import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
 
 /**

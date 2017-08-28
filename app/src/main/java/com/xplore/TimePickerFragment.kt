@@ -1,6 +1,5 @@
 package com.xplore
 
-import android.app.Dialog
 import android.app.DialogFragment
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -15,6 +14,7 @@ import android.os.Bundle
  * Generic time picker. Only used because it allows the use of tags.
  *
  */
+
 class TimePickerFragment(val listener: TimePickerDialog.OnTimeSetListener?) : DialogFragment() {
 
     //Default time when picking

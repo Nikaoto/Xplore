@@ -7,6 +7,7 @@ import com.xplore.R
  *
  * This class holds arraylists of Ids of reserve icons in black and grey
  */
+
 object Icons {
     val black = arrayListOf<Int>(
             R.drawable.ic_tent_black_48dp,

@@ -6,15 +6,12 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-
 import com.google.android.gms.maps.model.LatLng
-import com.xplore.General
 import com.xplore.reserve.Reserve
 import com.xplore.reserve.ReserveCard
 import com.xplore.settings.LanguageUtil
-
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 /**
 * Created by Nikaoto on 1/15/2017.

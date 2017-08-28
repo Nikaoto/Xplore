@@ -6,6 +6,7 @@ import android.content.Context
  * Created by Nika on 8/1/2017.
  * TODO write description of this class - what it does and why.
  */
+
 class ImageUtil {
     companion object {
         @JvmStatic

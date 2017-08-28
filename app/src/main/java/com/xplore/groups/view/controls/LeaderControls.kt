@@ -1,9 +1,7 @@
 package com.xplore.groups.view.controls
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +9,9 @@ import android.view.ViewGroup
 import com.google.firebase.database.*
 import com.xplore.R
 import com.xplore.groups.AllMemberIdsForGroup
-import com.xplore.groups.create.CreateGroupActivity
 import com.xplore.groups.create.EditGroupActivity
 import com.xplore.groups.discussion.DiscussionActivity
 import com.xplore.groups.requests.ManageRequestsActivity
-
 import kotlinx.android.synthetic.main.leader_controls.*
 
 /**

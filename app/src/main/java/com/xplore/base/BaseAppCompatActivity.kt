@@ -2,7 +2,6 @@ package com.xplore.base
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
-import com.xplore.base.XploreContextWrapper
 import com.xplore.settings.LanguageUtil
 
 /**

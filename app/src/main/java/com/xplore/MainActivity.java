@@ -36,7 +36,6 @@ import com.xplore.notifications.BadgeDrawerArrowDrawable;
 import com.xplore.notifications.NotificationManager;
 import com.xplore.reserve.LibraryFragment;
 import com.xplore.settings.SettingsActivity;
-import com.xplore.user.User;
 import com.xplore.user.UserCard;
 
 import java.util.Locale;

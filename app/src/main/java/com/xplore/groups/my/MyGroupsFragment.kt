@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +18,8 @@ import com.xplore.database.DBManager
 import com.xplore.groups.GroupCard
 import com.xplore.groups.GroupCardRecyclerViewAdapter
 import com.xplore.user.UserCard
-
-import kotlinx.android.synthetic.main.my_groups.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import kotlinx.android.synthetic.main.my_groups.*
 
 /**
  * Created by Nika on 7/14/2017.

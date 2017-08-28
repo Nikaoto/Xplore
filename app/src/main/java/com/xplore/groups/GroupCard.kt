@@ -1,9 +1,7 @@
 package com.xplore.groups
 
-import android.util.Log
 import com.xplore.General
 import com.xplore.TimeManager
-import java.util.*
 
 /**
  * Created by Nika on 7/12/2017.

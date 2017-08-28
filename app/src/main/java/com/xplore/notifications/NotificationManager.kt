@@ -16,6 +16,7 @@ import com.xplore.General
  * //TODO add message sent notifications
  *
  */
+
 class NotificationManager(
         private val drawerBadge: BadgeDrawerArrowDrawable,
         private val myGroupsBadge: TextView) {
