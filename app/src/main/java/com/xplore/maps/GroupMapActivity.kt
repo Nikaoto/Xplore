@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -15,12 +14,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
-import com.google.maps.android.MarkerManager
 import com.xplore.General
-import com.xplore.user.UserCard
 
 /**
- * Created by Nika on 8/20/2017.
+ * Created by Nikaoto on 8/20/2017.
  * TODO write description of this class - what it does and why.
  */
 
@@ -100,7 +97,9 @@ class GroupMapActivity : BaseMapActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        firstUploadData()
+        if (groupId != null) {
+            firstUploadData()
+        }
     }
 
     /* Uploads a UserCard to this user's location node if it doesn't exist.
@@ -174,8 +173,10 @@ class GroupMapActivity : BaseMapActivity() {
     }
 
     private fun uploadLocation(location: Location) {
-        currentUserLocationRef.child(F_LATITUDE).setValue(location.latitude)
-        currentUserLocationRef.child(F_LONGITUDE).setValue(location.longitude)
+        if (groupId != null) {
+            currentUserLocationRef.child(F_LATITUDE).setValue(location.latitude)
+            currentUserLocationRef.child(F_LONGITUDE).setValue(location.longitude)
+        }
     }
 
     //Sets up listeners for member locations
