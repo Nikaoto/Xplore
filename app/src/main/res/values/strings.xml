@@ -232,7 +232,7 @@
     <!-- Account Settings -->
     <string name="log_out">გამოსვლა</string>
     <string name="logged_in">ავტორიზებულია</string>
-    <string name="logged_out">თქვენ გამოხვედით სისტემიდან</string>
+    <string name="logged_out">სისტემიდან გამოხვედით</string>
 
     <!-- Language Settings-->
     <string name="current_language_georgian">ქართული</string>

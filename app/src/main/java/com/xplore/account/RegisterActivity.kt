@@ -58,12 +58,15 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     val GALLERY_PERMISSION_REQUEST_CODE = 2;
     val ACTION_SNAP_IMAGE = 3
 
-    //Firebase
+    // Firebase
     val storageRef = FirebaseStorage.getInstance().reference
     private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
 
     // File provider authority string
     val authority = "com.xplore.fileprovider"
+
+    // Users profile image url
+    var imagePath: Uri? = null
 
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 15
@@ -137,22 +140,25 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
         doneButton.setOnClickListener {
             if (checkFields()) {
+                val ref = storageRef.child("users/$userId/profile_picture.jpg")
+                val newUser = UploadUser(
+                        userId,
+                        fnameEditText.str(),
+                        lnameEditText.str(),
+                        numEditText.str(),
+                        userEmail,
+                        General.getDateLong(bYear, bMonth, bDay),
+                        userProfilePicUrl)
                 if (imagePath != null) {
-                    val ref = storageRef.child("users/$userId/profile_picture.jpg")
-                    val newUser = UploadUser(
-                            userId,
-                            fnameEditText.str(),
-                            lnameEditText.str(),
-                            numEditText.str(),
-                            userEmail,
-                            General.getDateLong(bYear, bMonth, bDay),
-                            userProfilePicUrl)
                     uploadUserData(newUser, imagePath as Uri, ref)
+                } else {
+                    addUserEntryToDataBase(newUser)
                 }
             }
         }
     }
 
+    // Uploads user profile pic, modifies user profile pic url and uploads the user data to db
     private fun uploadUserData(user: UploadUser, input: Uri, output: StorageReference) {
         output.putFile(input)
                 .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
@@ -256,8 +262,6 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     fun EditText.str() = this.text.toString() //TODO take this to general
 
     /* Everything below is code needed for profile picture choosing or taking functionality */
-
-    var imagePath: Uri? = null
 
     //Requests permissions for given module with the passed request code and permissionType
     fun requestModulePermission(activity: Activity, permission: String, requestCode: Int,

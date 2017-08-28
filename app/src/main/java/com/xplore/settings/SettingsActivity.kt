@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.view.MenuItem
 import android.widget.Toast
+import com.facebook.CallbackManager
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.xplore.ApiManager
 import com.xplore.General
 
@@ -52,13 +53,16 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
         fun logOut() {
             if(General.accountStatus == General.LOGGED_IN){
+                // Firebase log out
                 FirebaseAuth.getInstance().signOut()
 
-                //TODO find which service was used to sign in and sign out accordingly
-                //If (signed in with Google)
-                Auth.GoogleSignInApi.signOut(googleApiClient)
-                //else if (signed in with Facebook) ...
+                // Facebook log out
+                LoginManager.getInstance().logOut()
 
+                // Google log out
+                Auth.GoogleSignInApi.signOut(googleApiClient)
+
+                // Reset current user
                 General.currentUserId = ""
                 General.accountStatus = General.NOT_LOGGED_IN
                 Toast.makeText(activity.applicationContext, R.string.logged_out, Toast.LENGTH_SHORT)
