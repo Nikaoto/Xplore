@@ -4,20 +4,32 @@
     android:layout_height="match_parent">
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/signin_google_button"
+        android:id="@+id/googleSignInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        >
+        android:layout_margin="10dp">
     </com.google.android.gms.common.SignInButton>
 
-<!--    <com.facebook.login.widget.LoginButton>
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookSignInButton"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp">
-    </com.facebook.login.widget.LoginButton>-->
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!--    <com.facebook.login.widget.LoginButton>
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp">
+        </com.facebook.login.widget.LoginButton>-->
 
 </LinearLayout>

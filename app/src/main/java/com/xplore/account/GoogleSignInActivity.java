@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -42,14 +42,13 @@ import static com.xplore.General.*;
 
 public class GoogleSignInActivity extends BaseAppCompatActivity {
 
-    private static final int RC_SIGN_IN = 2;
-    private static final int RC_REGISTER = 3;
+    private static final int REQ_SIGN_IN = 2;
+    private static final int REQ_REGISTER = 3;
 
     public static GoogleApiClient googleApiClient;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private SignInButton googleSignInButton;
     private FirebaseAuth.AuthStateListener authListener;
-    private View myView;
+    private ViewGroup myView;
     private PopupWindow popupWindow;
 
     private DatabaseReference firebaseUsersReference
@@ -61,7 +60,6 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_layout);
         setTitle(R.string.activity_authorization_title);
-        myView = getLayoutInflater().inflate(R.layout.signin_layout, null);
 
         //Building Google Api Client
         googleApiClient = ApiManager.INSTANCE.getGoogleAuthApiClient(this);
@@ -69,7 +67,7 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
         //Setting up auth state listener
         setUpAuthStateListener();
 
-        googleSignInButton = (SignInButton) findViewById(R.id.signin_google_button);
+        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.googleSignInButton);
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,9 +77,9 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
     }
 
     private void signIn() {
-        popupWindow = General.popLoadingBar(0.8, 0.8, this, myView);
+        popupWindow = General.popLoadingBar(0.8, 0.8, this);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, REQ_SIGN_IN);
     }
 
     private void setUpAuthStateListener() {
@@ -119,7 +117,7 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
                                     user.getEmail(),
                                     user.getPhotoUrl()
                             ),
-                            RC_REGISTER);
+                            REQ_REGISTER);
                 }
                 else {
                     accountStatus = JUST_LOGGED_IN;
@@ -135,24 +133,27 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                Toast.makeText(GoogleSignInActivity.this, "Could not authenticate", Toast.LENGTH_SHORT).show();
-                finish();
+
+        switch (requestCode) {
+            case REQ_SIGN_IN:  {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                if (result.isSuccess()) {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = result.getSignInAccount();
+                    firebaseAuthWithGoogle(account);
+                } else {
+                    Toast.makeText(GoogleSignInActivity.this, "Could not authenticate", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
             }
-        } else if(requestCode == RC_REGISTER) {
-            Toast.makeText(getApplicationContext(),
-                    "Registered successfully. Welcome to Xplore!",
-                    Toast.LENGTH_SHORT)
-                    .show();
-            General.accountStatus = General.JUST_LOGGED_IN;
-            finish();
+
+            case REQ_REGISTER: {
+                Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
+                General.accountStatus = General.JUST_LOGGED_IN;
+                finish();
+                break;
+            }
         }
     }
 

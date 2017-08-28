@@ -43,13 +43,12 @@ public class General {
 
     //==== Account status stuff ===
     public static final int LOGGED_IN = 1;
-    public static final int JUST_REGISTERED = 2;
     public static final int JUST_LOGGED_IN = 3;
     public static final int NOT_LOGGED_IN = 0;
+
+    //Used for managing notifications at MainAct
     public static int accountStatus = NOT_LOGGED_IN;
     //=================
-
-    public static String currentUserProfileImageUrl;
 
     public static int appWidth, appHeight;
     public static String currentUserId;
@@ -356,15 +355,14 @@ public class General {
     }*/
 
 
-    public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity, View view) {
+    public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity) {
         int popWidth = (int) (appWidth * xScale);
         int popHeight = (int) (appHeight * yScale);
 
         View popupView = activity.getLayoutInflater().inflate(R.layout.loading_layout, null);
 
-
         PopupWindow popupWindow = new PopupWindow(popupView, popWidth, popHeight, true);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         dimBehind(popupWindow, 0.65f);
 

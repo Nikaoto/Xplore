@@ -162,9 +162,10 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
             recreate()
         }
 
-        //Resets notificationManager for new user
+        //Reloads user related content when new login occurs
         if (General.accountStatus == General.JUST_LOGGED_IN) {
             notificationManager.reset()
+            refreshUserProfileViews(this)
             General.accountStatus = General.LOGGED_IN
         }
 
@@ -174,9 +175,8 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
             openHomePage()
         }
 
-        if (General.isUserSignedIn()) {
-            refreshUserProfileViews(this)
-        } else {
+        //Clears user related content whe logged out
+        if (!General.isUserSignedIn()) {
             userFullNameTextView.visibility = View.GONE
             Picasso.with(this)
                     .load(R.drawable.user_default_profile_image)
@@ -185,7 +185,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         }
 
         if (appJustLaunched) {
-            //appJustLaunched = false
+            appJustLaunched = false
             openHomePage()
         }
     }
@@ -197,7 +197,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         context?.let {
                             if (dataSnapshot != null) {
-                                val tempUser = dataSnapshot.children.iterator().next().getValue(UserCard::class.java)
+                                val gtempUser = dataSnapshot.children.iterator().next().getValue(UserCard::class.java)
                                 if (tempUser != null) {
                                     Picasso.with(context)
                                             .load(tempUser.profile_picture_url)

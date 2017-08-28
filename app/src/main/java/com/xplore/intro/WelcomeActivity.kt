@@ -82,7 +82,8 @@ class WelcomeActivity : IntroActivity() {
                 .fragment(R.layout.slide3_fragment, R.style.Theme_AppCompat_Light)
                 .build())
 
-        /*addSlide(SimpleSlide.Builder()
+/*        addSlide(
+                .Builder()
                 .image(R.drawable.about_page_banner)
                 .title(R.string.welcome)
                 .description(R.string.slide1_text)
