@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -37,22 +36,24 @@ import static com.xplore.General.*;
 
 /**
  * Created by Nikaoto on 3/8/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Handles sign in with Google and Facebook
+ * Launches RegisterAct if new user
+ *
  */
 
-public class GoogleSignInActivity extends BaseAppCompatActivity {
+
+public class SignInActivity extends BaseAppCompatActivity {
 
     private static final int REQ_SIGN_IN = 2;
     private static final int REQ_REGISTER = 3;
 
-    public static GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener authListener;
-    private ViewGroup myView;
+    private FirebaseAuth.AuthStateListener authListener = setUpAuthStateListener();
     private PopupWindow popupWindow;
 
-    private DatabaseReference firebaseUsersReference
-            = FirebaseDatabase.getInstance().getReference().child("users");
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
 
     @Override
@@ -61,10 +62,10 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
         setContentView(R.layout.signin_layout);
         setTitle(R.string.activity_authorization_title);
 
-        //Building Google Api Client
-        googleApiClient = ApiManager.INSTANCE.getGoogleAuthApiClient(this);
+        // Building Google Api Client
+        googleApiClient = ApiManager.getGoogleAuthApiClient(this);
 
-        //Setting up auth state listener
+        // Setting up auth state listener
         setUpAuthStateListener();
 
         SignInButton googleSignInButton = (SignInButton) findViewById(R.id.googleSignInButton);
@@ -82,28 +83,11 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
         startActivityForResult(signInIntent, REQ_SIGN_IN);
     }
 
-    private void setUpAuthStateListener() {
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Toast.makeText(GoogleSignInActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
-
-                    //User signed in
-                    currentUserId = user.getUid();
-                    checkUserExists(user); //creates user in case it doesn't exist
-                } else {
-                    // User is signed out
-                    Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-    }
-
+    // If user doesn't exist -> start RegisterAct
+    // If user exists -> confirm log in and finish
     private void checkUserExists(final FirebaseUser user) {
         Log.println(Log.INFO, "firebaseuser", "User FullName = "+user.getDisplayName());
-        Query query = firebaseUsersReference.orderByKey().equalTo(user.getUid());
+        Query query = usersRef.orderByKey().equalTo(user.getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,7 +95,7 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
                     //Start user registration
                     startActivityForResult(
                             RegisterActivity.getStartIntent(
-                                    GoogleSignInActivity.this,
+                                    SignInActivity.this,
                                     user.getUid(),
                                     user.getDisplayName(),
                                     user.getEmail(),
@@ -121,6 +105,8 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
                 }
                 else {
                     accountStatus = JUST_LOGGED_IN;
+                    Toast.makeText(SignInActivity.this, R.string.logged_in, Toast.LENGTH_SHORT)
+                            .show();
                     finish();
                 }
             }
@@ -162,20 +148,33 @@ public class GoogleSignInActivity extends BaseAppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        // If sign in fails, display a message to the user.
+                        // If sign in succeeds the auth state listener will be notified
 
-                        if (task.isSuccessful()) {
-                            //Toast.makeText(GoogleSignInActivity.this, "Authenticated", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        if (!task.isSuccessful()) {
                             Log.w("SIGN IN", "signInWithCredential", task.getException());
-                            Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
+                            Toast.makeText(SignInActivity.this, R.string.error,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private FirebaseAuth.AuthStateListener setUpAuthStateListener() {
+        return new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User signed in
+                    currentUserId = user.getUid();
+                    checkUserExists(user); //creates user in case it doesn't exist
+                } else {
+                    // User signed out
+                    Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
+                }
+            }
+        };
     }
 
     @Override

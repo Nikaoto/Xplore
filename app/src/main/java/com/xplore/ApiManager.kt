@@ -22,16 +22,19 @@ import com.google.android.gms.common.api.GoogleApiClient
 
 object ApiManager {
 
+    @JvmStatic
     fun getGoogleAuthApiClient(activity: Activity) =
             buildGoogleApiClient(activity, buildGoogleSignInOptions(activity))
 
     //fun getFacebookApiClient
 
     //Google Auth Api Client//
+    @JvmStatic
     fun buildGoogleApiClient(activity: Activity, gso: GoogleSignInOptions) =
             GoogleApiClient.Builder(activity.applicationContext)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
 
+    @JvmStatic
     fun buildGoogleSignInOptions(activity: Activity): GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(activity.getString(R.string.default_web_client_id))

@@ -118,7 +118,7 @@
             android:screenOrientation="portrait" />
 
         <!-- User Controls-->
-        <activity android:name=".account.GoogleSignInActivity"
+        <activity android:name=".account.SignInActivity"
             android:label="@string/activity_authorization_title"
             android:screenOrientation="portrait" />
         <activity android:name=".account.RegisterActivity"

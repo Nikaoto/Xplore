@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -14,9 +13,7 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -26,7 +23,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.xplore.account.GoogleSignInActivity;
+import com.xplore.account.SignInActivity;
 import com.xplore.reserve.ReserveInfoActivity;
 import com.xplore.user.UserProfileActivity;
 
@@ -305,7 +302,7 @@ public class General {
             public void onClick(View view) {
                 if (General.isNetConnected(activity)) {
                     popupWindow.dismiss();
-                    Intent i = new Intent(activity, GoogleSignInActivity.class); //TODO change into SignInActivity
+                    Intent i = new Intent(activity, SignInActivity.class); //TODO change into SignInActivity
                     activity.startActivity(i);
                 } else
                     createNetErrorDialog(activity);

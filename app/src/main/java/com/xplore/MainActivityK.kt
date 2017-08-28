@@ -204,6 +204,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
                                     Picasso.with(context)
                                             .load(tempUser.profile_picture_url)
                                             .transform(ImageUtil.mediumCircle(this@MainActivityK))
+                                            .placeholder(R.drawable.picasso_load_anim)
                                             .into(userImageView)
 
                                     userFullNameTextView.visibility = View.VISIBLE

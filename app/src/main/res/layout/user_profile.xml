@@ -37,16 +37,6 @@
                 android:layout_height="@dimen/user_profile_image_large_size"
                 android:scaleType="centerCrop"/>
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:id="@+id/imageProgressBar"
-                android:layout_width="@dimen/user_profile_image_large_size"
-                android:layout_height="@dimen/user_profile_image_large_size"
-                android:layout_alignTop="@id/userImageView"
-                android:layout_alignLeft="@id/userImageView"
-                android:layout_alignStart="@id/userImageView"
-                android:layout_centerHorizontal="true" />
-
             <!-- Reputation Text -->
             <TextView
                 android:id="@+id/reputationCombinedTextView"

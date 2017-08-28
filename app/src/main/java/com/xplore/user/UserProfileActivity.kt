@@ -39,8 +39,6 @@ class UserProfileActivity : AppCompatActivity() {
         setTitle("")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //Start load animation
-        imageProgressBar.visibility = View.VISIBLE
         fetchUserInfo(userId)
     }
 
@@ -76,6 +74,7 @@ class UserProfileActivity : AppCompatActivity() {
         Picasso.with(this)
                 .load(user.getProfile_picture_url())
                 .transform(ImageUtil.largeCircle(this))
+                .placeholder(R.drawable.picasso_load_anim)
                 .into(userImageView)
 
         fullNameTextView.text = "${user.getFname()} ${user.getLname()}"
@@ -84,10 +83,6 @@ class UserProfileActivity : AppCompatActivity() {
         birthDateTextView.text = General.putSlashesInDate(user.getBirth_date())
         telephoneTextView.text = user.getTel_num()
         emailTextView.text = user.getEmail()
-
-        //Stop loading animation
-        imageProgressBar.visibility = View.INVISIBLE
-
     }
 
     fun printError() {
