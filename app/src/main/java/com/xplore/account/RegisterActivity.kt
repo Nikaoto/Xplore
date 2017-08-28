@@ -209,7 +209,6 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     private inner class UploadUser(val uid: String, fname: String, lname: String, tel_num: String,
                                    email: String, birth_date: Int,
                                    profile_picture_url: String? = "") : User() {
-
         init {
             this.id = uid
             this.fname = fname
@@ -378,7 +377,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     }
 
     fun resizeAndCompressImage(filePath: String): String {
-        val MAX_IMAGE_SIZE = 10 * 1024 //in kilobytes
+        val MAX_IMAGE_SIZE = 10 * 1024 // 10 kilobytes
 
         //Decode with inJustDecodeBounds so we can resize it first
         val options = BitmapFactory.Options()

@@ -1,6 +1,7 @@
 package com.xplore.account;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +55,8 @@ import static com.xplore.General.*;
 public class SignInActivity extends BaseAppCompatActivity {
 
     private static String TAG = "brejk";
+
+    private boolean signInWithFacebook = false;
 
     private static final int REQ_GOOGLE_SIGN_IN = 1;
     //private static final int REQ_FACEBOOK_SIGN_IN = 2;
@@ -88,6 +92,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signInWithFacebook = false;
                 googleSignIn();
             }
         });
@@ -97,6 +102,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         facebookSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signInWithFacebook = true;
                 facebookSignIn();
             }
         });
@@ -143,16 +149,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
-                    //Start user registration
-                    startActivityForResult(
-                            RegisterActivity.getStartIntent(
-                                    SignInActivity.this,
-                                    user.getUid(),
-                                    user.getDisplayName(),
-                                    user.getEmail(),
-                                    user.getPhotoUrl()
-                            ),
-                            REQ_REGISTER);
+                    startUserRegistration(user);
                 }
                 else {
                     accountStatus = JUST_LOGGED_IN;
@@ -164,6 +161,38 @@ public class SignInActivity extends BaseAppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    private void startUserRegistration(final FirebaseUser user) {
+        if (signInWithFacebook) {
+            String fbId = "";
+            for (UserInfo profile : user.getProviderData()) {
+                if (FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
+                    fbId = profile.getUid();
+                    String photoUrl = "https://graph.facebook.com/" + fbId + "/picture?height=300";
+                    startActivityForResult(
+                            RegisterActivity.getStartIntent(
+                                    SignInActivity.this,
+                                    user.getUid(),
+                                    user.getDisplayName(),
+                                    user.getEmail(),
+                                    Uri.parse(photoUrl)
+                            ),
+                            REQ_REGISTER);
+                    break;
+                }
+            }
+        } else {
+            startActivityForResult(
+                    RegisterActivity.getStartIntent(
+                            SignInActivity.this,
+                            user.getUid(),
+                            user.getDisplayName(),
+                            user.getEmail(),
+                            user.getPhotoUrl()
+                    ),
+                    REQ_REGISTER);
+        }
     }
 
     @Override
@@ -191,6 +220,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             }
         }
 
+        // Facebook login case
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
