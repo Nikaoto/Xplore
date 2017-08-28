@@ -430,4 +430,8 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
         return sampleSize
     }
+
+    override fun onBackPressed() {
+        // Leave empty, so user doesn't accidentally exit during registration
+    }
 }

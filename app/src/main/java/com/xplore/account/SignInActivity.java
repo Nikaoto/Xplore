@@ -305,7 +305,7 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!popupWindow.isShowing()) {
+        if (popupWindow != null && !popupWindow.isShowing()) {
             super.onBackPressed();
         }
     }
