@@ -7,9 +7,6 @@
         გაასრიალეთ გვერდი მარცხნივ რომ განაგრძოთ.</string>
 
     <string name="slide2_title">ჯგუფები</string>
-    <string name="slide2_text2">მთავარ გვერდზე, ‘მოძებნე/შექმენი გუნდები’, შეგიძლიათ მოძებნოთ და
-        დაათვალიეროთ დაგეგმილი ლაშქრობები თქვენს ირგვლივ. მოლაშქრეთა გუნდებს შეიძლება ქონდეთ
-        რამდენიმე ნიშანი:</string>
     <string name="slide2_text">ასე გამოიყურება დაგეგმილი ლაშქრობა</string>
     <string name="slide2_example_group_leader_name">დათო ჩხეიძე</string>
     <string name="slide2_example_group_leader_reputation">100 რეპუტაცია</string>
@@ -30,7 +27,7 @@
     <string name="slide3_tent_description">ეროვნული პარკი</string>
     <string name="slide3_castle_description">სახელმწიფო ნაკრძალი, გამოირჩევა ისტორიული ძეგლებით</string>
     <string name="slide3_paw_description">აღკვეთილი, გამოირჩევა ცხოველების მრავალფეროვნებით</string>
-    <string name="slide3_tree_description">დაცული ლანდშაფტი, გააჩნია უნიკალური ფაუნა</string>
+    <string name="slide3_tree_description">დაცული ლანდშაფტი, გააჩნია უნიკალური ფლორა</string>
 
     <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -251,6 +248,6 @@
     <string name="loading_groups">იტვირთება ჯგუფები</string>
     <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
     <string name="location">ადგილმდებარეობა</string>
-    <string name="version_text">ბეტა ვერსია (v2.7)</string>
+    <string name="version_text">ბეტა ვერსია (v2.9)</string>
 
 </resources>

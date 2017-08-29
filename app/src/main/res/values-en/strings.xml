@@ -8,8 +8,6 @@
 
     <string name="slide2_title">Groups</string>
     <string name="slide2_text">This is what a planned hike looks like</string>
-    <string name="slide2_text2">On the main page, ‘search/create groups’, you can view and find
-        planned hikes near you. Hiking groups might have different marks:</string>
     <string name="slide2_example_group_leader_name">David Smith</string>
     <string name="slide2_example_group_leader_reputation">100 reputation</string>
     <string name="slide2_example_group_destination_name">Dariali Gorge</string>
@@ -200,7 +198,7 @@
     <string name="sign_in_slash_register">Sign In / Register</string>
     <string name="no_thanks">No, thanks</string>
     <string name="info_will_be_added">Information will be added soon</string>
-    <string name="version_text">Beta version (v2.7)</string>
+    <string name="version_text">Beta version (v2.9)</string>
     <string name="contact_us">Contact us</string>
     <string name="happy_hiking">If you\'re having any issues with Xplore, please inform us. Happy and safe hiking!</string>
     <string name="settings_tutorial_title">Open tutorial</string>
