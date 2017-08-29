@@ -126,7 +126,7 @@
     <string name="tomorrow">ხვალ</string>
     <string name="overmorrow">ზეგ</string>
     <string name="overovermorrow">მაზეგ</string>
-    <string name="group_card_start_date_prefix"/>
+    <string name="group_card_start_date_prefix" />
     <string name="group_card_start_date_suffix">დღეში</string>
     <string name="group_card_start_date_one_month">1 თვეში</string>
     <string name="group_card_start_date_month_suffix">თვეში</string>
@@ -249,5 +249,10 @@
     <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
     <string name="location">ადგილმდებარეობა</string>
     <string name="version_text">ბეტა ვერსია (v2.9)</string>
+
+    <!-- Strings related to login -->
+    <string name="error_field_required">ველის შევსება აუცილებელია</string>
+    <string name="error_invalid_email">ელ-ფოსტა არასწორია</string>
+    <string name="error_invalid_password">პაროლი არ არის საკმარისად გრძელი</string>
 
 </resources>

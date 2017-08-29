@@ -212,4 +212,10 @@
     <string name="slide3_paw_description">Wildlife refuge, has diverse fauna</string>
     <string name="slide3_tree_description">Protected area, has unique flora</string>
     <!-- -->
+
+    <!-- Strings related to login -->
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_field_required">This field is required</string>
+
 </resources>

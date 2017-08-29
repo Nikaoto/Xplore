@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".XploreApplication"
@@ -18,25 +18,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -62,83 +63,101 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivityK"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainActivityK"
+            android:screenOrientation="portrait" />
 
         <!-- Language Select -->
-        <activity android:name=".intro.LanguageSelectActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen"/>
+        <activity
+            android:name=".intro.LanguageSelectActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen" />
 
         <!-- Welcome Screen -->
-        <activity android:name=".intro.WelcomeActivity"
-            android:theme="@style/Theme.Intro"/>
-
-        <activity android:name=".MainActivity"
-            android:theme="@style/SplashTheme"/>
+        <activity
+            android:name=".intro.WelcomeActivity"
+            android:theme="@style/Theme.Intro" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/SplashTheme" />
 
         <!-- Maps -->
-        <activity android:name=".maps.BaseMapActivity"
-            android:label="@string/activity_maps_title"/>
-        <activity android:name=".maps.GroupMapActivity"
-            android:label="@string/activity_maps_title"/>
+        <activity
+            android:name=".maps.BaseMapActivity"
+            android:label="@string/activity_maps_title" />
+        <activity
+            android:name=".maps.GroupMapActivity"
+            android:label="@string/activity_maps_title" />
         <activity
             android:name=".maps.MapActivity"
             android:label="@string/activity_maps_title" />
 
         <!-- Reserves -->
-        <activity android:name=".reserve.ReserveInfoActivity"
+        <activity
+            android:name=".reserve.ReserveInfoActivity"
             android:label="@string/activity_library_title"
             android:screenOrientation="portrait" />
 
         <!-- Groups -->
-        <activity android:name=".groups.view.GroupInfoActivity"
+        <activity
+            android:name=".groups.view.GroupInfoActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".groups.create.CreateGroupActivity"
+        <activity
+            android:name=".groups.create.CreateGroupActivity"
             android:label="@string/activity_create_group_title"
             android:screenOrientation="portrait" />
-        <activity android:name=".groups.create.EditGroupActivity"
+        <activity
+            android:name=".groups.create.EditGroupActivity"
             android:label="@string/edit_group"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".groups.view.controls.InviteMembersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".groups.view.controls.InviteMembersActivity"
             android:label="@string/invite_members"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".groups.requests.ManageRequestsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".groups.requests.ManageRequestsActivity"
             android:label="Manage Requests"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".groups.discussion.DiscussionActivity"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".groups.discussion.DiscussionActivity" />
 
         <!-- Search -->
-        <activity android:name=".groups.create.SearchDestinationActivity"
+        <activity
+            android:name=".groups.create.SearchDestinationActivity"
             android:label="@string/activity_choose_destination_title"
             android:screenOrientation="portrait" />
-        <activity android:name=".groups.create.SearchUsersActivity"
+        <activity
+            android:name=".groups.create.SearchUsersActivity"
             android:label="@string/activity_search_users_title"
             android:screenOrientation="portrait" />
 
-        <!-- User Controls-->
-        <activity android:name=".account.SignInActivity"
+        <!-- User Controls -->
+        <activity
+            android:name=".account.SignInActivity"
             android:label="@string/activity_authorization_title"
             android:screenOrientation="portrait" />
-        <activity android:name=".account.RegisterActivity"
+        <activity
+            android:name=".account.RegisterActivity"
             android:label="@string/activity_register_title"
             android:screenOrientation="portrait" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
         <!-- User Profile -->
-        <activity android:name=".user.UserProfileActivity"
+        <activity
+            android:name=".user.UserProfileActivity"
             android:screenOrientation="portrait" />
 
         <!-- Settings -->
-        <activity android:name=".settings.SettingsActivity"
+        <activity
+            android:name=".settings.SettingsActivity"
             android:label="@string/settings_title" />
-        <activity android:name=".settings.LanguageSettingsActivity"
-            android:label="@string/settings_language_title"/>
+        <activity
+            android:name=".settings.LanguageSettingsActivity"
+            android:label="@string/settings_language_title" />
 
         <!-- About -->
-        <activity android:name=".AboutActivity"
-            android:label="@string/nav_about"/>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/nav_about" />
 
         <meta-data
             android:name="com.google.android.gms.version"
