@@ -104,13 +104,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                General.HideKeyboard(MainActivity.this);
+                General.hideKeyboard(MainActivity.this);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                General.HideKeyboard(MainActivity.this);
+                General.hideKeyboard(MainActivity.this);
             }
         };
 
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here.
         int id = item.getItemId();
-        General.HideKeyboard(MainActivity.this);
+        General.hideKeyboard(MainActivity.this);
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }

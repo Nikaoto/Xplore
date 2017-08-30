@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -207,13 +208,13 @@ public class General {
         activity.startActivity(intent);
     }
 
-    public static void HideKeyboard(Activity context) {
+    public static void hideKeyboard(Activity context) {
         try {
             InputMethodManager inputMethodManager = (InputMethodManager)
                     context.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
         } catch (NullPointerException e){
-            Log.println(Log.ERROR, "keyboard", "getWindowToken() in HideKeyboard threw a NPE");
+            Log.println(Log.ERROR, "keyboard", "getWindowToken() in hideKeyboard threw a NPE");
         }
     }
 
@@ -364,6 +365,10 @@ public class General {
         dimBehind(popupWindow, 0.65f);
 
         return popupWindow;
+    }
+
+    public static boolean isValidEmail(CharSequence email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static void vibrateDevice(Context context, Long time) {

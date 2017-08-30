@@ -142,6 +142,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
             DBManager.DB_TABLE = currentLanguage
         }
         openHomePage()
+        General.hideKeyboard(this)
     }
 
     private fun openHomePage() {
@@ -219,7 +220,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
                 })
     }
 
-    private fun hideKeyboard() = General.HideKeyboard(this@MainActivityK)
+    private fun hideKeyboard() = General.hideKeyboard(this@MainActivityK)
 
     private fun popLoginMenu() = General.popSignInMenu(0.8, 0.6, currentFocus, this)
 

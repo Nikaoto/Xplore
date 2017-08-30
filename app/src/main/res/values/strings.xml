@@ -65,7 +65,7 @@
     <string name="refresh">განახლება</string>
     <string name="to_remove">ამოშლით</string>
     <string name="no_thanks">არა, გმადლობთ</string>
-    <string name="sign_in_slash_register">შესვლა / ავტორიზაცია</string>
+    <string name="sign_in_slash_register">შესვლა / რეგისტრაცია</string>
 
     <!-- Texts -->
     <string name="error">მოხდა შეცდომა</string>
@@ -198,6 +198,9 @@
 
     <!-- Registration -->
     <string name="register">რეგისტრაცია</string>
+    <string name="or">ან</string>
+    <string name="password">პაროლი</string>
+    <string name="incorrect_credentials">ელ-ფოსტა ან პაროლი არასწორია</string>
     <string name="first_name">სახელი</string>
     <string name="last_name">გვარი</string>
     <string name="mobile_number">მობილურის ნომერი</string>
@@ -253,6 +256,6 @@
     <!-- Strings related to login -->
     <string name="error_field_required">ველის შევსება აუცილებელია</string>
     <string name="error_invalid_email">ელ-ფოსტა არასწორია</string>
-    <string name="error_invalid_password">პაროლი არ არის საკმარისად გრძელი</string>
+    <string name="error_invalid_password">პაროლი არ არის საკმარისად გრძელი (მინ. 6 ნიშანი)</string>
 
 </resources>

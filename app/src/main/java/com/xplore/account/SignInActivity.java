@@ -2,11 +2,15 @@ package com.xplore.account;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -58,6 +62,8 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     private static String TAG = "brejk";
 
+    // TODO: upload bare user before starting registration act so if that fails, users can change info with 'edit profile'
+
     private boolean signInWithFacebook = false;
 
     private static final int REQ_GOOGLE_SIGN_IN = 1;
@@ -77,10 +83,13 @@ public class SignInActivity extends BaseAppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener = setUpAuthStateListener();
     private PopupWindow popupWindow;
 
+    private EditText emailEditText;
+    private EditText passwordEditText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signin_layout);
+        setContentView(R.layout.signin);
         setTitle(R.string.activity_authorization_title);
 
         // Building Google Api Client
@@ -88,6 +97,20 @@ public class SignInActivity extends BaseAppCompatActivity {
 
         // Setting up auth state listener
         setUpAuthStateListener();
+
+        // Initialize login fields
+        emailEditText = (EditText) findViewById(R.id.emailEditText);
+        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+
+        // Initialize Xplore Login button
+        Button xploreSignInButton = (Button) findViewById(R.id.xploreSignInButton);
+        xploreSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithFacebook = false;
+                xploreSignIn();
+            }
+        });
 
         // Initialize Google Login button
         SignInButton googleSignInButton = (SignInButton) findViewById(R.id.googleSignInButton);
@@ -130,6 +153,65 @@ public class SignInActivity extends BaseAppCompatActivity {
                 Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Gets fields and initiates signin or register accordingly
+    private void xploreSignIn() {
+        if (loginFieldsValid()) {
+            final String email = emailEditText.getText().toString();
+            final String password = passwordEditText.getText().toString();
+            Query query = usersRef.orderByChild("email").equalTo(email);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        signInXploreUser(email, password);
+                    } else {
+                        createXploreUser(email, password);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
+        }
+    }
+
+    // Signs in an existing user to Xplore
+    private void signInXploreUser(final String email, final String password) {
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "xplore auth: sign in successful");
+                            // Leave empty. Firebase auth state listener will handle it
+                        } else {
+                            Toast.makeText(SignInActivity.this, R.string.incorrect_credentials,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    // Creates Xplore user in firebase (from xplore login) and starts registration
+    private void createXploreUser(final String email, final String password) {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "xplore auth: user created");
+                            // Auth state listener will handle it
+                            //startUserRegistration(auth.getCurrentUser());
+                        } else {
+                            Log.i(TAG, "xplore auth: user creation failed");
+
+                            Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                });
     }
 
     private void googleSignIn() {
@@ -245,8 +327,6 @@ public class SignInActivity extends BaseAppCompatActivity {
     }
 
     private void firebaseAuthWithFacebook(AccessToken token) {
-        Log.d(TAG, "firebaseAuthWithFacebook:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -260,11 +340,9 @@ public class SignInActivity extends BaseAppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT)
+                                    .show();
                         }
-
-                        // ...
                     }
                 });
     }
@@ -291,6 +369,44 @@ public class SignInActivity extends BaseAppCompatActivity {
         };
     }
 
+    // Validates input fields and returns respective errors or true
+    private boolean loginFieldsValid() {
+        makeBorderGreen(emailEditText);
+        makeBorderGreen(passwordEditText);
+
+        if (emailEditText.getText().toString().isEmpty()) {
+            makeBorderRed(emailEditText);
+            Toast.makeText(this, R.string.error_field_required, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (passwordEditText.getText().toString().isEmpty()) {
+            makeBorderRed(passwordEditText);
+            Toast.makeText(this, R.string.error_field_required, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!General.isValidEmail(emailEditText.getText())) {
+            makeBorderRed(emailEditText);
+            Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (passwordEditText.length() < 6) {
+            makeBorderRed(passwordEditText);
+            Toast.makeText(this, R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void makeBorderRed(EditText et) {
+        et.setBackgroundResource(R.drawable.edit_text_border_red);
+    }
+
+    private void makeBorderGreen(EditText et) {
+        et.setBackgroundResource(R.drawable.edit_text_border);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -307,7 +423,9 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (popupWindow != null && !popupWindow.isShowing()) {
+        if (popupWindow == null) {
+            super.onBackPressed();
+        } else if (!popupWindow.isShowing()) {
             super.onBackPressed();
         }
     }

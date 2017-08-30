@@ -168,7 +168,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         }
 
         doneButton.setOnClickListener {
-            General.HideKeyboard(this)
+            General.hideKeyboard(this)
             getDescriptions()
             if (checkFields()) {
                 val key = groupsRef.push().key

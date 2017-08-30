@@ -133,7 +133,7 @@ class SearchDestinationActivity : BaseActivity() {
             holder.reserveImage.setImageResource(results[position].imageId)
             holder.reserveIcon.setImageResource(icons[results[position].iconId])
             holder.itemView.setOnClickListener {
-                General.HideKeyboard(activity)
+                General.hideKeyboard(activity)
                 showConfirmDialog(results[position])
             }
         }

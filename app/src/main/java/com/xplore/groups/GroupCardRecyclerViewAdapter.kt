@@ -94,7 +94,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
         //On card click
         holder.itemView.setOnClickListener {
-            General.HideKeyboard(activity)
+            General.hideKeyboard(activity)
 
             //Starting intent
             activity.startActivity(

@@ -21,8 +21,8 @@
     <string name="slide2_hike_date">Дата начала похода</string>
 
     <string name="slide3_title">Библиотека</string>
-    <string name="slide3_text">V biblioteke dastupna informacia o mestax naznachenia
-        kajdoe prinadlejit k opredelionnoi kategorii:</string>
+    <string name="slide3_text">В библиотеке доступна информация о местах назначения. Каждое
+        принадлежит к определенной категории:</string>
     <string name="slide3_example_reserve_name">Мтирала</string>
     <string name="slide3_tent_description">Национальный парк</string>
     <string name="slide3_castle_description">Выделяется историческими памятники</string>
@@ -208,6 +208,12 @@
     <string name="settings_tutorial_title">Открыть введение</string>
     <string name="search_tags_hint">Поиск с тегами</string>
     <string name="show_on_map">Показать лайв поход</string>
+    <string name="password">Пароль</string>
+    <string name="or">или</string>
+ <string name="error_invalid_password">Этот пароль слишком короткий (мин. 6 символов)</string>
+ <string name="error_invalid_email">Эл-почта недействительная</string>
+ <string name="error_field_required">Это поле обязательно к заполнению</string>
+    <string name="incorrect_credentials">Неправильный адрес эл-почты / пароль</string>
 
     <!-- -->
 </resources>
