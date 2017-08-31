@@ -214,6 +214,7 @@
  <string name="error_invalid_email">Эл-почта недействительная</string>
  <string name="error_field_required">Это поле обязательно к заполнению</string>
     <string name="incorrect_credentials">Неправильный адрес эл-почты / пароль</string>
+ <string name="facebook_email_in_use">Произошла ошибка. Ваш эл-адрес в Facebook уже может быть зарегистрирован в Xplore. Пожалуйста попробуйте другой метод входа.</string>
 
-    <!-- -->
+ <!-- -->
 </resources>

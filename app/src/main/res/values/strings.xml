@@ -213,6 +213,8 @@
     <string name="fail_profile_picture_upload">ვერ აიტვირთა ფოტო, გთხოვთ სცადოთ თავიდან.</string>
     <string name="you_must_be_at_least">თქვენ უნდა იყოთ მინიმუმ</string>
     <string name="years_to_use_xplore">წლის რომ Xplore გამოიყენოთ.</string>
+    <string name="facebook_email_in_use">მოხდა შეცდომა. შესაძლებელია Facebook-ის ეს ელ-ფოსტა უკვე
+        რეგისტრირებულია Xplore-ში სხვა სერვისით. გთხოვთ სცადოთ სხვა გზით შესვლა.</string>
 
     <!-- About -->
     <string name="contact_us">დაგვეკონტაქტეთ</string>

@@ -335,13 +335,13 @@ public class SignInActivity extends BaseAppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT)
-                                    .show();
+
+                            // FB email might already be registered in Xplore
+                            Toast.makeText(SignInActivity.this, R.string.facebook_email_in_use,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

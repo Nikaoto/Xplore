@@ -54,6 +54,10 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     val GALLERY_PERMISSION_REQUEST_CODE = 2;
     val ACTION_SNAP_IMAGE = 3
 
+    //
+    val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
+    val PIC_KILOBYTE_LIMIT = 12
+
     // Firebase
     val storageRef = FirebaseStorage.getInstance().reference
     private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
@@ -154,7 +158,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    // Uploads user profile pic, modifies user profile pic url and uploads the user data to db
+    // Uploads user profile pic and saves new link. Finally, uploads the user data to db
     private fun uploadUserData(user: UploadUser, input: Uri, output: StorageReference) {
         output.putFile(input)
                 .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
@@ -192,6 +196,9 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun addUserEntryToDataBase(user: UploadUser) {
+        if (user.profile_picture_url == null || user.profile_picture_url.isEmpty()) {
+            user.profile_picture_url = DEFAULT_IMAGE_URL
+        }
         val userData = user.toMap()
 
         val childUpdates = HashMap<String, Any>()
@@ -238,6 +245,9 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     private fun checkFields(): Boolean {
         //TODO check fields
+        if (bYear == 0 || bMonth == 0 || bDay == 0) {
+            return false
+        }
         return true
     }
 
@@ -373,7 +383,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     }
 
     fun resizeAndCompressImage(filePath: String): String {
-        val MAX_IMAGE_SIZE = 10 * 1024 // 10 kilobytes
+        val MAX_IMAGE_SIZE = PIC_KILOBYTE_LIMIT * 1024 // 10 kilobytes
 
         //Decode with inJustDecodeBounds so we can resize it first
         val options = BitmapFactory.Options()
