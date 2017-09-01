@@ -17,9 +17,9 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
@@ -57,7 +57,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     //
     val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
-    val PIC_KILOBYTE_LIMIT = 12
+    val PIC_KILOBYTE_LIMIT = 25
 
     // Firebase
     val storageRef = FirebaseStorage.getInstance().reference
@@ -140,7 +140,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
 
         doneButton.setOnClickListener {
-            if (checkFields()) {
+            if (fieldsValid()) {
                 val ref = storageRef.child("users/$userId/profile_picture.jpg")
                 val newUser = UploadUser(
                         userId,
@@ -244,27 +244,48 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun makeBorderGreen(tw: TextView) =  tw.setBackgroundResource(R.drawable.edit_text_border)
-    private fun makeBorderRed(tw: TextView) =  tw.setBackgroundResource(R.drawable.edit_text_border_red)
+    private fun makeBorderGreen(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border)
+    private fun makeBorderRed(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border_red)
 
-    private fun makeBorderGreen(et: EditText) = et.setBackgroundResource(R.drawable.edit_text_border)
-    private fun makeBorderRed(et: EditText) =  et.setBackgroundResource(R.drawable.edit_text_border_red)
-
-    private fun checkFields(): Boolean {
+    private fun fieldsValid(): Boolean {
         makeBorderGreen(fnameEditText)
         makeBorderGreen(lnameEditText)
         makeBorderGreen(emailEditText)
         makeBorderGreen(numEditText)
         makeBorderGreen(bdateTextView)
 
-        //TODO check fields
-        if (bYear == 0 || bMonth == 0 || bDay == 0) {
-            makeBorderRed(bdateTextView)
-
-            Toast.makeText(this, R.string.error_field_required, Toast.LENGTH_SHORT).show()
+        if (fnameEditText.text.isEmpty()) {
+            return fieldError(fnameEditText)
+        } else if (lnameEditText.text.isEmpty()) {
+            return fieldError(lnameEditText)
+        } else if (emailEditText.text.isEmpty()) {
+            return fieldError(emailEditText)
+        } else if (!General.isValidEmail(emailEditText.text)) {
+            makeBorderRed(emailEditText)
+            Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show()
             return false
+        } else if (numEditText.text.isEmpty()) {
+            return fieldError(numEditText)
+        } else if (bdateTextView.text.isEmpty()) {
+            return fieldError(bdateTextView)
+        } else if (bYear == 0 || bMonth == 0 || bDay == 0) {
+            return fieldError(bdateTextView)
         }
         return true
+    }
+
+    private fun scrollToView(v: View) {
+        scrollView.post{
+            scrollView.smoothScrollTo(0, v.bottom)
+        }
+    }
+
+    private fun fieldError(v: View): Boolean {
+        makeBorderRed(v)
+        scrollToView(v)
+
+        Toast.makeText(this, R.string.error_field_required, Toast.LENGTH_SHORT).show()
+        return false
     }
 
     //Splits a full name and returns the i-th part of it. Returns fullName back if it has no space
