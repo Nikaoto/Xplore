@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
@@ -243,9 +244,24 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun makeBorderGreen(tw: TextView) =  tw.setBackgroundResource(R.drawable.edit_text_border)
+    private fun makeBorderRed(tw: TextView) =  tw.setBackgroundResource(R.drawable.edit_text_border_red)
+
+    private fun makeBorderGreen(et: EditText) = et.setBackgroundResource(R.drawable.edit_text_border)
+    private fun makeBorderRed(et: EditText) =  et.setBackgroundResource(R.drawable.edit_text_border_red)
+
     private fun checkFields(): Boolean {
+        makeBorderGreen(fnameEditText)
+        makeBorderGreen(lnameEditText)
+        makeBorderGreen(emailEditText)
+        makeBorderGreen(numEditText)
+        makeBorderGreen(bdateTextView)
+
         //TODO check fields
         if (bYear == 0 || bMonth == 0 || bDay == 0) {
+            makeBorderRed(bdateTextView)
+
+            Toast.makeText(this, R.string.error_field_required, Toast.LENGTH_SHORT).show()
             return false
         }
         return true
