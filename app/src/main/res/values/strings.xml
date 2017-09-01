@@ -243,8 +243,6 @@
 
     <!-- Other -->
     <string name="description_header">აღწერა</string>
-    <string name="facebook_app_id" translatable="false">1654911334812263</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb1654911334812263</string>
 
     <!-- Unused -->
     <string name="join_party">შეუერთდი</string>
