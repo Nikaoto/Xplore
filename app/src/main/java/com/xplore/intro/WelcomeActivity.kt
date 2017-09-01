@@ -8,7 +8,7 @@ import android.util.Log
 import com.heinrichreimersoftware.materialintro.app.IntroActivity
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
-import com.xplore.MainActivityK
+import com.xplore.MainActivity
 import com.xplore.R
 import com.xplore.StartingActivity
 import com.xplore.base.XploreContextWrapper
@@ -97,7 +97,7 @@ class WelcomeActivity : IntroActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (shouldOpenMainAct) {
-            startActivity(Intent(this, MainActivityK::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }

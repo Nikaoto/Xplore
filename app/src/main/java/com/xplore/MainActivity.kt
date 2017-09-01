@@ -3,7 +3,6 @@ package com.xplore
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -11,7 +10,6 @@ import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
-import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -35,14 +33,13 @@ import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
 import com.xplore.user.UserCard
-import java.security.MessageDigest
 
 /**
  * Created by Nik on 8/25/2017.
  * Replacement for MainAct in Kotlin
  */
 
-class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val PREFS_LANGUAGE = "prefs_lang"
     private val PREFS_STRING_LANGUAGE = "lang"
@@ -85,9 +82,9 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         userFullNameTextView = navHeaderView.findViewById(R.id.userFullNameTextView) as TextView
         userImageView.setOnClickListener {
             if (General.isUserSignedIn()) {
-                General.openUserProfile(this@MainActivityK, General.currentUserId)
+                General.openUserProfile(this@MainActivity, General.currentUserId)
             } else {
-                General.popSignInMenu(0.8, 0.6, currentFocus, this@MainActivityK)
+                General.popSignInMenu(0.8, 0.6, currentFocus, this@MainActivity)
             }
         }
         //
@@ -196,17 +193,16 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     private fun refreshUserProfileViews(context: Context?) {
-        FirebaseDatabase.getInstance().getReference("users").orderByKey()
-                .equalTo(General.currentUserId).addListenerForSingleValueEvent(
-                object : ValueEventListener {
+        FirebaseDatabase.getInstance().getReference("users").child(General.currentUserId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         context?.let {
                             if (dataSnapshot != null) {
-                                val tempUser = dataSnapshot.children.iterator().next().getValue(UserCard::class.java)
+                                val tempUser = dataSnapshot.getValue(UserCard::class.java)
                                 if (tempUser != null) {
-                                    Picasso.with(context)
+                                    Picasso.with(it)
                                             .load(tempUser.profile_picture_url)
-                                            .transform(ImageUtil.mediumCircle(this@MainActivityK))
+                                            .transform(ImageUtil.mediumCircle(it))
                                             .placeholder(R.drawable.picasso_load_anim)
                                             .into(userImageView)
 
@@ -214,16 +210,16 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
                                     userFullNameTextView.text = tempUser.getFullName()
                                 }
                             } else {
-                                Toast.makeText(it, R.string.error, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(it, R.string.error, Toast.LENGTH_SHORT)
+                                        .show()
                             }
                         }
                     }
-
                     override fun onCancelled(p0: DatabaseError?) {}
                 })
     }
 
-    private fun hideKeyboard() = General.hideKeyboard(this@MainActivityK)
+    private fun hideKeyboard() = General.hideKeyboard(this@MainActivity)
 
     private fun popLoginMenu() = General.popSignInMenu(0.8, 0.6, currentFocus, this)
 
@@ -232,7 +228,7 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         when (id) {
             R.id.nav_profile ->
                 if (General.isUserSignedIn()) {
-                    General.openUserProfile(this@MainActivityK, General.currentUserId)
+                    General.openUserProfile(this@MainActivity, General.currentUserId)
                 } else {
                     popLoginMenu()
                 }

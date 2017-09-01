@@ -47,7 +47,7 @@ class StartingActivity : AppCompatActivity() {
         } else {
             Log.i(TAG, "is not first boot, starting main act")
 
-            startActivity(Intent(this, MainActivityK::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         //finish()

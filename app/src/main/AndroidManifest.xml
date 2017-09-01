@@ -64,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivityK"
+            android:name=".MainActivity"
             android:screenOrientation="portrait" />
 
         <!-- Language Select -->
@@ -76,9 +76,6 @@
         <activity
             android:name=".intro.WelcomeActivity"
             android:theme="@style/Theme.Intro" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/SplashTheme" />
 
         <!-- Maps -->
         <activity
