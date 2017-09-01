@@ -146,14 +146,6 @@ class MainActivityK : BaseAppCompatActivity(), NavigationView.OnNavigationItemSe
         }
         openHomePage()
         General.hideKeyboard(this)
-
-        val info = getPackageManager().getPackageInfo("com.xplore", PackageManager.GET_SIGNATURES);
-        for (signature in info.signatures) {
-            val md = MessageDigest.getInstance("SHA");
-            md.update(signature.toByteArray());
-            val something = String(Base64.encode(md.digest(), 0));
-            Log.e("hash key", something);
-        }
     }
 
     private fun openHomePage() {
