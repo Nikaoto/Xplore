@@ -32,6 +32,13 @@
     <!-- Discussion -->
     <string name="discussion_message_hint">Напишите сообщение…</string>
 
+    <!-- About -->
+    <string name="about_instagram">Следите за нами в Instagram</string>
+    <string name="about_facebook">Нравится в Facebook</string>
+    <string name="about_play_store">Оцените нас на Play Store</string>
+    <string name="about_twitter">Подпишитесь на нас в Twitter</string>
+    <string name="about_website">Посетите наш веб-сайт</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="activity_create_group_title">Создать группу</string>
@@ -202,7 +209,7 @@
     <string name="sign_in_slash_register">Вход / Регистрация</string>
     <string name="no_thanks">Нет, спасибо</string>
     <string name="info_will_be_added">Информация будет добавлена</string>
-    <string name="version_text">Бета Версия (v2.9)</string>
+    <string name="version_text">Бета Версия</string>
     <string name="contact_us">Свяжитесь с нами</string>
     <string name="happy_hiking">Если у вас возникли проблемы с Xplore, пожалуйста сообщите нам. Мы желаем вам счастливых и безопасных походов!</string>
     <string name="settings_tutorial_title">Открыть введение</string>
@@ -214,7 +221,7 @@
  <string name="error_invalid_email">Эл-почта недействительная</string>
  <string name="error_field_required">Это поле обязательно к заполнению</string>
     <string name="incorrect_credentials">Неправильный адрес эл-почты / пароль</string>
- <string name="facebook_email_in_use">Произошла ошибка. Ваш эл-адрес в Facebook уже может быть зарегистрирован в Xplore. Пожалуйста попробуйте другой метод входа.</string>
+ <string name="facebook_email_in_use">Ваш эл-адрес в Facebook уже может быть зарегистрирован в Xplore. Пожалуйста попробуйте другой метод входа.</string>
 
  <!-- -->
 </resources>

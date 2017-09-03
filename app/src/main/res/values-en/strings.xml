@@ -24,6 +24,14 @@
     <!-- Discussion -->
     <string name="discussion_message_hint">Write a message…</string>
 
+    <!-- About -->
+    <string name="about_facebook">Like us on Facebook</string>
+    <string name="about_play_store">Rate us on Play Store</string>
+    <string name="about_twitter">Follow us on Twitter</string>
+    <string name="about_instagram">Follow us on Instagram</string>
+    <string name="about_website">Visit our website</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="activity_create_group_title">Create group</string>
@@ -198,7 +206,7 @@
     <string name="sign_in_slash_register">Sign In / Register</string>
     <string name="no_thanks">No, thanks</string>
     <string name="info_will_be_added">Information will be added soon</string>
-    <string name="version_text">Beta version (v2.9)</string>
+    <string name="version_text">Beta version</string>
     <string name="contact_us">Contact us</string>
     <string name="happy_hiking">If you\'re having any issues with Xplore, please inform us. Happy and safe hiking!</string>
     <string name="settings_tutorial_title">Open tutorial</string>
@@ -220,6 +228,6 @@
     <string name="password">Password</string>
     <string name="or">or</string>
     <string name="incorrect_credentials">Incorrect email / password</string>
-    <string name="facebook_email_in_use">Error. Your Facebook\'s email could already be registered in Xplore. Please try a different login method.</string>
+    <string name="facebook_email_in_use">Your Facebook\'s email could already be registered in Xplore. Please try a different login method.</string>
 
 </resources>

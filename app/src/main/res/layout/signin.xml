@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:scrollbars="none"
     android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,16 +17,23 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
             android:gravity="center_horizontal"
             android:text="@string/activity_authorization_title"
             android:textColor="@color/colorDarkGrey"
             android:textSize="25sp"
+            android:visibility="gone"
             android:textStyle="bold" />
+
+        <ImageView
+            android:src="@drawable/login_page_banner"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/emailEditText"
             android:padding="12dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/edit_text_border"
             android:layout_width="match_parent"

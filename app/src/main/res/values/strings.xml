@@ -213,16 +213,22 @@
     <string name="fail_profile_picture_upload">ვერ აიტვირთა ფოტო, გთხოვთ სცადოთ თავიდან.</string>
     <string name="you_must_be_at_least">თქვენ უნდა იყოთ მინიმუმ</string>
     <string name="years_to_use_xplore">წლის რომ Xplore გამოიყენოთ.</string>
-    <string name="facebook_email_in_use">მოხდა შეცდომა. შესაძლებელია Facebook-ის ეს ელ-ფოსტა უკვე
+    <string name="facebook_email_in_use">შესაძლებელია Facebook-ის ეს ელ-ფოსტა უკვე
         რეგისტრირებულია Xplore-ში სხვა სერვისით. გთხოვთ სცადოთ სხვა გზით შესვლა.</string>
 
     <!-- About -->
-    <string name="contact_us">დაგვეკონტაქტეთ</string>
     <string name="about_header">შესახებ</string>
+    <string name="version_text">ბეტა ვერსია</string>
+    <string name="contact_us">დაგვეკონტაქტეთ</string>
+    <string name="about_facebook">მოგვიწონეთ Facebook-ზე</string>
+    <string name="about_play_store">შეგვაფასეთ Play Store-ზე</string>
+    <string name="about_twitter">გამოგვყევით Twitter-ზე</string>
+    <string name="about_instagram">გამოგვყევით Instagram-ზე</string>
+    <string name="about_website">ეწვიეთ ვებ-გვერდს</string>
     <string name="about">ეს არის Xplore-ს ბეტა ვერსია, სადაც ნებისმიერი ელემენტი შეიძლებაშეიცვალოს.
         პარკების ინფორმაცია და ფოტოები საჯაროდ გამოქვეყნებულია http://apa.gov.ge/-ზე და ამ
         აპლიკაციაში გამოყენებულია ყველანაირი საავტორო უფლებების დაცვით.</string>
-    <string name="happy_hiking">Xplore-თან თუ პრობლემები შეგექმნათ, გთხოვთ გვაცნობოთ უსაფრთხო
+    <string name="happy_hiking">Xplore-თან თუ პრობლემები შეგექმნათ, გთხოვთ გვაცნობოთ.\n უსაფრთხო
         და ბედნიერ ლაშქრობებს გისურვებთ!</string>
 
     <!-- Settings -->
@@ -251,7 +257,6 @@
     <string name="loading_groups">იტვირთება ჯგუფები</string>
     <string name="request_cancelled">მოთხოვნა შეჩერდა</string>
     <string name="location">ადგილმდებარეობა</string>
-    <string name="version_text">ბეტა ვერსია (v2.9)</string>
 
     <!-- Strings related to login -->
     <string name="error_field_required">ველის შევსება აუცილებელია</string>
