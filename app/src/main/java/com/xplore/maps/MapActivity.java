@@ -556,7 +556,7 @@ public class MapActivity extends BaseAppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (choosingDestination) {
-            if (item.getItemId() == R.id.action_done) {
+            if (item.getItemId() == R.id.action_done && destinationMarker != null) {
                 Intent resultIntent = new Intent()
                         .putExtra(RESULT_DEST_LAT, destinationMarker.getPosition().latitude)
                         .putExtra(RESULT_DEST_LNG, destinationMarker.getPosition().longitude);

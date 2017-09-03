@@ -288,7 +288,7 @@ public class General {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() { //TODO change group fragment, this does OnBackPressed() and goes back when dismissed
-                activity.getFragmentManager().popBackStack();
+                activity.onBackPressed();
             }
         });
 
@@ -305,8 +305,9 @@ public class General {
                     popupWindow.dismiss();
                     Intent i = new Intent(activity, SignInActivity.class); //TODO change into SignInActivity
                     activity.startActivity(i);
-                } else
+                } else {
                     createNetErrorDialog(activity);
+                }
             }
         });
 

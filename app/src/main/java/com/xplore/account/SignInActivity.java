@@ -341,7 +341,7 @@ public class SignInActivity extends BaseAppCompatActivity {
 
                             // FB email might already be registered in Xplore
                             Toast.makeText(SignInActivity.this, R.string.facebook_email_in_use,
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });

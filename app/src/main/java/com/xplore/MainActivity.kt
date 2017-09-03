@@ -35,6 +35,7 @@ import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
 import com.xplore.user.UserCard
+import kotlinx.android.synthetic.main.activity_main.*
 import java.security.MessageDigest
 
 /**
@@ -76,7 +77,6 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         General.refreshAccountStatus()
 
         //Setting up navigation view
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setCheckedItem(R.id.nav_library)
 
         //Setting up user profile inside drawer header
@@ -150,6 +150,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     private fun openHomePage() {
+        navigationView.setCheckedItem(R.id.nav_library)
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragment_container, LibraryFragment()).commit()
