@@ -11,13 +11,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.DatePicker
 import android.widget.Toast
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.General.currentUserId
+import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
@@ -49,10 +47,9 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
     //Firebase
     val usersRef = FirebaseDatabase.getInstance().reference.child("users")
     val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
-    val joinedGroupsRef = FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(General.currentUserId)
-            .child("group_ids")
+    val joinedGroupsRef: DatabaseReference by lazy {
+        usersRef.child(General.currentUserId).child("group_ids")
+    }
 
     companion object {
         //Request codes
