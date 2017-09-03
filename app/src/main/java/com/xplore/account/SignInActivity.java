@@ -1,5 +1,7 @@
 package com.xplore.account;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -340,12 +343,25 @@ public class SignInActivity extends BaseAppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
 
                             // FB email might already be registered in Xplore
-                            Toast.makeText(SignInActivity.this, R.string.facebook_email_in_use,
-                                    Toast.LENGTH_LONG).show();
+                            fbEmailTakenDialog(SignInActivity.this).show();
                         }
                     }
                 });
     }
+
+    // Shows big dialog saying email is already taken by some other service
+    private AlertDialog fbEmailTakenDialog(Context context) {
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.error)
+                .setMessage(R.string.facebook_email_in_use)
+                .setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+    }
+
 
     private FirebaseAuth.AuthStateListener setUpAuthStateListener() {
         return new FirebaseAuth.AuthStateListener() {
