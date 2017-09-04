@@ -179,7 +179,7 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
-    //Sets up listeners for member locations
+    // Sets up listeners for member locations
     private fun startListeningForGroupLocations(googleMap: GoogleMap) {
         groupLocationsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {

@@ -228,18 +228,18 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun destroyMap() {
-        val f = fragmentManager.findFragmentById(R.id.mapFragment)
-        if (f != null) {
-            fragmentManager.beginTransaction().remove(f).commit()
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
         stopLocationUpdates()
         destroyMap()
+    }
+
+    private fun destroyMap() {
+        val f = fragmentManager.findFragmentById(R.id.mapFragment)
+        if (f != null) {
+            fragmentManager.beginTransaction().remove(f).commit()
+        }
     }
 
 }

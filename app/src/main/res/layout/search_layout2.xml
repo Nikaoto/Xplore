@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,6 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textSize="16sp"
+            android:focusableInTouchMode="true"
+            android:nextFocusForward="@id/searchEditText"
+            android:nextFocusUp="@id/searchEditText"
             android:selectAllOnFocus="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:hint="@string/search_tags_hint"
@@ -45,6 +46,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/searchIconImageView"
             android:layout_toLeftOf="@id/progressBar"/>
+
     </RelativeLayout>
 
     <View style="@style/green_divider"
@@ -58,21 +60,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/createGroupFAB"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="15dp"
-        app:elevation="8dp"
-        app:borderWidth="0dp"
-        app:rippleColor="@color/black"
-        android:backgroundTint="@color/colorDialect"
-        android:src="@drawable/ic_plus"
-        android:visibility="gone"
-        tools:visibility="visible"/>
 
 </RelativeLayout>

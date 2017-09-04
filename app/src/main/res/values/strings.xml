@@ -66,10 +66,12 @@
     <string name="to_remove">ამოშლით</string>
     <string name="no_thanks">არა, გმადლობთ</string>
     <string name="sign_in_slash_register">შესვლა / რეგისტრაცია</string>
+    <string name="search">ძებნა</string>
 
     <!-- Texts -->
     <string name="error">მოხდა შეცდომა</string>
     <string name="nothing_here">აქ არაფერია</string>
+    <string name="search_hint">მოძებნეთ…</string>
     <string name="search_tags_hint">მოძებნეთ საკვანძო სიტყვებით</string>
     <string name="search_name_hint">მოძებნეთ სახელით</string>
     <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>

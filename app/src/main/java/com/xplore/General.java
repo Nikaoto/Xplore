@@ -199,7 +199,11 @@ public class General {
     }
 
     public static String putColonInTime(String time) {
-        return time.substring(0, 2) + ":" + time.substring(2);
+        if (time == null || time.isEmpty()) {
+            return "";
+        } else {
+            return time.substring(0, 2) + ":" + time.substring(2);
+        }
     }
 
     public static void openUserProfile(Activity activity, String userId) {

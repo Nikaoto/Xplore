@@ -230,4 +230,7 @@
     <string name="incorrect_credentials">Incorrect email / password</string>
     <string name="facebook_email_in_use">Your Facebook\'s email could already be registered in Xplore. Please try a different login method.</string>
 
+    <string name="search_hint">Search…</string>
+    <string name="search">Seach</string>
+
 </resources>

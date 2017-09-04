@@ -1,6 +1,7 @@
 package com.xplore.maps
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.database.Exclude
 import java.util.*
 
 /**
@@ -13,10 +14,6 @@ class UserMarker (var name: String = "",
                   var longitude: Double = 0.0,
                   val hue: Float = Random(System.currentTimeMillis()).nextFloat() * 330F) {
 
-    fun setLocation(lat: Double , lng: Double) {
-        this.latitude = lat
-        this.longitude = lng
-    }
-
+    @Exclude
     fun getLocation() = LatLng(latitude, longitude)
 }

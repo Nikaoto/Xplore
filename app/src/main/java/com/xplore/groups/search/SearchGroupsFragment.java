@@ -3,6 +3,7 @@ package com.xplore.groups.search;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
+import com.xplore.base.SearchFragment;
 import com.xplore.database.DBManager;
 import com.xplore.groups.GroupCard;
 import com.xplore.groups.GroupCardRecyclerViewAdapter;
@@ -37,22 +40,19 @@ import java.util.ArrayList;
  */
 
 //TODO add searching
-public class SearchGroupsFragment extends Fragment implements EditText.OnEditorActionListener {
+public class SearchGroupsFragment extends SearchFragment {
 
-    //Firebase References
+    // Firebase
     private static final DatabaseReference usersRef
             = FirebaseDatabase.getInstance().getReference().child("users");
     private static final DatabaseReference groupsRef
             = FirebaseDatabase.getInstance().getReference().child("groups");
-    //Firebase Tags
     private static final String F_START_DATE = "start_date";
     private static final String F_MEMBER_IDS = "member_ids";
 
-    private String searchQuery;
     private boolean firstLoad;
 
     private RecyclerView resultsRV;
-    private ProgressBar progressBar;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
@@ -62,7 +62,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle instState) {
-        return inflater.inflate(R.layout.search_layout2, container, false);
+        return inflater.inflate(R.layout.search_layout3, container, false);
     }
 
     @Override
@@ -71,22 +71,12 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
 
         TimeManager.refreshGlobalTimeStamp();
 
-        //RecyclerView
+        // RecyclerView
         resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //Search EditText
-        EditText searchBar = (EditText) view.findViewById(R.id.searchEditText);
-        searchBar.setSingleLine(true);
-        searchBar.setHint(R.string.search_groups_hint);
-        searchBar.setOnEditorActionListener(this);
-
-        //Progressbar
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
-        //FAB
+        // FAB
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
-        fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +85,7 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
             }
         });
 
-        //Checking internet and displaying data
+        // Checking internet and displaying data
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         } else if (getActivity() != null) {
@@ -105,8 +95,14 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         }
     }
 
+    @Override
+    public void setUpSearchView(SearchView newSearchView) {
+        newSearchView.setQueryHint(getResources().getString(R.string.search_groups_hint));
+    }
+
     private void prepareToLoadData() {
-        progressBar.setVisibility(View.VISIBLE);
+        showProgressBar();
+
         groupCards.clear();
         displayCards.clear();
         firstLoad = true;
@@ -195,17 +191,17 @@ public class SearchGroupsFragment extends Fragment implements EditText.OnEditorA
         });
     }
 
-    private void postLoadData() {
-        firstLoad = false;
-        progressBar.setVisibility(View.INVISIBLE);
+    @Override
+    public boolean onSearch(String query) {
+        showProgressBar();
+        // Do search
+        hideProgressBar();
+        return super.onSearch(query);
     }
 
-    @Override
-    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-        //TODO get query and search type
-        //searchQuery = textView.getText().toString().toLowerCase();
-
-        return false;
+    private void postLoadData() {
+        firstLoad = false;
+        hideProgressBar();
     }
 
     @Override

@@ -85,6 +85,9 @@
             android:name=".maps.GroupMapActivity"
             android:label="@string/activity_maps_title" />
         <activity
+            android:name=".maps.SetDestinationMapActivity"
+            android:label="@string/activity_choose_destination_title"/>
+        <activity
             android:name=".maps.MapActivity"
             android:label="@string/activity_maps_title" />
 

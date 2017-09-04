@@ -1,17 +1,14 @@
 package com.xplore.reserve
 
-import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import com.xplore.R
+import com.xplore.base.SearchFragment
 import com.xplore.database.DBManager
-import kotlinx.android.synthetic.main.search_layout2.*
+import kotlinx.android.synthetic.main.search_layout3.*
 import java.util.*
 
 
@@ -19,7 +16,7 @@ import java.util.*
  * Created by Nikaoto on 11/9/2016.
  */
 
-class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
+class LibraryFragment : SearchFragment() {
 
     private val dbManager: DBManager by lazy { DBManager(activity) }
 
@@ -27,8 +24,13 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
     private var reserveCards = ArrayList<ReserveCard>()
     private var resultIDs: ArrayList<Int> = ArrayList()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
-            : View = inflater.inflate(R.layout.search_layout2, container, false)
+            : View = inflater.inflate(R.layout.search_layout_nofab, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,14 +39,6 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
     }
 
     fun init() {
-        //Starting the loading animation
-        progressBar.visibility = View.VISIBLE
-
-        //setting up searchbar
-        searchEditText.setSingleLine(true)
-        searchEditText.setHint(R.string.search_tags_hint)
-        searchEditText.setSelectAllOnFocus(true)
-        searchEditText.setOnEditorActionListener(this)
 
         //Clear answer list
         answerCards.clear()
@@ -58,37 +52,43 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         dbManager.openDataBase()
 
         //Load all reserveCards in a separate thread
-          Thread().run {
-              //Loading data
-              reserveCards = dbManager.getAllReserveCards()
-              answerCards.addAll(reserveCards)
-              //Creating & setting adapter
-              val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
-              resultsRV.adapter = adapter
-              progressBar.visibility = View.INVISIBLE
+        Thread().run {
+            //Loading data
+            reserveCards = dbManager.getAllReserveCards()
+            answerCards.addAll(reserveCards)
+
+            //Creating & setting adapter
+            val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
+            resultsRV.adapter = adapter
         }
+    }
+
+    override fun setUpSearchView(newSearchView: SearchView?) {
+        newSearchView?.queryHint = resources.getString(R.string.search_tags_hint)
+    }
+
+    override fun onSearch(query: String): Boolean {
+        showProgressBar()
+        searchListItems(query, dbManager)
+        return false
     }
 
     /*
-        //TODO test after adding all reserves vs current data gathering method
-        //Gets each ReserveCard separately. Takes longer but is a smoother process.
-        private fun populateCardList(reserveCards: ArrayList<ReserveCard>, dbManager: DBManager) {
-            val table = General.DB_TABLE
-            reserveCards.clear()
+            //TODO test after adding all reserves vs current data gathering method
+            //Gets each ReserveCard separately. Takes longer but is a smoother process.
+            private fun populateCardList(reserveCards: ArrayList<ReserveCard>, dbManager: DBManager) {
+                val table = General.DB_TABLE
+                reserveCards.clear()
 
-            Thread(Runnable {
-                //Getting each resID separately
-                for (i in 0..MainActivity.RESERVE_NUM - 1) {
-                    reserveCards.add(dbManager.getReserveCard(i))
-                    resultsRV.post { resultsRV.adapter.notifyDataSetChanged() }
-                }
-            }).start()
-        }
-    */
-    override fun onEditorAction(textView: TextView, i: Int, keyEvent: KeyEvent?): Boolean {
-        searchListItems(textView.text.toString().toLowerCase(), dbManager)
-        return false
-    }
+                Thread(Runnable {
+                    //Getting each resID separately
+                    for (i in 0..MainActivity.RESERVE_NUM - 1) {
+                        reserveCards.add(dbManager.getReserveCard(i))
+                        resultsRV.post { resultsRV.adapter.notifyDataSetChanged() }
+                    }
+                }).start()
+            }
+       */
 
     //Searches DB for query
     private fun searchListItems(query: String, dbManager: DBManager) {
@@ -113,5 +113,7 @@ class LibraryFragment : Fragment(), TextView.OnEditorActionListener {
         }
         //Displaying the changes/results
         resultsRV.adapter.notifyDataSetChanged()
+
+        hideProgressBar()
     }
 }

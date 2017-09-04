@@ -29,7 +29,7 @@ import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_END
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_NONE
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
-import com.xplore.maps.MapActivity
+import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
 
@@ -214,8 +214,10 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     }
 
     private val onMapClickListener = View.OnClickListener {
-        startActivity(MapActivity.getStartIntent(this@EditGroupActivity, true, currentGroup.name,
-                currentGroup.destination_latitude, currentGroup.destination_longitude))
+        startActivity(SetDestinationMapActivity.getStartIntent(this@EditGroupActivity,
+                currentGroup.name,
+                currentGroup.destination_latitude,
+                currentGroup.destination_longitude))
     }
 
     //Fills the fields with gathered group data
@@ -240,6 +242,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         startDateTextView.text = General.putSlashesInDate(currentGroup.start_date)
         date.setStartDate(currentGroup.start_date)
         Log.i("brejk", "startDate ${date.getStartDate()}")
+
         //Start time
         startTimeTextView.text = General.putColonInTime(currentGroup.start_time)
         date.startTime = currentGroup.start_time
@@ -280,7 +283,10 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
                                 SEARCH_DESTINATION_REQ_CODE)
                     }
                     .setNegativeButton(R.string.activity_maps_title) {_, _ ->
-                        startActivityForResult(MapActivity.getStartIntent(this, true),
+                        startActivityForResult(
+                                SetDestinationMapActivity.getStartIntent(this, currentGroup.name,
+                                        currentGroup.destination_latitude,
+                                        currentGroup.destination_longitude),
                                 SELECT_FROM_MAP_REQ_CODE)
                     }
                     .create().show()
@@ -411,9 +417,9 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
                         //Getting image
                         currentGroup.destination_latitude =
-                                data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 0.0)
+                                data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
                         currentGroup.destination_longitude =
-                                data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 0.0)
+                                data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
 
                         //Checking if data retrieval failed
                         if (currentGroup.destination_latitude != 0.0
@@ -459,7 +465,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
             builder.setMessage(R.string.date_invalid)
                     .show()
             return false
-        } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
+        } else if (date.getStartDate() == date.getEndDate() && date.startTime > date.endTime) {
             builder.setMessage(R.string.fix_start_end_times)
                     .show()
             return false

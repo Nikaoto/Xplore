@@ -52,7 +52,7 @@ class SearchDestinationActivity : BaseActivity() {
 
     fun init(){
         //Starting the loading animation
-        progressBar.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
 
         //setting up searchbar
         searchEditText.setSingleLine(true)

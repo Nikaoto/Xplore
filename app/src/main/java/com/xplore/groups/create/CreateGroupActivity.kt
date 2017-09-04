@@ -19,7 +19,8 @@ import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
-import com.xplore.maps.MapActivity
+import com.xplore.maps.GroupMapActivity
+import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
@@ -65,7 +66,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         const val G_PREFS_CHAR_MAX = 200
         const val G_PREFS_CHAR_MIN = 0
         const val E_INFO_CHAR_MAX = 200
-        const val E_INFO_CHAR_MIN = 5
+        const val E_INFO_CHAR_MIN = 0
 
         //Tags for date and time pickers
         const val SELECTION_NONE = ""
@@ -130,8 +131,15 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             if (chosenDestId != Group.DESTINATION_DEFAULT) {
                 startActivity(ReserveInfoActivity.getStartIntent(this, chosenDestId))
             } else if (groupImageUrl.isNotEmpty()) {
-                startActivityForResult(MapActivity.getStartIntent(this, true),
-                        SELECT_FROM_MAP_REQ_CODE)
+                if (destinationLat != 0.0) {
+                    GroupMapActivity.getStartIntent(
+                            this@CreateGroupActivity,
+                            true,
+                            resources.getString(R.string.destination),
+                            destinationLat,
+                            destinationLng
+                    )
+                }
             }
         }
 
@@ -195,9 +203,16 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                             SEARCH_DESTINATION_REQ_CODE)
                 }
                 .setNegativeButton(R.string.activity_maps_title) {_, _ ->
-                    startActivityForResult(
-                            MapActivity.getStartIntent(this, true),
-                            SELECT_FROM_MAP_REQ_CODE)
+                    if (destinationLat != 0.0 && destinationLng != 0.0) {
+                        startActivityForResult(
+                                SetDestinationMapActivity.getStartIntent(this,
+                                        resources.getString(R.string.destination),
+                                        destinationLat, destinationLng),
+                                SELECT_FROM_MAP_REQ_CODE)
+                    } else {
+                        startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
+                                SELECT_FROM_MAP_REQ_CODE)
+                    }
                 }
                 .create().show()
     }
@@ -275,8 +290,8 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                         chosenDestId = Group.DESTINATION_DEFAULT
 
                         //Getting image
-                        destinationLat = data.getDoubleExtra(MapActivity.RESULT_DEST_LAT, 0.0)
-                        destinationLng = data.getDoubleExtra(MapActivity.RESULT_DEST_LNG, 0.0)
+                        destinationLat = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
+                        destinationLng = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
 
                         //Checking if data retrieval failed
                         if (destinationLat != 0.0 && destinationLng != 0.0) {
@@ -410,7 +425,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             builder.setMessage(R.string.date_invalid)
                     .show()
             return false
-        } else if (date.getStartDate() == date.getEndDate() && date.startTime >= date.endTime) {
+        } else if (date.getStartDate() == date.getEndDate() && date.startTime > date.endTime) {
             builder.setMessage(R.string.fix_start_end_times)
                     .show()
             return false

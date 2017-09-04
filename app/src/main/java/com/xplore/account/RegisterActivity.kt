@@ -20,6 +20,7 @@ import android.support.v4.content.FileProvider
 import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
@@ -92,6 +93,14 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         refreshGlobalTimeStamp()
     }
 
+    fun TextView.safeSetText(s: String?) {
+        if (s != null) {
+            this.text = s
+        } else {
+            this.text = ""
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_layout)
@@ -103,9 +112,9 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         val userProfilePicUrl = intent.getStringExtra("photoUrl")
 
         //Loading data into views
-        fnameEditText.setText(separateFullName(userFullName, 0))
-        lnameEditText.setText(separateFullName(userFullName, 1))
-        emailEditText.setText(userEmail)
+        fnameEditText.safeSetText(separateFullName(userFullName, 0))
+        lnameEditText.safeSetText(separateFullName(userFullName, 1))
+        emailEditText.safeSetText(userEmail)
 
         //Birth date selector
         bdateTextView.setOnClickListener {
