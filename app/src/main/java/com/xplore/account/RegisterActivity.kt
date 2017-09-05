@@ -330,7 +330,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    fun EditText.str() = this.text.toString() //TODO take this to general
+    fun EditText.str() = this.text.trim().toString() //TODO take this to general
 
     /* Everything below is code needed for profile picture choosing or taking functionality */
 
