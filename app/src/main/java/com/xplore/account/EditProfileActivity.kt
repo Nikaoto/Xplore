@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.xplore.DateUtil
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager
@@ -50,9 +51,11 @@ class EditProfileActivity : RegisterActivity() {
         lnameEditText.setText(currentUser.lname)
         emailEditText.setText(currentUser.email)
         numEditText.setText(currentUser.tel_num)
-        birthDateTextView.setText(General.putSlashesInDate(currentUser.birth_date))
+        birthDateTextView.setText(DateUtil.putSlashesInDate(currentUser.birth_date))
 
-        //bYear = currentUser.birth_date TODO add dateutil
+        bYear = DateUtil.getYear(currentUser.birth_date.toString())
+        bMonth = DateUtil.getMonth(currentUser.birth_date.toString())
+        bDay = DateUtil.getDay(currentUser.birth_date.toString())
     }
 
     override fun initProfileImage(userProfilePicUrl: String?) {
@@ -108,7 +111,7 @@ class EditProfileActivity : RegisterActivity() {
         if (emailEditText.text.trim() != currentUser.email) {
             return true
         }
-        if (birthDateTextView.text != General.putSlashesInDate(currentUser.birth_date)) {
+        if (birthDateTextView.text != DateUtil.putSlashesInDate(currentUser.birth_date)) {
             return true
         }
         if (numEditText.text.trim() != currentUser.tel_num) {

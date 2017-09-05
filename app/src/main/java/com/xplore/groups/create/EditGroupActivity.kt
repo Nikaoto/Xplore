@@ -239,7 +239,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
 
         //Start date
-        startDateTextView.text = General.putSlashesInDate(currentGroup.start_date)
+        startDateTextView.text = DateUtil.putSlashesInDate(currentGroup.start_date)
         date.setStartDate(currentGroup.start_date)
         Log.i("brejk", "startDate ${date.getStartDate()}")
 
@@ -249,7 +249,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         Log.i("brejk", "startTime ${date.startTime}")
 
         //End date
-        endDateTextView.text = General.putSlashesInDate(currentGroup.end_date)
+        endDateTextView.text = DateUtil.putSlashesInDate(currentGroup.end_date)
         date.setEndDate(currentGroup.end_date)
         Log.i("brejk", "endDate ${date.getEndDate()}")
 

@@ -194,27 +194,6 @@ public class General {
         return thenInDays - nowInDays;
     }
 
-    // TODO add this to dateUtil
-    // Adds slashes to a date given in int (yyyy.mm.dd) without dots
-    public static String putSlashesInDate(int date) {
-        String dateStr = String.valueOf(date);
-        //Checking if format is correct
-        if (dateStr.length() != 8) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder(dateStr);
-        sb.insert(4, "/");
-        sb.insert(7, "/");
-
-        return sb.toString();
-    }
-
-    // TODO make all dates ints and remove this crap
-    public static String putSlashesInDate(Long date) {
-        return putSlashesInDate(Integer.valueOf(String.valueOf(date)));
-    }
-
     public static String putColonInTime(String time) {
         if (time == null || time.isEmpty()) {
             return "";

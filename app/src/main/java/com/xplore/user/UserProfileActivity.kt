@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.DateUtil
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
@@ -86,7 +87,7 @@ class UserProfileActivity : AppCompatActivity() {
         fullNameTextView.text = "${user.getFname()} ${user.getLname()}"
         reputationCombinedTextView.text = user.getReputation().toString() +
                 " " + resources.getString(R.string.reputation)
-        birthDateTextView.text = General.putSlashesInDate(user.getBirth_date())
+        birthDateTextView.text = DateUtil.putSlashesInDate(user.getBirth_date())
         telephoneTextView.text = user.getTel_num()
         emailTextView.text = user.getEmail()
     }

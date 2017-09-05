@@ -316,8 +316,8 @@ class GroupInfoActivity : BaseActivity() {
         }
 
         //Dates
-        dateCombinedTextView.text = General.putSlashesInDate(currentGroup.getStart_date()) + " - " +
-                General.putSlashesInDate(currentGroup.getEnd_date())
+        dateCombinedTextView.text = DateUtil.putSlashesInDate(currentGroup.getStart_date()) + " - " +
+                DateUtil.putSlashesInDate(currentGroup.getEnd_date())
 
         if (currentGroup.getStart_time().isEmpty()) {
             meetupTimeCard.visibility = View.GONE
