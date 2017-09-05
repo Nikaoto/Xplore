@@ -138,8 +138,8 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    open fun onBirthDateSelected(timeStamp: Long) {
-        val fragment = com.xplore.DatePickerFragment(this, timeStamp, ageRestriction)
+    open fun onBirthDateSelected(timeStamp: Long, offSet: Int = ageRestriction) {
+        val fragment = com.xplore.DatePickerFragment(this, timeStamp, offSet)
         fragment.show(fragmentManager, "datePicker")
     }
 

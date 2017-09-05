@@ -66,8 +66,8 @@ class EditProfileActivity : RegisterActivity() {
         super.initProfileImage(currentUser.profile_picture_url)
     }
 
-    override fun onBirthDateSelected(timeStamp: Long) {
-        super.onBirthDateSelected(General.convertIntDateToTimeStamp(currentUser.birth_date))
+    override fun onBirthDateSelected(timeStamp: Long, offSet: Int) {
+        super.onBirthDateSelected(General.convertIntDateToTimeStamp(currentUser.birth_date), 0)
     }
 
     override fun onDoneButtonClick() {

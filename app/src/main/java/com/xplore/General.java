@@ -91,12 +91,13 @@ public class General {
         }
 
         StringBuilder sb = new StringBuilder(date);
-
         final int y = Integer.valueOf(sb.substring(0, 4));
         final int m = Integer.valueOf(sb.substring(4, 6));
         final int d = Integer.valueOf(sb.substring(6));
 
-        return (long) getDateInt(y, m, d);
+        Calendar cal = Calendar.getInstance();
+        cal.set(y, m - 1, d);
+        return cal.getTimeInMillis();
     }
 
     public static Long convertIntDateToTimeStamp(int date) {
