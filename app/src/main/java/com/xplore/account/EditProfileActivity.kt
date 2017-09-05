@@ -76,7 +76,6 @@ class EditProfileActivity : RegisterActivity() {
     override fun onDoneButtonClick() {
         if (fieldsChanged()) {
             updateAuthEmail()
-            super.onDoneButtonClick()
             // This makes MainAct refresh navbar user profile views
             General.accountStatus = General.JUST_LOGGED_IN
         } else {
@@ -84,21 +83,22 @@ class EditProfileActivity : RegisterActivity() {
         }
     }
 
-    // Updates auth email if user is not signed in with facebook
+    // Updates auth email if user is not signed in with facebook; then uploads user data
     private fun updateAuthEmail() {
         if (General.isValidEmail(emailEditText.text)) {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
-                for (profile in user.providerData) {
-                    if (FacebookAuthProvider.PROVIDER_ID != profile.providerId) {
-                        user.updateEmail(emailEditText.text.toString())
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        Log.d(TAG, "User email address updated.")
-                                    }
-                                }
-                    }
-                }
+                user.updateEmail(emailEditText.text.toString())
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "User email address updated.")
+
+                                super.onDoneButtonClick()
+                            } else {
+                                Toast.makeText(this, R.string.error_email_taken, Toast.LENGTH_SHORT)
+                                        .show()
+                            }
+                        }
             } else {
                 // How the f do you even get here?
                 Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()

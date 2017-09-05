@@ -225,6 +225,7 @@
  <string name="search">Поиск</string>
     <string name="edit_profile">Редактировать профиль</string>
  <string name="edit_group">Редактировать группу</string>
+    <string name="error_email_taken">Эл-адрес уже занят</string>
 
- <!-- -->
+    <!-- -->
 </resources>

@@ -241,6 +241,7 @@
 
     <!-- Account Settings -->
     <string name="edit_profile">პროფილის რედაქტირება</string>
+    <string name="error_email_taken">ელ-ფოსტა დაკავებულია</string>
     <string name="log_out">გამოსვლა</string>
     <string name="logged_in">ავტორიზებულია</string>
     <string name="logged_out">სისტემიდან გამოხვედით</string>
