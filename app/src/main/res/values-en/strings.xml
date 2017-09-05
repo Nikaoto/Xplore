@@ -232,5 +232,6 @@
 
     <string name="search_hint">Search…</string>
     <string name="search">Seach</string>
+    <string name="edit_profile">Edit Profile</string>
 
 </resources>

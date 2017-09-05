@@ -240,6 +240,7 @@
     <string name="settings_language_title">ენა</string>
 
     <!-- Account Settings -->
+    <string name="edit_profile">პროფილის რედაქტირება</string>
     <string name="log_out">გამოსვლა</string>
     <string name="logged_in">ავტორიზებულია</string>
     <string name="logged_out">სისტემიდან გამოხვედით</string>

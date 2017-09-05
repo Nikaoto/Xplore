@@ -79,8 +79,7 @@ public class General {
         }
     }
 
-    public static void openReserveInfoFragment(int resId, Context context)
-    {
+    public static void openReserveInfoFragment(int resId, Context context) {
         Intent intent= new Intent(context, ReserveInfoActivity.class);
         intent.putExtra("chosen_element", resId);
         context.startActivity(intent);
@@ -103,8 +102,7 @@ public class General {
         return getDateLong(y, m, d);
     }
 
-    public static boolean isUserSignedIn()
-    {
+    public static boolean isUserSignedIn() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             currentUserId = user.getUid();
@@ -137,8 +135,7 @@ public class General {
     }
 
     //Returns the age of a person, takes string instead of dates
-    private static int calculateAge(Long timeStamp, String birthDate)
-    {
+    private static int calculateAge(Long timeStamp, String birthDate) {
         //Check if format is correct
         if(birthDate.length() != 8) {
             Log.println(Log.INFO, "calculateAge", "length != 8");
@@ -324,39 +321,6 @@ public class General {
             }
         });
     }
-
-    /*
-    public static void popLogInMenu(final Context context, ViewGroup parent) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View v = LayoutInflater.from(context).inflate(R.layout.signin_dialog, parent);
-        builder.setView(v);
-        final AlertDialog ad =  builder.create();
-        //TODO ad.OnDismiss()
-
-        //No thanks TextView
-        TextView noThanks = (TextView) ad.findViewById(R.id.no_signin_tw);
-        noThanks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ad.dismiss();
-            }
-        });
-
-        //Login / Register Button
-        Button logIn = (Button) ad.findViewById(R.id.signin_btn);
-        logIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (General.isNetConnected(context)) {
-                    ad.dismiss();
-                    Intent i = new Intent(context, GoogleSignInActivity.class); //TODO change into SignInActivity
-                    context.startActivity(i);
-                } else
-                    createNetErrorDialog(context);
-            }
-        });
-    }*/
-
 
     public static PopupWindow popLoadingBar(double xScale, double yScale, Activity activity) {
         int popWidth = (int) (appWidth * xScale);

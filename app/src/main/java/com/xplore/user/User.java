@@ -1,12 +1,14 @@
 package com.xplore.user;
 
 
+import java.io.Serializable;
+
 /**
  * Created by Nikaoto on 2/11/2017.
  */
 
 //DO NOT CHANGE THE VARIABLE NAMES, THEY CORRESPOND TO THE FIREBASE DATABASE KEY NAMES
-public class User {
+public class User implements Serializable {
     String fname, lname, tel_num, id, profile_picture_url, email;
     int reputation, birth_date, age;
     //TODO change age to birth date and calculate age every time user info is loaded

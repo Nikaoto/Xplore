@@ -48,7 +48,7 @@ import java.util.*
 * TODO write description of this class - what it does and why.
 */
 
-class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
+open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     /* Request Codes */
     val NONE = 0
@@ -57,12 +57,12 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     val ACTION_SNAP_IMAGE = 3
 
     //
-    val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
+    private val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
     val PIC_KILOBYTE_LIMIT = 25
 
     // Firebase
     val storageRef = FirebaseStorage.getInstance().reference
-    private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
+    fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
 
     // File provider authority string
     val authority = "com.xplore.fileprovider"
@@ -150,7 +150,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
         doneButton.setOnClickListener {
             if (fieldsValid()) {
-                val ref = storageRef.child("users/$userId/profile_picture.jpg")
+                val ref = storageRef.child(firebaseStorageProfilePicUri(userId))
                 val newUser = UploadUser(
                         userId,
                         fnameEditText.str(),
@@ -314,7 +314,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     /* Everything below is code needed for profile picture choosing or taking functionality */
 
-    //Requests permissions for given module with the passed request code and permissionType
+    // Requests permissions for given module with the passed request code and permissionType
     fun requestModulePermission(activity: Activity, permission: String, requestCode: Int,
                                 module: () -> Unit) {
         //Checking if not allowed
@@ -346,7 +346,7 @@ class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    // Prepares extra permissions for camera and then opens it(kind of hacky)
+    // Prepares extra permissions for camera and then opens it (kind of hacky)
     fun prepareCamera() {
         requestModulePermission(this, Manifest.permission.CAMERA,
                 CAMERA_PERMISSION_REQUEST_CODE, { openCamera() })
