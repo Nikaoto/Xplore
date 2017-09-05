@@ -5,6 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager
@@ -37,17 +40,6 @@ class EditProfileActivity : RegisterActivity() {
 
     init { TimeManager.refreshGlobalTimeStamp() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Log.i(TAG, "fname = ${currentUser.fname}")
-        Log.i(TAG, "lname = ${currentUser.lname}")
-        Log.i(TAG, "email = ${currentUser.email}")
-        Log.i(TAG, "telnum = ${currentUser.tel_num}")
-        Log.i(TAG, "bdate = ${currentUser.birth_date}")
-        Log.i(TAG, "picUrl = ${currentUser.profile_picture_url}")
-    }
-
     override fun initLayout() {
         setContentView(R.layout.register_layout)
         titleTextView.setText(R.string.edit_profile)
@@ -73,9 +65,36 @@ class EditProfileActivity : RegisterActivity() {
 
     override fun onDoneButtonClick() {
         if (fieldsChanged()) {
+            updateAuthEmail()
             super.onDoneButtonClick()
         } else {
             finish()
+        }
+    }
+
+    // Updates auth email if user is not signed in with facebook
+    private fun updateAuthEmail() {
+        if (General.isValidEmail(emailEditText.text)) {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                for (profile in user.providerData) {
+                    if (FacebookAuthProvider.PROVIDER_ID != profile.providerId) {
+                        user.updateEmail(emailEditText.text.toString())
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Log.d(TAG, "User email address updated.")
+                                    }
+                                }
+                    }
+                }
+            } else {
+                // How the f do you even get here?
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            // Invalid email prompt
+            makeBorderRed(emailEditText)
+            Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show()
         }
     }
 

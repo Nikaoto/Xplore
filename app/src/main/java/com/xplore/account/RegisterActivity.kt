@@ -273,8 +273,8 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    private fun makeBorderGreen(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border)
-    private fun makeBorderRed(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border_red)
+    fun makeBorderGreen(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border)
+    fun makeBorderRed(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border_red)
 
     private fun fieldsValid(): Boolean {
         makeBorderGreen(fnameEditText)
