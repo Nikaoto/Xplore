@@ -210,7 +210,6 @@ public class SignInActivity extends BaseAppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.i(TAG, "xplore auth: user created");
                             // Auth state listener will handle it
-                            //startUserRegistration(auth.getCurrentUser());
                         } else {
                             Log.i(TAG, "xplore auth: user creation failed");
 
@@ -348,6 +347,7 @@ public class SignInActivity extends BaseAppCompatActivity {
 
                             // FB email might already be registered in Xplore
                             fbEmailTakenDialog(SignInActivity.this).show();
+
                         }
                     }
                 });
@@ -362,6 +362,14 @@ public class SignInActivity extends BaseAppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
                     }
                 }).create();
     }

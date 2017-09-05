@@ -146,7 +146,7 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/editProfileButton"
-            android:text="Edit Profile"
+            android:text="@string/edit_profile"
             android:visibility="gone"
             tools:visibility="visible"
             app:backgroundTint="@color/colorAccent"
