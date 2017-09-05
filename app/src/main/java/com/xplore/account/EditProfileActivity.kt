@@ -2,7 +2,6 @@ package com.xplore.account
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,10 +23,6 @@ class EditProfileActivity : RegisterActivity() {
 
     private val TAG = "profile"
 
-    private val currentUser: User by lazy {
-        intent.getSerializableExtra(USER) as User
-    }
-
     companion object {
         // Arguments
         private const val USER = "user"
@@ -37,6 +32,18 @@ class EditProfileActivity : RegisterActivity() {
             return Intent(context, EditProfileActivity::class.java)
                     .putExtra(USER, user)
         }
+    }
+
+    private val currentUser: User by lazy {
+        intent.getSerializableExtra(USER) as User
+    }
+
+    override val userId: String by lazy {
+        currentUser.id
+    }
+
+    override val userProfilePicUrl: String by lazy {
+        currentUser.profile_picture_url
     }
 
     init { TimeManager.refreshGlobalTimeStamp() }
@@ -102,19 +109,19 @@ class EditProfileActivity : RegisterActivity() {
     }
 
     private fun fieldsChanged(): Boolean {
-        if (fnameEditText.text.trim() != currentUser.fname) {
+        if (fnameEditText.str() != currentUser.fname) {
             return true
         }
-        if (lnameEditText.text.trim() != currentUser.lname) {
+        if (lnameEditText.str() != currentUser.lname) {
             return true
         }
-        if (emailEditText.text.trim() != currentUser.email) {
+        if (emailEditText.str() != currentUser.email) {
             return true
         }
-        if (birthDateTextView.text != DateUtil.putSlashesInDate(currentUser.birth_date)) {
+        if (birthDateTextView.text.toString() != DateUtil.putSlashesInDate(currentUser.birth_date)) {
             return true
         }
-        if (numEditText.text.trim() != currentUser.tel_num) {
+        if (numEditText.str() != currentUser.tel_num) {
             return true
         }
         if (imagePath != null) {

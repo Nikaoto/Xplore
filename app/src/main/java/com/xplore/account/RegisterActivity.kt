@@ -80,10 +80,10 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private val DBref = FirebaseDatabase.getInstance().reference
 
     // User data
-    private val userId: String by lazy {
+    open val userId: String by lazy {
         intent.getStringExtra("userId")
     }
-    private val userProfilePicUrl: String by lazy {
+    open val userProfilePicUrl: String by lazy {
         intent.getStringExtra("photoUrl")
     }
     private val userFullName: String by lazy {
@@ -201,7 +201,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 }
     }
 
-    //Adds zero to Day or Month number if needed
+    // Adds zero to Day or Month number if needed
     fun addZero(num: Int) = if(num < 10) "0$num" else "$num"
 
     override fun onDateSet(datePicker: DatePicker, year: Int, receivedMonth: Int, day: Int) {
@@ -330,7 +330,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    fun EditText.str() = this.text.trim().toString() //TODO take this to general
+    fun EditText.str() = this.text.trim().toString()
 
     /* Everything below is code needed for profile picture choosing or taking functionality */
 

@@ -1,7 +1,6 @@
 package com.xplore.user
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -15,6 +14,7 @@ import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
 import com.xplore.account.EditProfileActivity
+import com.xplore.base.BaseRefreshableAppCompatActivity
 import kotlinx.android.synthetic.main.user_profile.*
 
 /**
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.user_profile.*
  *
  */
 
-class UserProfileActivity : AppCompatActivity() {
+class UserProfileActivity : BaseRefreshableAppCompatActivity() {
 
     private val userId: String by lazy { getPassedUserId() }
     private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
@@ -60,6 +60,7 @@ class UserProfileActivity : AppCompatActivity() {
                 if (dataSnapshot != null) {
                     val tempUser = dataSnapshot.getValue(User::class.java)
                     if (tempUser != null) {
+                        tempUser.setId(dataSnapshot.key)
                         displayUserInfo(tempUser)
 
                         // If user viewing his/her profile
