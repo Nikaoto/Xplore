@@ -73,9 +73,9 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 15
-    private var bYear: Int = 0
-    private var bMonth: Int = 0
-    private var bDay: Int = 0
+    var bYear: Int = 0
+    var bMonth: Int = 0
+    var bDay: Int = 0
 
     private val DBref = FirebaseDatabase.getInstance().reference
 

@@ -59,7 +59,8 @@ class EditProfileActivity : RegisterActivity() {
         emailEditText.setText(currentUser.email)
         numEditText.setText(currentUser.tel_num)
         birthDateTextView.setText(General.putSlashesInDate(currentUser.birth_date))
-        imagePath = Uri.parse(currentUser.profile_picture_url)
+
+        //bYear = currentUser.birth_date TODO add dateutil
     }
 
     override fun initProfileImage(userProfilePicUrl: String?) {
@@ -78,8 +79,25 @@ class EditProfileActivity : RegisterActivity() {
         }
     }
 
-    //TODO do this
     private fun fieldsChanged(): Boolean {
+        if (fnameEditText.text.trim() != currentUser.fname) {
+            return true
+        }
+        if (lnameEditText.text.trim() != currentUser.lname) {
+            return true
+        }
+        if (emailEditText.text.trim() != currentUser.email) {
+            return true
+        }
+        if (birthDateTextView.text != General.putSlashesInDate(currentUser.birth_date)) {
+            return true
+        }
+        if (numEditText.text.trim() != currentUser.tel_num) {
+            return true
+        }
+        if (imagePath != null) {
+            return true
+        }
         return false
     }
 
