@@ -476,9 +476,9 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
             builder.setMessage(R.string.text_field_incomplete)
                     .show()
             return false
-        } else if (date.getStartDate() < General.getDateLong(TimeManager.globalTimeStamp)
-                || date.getEndDate() < General.getDateLong(TimeManager.globalTimeStamp)) {
-            Log.i("brejk", "nowTime ${General.getDateLong(TimeManager.globalTimeStamp)}")
+        } else if (date.getStartDate() < General.getDateInt(TimeManager.globalTimeStamp)
+                || date.getEndDate() < General.getDateInt(TimeManager.globalTimeStamp)) {
+            Log.i("brejk", "nowTime ${General.getDateInt(TimeManager.globalTimeStamp)}")
             builder.setMessage(R.string.date_past_invalid)
                     .show()
             return false

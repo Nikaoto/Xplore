@@ -69,6 +69,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     // Users profile image url
     var imagePath: Uri? = null
+    //TODO AI check for face in photo?
 
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 15
@@ -77,6 +78,21 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     private var bDay: Int = 0
 
     private val DBref = FirebaseDatabase.getInstance().reference
+
+    // User data
+    private val userId: String by lazy {
+        intent.getStringExtra("userId")
+    }
+    private val userProfilePicUrl: String by lazy {
+        intent.getStringExtra("photoUrl")
+    }
+    private val userFullName: String by lazy {
+        intent.getStringExtra("fullName")
+    }
+    private val userEmail: String by lazy {
+        intent.getStringExtra("email")
+    }
+    //
 
     companion object {
         @JvmStatic
@@ -93,37 +109,41 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         refreshGlobalTimeStamp()
     }
 
-    fun TextView.safeSetText(s: String?) {
-        if (s != null) {
-            this.text = s
-        } else {
-            this.text = ""
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initLayout()
+        fillFields()
+        initClickEvents()
+    }
+
+    open fun initLayout() {
         setContentView(R.layout.register_layout)
+    }
 
-        //Getting User info from SignInActivity
-        val userId = intent.getStringExtra("userId")
-        val userFullName = intent.getStringExtra("fullName")
-        val userEmail = intent.getStringExtra("email")
-        val userProfilePicUrl = intent.getStringExtra("photoUrl")
-
-        //Loading data into views
+    open fun fillFields() {
+        // Loading data into views
         fnameEditText.safeSetText(separateFullName(userFullName, 0))
         lnameEditText.safeSetText(separateFullName(userFullName, 1))
         emailEditText.safeSetText(userEmail)
+    }
 
-        //Birth date selector
-        bdateTextView.setOnClickListener {
-            //Creating new DialogFragment
-            val fragment = com.xplore.DatePickerFragment(this, globalTimeStamp, ageRestriction)
-            fragment.show(fragmentManager, "datePicker")
+    open fun initClickEvents() {
+        initProfileImage(userProfilePicUrl)
+
+        birthDateTextView.setOnClickListener {
+            onBirthDateSelected(globalTimeStamp)
         }
-        //TODO AI check for face in photo?
+        doneButton.setOnClickListener {
+            onDoneButtonClick()
+        }
+    }
 
+    open fun onBirthDateSelected(timeStamp: Long) {
+        val fragment = com.xplore.DatePickerFragment(this, timeStamp, ageRestriction)
+        fragment.show(fragmentManager, "datePicker")
+    }
+
+    open fun initProfileImage(userProfilePicUrl: String?) {
         Picasso.with(this@RegisterActivity).invalidate(userProfilePicUrl)
 
         if (userProfilePicUrl == null || userProfilePicUrl == "null"
@@ -147,23 +167,23 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                     .create()
             dialog.show()
         }
+    }
 
-        doneButton.setOnClickListener {
-            if (fieldsValid()) {
-                val ref = storageRef.child(firebaseStorageProfilePicUri(userId))
-                val newUser = UploadUser(
-                        userId,
-                        fnameEditText.str(),
-                        lnameEditText.str(),
-                        numEditText.str(),
-                        userEmail,
-                        General.getDateLong(bYear, bMonth, bDay),
-                        userProfilePicUrl)
-                if (imagePath != null) {
-                    uploadUserData(newUser, imagePath as Uri, ref)
-                } else {
-                    addUserEntryToDataBase(newUser)
-                }
+    open fun onDoneButtonClick() {
+        if (fieldsValid()) {
+            val ref = storageRef.child(firebaseStorageProfilePicUri(userId))
+            val newUser = UploadUser(
+                    userId,
+                    fnameEditText.str(),
+                    lnameEditText.str(),
+                    numEditText.str(),
+                    emailEditText.str(),
+                    General.getDateInt(bYear, bMonth, bDay),
+                    userProfilePicUrl)
+            if (imagePath != null) {
+                uploadUserData(newUser, imagePath as Uri, ref)
+            } else {
+                addUserEntryToDataBase(newUser)
             }
         }
     }
@@ -194,7 +214,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 bMonth = month
                 bDay = day
 
-                bdateTextView.text = "$bYear/${addZero(bMonth)}/${addZero(bDay)}"
+                birthDateTextView.text = "$bYear/${addZero(bMonth)}/${addZero(bDay)}"
             } else {
                 val res = this@RegisterActivity.resources
                 Toast.makeText(this@RegisterActivity, res.getString(R.string.you_must_be_at_least) +
@@ -261,7 +281,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         makeBorderGreen(lnameEditText)
         makeBorderGreen(emailEditText)
         makeBorderGreen(numEditText)
-        makeBorderGreen(bdateTextView)
+        makeBorderGreen(birthDateTextView)
 
         if (fnameEditText.text.isEmpty()) {
             return fieldError(fnameEditText)
@@ -275,10 +295,10 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             return false
         } else if (numEditText.text.isEmpty()) {
             return fieldError(numEditText)
-        } else if (bdateTextView.text.isEmpty()) {
-            return fieldError(bdateTextView)
+        } else if (birthDateTextView.text.isEmpty()) {
+            return fieldError(birthDateTextView)
         } else if (bYear == 0 || bMonth == 0 || bDay == 0) {
-            return fieldError(bdateTextView)
+            return fieldError(birthDateTextView)
         }
         return true
     }
@@ -485,5 +505,13 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     override fun onBackPressed() {
         // Leave empty, so user doesn't accidentally exit during registration
+    }
+
+    fun TextView.safeSetText(s: String?) {
+        if (s != null) {
+            this.text = s
+        } else {
+            this.text = ""
+        }
     }
 }

@@ -20,7 +20,7 @@ import java.util.*
 */
 
 class DatePickerFragment(val listener: DatePickerDialog.OnDateSetListener?,
-                         val timeStamp: Long,
+                         val currentTimeStamp: Long,
                          val yearOffset: Int = 0) : DialogFragment() {
 
     //Empty constructor
@@ -29,7 +29,7 @@ class DatePickerFragment(val listener: DatePickerDialog.OnDateSetListener?,
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //Setting up current date
         val c = Calendar.getInstance()
-        c.time = Date(timeStamp)
+        c.time = Date(currentTimeStamp)
         val year = c.get(Calendar.YEAR) - yearOffset
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)

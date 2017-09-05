@@ -85,21 +85,39 @@ public class General {
         context.startActivity(intent);
     }
 
+    public static Long convertIntDateToTimeStamp(String date) {
+        if (date.length() != 8) {
+            return 0L;
+        }
+
+        StringBuilder sb = new StringBuilder(date);
+
+        final int y = Integer.valueOf(sb.substring(0, 4));
+        final int m = Integer.valueOf(sb.substring(4, 6));
+        final int d = Integer.valueOf(sb.substring(6));
+
+        return (long) getDateInt(y, m, d);
+    }
+
+    public static Long convertIntDateToTimeStamp(int date) {
+        return convertIntDateToTimeStamp(String.valueOf(date));
+    }
+
     //TODO remove this after switching to UNIX time
-    public static int getDateLong(int year, int month, int day) {
+    public static int getDateInt(int year, int month, int day) {
         return year*10000 + month*100 + day;
     }
 
     //TODO remove this after switching to UNIX time
     //Gets long date from unix long milliseconds
-    public static int getDateLong(Long timeStamp) {
+    public static int getDateInt(Long timeStamp) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(timeStamp));
         int y = calendar.get(Calendar.YEAR);
         int m = calendar.get(Calendar.MONTH) + 1;
         int d = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return getDateLong(y, m, d);
+        return getDateInt(y, m, d);
     }
 
     public static boolean isUserSignedIn() {
