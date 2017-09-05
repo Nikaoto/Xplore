@@ -358,7 +358,7 @@ class GroupInfoActivity : BaseActivity() {
                             putUserMarker(locations, it.key)
                         }
                     }
-                    startActivity(GroupMapActivity.getStartIntent(applicationContext, true,
+                    startActivity(GroupMapActivity.getStartIntent(this@GroupInfoActivity, true,
                             groupId, currentGroup.name, currentGroup.destination_latitude,
                             currentGroup.destination_longitude)
                     )
