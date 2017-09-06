@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,7 +16,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.ImageUtil
 import com.xplore.R
-import com.xplore.base.BaseActivity
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.discussion.*
 import kotlinx.android.synthetic.main.message_list_item.view.*
@@ -25,21 +26,28 @@ import kotlinx.android.synthetic.main.message_list_item.view.*
  * TODO write description of this class - what it does and why.
  */
 
-class DiscussionActivity : BaseActivity() {
+class DiscussionActivity : BaseAppCompatActivity() {
 
     //Firebase
     private val F_GROUPS = "groups"
     private val F_MEMBER_IDS = "member_ids"
     private val F_DISCUSSION = "discussion"
+    private val F_NAME = "name"
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
-    private lateinit var currentGroupRef: DatabaseReference
-    private lateinit var discussionRef: DatabaseReference
+    private val currentGroupRef: DatabaseReference by lazy {
+        FirebaseDatabase.getInstance().getReference("$F_GROUPS/$groupId")
+    }
+    private val discussionRef: DatabaseReference by lazy {
+        currentGroupRef.child(F_DISCUSSION)
+    }
     //
     private val  MESSAGE_LIMIT = 50
 
     private val mediaPlayer: MediaPlayer by lazy { MediaPlayer.create(this, R.raw.message_sound) }
 
-    private lateinit var groupId: String
+    private val groupId: String by lazy {
+        intent.getStringExtra("groupId")
+    }
 
     private val groupMembers = ArrayList<UserCard>()
     private val messageCards = ArrayList<MessageCard>()
@@ -51,8 +59,8 @@ class DiscussionActivity : BaseActivity() {
     private var memberCount = 0 //To find out when all members have been retrieved
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String)
-            = Intent(context, DiscussionActivity::class.java).putExtra("groupId", groupId)
+        fun getStartIntent(context: Context, groupId: String): Intent
+                = Intent(context, DiscussionActivity::class.java).putExtra("groupId", groupId)
     }
 
     private class MessageCard(val user_id: String = "",
@@ -62,16 +70,15 @@ class DiscussionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.discussion)
 
-        groupId = intent.getStringExtra("groupId")
-        currentGroupRef = FirebaseDatabase.getInstance().getReference("$F_GROUPS/$groupId")
-        discussionRef = currentGroupRef.child(F_DISCUSSION)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setToolbarTitle()
         checkIfDiscussionExists()
 
         messagesRecyclerView.layoutManager = LinearLayoutManager(this)
         messagesRecyclerView.adapter = MessageListAdapter()
 
-        //Gets all members from the group and stores them in groupMembers
+        // Gets all members from the group and stores them in groupMembers
         currentGroupRef.child(F_MEMBER_IDS).addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -89,6 +96,21 @@ class DiscussionActivity : BaseActivity() {
                 })
 
         initMessageCount()
+    }
+
+    private fun setToolbarTitle() {
+        currentGroupRef.child(F_NAME).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (dataSnapshot != null) {
+                    val groupTitle = dataSnapshot.getValue(String::class.java)
+                    if (groupTitle != null) {
+                        title = groupTitle
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) { }
+        })
     }
 
     private fun initMessageCount() {
@@ -254,6 +276,11 @@ class DiscussionActivity : BaseActivity() {
                 return member
         }
         return null
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onStop() {
