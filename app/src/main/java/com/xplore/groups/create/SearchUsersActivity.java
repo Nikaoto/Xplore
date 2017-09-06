@@ -107,8 +107,8 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         User tempUser = userSnapshot.getValue(User.class);
-                        if (tempUser.getFname().toLowerCase().contains(fname.toLowerCase())) {
-                            tempUser = userSnapshot.getValue(User.class);
+                        if (tempUser != null
+                                && tempUser.getFname().toLowerCase().contains(fname.toLowerCase())) {
                             tempUser.setId(userSnapshot.getKey());
                             userList.add(tempUser);
                             dataFound = true;

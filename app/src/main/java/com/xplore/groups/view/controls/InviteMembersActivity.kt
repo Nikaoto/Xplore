@@ -103,7 +103,7 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
     }
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
-        if (!v.text.isBlank()) {
+        if (v.text.isNotEmpty()) {
             val searchQuery = v.text.toString().toLowerCase()
 
             displayUserCards.clear()
