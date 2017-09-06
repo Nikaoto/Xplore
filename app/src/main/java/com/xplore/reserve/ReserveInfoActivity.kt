@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
+import android.view.View
 import android.widget.TextView
 import com.xplore.R
 import com.xplore.base.BaseActivity
@@ -44,7 +45,7 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         appBar.addOnOffsetChangedListener(this)
         //Sets up Layout acording to info from chosen Reserve
         val chosenReserve = intent.getIntExtra("chosen_element", 0)
-        setupLayout(LoadReserve(chosenReserve))
+        displayData(LoadReserve(chosenReserve))
     }
 
     //Loads reserve from database by Id and returns it
@@ -81,11 +82,11 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         if (txt != null && txt.isNotEmpty()) {
             this.text = txt
         } else {
-            this.setText(R.string.info_will_be_added)
+            this.visibility = View.GONE
         }
     }
 
-    private fun setupLayout(reserve: Reserve) {
+    private fun displayData(reserve: Reserve) {
         collapsingToolbar.title = reserve.name
         reserveImageView.setImageResource(reserve.imageId)
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
@@ -94,7 +95,12 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         floraTextView.safeSetText(reserve.flora)
         equipmentTextView.safeSetText(reserve.equipment)
         tagsTextView.safeSetText(reserve.extratags)
-        difficultyRatingBar.rating = reserve.difficulty.toFloat()
+
+        if (reserve.difficulty == 0) {
+            difficultyCardView.visibility = View.INVISIBLE
+        } else {
+            difficultyRatingBar.rating = reserve.difficulty.toFloat()
+        }
 
         showonmapButton.setOnClickListener {
             mActivity.startActivity(
