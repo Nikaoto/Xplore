@@ -84,7 +84,7 @@ class EditProfileActivity : RegisterActivity() {
 
     override fun onDoneButtonClick() {
         if (fieldsChanged()) {
-            updateAuthEmail()
+            updateAuthEmail() // Updates email and all other fields
             // This makes MainAct refresh navbar user profile views
             General.accountStatus = General.JUST_LOGGED_IN
         } else {

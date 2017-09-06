@@ -171,6 +171,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     open fun onDoneButtonClick() {
         if (fieldsValid()) {
+            Toast.makeText(this, R.string.loading, Toast.LENGTH_SHORT).show()
             val ref = storageRef.child(firebaseStorageProfilePicUri(userId))
             val newUser = UploadUser(
                     userId,
