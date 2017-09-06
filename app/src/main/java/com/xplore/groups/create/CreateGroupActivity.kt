@@ -63,9 +63,9 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         const val EXPERIENCE_ANS_DEFAULT = -1
         const val EXPERIENCE_ANS_NO = 0
         const val EXPERIENCE_ANS_YES = 1
-        const val G_PREFS_CHAR_MAX = 200
+        const val G_PREFS_CHAR_MAX = 2000
         const val G_PREFS_CHAR_MIN = 0
-        const val E_INFO_CHAR_MAX = 200
+        const val E_INFO_CHAR_MAX = 2000
         const val E_INFO_CHAR_MIN = 0
 
         //Tags for date and time pickers
@@ -433,8 +433,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             builder.setMessage(R.string.exp_field_incomplete)
                     .show()
             return false
-        } else if (groupPrefs.length < G_PREFS_CHAR_MIN || groupPrefs.length > G_PREFS_CHAR_MAX
-                || extraInfo.length < E_INFO_CHAR_MIN || extraInfo.length > E_INFO_CHAR_MAX) {
+        } else if (groupPrefs.length < G_PREFS_CHAR_MIN || extraInfo.length < E_INFO_CHAR_MIN) {
             builder.setMessage(R.string.text_field_incomplete)
                     .show()
             return false

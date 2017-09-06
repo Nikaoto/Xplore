@@ -71,12 +71,8 @@ public class SearchGroupsFragment extends SearchFragment {
 
         TimeManager.refreshGlobalTimeStamp();
 
-        // RecyclerView
-        resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
-        resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         // FAB
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
+        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,11 +81,27 @@ public class SearchGroupsFragment extends SearchFragment {
             }
         });
 
+        // RecyclerView
+        resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
+        resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        resultsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         // Checking internet and displaying data
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
         } else if (getActivity() != null) {
-            //buildUserBase();
             prepareToLoadData();
             loadData();
         }

@@ -81,9 +81,6 @@ class LoadingMyGroupsFragment : Fragment() {
 
     fun loadEmptyLayout() {
         if (fragmentManager != null) {
-            /*fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, EmptyMyGroupsFragment()).commit()*/
-
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, EmptyFragmentFactory().getFragment()).commit()
         }
