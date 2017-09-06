@@ -116,6 +116,7 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
             difficultyRatingBar.rating = reserve.difficulty.toFloat()
         }
 
+        // Show On Map
         if (reserve.hasNoLocation()) {
             showonmapButton.visibility = View.GONE
         } else {

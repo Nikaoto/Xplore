@@ -60,6 +60,7 @@ class LeaderControls : Fragment() {
         groupId = arguments.getString("groupId")
         currentGroupRef = groupsRef.child(groupId)
 
+        promptTripFinish()
         startListeningForJoinRequests()
 
         openDiscussionButton.setOnClickListener {
@@ -81,6 +82,11 @@ class LeaderControls : Fragment() {
         deleteGroupButton.setOnClickListener {
             confirmGroupDeletion()
         }
+    }
+
+    // Shows dialogue to tell the leader to delete group
+    private fun promptTripFinish() {
+
     }
 
     private val joinRequestListener  = object : ChildEventListener {
