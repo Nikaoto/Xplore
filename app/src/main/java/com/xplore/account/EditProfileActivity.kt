@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -54,6 +55,11 @@ class EditProfileActivity : RegisterActivity() {
         setContentView(R.layout.register_layout)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         titleTextView.setText(R.string.edit_profile)
+
+        cancelButton.visibility = View.VISIBLE
+        cancelButton.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun fillFields() {

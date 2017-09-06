@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -235,10 +236,30 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/doneButton"
                 android:text="@string/done"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="19sp"
                 app:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cancelButton"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_toRightOf="@id/doneButton"
+                android:text="@string/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                app:backgroundTint="@color/subtleRed"
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="15dp"
                 android:paddingLeft="15dp"
