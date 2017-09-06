@@ -10,8 +10,8 @@ import java.util.*
  */
 
 class UserMarker (var name: String = "",
-                  var latitude: Double = 0.0,
-                  var longitude: Double = 0.0,
+                  var latitude: Double = -91.0,
+                  var longitude: Double = -91.0,
                   val hue: Float = Random(System.currentTimeMillis()).nextFloat() * 330F) {
 
     @Exclude

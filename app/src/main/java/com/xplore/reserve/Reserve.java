@@ -118,4 +118,9 @@ public class Reserve {
     public void setLocation(LatLng location) {
         this.location = location;
     }
+
+    public boolean hasNoLocation() {
+        return location.latitude < -90f || location.latitude > 90f
+                || location.longitude < -90f || location.longitude > 90f;
+    }
 }

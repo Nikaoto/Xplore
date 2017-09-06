@@ -82,36 +82,54 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         if (txt != null && txt.isNotEmpty()) {
             this.text = txt
         } else {
-            this.visibility = View.GONE
+            ((this.parent as View).parent as View).visibility = View.GONE
         }
     }
 
     private fun displayData(reserve: Reserve) {
+        // Name
         collapsingToolbar.title = reserve.name
+
+        // Image
         reserveImageView.setImageResource(reserve.imageId)
+
+        // Type FAB
         reserveIconFAB.setImageResource(Icons.black[reserve.iconId])
-        descriptionTextView.safeSetText(reserve.description)
+
+        // Description
+        if (reserve.description != null && reserve.description.isNotEmpty()) {
+            descriptionTextView.safeSetText(reserve.description)
+        } else {
+            descriptionTextView.setText(R.string.info_will_be_added)
+        }
+
+        // Tags
         faunaTextView.safeSetText(reserve.fauna)
         floraTextView.safeSetText(reserve.flora)
         equipmentTextView.safeSetText(reserve.equipment)
         tagsTextView.safeSetText(reserve.extratags)
 
+        // Difficulty
         if (reserve.difficulty == 0) {
-            difficultyCardView.visibility = View.INVISIBLE
+            difficultyCardView.visibility = View.GONE
         } else {
             difficultyRatingBar.rating = reserve.difficulty.toFloat()
         }
 
-        showonmapButton.setOnClickListener {
-            mActivity.startActivity(
-                    GroupMapActivity.getStartIntent(
-                            mActivity,
-                            true,
-                            reserve.name,
-                            reserve.location.latitude,
-                            reserve.location.longitude
-                    )
-            )
+        if (reserve.hasNoLocation()) {
+            showonmapButton.visibility = View.GONE
+        } else {
+            showonmapButton.setOnClickListener {
+                mActivity.startActivity(
+                        GroupMapActivity.getStartIntent(
+                                mActivity,
+                                true,
+                                reserve.name,
+                                reserve.location.latitude,
+                                reserve.location.longitude
+                        )
+                )
+            }
         }
     }
 }

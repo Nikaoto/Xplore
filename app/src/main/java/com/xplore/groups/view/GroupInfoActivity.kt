@@ -286,7 +286,7 @@ class GroupInfoActivity : BaseActivity() {
         //Profile picture
         Picasso.with(this).invalidate(leader.getProfile_picture_url())
         Picasso.with(this)
-                .load(leader.getProfile_picture_url())
+                .load(leader.profile_picture_url)
                 .transform(ImageUtil.mediumCircle(this))
                 .into(leaderImageView)
         leaderImageView.setOnClickListener {
@@ -384,9 +384,9 @@ class GroupInfoActivity : BaseActivity() {
                 dataSnapshot?.let {
                     val fname = dataSnapshot.child(F_FNAME).getValue(String::class.java)
                     if (fname != null) {
-                        locations.put(uId, UserMarker(fname, 0.0, 0.0, getRandomFloat(0F, 330F)))
+                        locations.put(uId, UserMarker(fname, -91.0, -91.0, getRandomFloat(0F, 330F)))
                     } else {
-                        locations.put(uId, UserMarker("", 0.0, 0.0, getRandomFloat(0F, 330F)))
+                        locations.put(uId, UserMarker("", -91.0, -91.0, getRandomFloat(0F, 330F)))
                     }
                     counter--
                     if (counter == 0) {
