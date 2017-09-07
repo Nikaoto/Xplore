@@ -146,8 +146,10 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
                     User tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         tempUser = userSnapshot.getValue(User.class);
-                        tempUser.setId(userSnapshot.getKey());
-                        userList.add(tempUser);
+                        if (tempUser != null) {
+                            tempUser.setId(userSnapshot.getKey());
+                            userList.add(tempUser);
+                        }
                     }
                 }
 

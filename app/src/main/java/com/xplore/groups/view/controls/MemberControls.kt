@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.xplore.FirebaseUtil
 import com.xplore.General
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.groups.discussion.DiscussionActivity
 import kotlinx.android.synthetic.main.member_controls.*
 
@@ -28,16 +29,6 @@ import kotlinx.android.synthetic.main.member_controls.*
 
 class MemberControls : Fragment() {
 
-    //Firebase
-    val FIREBASE_TAG_MEMBER_IDS = "member_ids"
-    val FIREBASE_TAG_GROUP_IDS = "group_ids"
-    val currentUserRef = FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(General.currentUserId)
-    private lateinit var currentGroupRef: DatabaseReference;
-    //
-    private lateinit var groupId: String
-
     companion object {
         @JvmStatic
         fun newInstance(currentGroupId: String): MemberControls {
@@ -49,12 +40,31 @@ class MemberControls : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
-            = inflater.inflate(R.layout.member_controls, container, false)
+    //Firebase
+    val F_MEMBER_IDS = "member_ids"
+    val F_GROUP_IDS = "group_ids"
+    val F_END_DATE = "end_date"
+    val F_GRANTED_REPUTATION = "granted_reputation"
+    val currentUserRef = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(General.currentUserId)
+    private val currentGroupRef: DatabaseReference by lazy {
+        FirebaseDatabase.getInstance().reference.child("groups").child(groupId)
+    }
+
+    private val groupId: String by lazy {
+        arguments.getString("groupId")
+    }
+
+    init {
+        TimeManager.refreshGlobalTimeStamp()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
+            : View = inflater.inflate(R.layout.member_controls, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        groupId = arguments.getString("groupId")
-        currentGroupRef = FirebaseDatabase.getInstance().reference.child("groups").child(groupId)
+        checkReputationGranted()
 
         openDiscussionButton.setOnClickListener {
             startActivity(DiscussionActivity.getStartIntent(activity, groupId))
@@ -67,7 +77,31 @@ class MemberControls : Fragment() {
         leaveGroupButton.setOnClickListener {
             popLeaveGroupConfirmationDialog()
         }
+    }
 
+    private fun checkReputationGranted() {
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    val repGranted = it.child(F_GRANTED_REPUTATION).child(General.currentUserId)
+                            .getValue(Boolean::class.java)
+                    if (repGranted == null || !repGranted) {
+                        // Check if hike finished
+                        val endDate = it.child(F_END_DATE).getValue(Int::class.java)
+                        if (endDate != null) {
+                            if (endDate <= TimeManager.intTimeStamp) {
+                                // Grant reputation
+                                FirebaseUtil.grantReputation(General.currentUserId, FirebaseUtil.REP)
+                                currentGroupRef.child(F_GRANTED_REPUTATION).child(General.currentUserId).setValue(true)
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
     }
 
     private fun startInvitingMembers() {
@@ -85,9 +119,9 @@ class MemberControls : Fragment() {
 
     private fun leaveGroup() {
         //Removing userId from group
-        currentGroupRef.child(FIREBASE_TAG_MEMBER_IDS).child(General.currentUserId).removeValue()
+        currentGroupRef.child(F_MEMBER_IDS).child(General.currentUserId).removeValue()
         //Removing groupId from user
-        currentUserRef.child(FIREBASE_TAG_GROUP_IDS).child(groupId).removeValue()
+        currentUserRef.child(F_GROUP_IDS).child(groupId).removeValue()
         Toast.makeText(activity, R.string.group_left, Toast.LENGTH_SHORT).show()
         refresh()
     }
