@@ -229,6 +229,8 @@
     <string name="loading">Загрузка…</string>
     <string name="you_gained">Вы получили</string>
     <string name="you_gained_rep_suffix">репутацию!</string>
+    <string name="finish_hike_question">Поход завершен</string>
+    <string name="finish_hike_text">Хотите закрыть группу?</string>
 
     <!-- -->
 </resources>

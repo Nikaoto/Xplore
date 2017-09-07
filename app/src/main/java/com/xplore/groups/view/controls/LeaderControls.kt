@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.FirebaseUtil
 import com.xplore.General
@@ -67,8 +66,7 @@ class LeaderControls : Fragment() {
         groupId = arguments.getString("groupId")
         currentGroupRef = groupsRef.child(groupId)
 
-        checkReputationGranted()
-        promptTripFinish()
+        checkHikeEnded()
         startListeningForJoinRequests()
 
         openDiscussionButton.setOnClickListener {
@@ -92,7 +90,7 @@ class LeaderControls : Fragment() {
         }
     }
 
-    private fun checkReputationGranted() {
+    private fun checkHikeEnded() {
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 dataSnapshot?.let {
@@ -109,6 +107,9 @@ class LeaderControls : Fragment() {
                                         .child(General.currentUserId).setValue(true)
 
                                 General.toastReputationGain(activity, REP)
+
+                                // Prompt to delete group
+                                finishHikeDialogue().show()
                             }
                         }
                     }
@@ -120,8 +121,16 @@ class LeaderControls : Fragment() {
     }
 
     // Shows dialogue to tell the leader to delete group
-    private fun promptTripFinish() {
-
+    private fun finishHikeDialogue(): AlertDialog {
+        return AlertDialog.Builder(activity)
+                .setTitle(R.string.finish_hike_question)
+                .setMessage(R.string.finish_hike_text)
+                .setPositiveButton(R.string.yes, { _, _ ->
+                    FirebaseUtil.grantReputation(General.currentUserId, REP)
+                    deleteGroup()
+                })
+                .setNegativeButton(R.string.no, null)
+                .create()
     }
 
     private val joinRequestListener  = object : ChildEventListener {
