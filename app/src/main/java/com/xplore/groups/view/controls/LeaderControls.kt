@@ -6,12 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.firebase.database.*
+import com.xplore.FirebaseUtil
+import com.xplore.General
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.groups.AllMemberIdsForGroup
 import com.xplore.groups.create.EditGroupActivity
 import com.xplore.groups.discussion.DiscussionActivity
 import com.xplore.groups.requests.ManageRequestsActivity
+import com.xplore.FirebaseUtil.F_GRANTED_REPUTATION
+import com.xplore.FirebaseUtil.F_END_DATE
+import com.xplore.FirebaseUtil.REP
 import kotlinx.android.synthetic.main.leader_controls.*
 
 /**
@@ -29,7 +36,7 @@ import kotlinx.android.synthetic.main.leader_controls.*
 
 class LeaderControls : Fragment() {
 
-    //Firebase
+    // Firebase
     private val F_INVITED_GROUP_IDS = "invited_group_ids"
     private val F_INVITED_MEMBER_IDS = "invited_member_ids"
     private val F_GROUP_IDS = "group_ids"
@@ -52,14 +59,15 @@ class LeaderControls : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
-            = inflater.inflate(R.layout.leader_controls, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
+            : View = inflater.inflate(R.layout.leader_controls, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = arguments.getString("groupId")
         currentGroupRef = groupsRef.child(groupId)
 
+        checkReputationGranted()
         promptTripFinish()
         startListeningForJoinRequests()
 
@@ -84,18 +92,45 @@ class LeaderControls : Fragment() {
         }
     }
 
+    private fun checkReputationGranted() {
+        currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                dataSnapshot?.let {
+                    val repGranted = it.child(F_GRANTED_REPUTATION).child(General.currentUserId)
+                            .getValue(Boolean::class.java)
+                    if (repGranted == null || !repGranted) {
+                        // Check if hike finished
+                        val endDate = it.child(F_END_DATE).getValue(Int::class.java)
+                        if (endDate != null) {
+                            if (endDate <= TimeManager.intTimeStamp) {
+                                // Grant reputation
+                                FirebaseUtil.grantReputation(General.currentUserId, REP)
+                                currentGroupRef.child(F_GRANTED_REPUTATION)
+                                        .child(General.currentUserId).setValue(true)
+
+                                General.toastReputationGain(activity, REP)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+        })
+    }
+
     // Shows dialogue to tell the leader to delete group
     private fun promptTripFinish() {
 
     }
 
     private val joinRequestListener  = object : ChildEventListener {
-        //When new join request is received
+        // When new join request is received
         override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
             updateRequestCount(dataSnapshot, 1)
         }
 
-        //When join request is removed
+        // When join request is removed
         override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
             updateRequestCount(dataSnapshot, -1)
         }

@@ -14,10 +14,22 @@ object FirebaseUtil {
 
     const val REP = 1
 
+    // Main Nodes
+    const val F_date = "date"
     const val F_USERS = "users"
     const val F_GROUPS = "groups"
-    const val F_date = "date"
+
+    // Date nodes
+    const val F_TIMESTAMP = "timestamp"
+
+    // User nodes
     const val F_REPUTATION = "reputation"
+
+    // Group nodes
+    const val F_START_DATE = "start_date"
+    const val F_END_DATE = "end_date"
+    const val F_GRANTED_REPUTATION = "granted_reputation"
+
 
     @JvmField
     val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)

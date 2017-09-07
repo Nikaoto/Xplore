@@ -235,5 +235,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="error_email_taken">Email already taken</string>
     <string name="loading">Loading…</string>
+    <string name="you_gained">You just gained</string>
+    <string name="you_gained_rep_suffix">reputation!</string>
 
 </resources>

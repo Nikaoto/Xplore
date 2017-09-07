@@ -227,6 +227,8 @@
  <string name="edit_group">Редактировать группу</string>
     <string name="error_email_taken">Эл-адрес уже занят</string>
     <string name="loading">Загрузка…</string>
+    <string name="you_gained">Вы получили</string>
+    <string name="you_gained_rep_suffix">репутацию!</string>
 
     <!-- -->
 </resources>

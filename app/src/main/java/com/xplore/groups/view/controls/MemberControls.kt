@@ -83,17 +83,19 @@ class MemberControls : Fragment() {
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 dataSnapshot?.let {
-                    val repGranted = it.child(F_GRANTED_REPUTATION).child(General.currentUserId)
+                    val repGranted = it.child(FirebaseUtil.F_GRANTED_REPUTATION).child(General.currentUserId)
                             .getValue(Boolean::class.java)
                     if (repGranted == null || !repGranted) {
                         // Check if hike finished
-                        val endDate = it.child(F_END_DATE).getValue(Int::class.java)
+                        val endDate = it.child(FirebaseUtil.F_END_DATE).getValue(Int::class.java)
                         if (endDate != null) {
                             if (endDate <= TimeManager.intTimeStamp) {
                                 // Grant reputation
                                 FirebaseUtil.grantReputation(General.currentUserId, FirebaseUtil.REP)
-                                currentGroupRef.child(F_GRANTED_REPUTATION).child(General.currentUserId).setValue(true)
+                                currentGroupRef.child(FirebaseUtil.F_GRANTED_REPUTATION)
+                                        .child(General.currentUserId).setValue(true)
 
+                                General.toastReputationGain(activity, FirebaseUtil.REP)
                             }
                         }
                     }

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -337,6 +339,12 @@ public class General {
 
     public static boolean isValidEmail(CharSequence email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static void toastReputationGain(Context context, int reputationAmount) {
+        Resources res = context.getResources();
+        Toast.makeText(context, res.getString(R.string.you_gained) + " " + reputationAmount + " "
+                        + res.getString(R.string.you_gained_rep_suffix), Toast.LENGTH_SHORT).show();
     }
 
     public static void vibrateDevice(Context context, Long time) {

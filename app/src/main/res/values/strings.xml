@@ -83,6 +83,8 @@
     <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
     <string name="log_in_dialog">გთხოვთ გაიაროთ ავტორიზაცია რომ გამოიყენოთ ეს ფუნქცია</string>
     <string name="info_will_be_added">ინფორმაცია მალე დაემატება</string>
+    <string name="you_gained">თქვენ მიიღეთ</string>
+    <string name="you_gained_rep_suffix">რეპუტაცია!</string>
 
     <!-- Searching & Inviting Users -->
     <string name="invite">დაპატიჟე</string>
