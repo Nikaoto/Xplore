@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reserveCardView"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp"
@@ -30,7 +30,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignRight="@id/reserveImageView"
-            android:layout_alignParentBottom="true"/>
+            android:layout_below="@id/reserveImageView"
+            android:layout_marginTop="10dp"/>
 
         <!-- Reserve Name -->
         <TextView
