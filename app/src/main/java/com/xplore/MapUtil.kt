@@ -14,8 +14,7 @@ import java.util.*
 object MapUtil {
 
     //This is the default latitude or longitude for when no location is chosen
-    // (-91, -91 goes nowhere on the earth)
-    const val DEFAULT_LAT_LNG = -91.0
+    const val DEFAULT_LAT_LNG = 0.0
 
     //Used when calculating random hue for map markers
     const val MAX_MARKER_HUE = 330F

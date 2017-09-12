@@ -147,9 +147,9 @@
 
             </android.support.v7.widget.CardView>
 
-            <!-- Meetup Time -->
+            <!-- Meetup Time and Place -->
             <android.support.v7.widget.CardView
-                android:id="@+id/meetupTimeCard"
+                android:id="@+id/meetupCard"
                 style="@style/InfoCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -163,7 +163,7 @@
                         style="@style/InfoCardViewHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/meetup_time" />
+                        android:text="@string/meetup" />
 
                     <TextView
                         android:id="@+id/meetupTimeTextView"
@@ -172,7 +172,16 @@
                         android:layout_height="wrap_content"
                         android:textSize="27sp"
                         tools:text="13:45" />
-
+                    
+                    <ImageView
+                        android:id="@+id/meetupImageView"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:src="@color/colorGrey"
+                        android:layout_marginTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+                    
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

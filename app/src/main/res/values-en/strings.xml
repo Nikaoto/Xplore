@@ -239,5 +239,6 @@
     <string name="you_gained_rep_suffix">reputation!</string>
     <string name="finish_hike_question">The hike is finished</string>
     <string name="finish_hike_text">Do you want to close the group?</string>
+    <string name="meetup">Meet Up</string>
 
 </resources>

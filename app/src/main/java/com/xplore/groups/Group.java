@@ -18,6 +18,8 @@ public class Group {
     public String group_image_url, extra_info, group_preferences;
     public HashMap<String, Boolean> member_ids;
     public HashMap<String, Boolean> invited_member_ids;
+    public double meetup_latitude, meetup_longitude;
+    //public doulbe finish_latitude, finish_longitude;
 
     public Group() {
         //LEAVE EMPTY
@@ -30,6 +32,14 @@ public class Group {
             }
         }
         return "";
+    }
+
+    public boolean hasMeetupLocation() {
+        return meetup_latitude != 0.0 || meetup_longitude != 0.0;
+    }
+
+    public boolean hasMeetupTime() {
+        return start_time.length() != 0;
     }
 
     public String getName() {
@@ -150,5 +160,25 @@ public class Group {
 
     public void setDestination_longitude(double destination_longitude) {
         this.destination_longitude = destination_longitude;
+    }
+
+    public double getMeetup_latitude() {
+        return meetup_latitude;
+    }
+
+    public void setMeetup_latitude(double meetup_latitude) {
+        this.meetup_latitude = meetup_latitude;
+    }
+
+    public double getMeetup_longitude() {
+        return meetup_longitude;
+    }
+
+    public void setMeetup_longitude(double meetup_longitude) {
+        this.meetup_longitude = meetup_longitude;
+    }
+
+    public void setDestination_latitude(double destination_latitude) {
+        this.destination_latitude = destination_latitude;
     }
 }

@@ -18,12 +18,48 @@ import com.xplore.General
 
 /**
  * Created by Nikaoto on 8/20/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * When viewing reserve or destination -> opens map with marker at reserve
+ * When viewing live hike -> opens map and creates listeners for each member and puts them in a
+ * hashmap. Creates markers from member location data and puts them in a separate hashmap (each
+ * marker has the same key as its listener). Enables each listener and removes them in onDestroy()
+ *
+ *
  */
 
 class GroupMapActivity : BaseMapActivity() {
 
     private val TAG = "gmap"
+
+    companion object {
+        //Arguments
+        private const val ARG_GROUP_ID = "groupId"
+        private const val ARG_DESTINATION_NAME = "destinationName"
+        private const val ARG_DESTINATION_LAT = "destinationLat"
+        private const val ARG_DESTINATION_LNG = "destinationLng"
+        private const val ARG_ZOOM_TO_DESTINATION = "zoomToDestination"
+
+        //When opening reserve
+        @JvmStatic
+        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
+                           destinationLat: Double, destinationLng: Double): Intent {
+            return Intent(context, GroupMapActivity::class.java)
+                    .putExtra(ARG_ZOOM_TO_DESTINATION, zoomToDestination)
+                    .putExtra(ARG_DESTINATION_NAME, destinationName)
+                    .putExtra(ARG_DESTINATION_LAT, destinationLat)
+                    .putExtra(ARG_DESTINATION_LNG, destinationLng)
+        }
+
+        //When opening group
+        @JvmStatic
+        fun getStartIntent(context: Context, zoomToDestination: Boolean, groupId: String,
+                           destinationName: String, destinationLat: Double,
+                           destinationLng: Double): Intent {
+            return getStartIntent(context, zoomToDestination, destinationName, destinationLat,
+                    destinationLng)
+                    .putExtra(ARG_GROUP_ID, groupId)
+        }
+    }
 
     //Markers for member tracking
     private val mapMarkers = HashMap<String, Marker>()
@@ -62,36 +98,6 @@ class GroupMapActivity : BaseMapActivity() {
     }
     private val currentUserLocationRef: DatabaseReference by lazy {
         groupLocationsRef.child(General.currentUserId)
-    }
-
-    companion object {
-        //Arguments
-        private const val ARG_GROUP_ID = "groupId"
-        private const val ARG_DESTINATION_NAME = "destinationName"
-        private const val ARG_DESTINATION_LAT = "destinationLat"
-        private const val ARG_DESTINATION_LNG = "destinationLng"
-        private const val ARG_ZOOM_TO_DESTINATION = "zoomToDestination"
-
-        //When opening reserve
-        @JvmStatic
-        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
-                           destinationLat: Double, destinationLng: Double): Intent {
-            return Intent(context, GroupMapActivity::class.java)
-                    .putExtra(ARG_ZOOM_TO_DESTINATION, zoomToDestination)
-                    .putExtra(ARG_DESTINATION_NAME, destinationName)
-                    .putExtra(ARG_DESTINATION_LAT, destinationLat)
-                    .putExtra(ARG_DESTINATION_LNG, destinationLng)
-        }
-
-        //When opening group
-        @JvmStatic
-        fun getStartIntent(context: Context, zoomToDestination: Boolean, groupId: String,
-                           destinationName: String, destinationLat: Double,
-                           destinationLng: Double): Intent {
-            return getStartIntent(context, zoomToDestination, destinationName, destinationLat,
-                    destinationLng)
-                    .putExtra(ARG_GROUP_ID, groupId)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,6 +197,7 @@ class GroupMapActivity : BaseMapActivity() {
                             val marker = markerSnapshot.getValue(UserMarker::class.java)
 
                             if (marker != null) {
+                                //Creating listener for member
                                 val listener = object : ChildEventListener {
                                     //Creates new UserMarker from data and puts it into the hashmap
                                     override fun onChildAdded(data: DataSnapshot?, p1: String?) {

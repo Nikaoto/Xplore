@@ -36,6 +36,12 @@ import java.util.*
 
 class GroupInfoActivity : BaseActivity() {
 
+    companion object {
+        @JvmStatic
+        fun getStartIntent(context: Context, groupId: String)
+                = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
+    }
+
     //Firebase
     private val F_LOCATIONS = "locations"
     private val F_FNAME = "fname"
@@ -57,12 +63,6 @@ class GroupInfoActivity : BaseActivity() {
 
     //The variables which contain the current group/member info
     private var currentGroup = Group()
-
-    companion object {
-        @JvmStatic
-        fun getStartIntent(context: Context, groupId: String)
-                = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,6 +117,19 @@ class GroupInfoActivity : BaseActivity() {
         }
     }
 
+    //Shows card with meetup time and place
+    //(not inside applyGroupData because this is only shown to members)
+    private fun configureMeetupCard() {
+        if (currentGroup.hasMeetupLocation()) {
+            meetupCard.visibility = View.VISIBLE
+            meetupImageView.visibility = View.VISIBLE
+            Picasso.with(this)
+                    .load(MapUtil.getMapUrl(currentGroup.meetup_latitude,
+                            currentGroup.meetup_longitude, markerColor = "green"))
+                    .into(meetupImageView)
+        }
+    }
+
     //Shows map button if now hiking
     private fun configureShowOnMapButton() {
         if (TimeManager.intTimeStamp >= currentGroup.start_date
@@ -133,6 +146,7 @@ class GroupInfoActivity : BaseActivity() {
     }
 
     private fun configureMemberControls() {
+        configureMeetupCard()
         configureShowOnMapButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, MemberControls.newInstance(groupId)).commit()
@@ -144,12 +158,17 @@ class GroupInfoActivity : BaseActivity() {
     }
 
     private fun configureOutsiderControls(awaitingRequest: Boolean = false) {
+        if (!currentGroup.hasMeetupTime()) {
+            meetupCard.visibility = View.VISIBLE
+        }
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container,
                         OutsiderControls.newInstance(groupId, awaitingRequest)).commit()
     }
 
     private fun configureLeaderControls() {
+        configureMeetupCard()
+        //configureFinishCard()
         configureShowOnMapButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
@@ -319,8 +338,9 @@ class GroupInfoActivity : BaseActivity() {
         dateCombinedTextView.text = DateUtil.putSlashesInDate(currentGroup.getStart_date()) + " - " +
                 DateUtil.putSlashesInDate(currentGroup.getEnd_date())
 
+        //Meetup Time
         if (currentGroup.getStart_time().isEmpty()) {
-            meetupTimeCard.visibility = View.GONE
+            meetupTimeTextView.visibility = View.GONE
         } else {
             meetupTimeTextView.text = General.putColonInTime(currentGroup.getStart_time())
         }
@@ -372,7 +392,7 @@ class GroupInfoActivity : BaseActivity() {
         })
         //Check if locations node exists, if not
         //create locations node
-        //add all user locations with 0,0 as default latlng
+        //add all user locations with default latlng
         //each child node has uid as key with latitude, longitude, display anem, and a random marker color hue (0f - 310f)
         //After creating locations node (or if it's already present)
     }
