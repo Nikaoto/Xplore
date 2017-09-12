@@ -384,9 +384,9 @@ class GroupInfoActivity : BaseActivity() {
                 dataSnapshot?.let {
                     val fname = dataSnapshot.child(F_FNAME).getValue(String::class.java)
                     if (fname != null) {
-                        locations.put(uId, UserMarker(fname, -91.0, -91.0, getRandomFloat(0F, 330F)))
+                        locations.put(uId, UserMarker(fname))
                     } else {
-                        locations.put(uId, UserMarker("", -91.0, -91.0, getRandomFloat(0F, 330F)))
+                        locations.put(uId, UserMarker())
                     }
                     counter--
                     if (counter == 0) {
@@ -398,8 +398,6 @@ class GroupInfoActivity : BaseActivity() {
             override fun onCancelled(p0: DatabaseError?) {}
         })
     }
-
-    private fun getRandomFloat(min: Float, max: Float) = min + Random().nextFloat() * (max - min)
 
     //Displays information about the experience icon (X and tick)
     private fun popExperienceInfoDialog() {
