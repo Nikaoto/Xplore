@@ -146,14 +146,6 @@ public class Group {
         this.destination_id = destination_id;
     }
 
-    public Double getDestination_latitude() {
-        return destination_latitude;
-    }
-
-    public void setDestination_latitude(Double destination_latitude) {
-        this.destination_latitude = destination_latitude;
-    }
-
     public double getDestination_longitude() {
         return destination_longitude;
     }
@@ -180,5 +172,9 @@ public class Group {
 
     public void setDestination_latitude(double destination_latitude) {
         this.destination_latitude = destination_latitude;
+    }
+
+    public double getDestination_latitude() {
+        return destination_latitude;
     }
 }

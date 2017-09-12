@@ -240,5 +240,6 @@
     <string name="finish_hike_question">The hike is finished</string>
     <string name="finish_hike_text">Do you want to close the group?</string>
     <string name="meetup">Meet Up</string>
+    <string name="meetup_location">Meetup Location</string>
 
 </resources>

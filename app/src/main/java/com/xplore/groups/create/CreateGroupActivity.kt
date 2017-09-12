@@ -54,10 +54,10 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
 
     companion object {
         //Request codes
-        val SEARCH_DESTINATION_REQ_CODE = 1
-        val SELECT_FROM_MAP_REQ_CODE = 2
-        val INVITE_USERS_REQ_CODE = 4
-
+        const val SEARCH_DESTINATION_REQ_CODE = 1
+        const val SELECT_FROM_MAP_REQ_CODE = 2
+        const val SET_MEETUP_LOCATION_REQ_CODE = 3
+        const val INVITE_USERS_REQ_CODE = 4
 
         //Limits and restrictions to fields
         const val EXPERIENCE_ANS_DEFAULT = -1
@@ -67,6 +67,9 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         const val G_PREFS_CHAR_MIN = 0
         const val E_INFO_CHAR_MAX = 2000
         const val E_INFO_CHAR_MIN = 0
+
+        //MISC
+        const val MEETUP_MARKER_COLOR = "green"
 
         //Tags for date and time pickers
         const val SELECTION_NONE = ""
@@ -83,6 +86,9 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
 
     private var destinationLat = 0.0
     private var destinationLng = 0.0
+
+    private var meetupLat = 0.0
+    private var meetupLng = 0.0
 
     var selecting = SELECTION_NONE
 
@@ -151,6 +157,14 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             showTimePicker(SELECTION_START)
         }
 
+        meetupLocationButton.setOnClickListener {
+            startSettingMeetupLocation()
+        }
+
+        meetupLocationImageView.setOnClickListener {
+            startSettingMeetupLocation()
+        }
+
         endDateButton.setOnClickListener {
             showDatePicker(SELECTION_END)
         }
@@ -190,6 +204,19 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                 experienceAns = EXPERIENCE_ANS_YES
             else if (i == R.id.no_rb)
                 experienceAns = EXPERIENCE_ANS_NO
+        }
+    }
+
+    fun startSettingMeetupLocation() {
+        if (meetupLat != 0.0 && meetupLng != 0.0) {
+            startActivityForResult(
+                    SetDestinationMapActivity.getStartIntent(this,
+                            resources.getString(R.string.meetup_location),
+                            meetupLat, meetupLng),
+                    SET_MEETUP_LOCATION_REQ_CODE)
+        } else {
+            startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
+                    SET_MEETUP_LOCATION_REQ_CODE)
         }
     }
 
@@ -294,7 +321,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                         destinationLng = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
 
                         //Checking if data retrieval failed
-                        if (destinationLat != 0.0 && destinationLng != 0.0) {
+                        if (destinationLat != 0.0 || destinationLng != 0.0) {
                             groupImageUrl = MapUtil.getMapUrl(destinationLat, destinationLng)
 
                             Picasso.with(this).load(groupImageUrl).into(groupImageView)
@@ -303,8 +330,24 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                         }
                     }
 
+                    SET_MEETUP_LOCATION_REQ_CODE -> {
+                        //Getting chosen meetup location
+                        meetupLat = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
+                        meetupLng = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
+
+                        //Checking if locations aren't 0.0
+                        if (meetupLat != 0.0 || meetupLng != 0.0) {
+                            Picasso.with(this)
+                                    .load(MapUtil.getMeetupMapUrl(meetupLat, meetupLng))
+                                    .into(meetupLocationImageView)
+                        } else {
+                            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                     INVITE_USERS_REQ_CODE -> {
-                        invitedMemberIds = data.getStringArrayListExtra("invitedMemberIds")
+                        invitedMemberIds = data
+                                .getStringArrayListExtra(SearchUsersActivity.INVITED_MEMBER_IDS_ARG)
                         populateMembersList(invitedMemberIds)
                     }
                 }

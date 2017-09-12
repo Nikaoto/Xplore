@@ -32,6 +32,10 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
+import static com.xplore.FirebaseUtil.F_FNAME;
+import static com.xplore.FirebaseUtil.F_LNAME;
+import static com.xplore.FirebaseUtil.F_USERS;
+
 
 /**
  * Created by Nikaoto on 3/1/2017.
@@ -48,32 +52,32 @@ import java.util.ArrayList;
 
 public class SearchUsersActivity extends BaseActivity implements EditText.OnEditorActionListener{
 
-    private final String FIREBASE_FNAME_TAG = "fname";
-    private final String FIREBASE_LNAME_TAG = "lname";
-    private final DatabaseReference firebaseUsersRef
-            = FirebaseDatabase.getInstance().getReference().child("users");
-
-    private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
-    private ArrayList<String> invitedMemberIds = new ArrayList<>(); //Ids of already invited members + the ones we invite
-
-    private ListView listView;
-    private ProgressBar progressBar;
-
-    private boolean dataFound;
-    private boolean memberAdded;
+    public static final String INVITED_MEMBER_IDS_ARG = "invitedMemberIds";
 
     public static Intent getStartIntent(Context context, ArrayList<String> invitedMemberIds) {
         return new Intent(context, SearchUsersActivity.class)
-                .putExtra("invitedMemberIds", invitedMemberIds);
+                .putExtra(INVITED_MEMBER_IDS_ARG, invitedMemberIds);
     }
+
+    private final DatabaseReference firebaseUsersRef
+            = FirebaseDatabase.getInstance().getReference().child(F_USERS);
+    private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
+
+    private ArrayList<String> invitedMemberIds = new ArrayList<>(); //Ids of already invited members + the ones we invite
+    private ListView listView;
+
+    private ProgressBar progressBar;
+    private boolean dataFound;
+
+    private boolean memberAdded;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
 
-        if (getIntent().getStringArrayListExtra("invitedMemberIds") != null) {
-            invitedMemberIds = getIntent().getStringArrayListExtra("invitedMemberIds");
+        if (getIntent().getStringArrayListExtra(INVITED_MEMBER_IDS_ARG) != null) {
+            invitedMemberIds = getIntent().getStringArrayListExtra(INVITED_MEMBER_IDS_ARG);
         }
 
         TimeManager.refreshGlobalTimeStamp();
@@ -99,7 +103,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     //search by last names in firebase database (because fname collisions are more frequent) and then filter results with first names
     private void loadUsersWithFullName(final String fname, final String lname, final boolean displayData) {
         //Sorting by first name
-        Query fnameQuery = firebaseUsersRef.orderByChild(FIREBASE_LNAME_TAG).startAt(lname).endAt(lname+"\uf8ff");
+        Query fnameQuery = firebaseUsersRef.orderByChild(F_LNAME).startAt(lname).endAt(lname+"\uf8ff");
         fnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -278,7 +282,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     public void onBackPressed() {
         if (memberAdded) {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("invitedMemberIds", invitedMemberIds);
+            resultIntent.putExtra(INVITED_MEMBER_IDS_ARG, invitedMemberIds);
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
             setResult(Activity.RESULT_CANCELED);
@@ -315,11 +319,11 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
             loadUsersWithFullName(firstLetterUpper(parts[1]), firstLetterUpper(parts[0]), true);
             loadUsersWithFullName(parts[1], parts[0], true);
         } else {
-            loadUsersWithTag(searchQuery, FIREBASE_FNAME_TAG, true,
-                    searchQuery, FIREBASE_LNAME_TAG);
+            loadUsersWithTag(searchQuery, F_FNAME, true,
+                    searchQuery, F_LNAME);
 
-            loadUsersWithTag(firstLetterUpper(searchQuery), FIREBASE_FNAME_TAG, true,
-                    firstLetterUpper(searchQuery), FIREBASE_LNAME_TAG);
+            loadUsersWithTag(firstLetterUpper(searchQuery), F_FNAME, true,
+                    firstLetterUpper(searchQuery), F_LNAME);
         }
 
         return false;

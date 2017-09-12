@@ -23,6 +23,8 @@ object FirebaseUtil {
     const val F_TIMESTAMP = "timestamp"
 
     // User nodes
+    const val F_FNAME = "fname"
+    const val F_LNAME = "lname"
     const val F_REPUTATION = "reputation"
 
     // Group nodes

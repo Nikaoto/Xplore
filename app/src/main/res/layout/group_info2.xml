@@ -174,10 +174,11 @@
                         tools:text="13:45" />
                     
                     <ImageView
-                        android:id="@+id/meetupImageView"
+                        android:id="@+id/meetupLocationImageView"
                         android:visibility="gone"
                         tools:visibility="visible"
                         tools:src="@color/colorGrey"
+                        android:scaleType="centerCrop"
                         android:layout_marginTop="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="100dp" />

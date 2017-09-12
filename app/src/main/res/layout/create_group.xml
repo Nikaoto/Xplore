@@ -151,7 +151,7 @@
                 android:layout_below="@id/startDateTextView"
                 android:layout_marginLeft="5dp"
                 android:layout_toLeftOf="@+id/startTimeButton"
-                android:text="@string/start_time"
+                android:text="@string/meetup_time"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -181,13 +181,49 @@
                 android:textSize="15sp"
                 app:backgroundTint="@color/colorAccent" />
 
+            <!-- Meetup Location -->
+            <TextView
+                android:id="@+id/meetupLocationTextView"
+                android:text="@string/meetup_location"
+                android:layout_below="@id/startTimeTextView"
+                android:layout_toLeftOf="@+id/meetupLocationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/meetupLocationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/startTimeTextView"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="@string/set"
+                android:textSize="15sp"
+                app:backgroundTint="@color/colorAccent" />
+
+            <ImageView
+                android:id="@+id/meetupLocationImageView"
+                android:src="@color/colorGrey"
+                android:scaleType="centerCrop"
+                android:layout_below="@id/meetupLocationTextView"
+                android:layout_marginTop="@dimen/lib_button_margin_top"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
 
             <View
                 android:id="@+id/start_end_divider"
                 style="@style/dashed_divider"
-                android:layout_below="@id/startTimeTextView"
+                android:layout_below="@id/meetupLocationImageView"
                 android:layout_marginTop="5dp" />
-
 
             <!-- End Date -->
             <TextView

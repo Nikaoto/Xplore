@@ -122,11 +122,11 @@ class GroupInfoActivity : BaseActivity() {
     private fun configureMeetupCard() {
         if (currentGroup.hasMeetupLocation()) {
             meetupCard.visibility = View.VISIBLE
-            meetupImageView.visibility = View.VISIBLE
+            meetupLocationImageView.visibility = View.VISIBLE
             Picasso.with(this)
-                    .load(MapUtil.getMapUrl(currentGroup.meetup_latitude,
-                            currentGroup.meetup_longitude, markerColor = "green"))
-                    .into(meetupImageView)
+                    .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
+                            currentGroup.meetup_longitude))
+                    .into(meetupLocationImageView)
         }
     }
 

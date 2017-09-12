@@ -117,6 +117,7 @@
         ეს ნიშნავს, რომ გუნდის ერთი წევრი მაინც არის ნამყოფი ნაკრძალზე.
     </string>
     <string name="meetup_time">შეხვედრის დრო</string>
+    <string name="meetup_location">შეხვედრის ადგილი</string>
     <string name="meetup">შეხვედრა</string>
     <string name="start_time">დაწყების დრო</string>
     <string name="end_time">დასასრულის დრო</string>

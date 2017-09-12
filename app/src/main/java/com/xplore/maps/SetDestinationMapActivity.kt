@@ -37,7 +37,8 @@ class SetDestinationMapActivity : BaseMapActivity() {
         fun getStartIntent(context: Context) = Intent(context, SetDestinationMapActivity::class.java)
 
         @JvmStatic
-        fun getStartIntent(context: Context, name: String, lat: Double, lng: Double): Intent {
+        fun getStartIntent(context: Context, name: String, lat: Double = 0.0, lng: Double = 0.0)
+                : Intent {
             return getStartIntent(context)
                     .putExtra(DEST_NAME_ARG, name)
                     .putExtra(DEST_LAT_ARG, lat)
