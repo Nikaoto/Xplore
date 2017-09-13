@@ -52,11 +52,11 @@ import static com.xplore.FirebaseUtil.F_USERS;
 
 public class SearchUsersActivity extends BaseActivity implements EditText.OnEditorActionListener{
 
-    public static final String INVITED_MEMBER_IDS_ARG = "invitedMemberIds";
+    public static final String ARG_INVITED_MEMBER_IDS = "invitedMemberIds";
 
     public static Intent getStartIntent(Context context, ArrayList<String> invitedMemberIds) {
         return new Intent(context, SearchUsersActivity.class)
-                .putExtra(INVITED_MEMBER_IDS_ARG, invitedMemberIds);
+                .putExtra(ARG_INVITED_MEMBER_IDS, invitedMemberIds);
     }
 
     private final DatabaseReference firebaseUsersRef
@@ -76,8 +76,8 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
 
-        if (getIntent().getStringArrayListExtra(INVITED_MEMBER_IDS_ARG) != null) {
-            invitedMemberIds = getIntent().getStringArrayListExtra(INVITED_MEMBER_IDS_ARG);
+        if (getIntent().getStringArrayListExtra(ARG_INVITED_MEMBER_IDS) != null) {
+            invitedMemberIds = getIntent().getStringArrayListExtra(ARG_INVITED_MEMBER_IDS);
         }
 
         TimeManager.refreshGlobalTimeStamp();
@@ -282,7 +282,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     public void onBackPressed() {
         if (memberAdded) {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra(INVITED_MEMBER_IDS_ARG, invitedMemberIds);
+            resultIntent.putExtra(ARG_INVITED_MEMBER_IDS, invitedMemberIds);
             setResult(Activity.RESULT_OK, resultIntent);
         } else {
             setResult(Activity.RESULT_CANCELED);

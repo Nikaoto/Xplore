@@ -36,8 +36,11 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
+import static com.xplore.FirebaseUtil.F_GROUP_NAME;
 import static com.xplore.FirebaseUtil.F_MEMBER_IDS;
 import static com.xplore.FirebaseUtil.F_START_DATE;
+import static com.xplore.FirebaseUtil.groupsRef;
+import static com.xplore.FirebaseUtil.usersRef;
 
 /**
  * Created by Nikaoto on 2/8/2017.
@@ -119,13 +122,14 @@ public class SearchGroupsFragment extends SearchFragment {
         resultsRV.setAdapter(new GroupCardRecyclerViewAdapter(displayCards, getActivity()));
     }
 
+    // Returns member count from a datasnapshot of a group
     private int getMemberCount(DataSnapshot groupSnapshot) {
         return (int) groupSnapshot.child(F_MEMBER_IDS).getChildrenCount();
     }
 
     private void loadData() {
         //TODO change this after adding sort by options
-        FirebaseUtil.groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
+        groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -162,33 +166,31 @@ public class SearchGroupsFragment extends SearchFragment {
         final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", DBManager.DB_TABLE);
         dbManager.openDataBase();
 
-        FirebaseUtil.usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    //For every user, check every group and check if they're the leader
+                if (dataSnapshot != null) {
+                    // For every user, check every group and check if they're the leader
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) { //getting users
                         for(GroupCard groupCard : groupCards) { //going over every collected group
                             if(groupCard.getLeaderId().equals(userSnapshot.getKey())) { //checking if leader
-                                //TODO change database calls
-                                GroupCard tempGroupCard = groupCard;
 
-                                //Setting leader info
+                                // Set leader info
                                 User leader = userSnapshot.getValue(User.class);
                                 if (leader != null) {
-                                    tempGroupCard.setLeaderName(leader.getFname() + " " + leader.getLname());
-                                    tempGroupCard.setLeaderReputation(leader.getReputation());
-                                    tempGroupCard.setLeaderImageUrl(
+                                    groupCard.setLeaderName(leader.getFname() + " " + leader.getLname());
+                                    groupCard.setLeaderReputation(leader.getReputation());
+                                    groupCard.setLeaderImageUrl(
                                             userSnapshot.getValue(User.class).getProfile_picture_url());
 
-                                    displayCards.add(tempGroupCard); //TODO maybe remove displaycards? needs testing :P
+                                    displayCards.add(groupCard); //TODO maybe remove displaycards? needs testing :P
                                     resultsRV.getAdapter().notifyDataSetChanged();
                                 }
                             }
                         }
                     }
                 } else {
-                    //couldn't find results
+                    // Couldn't find results
                     Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -202,10 +204,50 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     @Override
-    public boolean onSearch(String query) {
-        showProgressBar();
-        // Do search
-        hideProgressBar();
+    public boolean onSearch(@NonNull String query) {
+        prepareToLoadData();
+
+        // Search by group name
+        // TODO add more search filters
+        groupsRef.orderByChild(F_GROUP_NAME).startAt(query).endAt(query+"\uf8ff").limitToFirst(100)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot != null) {
+                            for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
+                                //Geting group info
+                                GroupCard groupCard = groupSnapshot.getValue(GroupCard.class);
+                                if (groupCard != null) {
+                                    // Group Id
+                                    groupCard.setId(groupSnapshot.getKey());
+                                    groupCard.setMemberCount(getMemberCount(groupSnapshot));
+
+                                    // Leader Id
+                                    for (DataSnapshot memberEntry
+                                            : groupSnapshot.child(F_MEMBER_IDS).getChildren()) {
+
+                                        // Check if current memberEntry belongs to the leader
+                                        Boolean isLeader = memberEntry.getValue(Boolean.class);
+                                        if (isLeader != null && isLeader) {
+                                            // Set leader id
+                                            groupCard.setLeaderId(memberEntry.getKey());
+                                        }
+                                    }
+
+                                    // Adding card to list
+                                    groupCards.add(groupCard);
+                                }
+                            }
+                            if (getActivity() != null) {
+                                sortLeaderInfo();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+
         return super.onSearch(query);
     }
 

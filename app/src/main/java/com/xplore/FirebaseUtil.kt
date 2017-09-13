@@ -28,6 +28,7 @@ object FirebaseUtil {
     const val F_REPUTATION = "reputation"
 
     // Group nodes
+    const val F_GROUP_NAME = "name"
     const val F_START_DATE = "start_date"
     const val F_END_DATE = "end_date"
     const val F_GRANTED_REPUTATION = "granted_reputation"

@@ -347,7 +347,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
 
                     INVITE_USERS_REQ_CODE -> {
                         invitedMemberIds = data
-                                .getStringArrayListExtra(SearchUsersActivity.INVITED_MEMBER_IDS_ARG)
+                                .getStringArrayListExtra(SearchUsersActivity.ARG_INVITED_MEMBER_IDS)
                         populateMembersList(invitedMemberIds)
                     }
                 }
