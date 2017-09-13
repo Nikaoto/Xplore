@@ -11,7 +11,6 @@ secrets.xml
 app/src/main/assets/*.db
 google-services.json
 google_maps_api.xml
-app/build.gradle
 gradle/wrapper/gradle-wrapper.properties
 
 # Built application files
