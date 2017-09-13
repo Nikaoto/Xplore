@@ -372,6 +372,8 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         //get experience question
         val exp = experienceAns != EXPERIENCE_ANS_NO
 
+        //TODO when uploading group, add lowercase name as 'search name' (to enable case-insensitive searching) and 'display name' as inputted name
+
         return UploadableGroup(
                 key, //Firebase Unique Group Key
                 groupName,
@@ -435,7 +437,12 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
     }
 
     private fun getDescriptions() {
-        groupName = groupNameEditText.text.toString()
+        if (groupNameEditText.text.toString().isEmpty()) {
+            dbManager.openDataBase()
+            groupName = dbManager.getStr(chosenDestId, DBManager.NAME)
+        } else {
+            groupName = groupNameEditText.text.toString()
+        }
         groupPrefs = preferencesEditText.text.toString()
         extraInfo = descriptionEditText.text.toString()
     }
