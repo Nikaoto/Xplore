@@ -30,6 +30,7 @@ import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_NONE
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
 import com.xplore.groups.create.CreateGroupActivity.Companion.SET_MEETUP_LOCATION_REQ_CODE
+import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
@@ -221,22 +222,30 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
                 currentGroup.destination_longitude))
     }
 
-    //Fills the fields with gathered group data
+    // Fills the fields with gathered group data
     private fun fillFields() {
         groupNameEditText.setText(currentGroup.name)
-        //Configuring Image
-        if (currentGroup.destination_id != Group.DESTINATION_DEFAULT) {
+        // Configuring Image
+        if (currentGroup.isDestinationReserve()) {
             groupImageView.setOnClickListener(onReserveClickListener)
-            //Loading image
+            // Loading image
             dbManager.openDataBase()
             Picasso.with(this)
                     .load(dbManager.getImageId(currentGroup.destination_id))
                     .into(groupImageView)
             dbManager.close()
-        } else {
-            groupImageView.setOnClickListener(onMapClickListener)
-            //Loading image
+        } else if (currentGroup.hasDestinationLocation()) {
+            groupImageView.setOnClickListener {
+                startActivity(GroupMapActivity.getStartIntent(this, true,
+                        getString(R.string.destination), currentGroup.destination_latitude,
+                        currentGroup.destination_longitude))
+            }
+            // Loading image
             Picasso.with(this).load(currentGroup.group_image_url).into(groupImageView)
+        } else {
+            Log.i("brejk", "no reserve or location as destination, exitting editGroupAct")
+            Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         //Start date
@@ -249,25 +258,26 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         date.startTime = currentGroup.start_time
         Log.i("brejk", "startTime ${date.startTime}")
 
-        //Meetup location
+        // Meetup location
         if (currentGroup.hasMeetupLocation()) {
             Picasso.with(this)
                     .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
                             currentGroup.meetup_longitude))
                     .into(meetupLocationImageView)
+
         }
 
-        //End date
+        // End date
         endDateTextView.text = DateUtil.putSlashesInDate(currentGroup.end_date)
         date.setEndDate(currentGroup.end_date)
         Log.i("brejk", "endDate ${date.getEndDate()}")
 
-        //end time
+        // End time
         endTimeTextView.text = General.putColonInTime(currentGroup.end_time)
         date.endTime = currentGroup.end_time
         Log.i("brejk", "endTime ${date.endTime}")
 
-        //Experience
+        // Experience
         if (currentGroup.experienced) {
             radioGroup.check(R.id.yes_rb)
         } else {
@@ -314,7 +324,9 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         }
 
         meetupLocationImageView.setOnClickListener {
-            startSettingMeetupLocation()
+            startActivity(GroupMapActivity.getStartIntent(this, true,
+                    getString(R.string.meetup_location), currentGroup.meetup_latitude,
+                    currentGroup.meetup_longitude, MapUtil.MEETUP_MARKER_HUE))
         }
 
         endDateButton.setOnClickListener {

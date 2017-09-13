@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.xplore.General
+import com.xplore.MapUtil
 import com.xplore.R
 import kotlinx.android.synthetic.main.activity_maps.*
 
@@ -32,6 +33,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
         private const val DEST_NAME_ARG = "destinationName"
         private const val DEST_LAT_ARG = "destinationLat"
         private const val DEST_LNG_ARG = "destinationLng"
+        private const val ARG_MARKER_HUE = "markerHue"
 
         @JvmStatic
         fun getStartIntent(context: Context) = Intent(context, SetDestinationMapActivity::class.java)
@@ -44,6 +46,15 @@ class SetDestinationMapActivity : BaseMapActivity() {
                     .putExtra(DEST_LAT_ARG, lat)
                     .putExtra(DEST_LNG_ARG, lng)
         }
+
+        @JvmStatic
+        fun getStartIntent(context: Context, name: String, lat: Double = 0.0, lng: Double = 0.0,
+                           markerHue: Float): Intent
+                =  getStartIntent(context, name, lat, lng).putExtra(ARG_MARKER_HUE, markerHue)
+    }
+
+    private val markerHue: Float by lazy {
+        intent.getFloatExtra(ARG_MARKER_HUE, MapUtil.DEFAULT_MARKER_HUE)
     }
 
     private var destinationMarker: Marker? = null
@@ -101,7 +112,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
         val markerOptions = MarkerOptions()
                 .draggable(true)
                 .position(location)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .icon(BitmapDescriptorFactory.defaultMarker(markerHue))
 
         if (markerTitle != null && markerTitle.isNotEmpty()) {
             markerOptions.title(markerTitle)

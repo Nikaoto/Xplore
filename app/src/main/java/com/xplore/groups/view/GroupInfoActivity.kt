@@ -378,24 +378,20 @@ class GroupInfoActivity : BaseActivity() {
         counter = currentGroup.member_ids.size
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                Log.i("brejk", "onDataChange")
-                Log.i("brejk", "$memberCount")
                 dataSnapshot?.let {
-                    Log.i("brejk", "snapshot != null")
                     if (!dataSnapshot.hasChild(F_LOCATIONS)) {
-                        Log.i("brejk", "no child 'locations'")
                         val locations = HashMap<String, UserMarker>(currentGroup.member_ids.size)
                         currentGroup.member_ids.forEach {
                             putUserMarker(locations, it.key)
                         }
                     }
                     startActivity(GroupMapActivity.getStartIntent(this@GroupInfoActivity, true,
-                            groupId, currentGroup.name, currentGroup.destination_latitude,
-                            currentGroup.destination_longitude)
+                            groupId, getString(R.string.destination),
+                            currentGroup.destination_latitude, currentGroup.destination_longitude)
                     )
-                    //Create hashmap of markers with keys as uids and values as 'locat ion objects'
-                    //Location object has lat, lng, displayName, and color hue
-                    //in maps activity set listeners for each child node and change location depending on data change
+                    // Create hashmap of markers with keys as uids and values as 'locat ion objects'
+                    // Location object has lat, lng, displayName, and color hue
+                    // in maps activity set listeners for each child node and change location depending on data change
                 }
             }
 

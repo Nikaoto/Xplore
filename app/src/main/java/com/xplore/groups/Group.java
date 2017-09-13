@@ -19,7 +19,7 @@ public class Group {
     public HashMap<String, Boolean> member_ids;
     public HashMap<String, Boolean> invited_member_ids;
     public double meetup_latitude, meetup_longitude;
-    //public doulbe finish_latitude, finish_longitude;
+    //public double finish_latitude, finish_longitude;
 
     public Group() {
         //LEAVE EMPTY
@@ -44,6 +44,10 @@ public class Group {
 
     public boolean hasMeetupTime() {
         return start_time.length() != 0;
+    }
+
+    public boolean isDestinationReserve() {
+        return destination_id != DESTINATION_DEFAULT;
     }
 
     public String getName() {

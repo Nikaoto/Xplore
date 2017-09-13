@@ -85,11 +85,11 @@
 
         <ImageView
             android:id="@+id/groupImageView"
-            android:src="@color/colorGrey"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="@dimen/lib_button_margin_top"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/create_group_image_height" />
+            android:layout_height="@dimen/create_group_image_height"
+            android:layout_marginTop="@dimen/lib_button_margin_top"
+            android:scaleType="centerCrop"
+            android:src="@color/colorGrey" />
 
         <View style="@style/Divider"
             android:layout_marginTop="20dp"
