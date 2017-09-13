@@ -23,13 +23,13 @@
     <color name="welcome_screen_slide_title">#FFFFFF</color>
     <color name="welcome_screen_slide_text">#96ffffff</color>
 
-    <color name="slide1_background">#ff33b5e5</color>
-    <color name="slide1_background_dark">#ff263238</color>
-    <color name="slide2_background">#e94613</color>
-    <color name="slide2_background_dark">#ba4607</color>
+    <color name="slide1_background">#48b906</color>
+    <color name="slide1_background_dark">#2a8b42</color>
+    <color name="slide2_background">#ff33b5e5</color>
+    <color name="slide2_background_dark">#1f6783</color>
     <color name="scrollbarTrack">#3f6e6e6e</color>
     <color name="slide3_background">#ec3c4c</color>
-    <color name="slide3_background_dark">#FFC9323F</color>
+    <color name="slide3_background_dark">#9e2733</color>
     <color name="slide4_background">#F7C873</color>
     <color name="slide5_background_dark">#ff263238</color>
 

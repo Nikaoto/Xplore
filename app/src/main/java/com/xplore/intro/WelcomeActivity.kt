@@ -24,7 +24,7 @@ import com.xplore.settings.LanguageUtil
 
 class WelcomeActivity : IntroActivity() {
 
-    val TAG = "jiga"
+    val TAG = "welcome_act"
 
     //If this is true, main act is launched when this activity finishes
     private var shouldOpenMainAct = false
@@ -81,16 +81,6 @@ class WelcomeActivity : IntroActivity() {
                 .backgroundDark(R.color.slide3_background_dark)
                 .fragment(R.layout.slide3_fragment, R.style.Theme_AppCompat_Light)
                 .build())
-
-/*        addSlide(
-                .Builder()
-                .image(R.drawable.about_page_banner)
-                .title(R.string.welcome)
-                .description(R.string.slide1_text)
-                .background(R.color.slide1_background)
-                .backgroundDark(R.color.slide1_background_dark)
-                .scrollable(false)
-                .build())*/
     }
 
     //Opens main act if shouldOpenMainAct
