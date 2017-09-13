@@ -31,10 +31,18 @@ object FirebaseUtil {
     const val F_START_DATE = "start_date"
     const val F_END_DATE = "end_date"
     const val F_GRANTED_REPUTATION = "granted_reputation"
+    const val F_MEMBER_IDS = "member_ids"
+    const val F_INVITED_MEMBER_IDS = "invited_member_ids"
 
 
     @JvmField
     val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)
+
+    @JvmField
+    val groupsRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_GROUPS)
+
+    @JvmStatic
+    fun getGroupRef(groupId: String): DatabaseReference = groupsRef.child(groupId)
 
     @JvmStatic
     fun getUserRef(userId: String): DatabaseReference = usersRef.child(userId)

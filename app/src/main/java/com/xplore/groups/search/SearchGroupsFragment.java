@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.xplore.FirebaseUtil;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
@@ -35,20 +36,15 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
+import static com.xplore.FirebaseUtil.F_MEMBER_IDS;
+import static com.xplore.FirebaseUtil.F_START_DATE;
+
 /**
  * Created by Nikaoto on 2/8/2017.
  */
 
 //TODO add searching
 public class SearchGroupsFragment extends SearchFragment {
-
-    // Firebase
-    private static final DatabaseReference usersRef
-            = FirebaseDatabase.getInstance().getReference().child("users");
-    private static final DatabaseReference groupsRef
-            = FirebaseDatabase.getInstance().getReference().child("groups");
-    private static final String F_START_DATE = "start_date";
-    private static final String F_MEMBER_IDS = "member_ids";
 
     private boolean firstLoad;
 
@@ -129,7 +125,7 @@ public class SearchGroupsFragment extends SearchFragment {
 
     private void loadData() {
         //TODO change this after adding sort by options
-        groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
+        FirebaseUtil.groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -166,7 +162,7 @@ public class SearchGroupsFragment extends SearchFragment {
         final DBManager dbManager = new DBManager(getActivity(), "reserveDB.db", DBManager.DB_TABLE);
         dbManager.openDataBase();
 
-        usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseUtil.usersRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -179,13 +175,15 @@ public class SearchGroupsFragment extends SearchFragment {
 
                                 //Setting leader info
                                 User leader = userSnapshot.getValue(User.class);
-                                tempGroupCard.setLeaderName(leader.getFname() + " " + leader.getLname());
-                                tempGroupCard.setLeaderReputation(leader.getReputation());
-                                tempGroupCard.setLeaderImageUrl(
-                                        userSnapshot.getValue(User.class).getProfile_picture_url());
+                                if (leader != null) {
+                                    tempGroupCard.setLeaderName(leader.getFname() + " " + leader.getLname());
+                                    tempGroupCard.setLeaderReputation(leader.getReputation());
+                                    tempGroupCard.setLeaderImageUrl(
+                                            userSnapshot.getValue(User.class).getProfile_picture_url());
 
-                                displayCards.add(tempGroupCard); //TODO maybe remove displaycards? needs testing :P
-                                resultsRV.getAdapter().notifyDataSetChanged();
+                                    displayCards.add(tempGroupCard); //TODO maybe remove displaycards? needs testing :P
+                                    resultsRV.getAdapter().notifyDataSetChanged();
+                                }
                             }
                         }
                     }
