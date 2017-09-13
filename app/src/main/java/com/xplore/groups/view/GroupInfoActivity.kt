@@ -118,23 +118,23 @@ class GroupInfoActivity : BaseActivity() {
         }
     }
 
-    //Shows card with meetup time and place
-    //(not inside applyGroupData because this is only shown to members)
+    // Shows card with meetup time and place
+    // (not inside applyGroupData because this is only shown to members)
     private fun configureMeetupCard() {
         if (currentGroup.hasMeetupLocation()) {
             meetupCard.visibility = View.VISIBLE
             meetupLocationImageView.visibility = View.VISIBLE
 
-            //Loading image
+            // Loading image
             Picasso.with(this)
                     .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
                             currentGroup.meetup_longitude))
                     .into(meetupLocationImageView)
 
-            //Onclick
+            // Onclick
             meetupLocationImageView.setOnClickListener {
                 startActivity(GroupMapActivity.getStartIntent(this, true,
-                        getString(R.string.meetup_location), currentGroup.meetup_latitude,
+                        "meetup location", currentGroup.meetup_latitude,
                         currentGroup.meetup_longitude))
             }
         }

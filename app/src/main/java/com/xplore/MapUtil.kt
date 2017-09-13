@@ -1,5 +1,6 @@
 package com.xplore
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import java.util.*
 
 /**
@@ -19,14 +20,15 @@ object MapUtil {
     const val DEFAULT_ZOOM = 16
     const val DEFAULT_MAP_TYPE = "hybrid"
     const val DEFAULT_MARKER_COLOR = "orange"
+    const val MEETUP_MARKER_COLOR = "green"
+    const val DEFAULT_MARKER_HUE = BitmapDescriptorFactory.HUE_ORANGE
+    const val MEETUP_MARKER_HUE = BitmapDescriptorFactory.HUE_GREEN
 
     //This is the default latitude or longitude for when no location is chosen
     const val DEFAULT_LAT_LNG = 0.0
 
     //Used when calculating random hue for map markers
     const val MAX_MARKER_HUE = 330F
-
-    const val MEETUP_MARKER_COLOR = "green"
 
     @JvmStatic
     fun getMapUrl(lat: Double, lng: Double,

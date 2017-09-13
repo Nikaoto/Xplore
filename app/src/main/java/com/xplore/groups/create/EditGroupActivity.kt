@@ -29,6 +29,7 @@ import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_END
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_NONE
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECTION_START
 import com.xplore.groups.create.CreateGroupActivity.Companion.SELECT_FROM_MAP_REQ_CODE
+import com.xplore.groups.create.CreateGroupActivity.Companion.SET_MEETUP_LOCATION_REQ_CODE
 import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
@@ -441,19 +442,42 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
                         groupImageView.setOnClickListener(onReserveClickListener)
                     }
 
+                    SET_MEETUP_LOCATION_REQ_CODE -> {
+                        // Getting location
+                        currentGroup.meetup_latitude =
+                                data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
+                        currentGroup.meetup_longitude =
+                                data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
+
+                        // Check if data retrieval failed
+                        if (currentGroup.hasMeetupLocation()) {
+                            // Load image
+                            Picasso.with(this)
+                                    .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
+                                            currentGroup.meetup_longitude))
+                                    .into(meetupLocationImageView)
+
+                            meetupLocationImageView.setOnClickListener {
+                                startActivity(SetDestinationMapActivity.getStartIntent(
+                                        this@EditGroupActivity,
+                                        getString(R.string.meetup_location),
+                                        currentGroup.meetup_latitude,
+                                        currentGroup.meetup_longitude))
+                            }
+                        }
+                    }
+
                     SELECT_FROM_MAP_REQ_CODE -> {
                         currentGroup.destination_id = Group.DESTINATION_DEFAULT
 
-                        //Getting image
+                        // Getting image
                         currentGroup.destination_latitude =
                                 data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
                         currentGroup.destination_longitude =
                                 data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
 
-                        //Checking if data retrieval failed
-                        if (currentGroup.destination_latitude != 0.0
-                                && currentGroup.destination_longitude != 0.0) {
-
+                        // Checking if data retrieval failed
+                        if (currentGroup.hasDestinationLocation()){
                             currentGroup.group_image_url = MapUtil.getMapUrl(
                                     currentGroup.destination_latitude,
                                     currentGroup.destination_longitude

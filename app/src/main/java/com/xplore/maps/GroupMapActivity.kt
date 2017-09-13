@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
+import com.xplore.MapUtil
 
 /**
  * Created by Nikaoto on 8/20/2017.
@@ -38,6 +39,7 @@ class GroupMapActivity : BaseMapActivity() {
         private const val ARG_DESTINATION_LAT = "destinationLat"
         private const val ARG_DESTINATION_LNG = "destinationLng"
         private const val ARG_ZOOM_TO_DESTINATION = "zoomToDestination"
+        private const val ARG_MARKER_HUE = "markerHue"
 
         //When opening reserve
         @JvmStatic
@@ -49,6 +51,12 @@ class GroupMapActivity : BaseMapActivity() {
                     .putExtra(ARG_DESTINATION_LAT, destinationLat)
                     .putExtra(ARG_DESTINATION_LNG, destinationLng)
         }
+
+        @JvmStatic
+        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
+                           destinationLat: Double, destinationLng: Double, markerHue: Float)
+                : Intent = getStartIntent(context, zoomToDestination, destinationName,
+                destinationLat, destinationLng).putExtra(ARG_MARKER_HUE, markerHue)
 
         //When opening group
         @JvmStatic
@@ -78,6 +86,9 @@ class GroupMapActivity : BaseMapActivity() {
     }
     private val zoomToDestination: Boolean by lazy {
         intent.getBooleanExtra(ARG_ZOOM_TO_DESTINATION, false)
+    }
+    private val markerHue: Float by lazy {
+        intent.getFloatExtra(ARG_MARKER_HUE, MapUtil.DEFAULT_MARKER_HUE)
     }
 
     //Firebase
@@ -137,8 +148,8 @@ class GroupMapActivity : BaseMapActivity() {
     private fun buildDestinationMarker(): MarkerOptions {
         val markerOptions = MarkerOptions()
         markerOptions.position(destinationLocation)
-        markerOptions.title(intent.getStringExtra(destinationName))
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+        markerOptions.title(destinationName)
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(markerHue))
         return markerOptions
     }
 

@@ -38,6 +38,10 @@ public class Group {
         return meetup_latitude != 0.0 || meetup_longitude != 0.0;
     }
 
+    public boolean hasDestinationLocation() {
+        return destination_latitude != 0.0 || destination_longitude != 0.0;
+    }
+
     public boolean hasMeetupTime() {
         return start_time.length() != 0;
     }
