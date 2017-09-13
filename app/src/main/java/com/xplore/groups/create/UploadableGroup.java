@@ -30,7 +30,8 @@ class UploadableGroup extends Group {
     UploadableGroup(String group_id, String name, boolean experienced,
                     long start_date, String start_time, long end_date, String end_time,
                     int destination_id, double destination_latitude, double destination_longitude,
-                    String group_image_url, String extra_info, String group_preferences,
+                    double meetup_latitude, double meetup_longitude, String group_image_url,
+                    String extra_info, String group_preferences,
                     HashMap<String, Boolean> member_ids, HashMap<String, Boolean> invited_member_ids) {
         this.setGroup_id(group_id);
         this.setName(name);
@@ -42,6 +43,8 @@ class UploadableGroup extends Group {
         this.setDestination_id(destination_id);
         this.setDestination_latitude(destination_latitude);
         this.setDestination_longitude(destination_longitude);
+        this.setMeetup_latitude(meetup_latitude);
+        this.setMeetup_longitude(meetup_longitude);
         this.setGroup_image_url(group_image_url);
         this.setExtra_info(extra_info);
         this.setGroup_preferences(group_preferences);
@@ -57,6 +60,8 @@ class UploadableGroup extends Group {
         result.put("destination_id", this.getDestination_id());
         result.put("destination_latitude", this.getDestination_latitude());
         result.put("destination_longitude", this.getDestination_longitude());
+        result.put("meetup_latitude", this.getMeetup_latitude());
+        result.put("meetup_longitude", this.getMeetup_longitude());
         result.put("name", this.getName());
         result.put("start_date", this.getStart_date());
         result.put("start_time", this.getStart_time());

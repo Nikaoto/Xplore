@@ -19,6 +19,7 @@ import com.xplore.groups.view.controls.InvitedControls
 import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
+import com.xplore.maps.BaseMapActivity
 import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
@@ -123,10 +124,19 @@ class GroupInfoActivity : BaseActivity() {
         if (currentGroup.hasMeetupLocation()) {
             meetupCard.visibility = View.VISIBLE
             meetupLocationImageView.visibility = View.VISIBLE
+
+            //Loading image
             Picasso.with(this)
                     .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
                             currentGroup.meetup_longitude))
                     .into(meetupLocationImageView)
+
+            //Onclick
+            meetupLocationImageView.setOnClickListener {
+                startActivity(GroupMapActivity.getStartIntent(this, true,
+                        getString(R.string.meetup_location), currentGroup.meetup_latitude,
+                        currentGroup.meetup_longitude))
+            }
         }
     }
 

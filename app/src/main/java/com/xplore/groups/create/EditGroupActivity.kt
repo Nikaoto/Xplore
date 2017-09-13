@@ -248,6 +248,14 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         date.startTime = currentGroup.start_time
         Log.i("brejk", "startTime ${date.startTime}")
 
+        //Meetup location
+        if (currentGroup.hasMeetupLocation()) {
+            Picasso.with(this)
+                    .load(MapUtil.getMeetupMapUrl(currentGroup.meetup_latitude,
+                            currentGroup.meetup_longitude))
+                    .into(meetupLocationImageView)
+        }
+
         //End date
         endDateTextView.text = DateUtil.putSlashesInDate(currentGroup.end_date)
         date.setEndDate(currentGroup.end_date)
@@ -300,6 +308,14 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
             showTimePicker(SELECTION_START)
         }
 
+        meetupLocationButton.setOnClickListener {
+            startSettingMeetupLocation()
+        }
+
+        meetupLocationImageView.setOnClickListener {
+            startSettingMeetupLocation()
+        }
+
         endDateButton.setOnClickListener {
             showDatePicker(SELECTION_END)
         }
@@ -337,6 +353,19 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
                 checkUninvitedMembers()
                 finish()
             }
+        }
+    }
+
+    fun startSettingMeetupLocation() {
+        if (currentGroup.hasMeetupLocation()) {
+            startActivityForResult(
+                    SetDestinationMapActivity.getStartIntent(this,
+                            resources.getString(R.string.meetup_location),
+                            currentGroup.meetup_latitude, currentGroup.meetup_longitude),
+                    CreateGroupActivity.SET_MEETUP_LOCATION_REQ_CODE)
+        } else {
+            startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
+                    CreateGroupActivity.SET_MEETUP_LOCATION_REQ_CODE)
         }
     }
 

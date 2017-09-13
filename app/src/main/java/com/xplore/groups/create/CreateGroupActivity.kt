@@ -382,6 +382,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                 date.endTime,
                 chosenDestId, //Chosen Destination Id
                 destinationLat, destinationLng, //Destination location
+                meetupLat, meetupLng, //Meetup location
                 groupImageUrl, //Image url
                 extraInfo, //Group Extra Info
                 groupPrefs, //Group Preferences
