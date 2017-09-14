@@ -16,8 +16,10 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.maps.android.kml.KmlLayer
 import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
+import kotlinx.android.synthetic.main.activity_maps.*
 
 /**
  * Created by Nika on 8/20/2017.
@@ -35,7 +37,11 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val REQUEST_PERMISSION_REQ_CODE = 1
     open val REQUEST_CHECK_SETTINGS = 0x1
 
-    //Location
+    // KML
+    //private var kmlEnabled = false
+    private var kmlLayer: KmlLayer? = null
+
+    // Location
     private var updatingLocation = false
     private val locationRequest: LocationRequest by lazy { createLocationRequest() }
     private val locationSettingsRequest: LocationSettingsRequest by lazy {
@@ -56,6 +62,21 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initMap()
+    }
+
+    // USE ONLY IN DEMO
+    private fun configureKmlButton(map: GoogleMap) {
+        KMLButton.setOnClickListener {
+            if (kmlLayer == null) {
+                // Add Layer
+                kmlLayer = KmlLayer(map, R.raw.testeroni, this)
+                kmlLayer?.addLayerToMap()
+            } else {
+                // Remove Layer
+                kmlLayer?.removeLayerFromMap()
+                kmlLayer = null
+            }
+        }
     }
 
     private fun initMap() {
@@ -79,6 +100,9 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         } else {
             requestPermissions()
         }
+
+        // DEMO ONLY
+        configureKmlButton(googleMap)
     }
 
     private fun createLocationRequest(): LocationRequest {
@@ -241,5 +265,4 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             fragmentManager.beginTransaction().remove(f).commit()
         }
     }
-
 }

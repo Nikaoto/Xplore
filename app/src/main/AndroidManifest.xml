@@ -149,9 +149,11 @@
         <!-- Settings -->
         <activity
             android:name=".settings.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/settings_title" />
         <activity
             android:name=".settings.LanguageSettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/settings_language_title" />
 
         <!-- About -->
