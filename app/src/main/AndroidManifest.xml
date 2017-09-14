@@ -112,7 +112,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".groups.requests.ManageRequestsActivity"
-            android:label="Manage Requests"
+            android:label="@string/manage_requests"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".groups.discussion.DiscussionActivity" />
