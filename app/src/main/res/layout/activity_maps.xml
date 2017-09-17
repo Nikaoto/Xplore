@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment
         android:id="@+id/mapFragment"
@@ -18,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_map"
-
+        app:backgroundTint="@color/colorGrey"
         android:scaleType="centerCrop"
         android:padding="6dp"
         android:layout_margin="5dp"/>
