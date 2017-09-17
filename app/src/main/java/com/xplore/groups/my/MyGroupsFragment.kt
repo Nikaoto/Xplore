@@ -134,7 +134,9 @@ class MyGroupsFragment() : Fragment() {
                                 groupCard.leaderImageUrl = leaderCard.profile_picture_url
 
                                 groupCards.add(groupCard)
-                                loadingbar.visibility = View.INVISIBLE
+                                if (loadingbar != null) { //TODO throws NPE
+                                    loadingbar.visibility = View.INVISIBLE
+                                }
                                 myGroupsRecyclerView.adapter.notifyDataSetChanged()
                             } else { printError() }
                         } else { printError() }

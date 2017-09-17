@@ -102,7 +102,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
 
         // DEMO ONLY
-        configureKmlButton(googleMap)
+        //configureKmlButton(googleMap)
     }
 
     private fun createLocationRequest(): LocationRequest {
