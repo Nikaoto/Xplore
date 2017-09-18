@@ -13,6 +13,7 @@ import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.empty.EmptyFragmentFactory
 import com.xplore.groups.AllMemberIdsForGroup
+import com.xplore.util.FirebaseUtil
 import kotlinx.android.synthetic.main.manage_requests.*
 
 /**
@@ -28,30 +29,31 @@ import kotlinx.android.synthetic.main.manage_requests.*
 
 class ManageRequestsActivity : BaseAppCompatActivity() {
 
-    //Firebase
-    lateinit private var currentGroupRef: DatabaseReference
-
-    lateinit private var groupId: String
-
-    private val invitedMemberIds = ArrayList<String>()
-    //A list of ids of members who want to join the group
-    private val joinRequestMemberIds = ArrayList<String>()
-
     companion object {
+        private const val ARG_GROUP_ID = "groupId"
         @JvmStatic
         fun getStartIntent(context: Context, groupId: String)
-            = Intent(context, ManageRequestsActivity::class.java).putExtra("groupId", groupId)
+                = Intent(context, ManageRequestsActivity::class.java).putExtra("groupId", groupId)
     }
+
+    private val currentGroupRef: DatabaseReference by lazy {
+        FirebaseUtil.getGroupRef(intent.getStringExtra(ARG_GROUP_ID))
+    }
+
+    private val groupId: String by lazy {
+        intent.getStringExtra(ARG_GROUP_ID)
+    }
+    private val invitedMemberIds = ArrayList<String>()
+
+    //A list of ids of members who want to join the group
+    private val joinRequestMemberIds = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.manage_requests)
+        title = getString(R.string.manage_requests)
 
         setSupportActionBar(toolbar)
-
-        groupId = intent.getStringExtra("groupId")
-        currentGroupRef = FirebaseDatabase.getInstance()
-                .getReference("groups/$groupId")
 
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
