@@ -10,8 +10,7 @@ import java.io.Serializable;
 //DO NOT CHANGE THE VARIABLE NAMES, THEY CORRESPOND TO THE FIREBASE DATABASE KEY NAMES
 public class User implements Serializable {
     String fname, lname, tel_num, id, profile_picture_url, email;
-    int reputation, birth_date, age;
-    //TODO change age to birth date and calculate age every time user info is loaded
+    int reputation, birth_date;
 
     public User() {
         //LEAVE EMPTY
@@ -26,26 +25,6 @@ public class User implements Serializable {
         this.email = email;
         this.reputation = reputation;
         this.birth_date = birth_date;
-    }
-
-    public User(String fname, String lname, String tel_num, String id, String profile_picture_url, String email, int reputation, int birth_date, int age) {
-        this.fname = fname;
-        this.lname = lname;
-        this.tel_num = tel_num;
-        this.id = id;
-        this.profile_picture_url = profile_picture_url;
-        this.email = email;
-        this.reputation = reputation;
-        this.birth_date = birth_date;
-        this.age = age;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public int getBirth_date() {
