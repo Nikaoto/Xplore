@@ -99,6 +99,7 @@ class EditProfileActivity : RegisterActivity() {
                             if (task.isSuccessful) {
                                 Log.d(TAG, "User email address updated.")
 
+                                //TODO editing profile removes all joined groups
                                 super.onDoneButtonClick()
                             } else {
                                 Toast.makeText(this, R.string.error_email_taken, Toast.LENGTH_SHORT)

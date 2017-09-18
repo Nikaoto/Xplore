@@ -286,7 +286,7 @@ class GroupInfoActivity : BaseActivity() {
                     val tempMember = dataSnapshot.getValue(User::class.java)
                     //Getting member info
                     tempMember?.let {
-                        tempMember.setId(userId) //Setting user Id
+                        tempMember.id = userId //Setting user Id
                         members.add(tempMember) //Setting member info
                     }
                     decrementMemberCount()
@@ -315,7 +315,7 @@ class GroupInfoActivity : BaseActivity() {
     private fun applyGroupData() {
         //Displaying leader
         //Profile picture
-        Picasso.with(this).invalidate(leader.getProfile_picture_url())
+        Picasso.with(this).invalidate(leader.profile_picture_url)
         Picasso.with(this)
                 .load(leader.profile_picture_url)
                 .transform(ImageUtil.mediumCircle(this))
@@ -328,11 +328,11 @@ class GroupInfoActivity : BaseActivity() {
         leaderNameTextView.text = "${leader.fname} ${leader.lname}"
 
         //Age
-        val age = General.calculateAge(TimeManager.globalTimeStamp, leader.getBirth_date())
+        val age = General.calculateAge(TimeManager.globalTimeStamp, leader.birth_date)
         leaderAgeTextView.text = "${getString(R.string.age)}: $age"
 
         //Telephone
-        leaderTelTextView.text = "${getString(R.string.tel)}: ${leader.getTel_num()}"
+        leaderTelTextView.text = "${getString(R.string.tel)}: ${leader.tel_num}"
 
         //Reputation
         leaderRepCombinedTextView.text = "${leader.reputation} ${resources.getString(R.string.reputation)}"

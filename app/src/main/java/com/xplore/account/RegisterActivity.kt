@@ -179,8 +179,10 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                     lnameEditText.str(),
                     numEditText.str(),
                     emailEditText.str(),
-                    General.getDateInt(bYear, bMonth, bDay),
-                    userProfilePicUrl)
+                    userProfilePicUrl,
+                    0,
+                    General.getDateInt(bYear, bMonth, bDay)
+            )
             if (imagePath != null) {
                 uploadUserData(newUser, imagePath as Uri, ref)
             } else {
@@ -233,43 +235,34 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         val userData = user.toMap()
 
         val childUpdates = HashMap<String, Any>()
-        childUpdates.put("/users/" + user.uid, userData)
+        childUpdates.put("/users/" + user.id, userData)
         DBref.updateChildren(childUpdates)
         setResult(Activity.RESULT_OK)
         finish()
     }
 
-    //TODO change init after converting User class to kotlin
-    private inner class UploadUser(val uid: String, fname: String, lname: String, tel_num: String,
-                                   email: String, birth_date: Int,
-                                   profile_picture_url: String? = "") : User() {
-        init {
-            this.id = uid
-            this.fname = fname
-            this.lname = lname
-            this.tel_num = tel_num;
-            this.email = email
-            this.birth_date = birth_date
-
-            //Setting profile picture URL
-            if (profile_picture_url != null) {
-                this.profile_picture_url = profile_picture_url
-            }
-
-            //Every new user starts with 0 reputation
-            this.reputation = 0
-        }
+    private inner class UploadUser(id: String,
+                                   fname: String,
+                                   lname: String,
+                                   tel_num: String,
+                                   email: String,
+                                   profile_picture_url: String,
+                                   reputation: Int,
+                                   birth_date: Int)
+        : User(id, fname, lname, tel_num, email, profile_picture_url, reputation, birth_date) {
 
         @Exclude
         fun toMap(): Map<String, Any> {
             val result = HashMap<String, Any>()
-            result.put("fname", this.fname)
-            result.put("lname", this.lname)
-            result.put("profile_picture_url", this.profile_picture_url)
-            result.put("birth_date", this.birth_date)
-            result.put("tel_num", this.tel_num)
-            result.put("reputation", this.reputation)
-            result.put("email", this.email)
+
+            result.put("fname", fname)
+            result.put("lname", lname)
+            result.put("profile_picture_url", profile_picture_url)
+            result.put("birth_date", birth_date)
+            result.put("tel_num", tel_num)
+            result.put("reputation", reputation)
+            result.put("email", email)
+
             return result
         }
     }

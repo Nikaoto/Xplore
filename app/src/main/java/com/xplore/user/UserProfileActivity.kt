@@ -60,7 +60,7 @@ class UserProfileActivity : BaseRefreshableAppCompatActivity() {
                 if (dataSnapshot != null) {
                     val tempUser = dataSnapshot.getValue(User::class.java)
                     if (tempUser != null) {
-                        tempUser.setId(dataSnapshot.key)
+                        tempUser.id = dataSnapshot.key
                         displayUserInfo(tempUser)
 
                         // If user viewing his/her profile
@@ -77,20 +77,20 @@ class UserProfileActivity : BaseRefreshableAppCompatActivity() {
 
     private fun displayUserInfo(user: User){
         //Removing small image from cache
-        Picasso.with(this).invalidate(user.getProfile_picture_url())
+        Picasso.with(this).invalidate(user.profile_picture_url)
         //Loading profile picture
         Picasso.with(this)
-                .load(user.getProfile_picture_url())
+                .load(user.profile_picture_url)
                 .transform(ImageUtil.largeCircle(this))
                 .placeholder(R.drawable.picasso_load_anim)
                 .into(userImageView)
 
-        fullNameTextView.text = "${user.getFname()} ${user.getLname()}"
-        reputationCombinedTextView.text = user.getReputation().toString() +
+        fullNameTextView.text = "${user.fname} ${user.lname}"
+        reputationCombinedTextView.text = user.reputation.toString() +
                 " " + resources.getString(R.string.reputation)
-        birthDateTextView.text = DateUtil.putSlashesInDate(user.getBirth_date())
-        telephoneTextView.text = user.getTel_num()
-        emailTextView.text = user.getEmail()
+        birthDateTextView.text = DateUtil.putSlashesInDate(user.birth_date)
+        telephoneTextView.text = user.tel_num
+        emailTextView.text = user.email
     }
 
     private fun configureEditProfileButton(user: User) {

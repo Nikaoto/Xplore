@@ -50,19 +50,19 @@ class MemberListAdapter(private val context: Context,
         var currentMember = users[position]
 
         //Loading Member Reputation
-        holder.rep_txt.text = currentMember.getReputation().toString()
+        holder.rep_txt.text = currentMember.reputation.toString()
 
         //Loading Member Image
         Picasso.with(context).invalidate(currentMember.profile_picture_url)
         Picasso.with(context)
-                .load(currentMember.getProfile_picture_url())
+                .load(currentMember.profile_picture_url)
                 .transform(ImageUtil.smallCircle(context))
                 .into(holder.memberImage)
 
         //Configuring Clicks
         holder.memberImage.setOnClickListener {
             currentMember = users[position] //DO NOT REMOVE, THIS IS NECESSARY
-            General.openUserProfile(context as Activity, currentMember.getId())
+            General.openUserProfile(context as Activity, currentMember.id)
         }
 
         //If is creating a group, allow user to remove members
@@ -74,8 +74,8 @@ class MemberListAdapter(private val context: Context,
                     General.vibrateDevice(context, null)
                     AlertDialog.Builder(context)
                             .setTitle(context.resources.getString(R.string.to_remove)+" "
-                                    + currentMember.getFname() +
-                                    " " + currentMember.getLname())
+                                    + currentMember.fname +
+                                    " " + currentMember.lname)
                             .setMessage(R.string.remove_member_question)
                             .setCancelable(false)
                             .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
