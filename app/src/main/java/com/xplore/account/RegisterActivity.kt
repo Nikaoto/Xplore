@@ -30,7 +30,7 @@ import com.google.firebase.storage.UploadTask
 import com.soundcloud.android.crop.Crop
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp

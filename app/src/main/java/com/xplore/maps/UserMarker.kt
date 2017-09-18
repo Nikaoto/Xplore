@@ -2,8 +2,7 @@ package com.xplore.maps
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
-import com.xplore.MapUtil
-import java.util.*
+import com.xplore.util.MapUtil
 
 /**
  * Created by Nika on 8/18/2017.

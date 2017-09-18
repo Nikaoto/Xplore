@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.database.*
-import com.xplore.FirebaseUtil
+import com.xplore.util.FirebaseUtil
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager
@@ -15,9 +15,9 @@ import com.xplore.groups.AllMemberIdsForGroup
 import com.xplore.groups.create.EditGroupActivity
 import com.xplore.groups.discussion.DiscussionActivity
 import com.xplore.groups.requests.ManageRequestsActivity
-import com.xplore.FirebaseUtil.F_GRANTED_REPUTATION
-import com.xplore.FirebaseUtil.F_END_DATE
-import com.xplore.FirebaseUtil.REP
+import com.xplore.util.FirebaseUtil.F_GRANTED_REPUTATION
+import com.xplore.util.FirebaseUtil.F_END_DATE
+import com.xplore.util.FirebaseUtil.REP
 import kotlinx.android.synthetic.main.leader_controls.*
 
 /**

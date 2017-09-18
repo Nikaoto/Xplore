@@ -24,7 +24,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.General;
-import com.xplore.ImageUtil;
+import com.xplore.util.ImageUtil;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.base.BaseActivity;
@@ -32,9 +32,9 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
-import static com.xplore.FirebaseUtil.F_FNAME;
-import static com.xplore.FirebaseUtil.F_LNAME;
-import static com.xplore.FirebaseUtil.F_USERS;
+import static com.xplore.util.FirebaseUtil.F_FNAME;
+import static com.xplore.util.FirebaseUtil.F_LNAME;
+import static com.xplore.util.FirebaseUtil.F_USERS;
 
 
 /**

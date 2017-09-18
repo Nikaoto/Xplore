@@ -33,6 +33,12 @@ import com.xplore.groups.create.CreateGroupActivity.Companion.SET_MEETUP_LOCATIO
 import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.user.User
+import com.xplore.util.DateUtil
+import com.xplore.util.FirebaseUtil.getUserRef
+import com.xplore.util.FirebaseUtil.F_GROUP_IDS
+import com.xplore.util.FirebaseUtil.F_INVITED_GROUP_IDS
+import com.xplore.util.MapUtil
+
 import kotlinx.android.synthetic.main.create_group.*
 
 /**
@@ -47,9 +53,6 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     private val dbManager: DBManager by lazy { DBManager(this)}
 
     //Firebase
-    private val F_INVITED_GROUP_IDS = "invited_group_ids"
-    private val F_GROUP_IDS = "group_ids"
-    private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var groupId: String
     private lateinit var currentGroupRef: DatabaseReference
 
@@ -154,7 +157,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
         //Getting member info
         for (mId in currentGroup.member_ids) {
-            usersRef.child(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
+            getUserRef(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot?) {
                     dataSnapshot?.let {
                         val tempUser = dataSnapshot.getValue(User::class.java)
@@ -186,7 +189,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
             //Getting member info
             for (mId in currentGroup.invited_member_ids) {
-                usersRef.child(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
+                getUserRef(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         dataSnapshot?.let {
                             val tempUser = dataSnapshot.getValue(User::class.java)
@@ -579,7 +582,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     private fun sendInvites() {
         for (memberId in currentGroup.invited_member_ids.keys) {
-            usersRef.child(memberId).child(F_INVITED_GROUP_IDS).child("/" + groupId).setValue(true)
+            getUserRef(memberId).child(F_INVITED_GROUP_IDS).child("/" + groupId).setValue(true)
         }
     }
 
@@ -587,7 +590,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     private fun checkRemovedMembers() {
         initialMemberIds.forEach {
             if (!currentGroup.member_ids.contains(it)) {
-                usersRef.child(it).child(F_GROUP_IDS).child(groupId).removeValue()
+                getUserRef(it).child(F_GROUP_IDS).child(groupId).removeValue()
             }
         }
     }
@@ -596,7 +599,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     private fun checkUninvitedMembers() {
         initialInvitedMemberIds.forEach {
             if (!currentGroup.invited_member_ids.contains(it)) {
-                usersRef.child(it).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
+                getUserRef(it).child(F_INVITED_GROUP_IDS).child(groupId).removeValue()
             }
         }
     }

@@ -9,9 +9,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import com.xplore.DateUtil
+import com.xplore.util.DateUtil
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.account.EditProfileActivity
 import com.xplore.base.BaseRefreshableAppCompatActivity

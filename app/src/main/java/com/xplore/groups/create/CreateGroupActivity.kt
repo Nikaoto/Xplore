@@ -26,6 +26,12 @@ import com.xplore.user.User
 import kotlinx.android.synthetic.main.create_group.*
 import java.util.ArrayList
 import kotlin.collections.HashMap
+import com.xplore.util.FirebaseUtil.groupsRef
+import com.xplore.util.FirebaseUtil.getUserRef
+import com.xplore.util.FirebaseUtil.getCurrentUserRef
+import com.xplore.util.FirebaseUtil.F_GROUP_IDS
+import com.xplore.util.FirebaseUtil.F_INVITED_GROUP_IDS
+import com.xplore.util.MapUtil
 
 /**
  * Created by Nikaoto on 2/18/2017.
@@ -46,10 +52,8 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
     val dbManager: DBManager by lazy { DBManager(this) }
 
     //Firebase
-    val usersRef = FirebaseDatabase.getInstance().reference.child("users")
-    val groupsRef = FirebaseDatabase.getInstance().reference.child("groups")
     val joinedGroupsRef: DatabaseReference by lazy {
-        usersRef.child(General.currentUserId).child("group_ids")
+        getCurrentUserRef().child(F_GROUP_IDS)
     }
 
     companion object {
@@ -406,7 +410,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
 
     private fun sendInvites(groupId: String) {
         for (memberId in invitedMemberIds) {
-            usersRef.child(memberId).child("invited_group_ids").child("/" + groupId).setValue(true)
+            getUserRef(memberId).child(F_INVITED_GROUP_IDS).child("/" + groupId).setValue(true)
         }
     }
 
@@ -414,7 +418,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         val membersToDisplay = ArrayList<User>(memberIds.size)
         var memberCount = memberIds.size
         for (memberId in memberIds) {
-            usersRef.child(memberId).addListenerForSingleValueEvent(object : ValueEventListener {
+            getUserRef(memberId).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(userSnapshot: DataSnapshot?) {
                     if (userSnapshot != null) {
                         val member = userSnapshot.getValue(User::class.java)
@@ -488,7 +492,8 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
             builder.setMessage(R.string.text_field_incomplete)
                     .show()
             return false
-        } else if (date.getStartDate() < General.getDateInt(TimeManager.globalTimeStamp) || date.getEndDate() < General.getDateInt(TimeManager.globalTimeStamp)) {
+        } else if (date.getStartDate() < General.getDateInt(TimeManager.globalTimeStamp)
+                || date.getEndDate() < General.getDateInt(TimeManager.globalTimeStamp)) {
             builder.setMessage(R.string.date_past_invalid)
                     .show()
             return false

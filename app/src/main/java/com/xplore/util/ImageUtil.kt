@@ -1,6 +1,8 @@
-package com.xplore
+package com.xplore.util
 
 import android.content.Context
+import com.xplore.CircleTransformation
+import com.xplore.R
 
 /**
  * Created by Nika on 8/1/2017.

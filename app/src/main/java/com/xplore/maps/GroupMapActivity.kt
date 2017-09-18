@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
-import com.xplore.MapUtil
+import com.xplore.util.MapUtil
 
 /**
  * Created by Nikaoto on 8/20/2017.

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.*
@@ -19,12 +18,14 @@ import com.xplore.groups.view.controls.InvitedControls
 import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
-import com.xplore.maps.BaseMapActivity
 import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
+import com.xplore.util.DateUtil
+import com.xplore.util.ImageUtil
+import com.xplore.util.MapUtil
 import kotlinx.android.synthetic.main.group_info2.*
 import kotlinx.android.synthetic.main.leader_profile.*
 import kotlinx.android.synthetic.main.reserve_card.*

@@ -1,6 +1,5 @@
 package com.xplore.groups.search;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,22 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.xplore.FirebaseUtil;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
@@ -36,11 +28,11 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
-import static com.xplore.FirebaseUtil.F_GROUP_NAME;
-import static com.xplore.FirebaseUtil.F_MEMBER_IDS;
-import static com.xplore.FirebaseUtil.F_START_DATE;
-import static com.xplore.FirebaseUtil.groupsRef;
-import static com.xplore.FirebaseUtil.usersRef;
+import static com.xplore.util.FirebaseUtil.F_GROUP_NAME;
+import static com.xplore.util.FirebaseUtil.F_MEMBER_IDS;
+import static com.xplore.util.FirebaseUtil.F_START_DATE;
+import static com.xplore.util.FirebaseUtil.groupsRef;
+import static com.xplore.util.FirebaseUtil.usersRef;
 
 /**
  * Created by Nikaoto on 2/8/2017.

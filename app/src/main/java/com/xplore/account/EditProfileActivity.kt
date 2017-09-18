@@ -2,18 +2,15 @@ package com.xplore.account
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.xplore.DateUtil
+import com.xplore.util.DateUtil
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager
-import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.database.*
-import com.xplore.FirebaseUtil
+import com.xplore.util.FirebaseUtil
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager

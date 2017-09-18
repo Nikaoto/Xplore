@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.util
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import java.util.*

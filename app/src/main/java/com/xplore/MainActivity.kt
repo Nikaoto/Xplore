@@ -3,7 +3,6 @@ package com.xplore
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -11,7 +10,6 @@ import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
-import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -35,8 +33,8 @@ import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
 import com.xplore.user.UserCard
+import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.activity_main.*
-import java.security.MessageDigest
 
 /**
  * Created by Nik on 8/25/2017.

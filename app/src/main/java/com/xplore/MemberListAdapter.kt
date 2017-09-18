@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import com.xplore.user.User
+import com.xplore.util.ImageUtil
 import java.util.*
 
 /**

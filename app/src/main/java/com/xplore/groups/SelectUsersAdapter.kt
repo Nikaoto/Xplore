@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.user.UserCard
 import kotlinx.android.synthetic.main.select_user_list_item.view.*

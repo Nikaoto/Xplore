@@ -1,7 +1,8 @@
-package com.xplore
+package com.xplore.util
 
 import android.util.Log
 import com.google.firebase.database.*
+import com.xplore.General
 
 /**
  * Created by Nika on 9/7/2017.
@@ -26,6 +27,8 @@ object FirebaseUtil {
     const val F_FNAME = "fname"
     const val F_LNAME = "lname"
     const val F_REPUTATION = "reputation"
+    const val F_GROUP_IDS = "group_ids"
+    const val F_INVITED_GROUP_IDS = "invited_group_ids"
 
     // Group nodes
     const val F_GROUP_NAME = "name"

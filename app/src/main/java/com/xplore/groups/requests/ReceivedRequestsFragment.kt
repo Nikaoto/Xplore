@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import kotlinx.android.synthetic.main.received_join_request_list_item.view.*
 import kotlinx.android.synthetic.main.request_list.*

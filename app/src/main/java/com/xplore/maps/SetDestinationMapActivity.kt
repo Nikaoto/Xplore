@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.xplore.General
-import com.xplore.MapUtil
+import com.xplore.util.MapUtil
 import com.xplore.R
 import kotlinx.android.synthetic.main.activity_maps.*
 

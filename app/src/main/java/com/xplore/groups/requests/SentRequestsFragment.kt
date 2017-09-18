@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import kotlinx.android.synthetic.main.request_list.*
 import kotlinx.android.synthetic.main.sent_invite_list_item.view.*

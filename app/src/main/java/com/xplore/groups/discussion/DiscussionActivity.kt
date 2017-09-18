@@ -14,7 +14,7 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.ImageUtil
+import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.UserCard
