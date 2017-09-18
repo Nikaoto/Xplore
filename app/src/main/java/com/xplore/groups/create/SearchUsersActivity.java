@@ -24,11 +24,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.General;
+import com.xplore.user.UserCard;
 import com.xplore.util.ImageUtil;
 import com.xplore.R;
 import com.xplore.TimeManager;
 import com.xplore.base.BaseActivity;
-import com.xplore.user.User;
 
 import java.util.ArrayList;
 
@@ -50,6 +50,8 @@ import static com.xplore.util.FirebaseUtil.F_USERS;
  *
  */
 
+//TODO replace the adapter with one used when ONLY inviting members through leaderControls
+
 public class SearchUsersActivity extends BaseActivity implements EditText.OnEditorActionListener{
 
     public static final String ARG_INVITED_MEMBER_IDS = "invitedMemberIds";
@@ -61,9 +63,10 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
 
     private final DatabaseReference firebaseUsersRef
             = FirebaseDatabase.getInstance().getReference().child(F_USERS);
-    private ArrayList<User> userList = new ArrayList<>(); //replace with UserButtons
+    private ArrayList<UserCard> userList = new ArrayList<>();
 
-    private ArrayList<String> invitedMemberIds = new ArrayList<>(); //Ids of already invited members + the ones we invite
+    // Contains ids of already invited members + the ones the user invites in this session
+    private ArrayList<String> invitedMemberIds = new ArrayList<>();
     private ListView listView;
 
     private ProgressBar progressBar;
@@ -90,7 +93,6 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         searchBar.setHint(R.string.activity_search_users_title);
         searchBar.setOnEditorActionListener(this);
 
-        //buildUserBase();
         prepareForSearch();
     }
 
@@ -100,9 +102,9 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         userList.clear();
     }
 
-    //search by last names in firebase database (because fname collisions are more frequent) and then filter results with first names
+    // Search by last names in firebase database (because fname collisions are more frequent) and then filter results with first names
     private void loadUsersWithFullName(final String fname, final String lname, final boolean displayData) {
-        //Sorting by first name
+        // Sorting by first name
         Query fnameQuery = firebaseUsersRef.orderByChild(F_LNAME).startAt(lname).endAt(lname+"\uf8ff");
         fnameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -110,7 +112,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
                 dataFound = false;
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        User tempUser = userSnapshot.getValue(User.class);
+                        UserCard tempUser = userSnapshot.getValue(UserCard.class);
                         if (tempUser != null
                                 && tempUser.getFname().toLowerCase().contains(fname.toLowerCase())) {
                             tempUser.setId(userSnapshot.getKey());
@@ -140,16 +142,16 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     */
     private void loadUsersWithTag(final String query, final String tag, final boolean resummon,
                                   final String query2, final String tag2) {
-        //if resummon == true, do NOT display data yet
+        // if resummon == true, do NOT display data yet
         Query dbQuery = firebaseUsersRef.orderByChild(tag).startAt(query).endAt(query+"\uf8ff");
         dbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     dataFound = true;
-                    User tempUser;
+                    UserCard tempUser;
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        tempUser = userSnapshot.getValue(User.class);
+                        tempUser = userSnapshot.getValue(UserCard.class);
                         if (tempUser != null) {
                             tempUser.setId(userSnapshot.getKey());
                             userList.add(tempUser);
@@ -169,23 +171,23 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         });
     }
 
-    //Filters duplicate users from given array and returns filtered list
+    // Filters duplicate UserCards from given array and returns filtered list
     // Also removes the currently logged in user from the list
-    private ArrayList<User> filterDuplicates(ArrayList<User> list) {
-        ArrayList<User> ansList = new ArrayList<>();
+    private ArrayList<UserCard> filterDuplicates(ArrayList<UserCard> list) {
+        ArrayList<UserCard> ansList = new ArrayList<>();
         boolean foundDuplicate;
-        //Filtering duplicates into ansList
+        // Filtering duplicates into ansList
         for(int i = 0; i < list.size(); i++) {
             if (!list.get(i).getId().equals(General.currentUserId)) {
                 foundDuplicate = false;
-                //Checking if list[i] is a duplicate
+                // Checking if list[i] is a duplicate
                 for (int j = i + 1; j < list.size(); j++) {
                     if (list.get(j).getId().equals(list.get(i).getId())) {
                         foundDuplicate = true;
                         break;
                     }
                 }
-                //If we have a user that is not a duplicate and not the user itself
+                // If we have a user that is not a duplicate and not the user itself
                 if (!foundDuplicate) {
                     ansList.add(list.get(i));
                 }
@@ -195,22 +197,16 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     }
 
     private void displayUserList() {
-        ArrayAdapter<User> adapter = new UserListAdapter(filterDuplicates(userList)); //change User to UserButtons
+        ArrayAdapter<UserCard> adapter = new UserListAdapter(filterDuplicates(userList));
         listView.setAdapter(adapter);
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-/*    private void nothingFound() {
-        Toast.makeText(SearchUsersActivity.this, R.string.search_no_results,
-                Toast.LENGTH_SHORT).show();
-        progressBar.setVisibility(View.INVISIBLE);
-    }*/
+    private class UserListAdapter extends ArrayAdapter<UserCard> {
 
-    private class UserListAdapter extends ArrayAdapter<User> { //change to userbutton
+        private final ArrayList<UserCard> userList;
 
-        private final ArrayList<User> userList;
-
-        public UserListAdapter(ArrayList<User> userList) {
+        UserListAdapter(ArrayList<UserCard> userList) {
             super(SearchUsersActivity.this, R.layout.user_list_item, userList);
             this.userList = userList;
         }
@@ -224,37 +220,28 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
                         .inflate(R.layout.user_list_item, parent, false);
             }
 
-            final User currentUser = userList.get(position);
+            final UserCard currentUser = userList.get(position);
 
-            //Loading Data///////////////////////////////////////////////////////////////////////
+            // Loading Data
 
-            //Reputation
-            TextView rep_text = (TextView) itemView.findViewById(R.id.user_rep_text_combined);
+            // Reputation
+            TextView rep_text = (TextView) itemView.findViewById(R.id.combinedReputationTextView);
             rep_text.setText(currentUser.getReputation() + " " +
                     getResources().getString(R.string.reputation));
 
-            //First Name
-            TextView fname_text = (TextView) itemView.findViewById(R.id.user_fname_text);
-            fname_text.setText(currentUser.getFname());
+            // First Name
+            TextView fname_text = (TextView) itemView.findViewById(R.id.fullNameTextView);
+            fname_text.setText(currentUser.getFullName());
 
-            //Last Name
-            TextView lname_text = (TextView) itemView.findViewById(R.id.user_lname_text);
-            lname_text.setText(currentUser.getLname());
-
-            //Age
-            TextView age_text = (TextView) itemView.findViewById(R.id.user_age_text);
-            age_text.setText(getResources().getString(R.string.age) +": "+
-                    General.calculateAge(TimeManager.globalTimeStamp, currentUser.getBirth_date()));
-
-            //Profile Picture
-            final ImageView userImage = (ImageView) itemView.findViewById(R.id.user_profile_image);
+            // Profile Picture
+            final ImageView userImage = (ImageView) itemView.findViewById(R.id.profileImageView);
             String userImageRef = currentUser.getProfile_picture_url();
             Picasso.with(getContext())
                     .load(userImageRef)
                     .transform(ImageUtil.smallCircle(getContext()))
                     .into(userImage);
 
-            //Configuring Clicks
+            // Configuring Clicks
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -290,7 +277,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         finish();
     }
 
-    //returns given string with the first letter in uppercase
+    // Returns given string with the first letter in uppercase
     private String firstLetterUpper(String str) {
         if(str.length() == 0)
             return str.toUpperCase();
@@ -319,8 +306,7 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
             loadUsersWithFullName(firstLetterUpper(parts[1]), firstLetterUpper(parts[0]), true);
             loadUsersWithFullName(parts[1], parts[0], true);
         } else {
-            loadUsersWithTag(searchQuery, F_FNAME, true,
-                    searchQuery, F_LNAME);
+            loadUsersWithTag(searchQuery, F_FNAME, true, searchQuery, F_LNAME);
 
             loadUsersWithTag(firstLetterUpper(searchQuery), F_FNAME, true,
                     firstLetterUpper(searchQuery), F_LNAME);

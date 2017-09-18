@@ -1,70 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/selectableItemBackground"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="100dp">
 
-<ImageView
-    android:id="@+id/user_profile_image"
-    android:scaleType="centerCrop"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:layout_width="@dimen/user_profile_image_small_size"
-    android:layout_height="@dimen/user_profile_image_small_size"/>
-
-    <LinearLayout
-        android:layout_toRightOf="@id/user_profile_image"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="17dp"
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="5dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="@dimen/user_profile_image_small_size"
+        android:layout_height="@dimen/user_profile_image_small_size"/>
+
+    <TextView
+        android:id="@+id/combinedReputationTextView"
+        tools:text="100 reputation"
+        android:textSize="16sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:layout_toEndOf="@id/profileImageView"
         android:layout_width="wrap_content"
-        android:layout_height="90dp">
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGreyText"/>
 
-        <TextView
-            android:id="@+id/user_rep_text_combined"
-            android:text="100 reputation"
-            android:textSize="16sp"
-            android:fontFamily="sans-serif-medium"
-            android:textAllCaps="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorGreyText"/>
-
-        <TextView
-            android:id="@+id/user_fname_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="First Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp"
-            android:includeFontPadding="false"
-            android:layout_marginTop="1dp"/>
-
-        <TextView
-            android:id="@+id/user_lname_text"
-            android:text="Last Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp"
-            android:includeFontPadding="false"
-            android:layout_marginTop="1dp"/>
-
-        <TextView
-            android:id="@+id/user_age_text"
-            android:text="Age: 23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp"
-            android:includeFontPadding="false"
-            android:layout_marginTop="1dp"/>
-    </LinearLayout>
-
-<!--    <View style="@style/dashed_divider"
-        android:layout_marginTop="4dp"
-        android:layout_below="@id/user_profile_image"/>-->
+    <TextView
+        android:id="@+id/fullNameTextView"
+        tools:text="ნიკა"
+        android:layout_toEndOf="@id/profileImageView"
+        android:layout_below="@id/combinedReputationTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:includeFontPadding="false"
+        android:layout_marginTop="1dp"/>
 
 </RelativeLayout>

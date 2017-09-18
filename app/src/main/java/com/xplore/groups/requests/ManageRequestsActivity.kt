@@ -39,7 +39,6 @@ class ManageRequestsActivity : BaseAppCompatActivity() {
     private val currentGroupRef: DatabaseReference by lazy {
         FirebaseUtil.getGroupRef(intent.getStringExtra(ARG_GROUP_ID))
     }
-
     private val groupId: String by lazy {
         intent.getStringExtra(ARG_GROUP_ID)
     }
@@ -83,7 +82,6 @@ class ManageRequestsActivity : BaseAppCompatActivity() {
         page_container.adapter = RequestsPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(page_container)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.refresh_menu, menu)
