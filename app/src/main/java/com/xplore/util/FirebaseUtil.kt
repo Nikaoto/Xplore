@@ -34,6 +34,10 @@ object FirebaseUtil {
     const val F_GROUP_NAME = "name"
     const val F_START_DATE = "start_date"
     const val F_END_DATE = "end_date"
+        // Locations nodes
+        const val F_LOCATIONS = "locations"
+        const val F_LATITUDE = "latitude"
+        const val F_LONGITUDE = "longitude"
     const val F_GRANTED_REPUTATION = "granted_reputation"
     const val F_MEMBER_IDS = "member_ids"
     const val F_INVITED_MEMBER_IDS = "invited_member_ids"

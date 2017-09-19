@@ -15,6 +15,12 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
+import com.xplore.util.FirebaseUtil.F_GROUP_NAME
+import com.xplore.util.FirebaseUtil.F_LOCATIONS
+import com.xplore.util.FirebaseUtil.F_LATITUDE
+import com.xplore.util.FirebaseUtil.F_LONGITUDE
+import com.xplore.util.FirebaseUtil.getCurrentUserRef
+import com.xplore.util.FirebaseUtil.getGroupRef
 import com.xplore.util.MapUtil
 
 /**
@@ -31,6 +37,7 @@ import com.xplore.util.MapUtil
 class GroupMapActivity : BaseMapActivity() {
 
     private val TAG = "gmap"
+    private val NO_GROUP_ID = " "
 
     companion object {
         //Arguments
@@ -74,9 +81,18 @@ class GroupMapActivity : BaseMapActivity() {
     //Holds references to each members' location so we can disable them OnDestroy()
     private val listenerMap = HashMap<String, ChildEventListener>()
 
-    private val groupId: String? by lazy {
-        intent.getStringExtra(ARG_GROUP_ID)
+    // Passed variables
+    private val groupId: String by lazy {
+        getPassedGroupId()
     }
+    private fun getPassedGroupId(): String {
+        if (intent.getStringExtra(ARG_GROUP_ID) == null) {
+            return NO_GROUP_ID
+        } else {
+            return intent.getStringExtra(ARG_GROUP_ID)
+        }
+    }
+
     private val destinationLocation: LatLng by lazy {
         LatLng(intent.getDoubleExtra(ARG_DESTINATION_LAT, 0.0),
                 intent.getDoubleExtra(ARG_DESTINATION_LNG, 0.0))
@@ -91,21 +107,8 @@ class GroupMapActivity : BaseMapActivity() {
         intent.getFloatExtra(ARG_MARKER_HUE, MapUtil.DEFAULT_MARKER_HUE)
     }
 
-    //Firebase
-    private val F_GROUPS = "groups"
-    private val F_LOCATIONS = "locations"
-    private val F_LATITUDE = "latitude"
-    private val F_LONGITUDE = "longitude"
-    private val F_USERS = "users"
-    private val F_FNAME = "fname"
-    private val F_NAME = "name"
-    private val firebaseRef = FirebaseDatabase.getInstance().reference
-    private val currentUserRef = firebaseRef.child(F_USERS).child(General.currentUserId)
-    private val currentGroupRef: DatabaseReference by lazy {
-        firebaseRef.child("$F_GROUPS/$groupId")
-    }
     private val groupLocationsRef: DatabaseReference by lazy {
-        currentGroupRef.child(F_LOCATIONS)
+        getGroupRef(groupId).child(F_LOCATIONS)
     }
     private val currentUserLocationRef: DatabaseReference by lazy {
         groupLocationsRef.child(General.currentUserId)
@@ -113,8 +116,7 @@ class GroupMapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (groupId != null) {
+        if (groupId != NO_GROUP_ID) {
             firstUploadData()
         }
     }
@@ -125,11 +127,11 @@ class GroupMapActivity : BaseMapActivity() {
     private fun firstUploadData() {
         currentUserLocationRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(locationSnapshot: DataSnapshot?) {
-                if (locationSnapshot == null || !locationSnapshot.hasChild(F_NAME)) {
-                    currentUserRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                if (locationSnapshot == null || !locationSnapshot.hasChild(F_GROUP_NAME)) {
+                    getCurrentUserRef().addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
                             dataSnapshot?.let {
-                                val fname = it.child(F_FNAME).getValue(String::class.java)
+                                val fname = it.child(F_GROUP_NAME).getValue(String::class.java)
                                 if (fname != null) {
                                     currentUserLocationRef.setValue(UserMarker(fname))
                                 }
@@ -174,7 +176,7 @@ class GroupMapActivity : BaseMapActivity() {
             googleMap.animateCamera(cameraUpdate)
         }
 
-        if (groupId != null) {
+        if (groupId != NO_GROUP_ID) {
             startListeningForGroupLocations(googleMap)
         }
     }
@@ -190,7 +192,7 @@ class GroupMapActivity : BaseMapActivity() {
     }
 
     private fun uploadLocation(location: Location) {
-        if (groupId != null) {
+        if (groupId != NO_GROUP_ID) {
             currentUserLocationRef.child(F_LATITUDE).setValue(location.latitude)
             currentUserLocationRef.child(F_LONGITUDE).setValue(location.longitude)
         }
