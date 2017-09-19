@@ -35,6 +35,7 @@ import com.xplore.R
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.base.BaseActivity
+import com.xplore.user.UploadUser
 import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 import java.io.ByteArrayOutputStream
@@ -228,8 +229,10 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             General.createNetErrorDialog(this@RegisterActivity)
     }
 
+    // Uploads all textual user data to Firebase
     open fun addUserEntryToDataBase(user: UploadUser) {
-        if (user.profile_picture_url == null || user.profile_picture_url.isEmpty()) {
+        if (user.profile_picture_url == null ||  user.profile_picture_url == "null"
+                || user.profile_picture_url.isEmpty()) {
             user.profile_picture_url = DEFAULT_IMAGE_URL
         }
         val userData = user.toMap()

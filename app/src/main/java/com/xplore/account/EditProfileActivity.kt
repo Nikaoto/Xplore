@@ -1,5 +1,6 @@
 package com.xplore.account
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -11,7 +12,9 @@ import com.xplore.util.DateUtil
 import com.xplore.General
 import com.xplore.R
 import com.xplore.TimeManager
+import com.xplore.user.UploadUser
 import com.xplore.user.User
+import com.xplore.util.FirebaseUtil
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -115,6 +118,22 @@ class EditProfileActivity : RegisterActivity() {
             makeBorderRed(emailEditText)
             Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    // Overwrites all textual data in Firebase (instead of uploading a new user)
+    override fun addUserEntryToDataBase(user: UploadUser) {
+        val ref = FirebaseUtil.getCurrentUserRef()
+
+        // Setting values
+        ref.child(FirebaseUtil.F_FNAME).setValue(user.fname)
+        ref.child(FirebaseUtil.F_LNAME).setValue(user.lname)
+        ref.child(FirebaseUtil.F_PROFILE_PIC_URL).setValue(user.profile_picture_url)
+        ref.child(FirebaseUtil.F_BIRTH_DATE).setValue(user.birth_date)
+        ref.child(FirebaseUtil.F_TEL_NUM).setValue(user.tel_num)
+        ref.child(FirebaseUtil.F_EMAIL).setValue(user.email)
+
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     private fun fieldsChanged(): Boolean {

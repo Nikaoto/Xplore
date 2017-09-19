@@ -6,7 +6,9 @@ import java.util.HashMap
 
 /**
  * Created by Nika on 9/19/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * A user class that gets uploaded to Firebase
+ *
  */
 class UploadUser(id: String,
                  fname: String,
