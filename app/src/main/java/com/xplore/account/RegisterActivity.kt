@@ -228,7 +228,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             General.createNetErrorDialog(this@RegisterActivity)
     }
 
-    private fun addUserEntryToDataBase(user: UploadUser) {
+    open fun addUserEntryToDataBase(user: UploadUser) {
         if (user.profile_picture_url == null || user.profile_picture_url.isEmpty()) {
             user.profile_picture_url = DEFAULT_IMAGE_URL
         }
@@ -239,32 +239,6 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         DBref.updateChildren(childUpdates)
         setResult(Activity.RESULT_OK)
         finish()
-    }
-
-    private inner class UploadUser(id: String,
-                                   fname: String,
-                                   lname: String,
-                                   tel_num: String,
-                                   email: String,
-                                   profile_picture_url: String,
-                                   reputation: Int,
-                                   birth_date: Int)
-        : User(id, fname, lname, tel_num, email, profile_picture_url, reputation, birth_date) {
-
-        @Exclude
-        fun toMap(): Map<String, Any> {
-            val result = HashMap<String, Any>()
-
-            result.put("fname", fname)
-            result.put("lname", lname)
-            result.put("profile_picture_url", profile_picture_url)
-            result.put("birth_date", birth_date)
-            result.put("tel_num", tel_num)
-            result.put("reputation", reputation)
-            result.put("email", email)
-
-            return result
-        }
     }
 
     fun makeBorderGreen(v: View) =  v.setBackgroundResource(R.drawable.edit_text_border)
