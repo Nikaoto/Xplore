@@ -2,13 +2,15 @@ package com.xplore.reserve
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import com.xplore.R
 import com.xplore.base.SearchFragment
 import com.xplore.database.DBManager
-import kotlinx.android.synthetic.main.search_layout3.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.*
 
 
@@ -23,6 +25,10 @@ class LibraryFragment : SearchFragment() {
     private val answerCards = ArrayList<ReserveCard>()
     private var reserveCards = ArrayList<ReserveCard>()
     private var resultIDs: ArrayList<Int> = ArrayList()
+
+    private val resultsRV: RecyclerView by lazy {
+        view.findViewById(R.id.resultsRV) as RecyclerView
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,28 +45,32 @@ class LibraryFragment : SearchFragment() {
     }
 
     fun init() {
-
-        //Clear answer list
+        // Clear answer list
         answerCards.clear()
 
-
-        //Setting layoutmanager
+        // Setting layoutmanager
         resultsRV.layoutManager = LinearLayoutManager(activity)
     }
 
     fun firstDisplayData() {
         dbManager.openDataBase()
 
-        //Load all reserveCards in a separate thread
-        Thread().run {
-            //Loading data
+        // Load all reserveCards in a separate thread
+        doAsync {
+            answerCards.addAll(dbManager.getAllReserveCards())
+
+            dbManager.close()
+            uiThread {
+                resultsRV.adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
+            }
+        }
+
+        // Load all reserveCards in a separate thread
+/*        Thread().run {
+            // Loading data
             reserveCards = dbManager.getAllReserveCards()
             answerCards.addAll(reserveCards)
-
-            //Creating & setting adapter
-            val adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
-            resultsRV.adapter = adapter
-        }
+        }*/
     }
 
     override fun setUpSearchView(newSearchView: SearchView?) {
