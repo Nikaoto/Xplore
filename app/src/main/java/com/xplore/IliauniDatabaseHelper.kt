@@ -77,6 +77,7 @@ class IliauniDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAM
                             Stand(cursor.int(Stand.COLUMN_ID),
                             cursor.str(Stand.COLUMN_NAME),
                             cursor.str(Stand.COLUMN_DESCRIPTION),
+                            cursor.getBlob(cursor.getColumnIndex(Stand.COLUMN_IMAGE)),
                             cursor.dbl(Stand.COLUMN_LAT),
                             cursor.dbl(Stand.COLUMN_LNG))
                     )

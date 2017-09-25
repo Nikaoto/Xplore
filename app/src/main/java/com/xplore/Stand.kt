@@ -7,12 +7,13 @@ package com.xplore
  *
  */
 
-data class Stand(val id: Int, val name: String, val description: String,
+data class Stand(val id: Int, val name: String, val description: String, val image: ByteArray,
                  val latitude: Double, val longitude: Double) {
 
     companion object {
         val COLUMN_ID = "id"
         val TABLE_NAME = "stands"
+        val COLUMN_IMAGE = "image"
         val COLUMN_NAME = "name"
         val COLUMN_DESCRIPTION = "description"
         val COLUMN_LAT = "latitude"
