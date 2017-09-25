@@ -10,7 +10,7 @@ import com.xplore.R
 /**
  * Created by Nika on 9/4/2017.
  *
- * Base search fragment for each fragment that uses a search
+ * Base search fragment made for other fragment that uses a search to inherit
  *
  */
 

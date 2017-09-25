@@ -47,42 +47,56 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //Kotlin
+
+    // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    //Android Support
+
+    // Android Support
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    //Google Play Services
+
+    // Google Play Services
     //NOTE: DO NOT INCLUDE GOOGLE PLAY SERVICES SEPARATELY (:app:compileDebugKotlin error arises)
     compile 'com.google.android.gms:play-services:11.0.2'
     compile 'com.google.android.gms:play-services-auth:11.0.2'
-    //Maps
+
+    // Maps
     compile 'com.google.maps.android:android-maps-utils:0.4'
-    //Material Search Bar
-    //compile 'com.github.mancj:MaterialSearchBar:0.7'
+
+    // Anko
+    compile "org.jetbrains.anko:anko-sqlite:0.10.1"
+
     //Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'jp.wasabeef:picasso-transformations:2.1.0'
-    //Crop
+
+    // Crop
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    //Material Intro
+
+    // Material Intro
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
-    //About Page
+
+    // About Page
     compile 'com.github.medyo:android-about-page:1.2.1'
-    //Firebase
+
+    // Firebase
     compile 'com.google.firebase:firebase-auth:10.2.0'
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.firebase:firebase-storage:10.0.1'
-    //Facebook Login
+
+    // Facebook Login
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    //Gson
+
+    // Gson
     compile 'com.google.code.gson:gson:2.8.0'
-    //JUint
+
+    // JUint
     testCompile 'junit:junit:4.12'
-    //MultiDex
+
+    // MultiDex
     compile 'com.android.support:multidex:1.0.1'
 }
 

@@ -23,6 +23,8 @@ class DBManager(private val mContext: Context,
                          private val TABLE: String = DB_TABLE)
     : SQLiteOpenHelper(mContext, DB_NAME, null, 1) {
 
+    //TODO turn this into single instance
+
     //Path of the database that will be created
     private val DB_PATH = "/data/data/${mContext.packageName}/databases/$DB_NAME"
     val GENERAL_TABLE = "general"
@@ -64,7 +66,6 @@ class DBManager(private val mContext: Context,
         openDataBase()
         rowCount = initRowCount()
         close()
-
     }
 
     fun initRowCount(table: String = TABLE): Int {
@@ -149,8 +150,8 @@ class DBManager(private val mContext: Context,
     //Load all reserveCards from DB
     fun getAllReserveCards(table: String = TABLE): ArrayList<ReserveCard> {
         val results = ArrayList<ReserveCard>(rowCount)
-        val cursor = DataBase.doQuery("SELECT ${NAME} FROM $table")
-        val gcursor = DataBase.doQuery("SELECT ${IMAGE}, ${TYPE} FROM $GENERAL_TABLE")
+        val cursor = DataBase.doQuery("SELECT $NAME FROM $table")
+        val gcursor = DataBase.doQuery("SELECT $IMAGE, $TYPE FROM $GENERAL_TABLE")
         try{
             if(cursor.moveToFirst() && gcursor.moveToFirst()){
                 var index = 0
