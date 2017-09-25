@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.xplore.reserve.ReserveInfoActivity
 import kotlinx.android.synthetic.main.iliauni_library.*
 import kotlinx.android.synthetic.main.stand_card.view.*
 import org.jetbrains.anko.doAsync
@@ -81,12 +82,16 @@ class IliauniFragment : Fragment() {
         override fun onBindViewHolder(holder: StandViewHolder, position: Int) {
             val ( _, name, _, image, _, _) = stands[position]
 
-            if (name.isNotEmpty()) {
+            if (name.length > 1) {
                 holder.standName.visibility = View.VISIBLE
                 holder.standName.text = name
             }
 
             holder.standImage.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.size))
+
+            holder.itemView.setOnClickListener {
+                //activity.startActivity(ReserveInfoActivity.getStartIntent(activity, results[position].id))
+            }
         }
 
         override fun getItemCount(): Int = stands.size
