@@ -233,6 +233,7 @@
     <string name="finish_hike_text">Хотите закрыть группу?</string>
     <string name="meetup">Встреча</string>
     <string name="meetup_location">Место Встречи</string>
+    <string name="iliauni_picnic">Iliauni Picnic</string>
 
     <!-- -->
 </resources>

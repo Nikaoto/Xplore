@@ -240,6 +240,13 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
             R.id.nav_library -> openHomePage()
 
+            R.id.nav_iliauni_library -> {
+                navigationView.setCheckedItem(R.id.nav_iliauni_library)
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.fragment_container, IliauniFragment()).commit()
+            }
+
             R.id.nav_my_groups ->
                 if(General.isUserSignedIn()) {
                     fragmentManager.beginTransaction()
@@ -290,6 +297,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
     }
 
+
+    //TODO check this and remove
     override fun onSaveInstanceState(outState: Bundle?) {
         //Leave empty. Bug on API 11+
     }
