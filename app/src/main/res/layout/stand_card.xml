@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/standCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="3dp"
+    android:layout_margin="@dimen/cardview_list_entry_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <!-- Stand Image -->
+        <ImageView
+            tools:src="@drawable/login_page_banner"
+            android:id="@+id/standImageView"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="fitCenter"/>
+
+        <!-- Stand Name -->
+        <TextView
+            android:id="@+id/standTextView"
+            tools:text="Xplore"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="2dp"
+            android:layout_below="@id/standImageView"
+            android:textAlignment="center"
+            android:textSize="21sp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
