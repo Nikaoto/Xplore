@@ -23,8 +23,6 @@ class LibraryFragment : SearchFragment() {
     private val dbManager: DBManager by lazy { DBManager(activity) }
 
     private val answerCards = ArrayList<ReserveCard>()
-    private var reserveCards = ArrayList<ReserveCard>()
-    private var resultIDs: ArrayList<Int> = ArrayList()
 
     private val resultsRV: RecyclerView by lazy {
         view.findViewById(R.id.resultsRV) as RecyclerView
@@ -59,18 +57,10 @@ class LibraryFragment : SearchFragment() {
         doAsync {
             answerCards.addAll(dbManager.getAllReserveCards())
 
-            dbManager.close()
             uiThread {
                 resultsRV.adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
             }
         }
-
-        // Load all reserveCards in a separate thread
-/*        Thread().run {
-            // Loading data
-            reserveCards = dbManager.getAllReserveCards()
-            answerCards.addAll(reserveCards)
-        }*/
     }
 
     override fun setUpSearchView(newSearchView: SearchView?) {
@@ -83,47 +73,28 @@ class LibraryFragment : SearchFragment() {
         return false
     }
 
-    /*
-            //TODO test after adding all reserves vs current data gathering method
-            //Gets each ReserveCard separately. Takes longer but is a smoother process.
-            private fun populateCardList(reserveCards: ArrayList<ReserveCard>, dbManager: DBManager) {
-                val table = General.DB_TABLE
-                reserveCards.clear()
-
-                Thread(Runnable {
-                    //Getting each resID separately
-                    for (i in 0..MainActivity.RESERVE_NUM - 1) {
-                        reserveCards.add(dbManager.getReserveCard(i))
-                        resultsRV.post { resultsRV.adapter.notifyDataSetChanged() }
-                    }
-                }).start()
-            }
-       */
-
     //Searches DB for query
     private fun searchListItems(query: String, dbManager: DBManager) {
-        //Resetting answers
+        // Reset answers
         answerCards.clear()
 
-        //Searching Database
-        resultIDs = dbManager.getIdFromQuery(query, DBManager.DB_TABLE)
+        // Get Ids of reserves
+        val resultIds = dbManager.getIdsFromQuery(query)
 
-        //Returning Results
-        if (resultIDs.isEmpty()) {
+        // Return results
+        if (resultIds.isEmpty()) {
             Toast.makeText(activity, R.string.search_no_results, Toast.LENGTH_SHORT).show()
-
         } else {
-            var index = 0
-            for (result in resultIDs) {
-                //result is the single ID of an answer
-                answerCards.add(index, reserveCards[result])
-                index++
-            }
-            //resultsRV.adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, iconList)
+            resultIds.mapTo(answerCards) { dbManager.getReserveCard(it) }
         }
         //Displaying the changes/results
         resultsRV.adapter.notifyDataSetChanged()
 
         hideProgressBar()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dbManager.close()
     }
 }
