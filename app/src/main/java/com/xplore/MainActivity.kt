@@ -239,7 +239,12 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
             R.id.nav_map -> startActivity(Intent(this, BaseMapActivity::class.java))
 
-            R.id.nav_library -> openHomePage()
+            R.id.nav_library -> {
+                navigationView.setCheckedItem(R.id.nav_library)
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.fragment_container, LibraryFragment()).commit()
+            }
 
             R.id.nav_iliauni_library -> {
                 navigationView.setCheckedItem(R.id.nav_iliauni_library)

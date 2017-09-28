@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import android.view.View
-import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -19,7 +18,7 @@ import kotlinx.android.synthetic.main.stand_info.*
 /**
  * Created by Nika on 9/28/2017.
  *
- * Info about a certain stand
+ * Info about a chosen stand
  *
  */
 
@@ -89,14 +88,6 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             }
     }
 
-    private fun TextView.safeSetText(txt: String?) {
-        if (txt != null && txt.isNotEmpty()) {
-            this.text = txt
-        } else {
-            ((this.parent as View).parent as View).visibility = View.GONE
-        }
-    }
-
     private fun displayData(stand: Stand) {
         // Name
         collapsingToolbar.title = stand.id
@@ -116,7 +107,7 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         reserveIconFAB.setImageResource(Icons.iliauni)
 
         // Description
-        descriptionTextView.safeSetText(stand.description)
+        descriptionTextView.text = stand.description
 
         // Show On Map
         if (stand.hasNoLocation()) {
