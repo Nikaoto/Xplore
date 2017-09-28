@@ -1,6 +1,7 @@
 package com.xplore.reserve;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 /**
  * Created by Nikaoto on 1/15/2017.
@@ -119,6 +120,7 @@ public class Reserve {
         this.location = location;
     }
 
+    @Exclude
     public boolean hasNoLocation() {
         return location.latitude < -90f || location.latitude > 90f
                 || location.longitude < -90f || location.longitude > 90f;

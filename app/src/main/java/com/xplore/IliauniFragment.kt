@@ -99,7 +99,7 @@ class IliauniFragment : Fragment() {
                     .into(holder.standImage)
 
             holder.itemView.setOnClickListener {
-                //activity.startActivity(ReserveInfoActivity.getStartIntent(activity, results[position].id))
+                activity.startActivity(StandInfoActivity.getStartIntent(activity, name))
             }
         }
 

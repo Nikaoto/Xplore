@@ -32,10 +32,14 @@ data class Stand(var id: String = "",
                  val show_title: Boolean = false,
                  val description: String = "",
                  val image_url: String = "",
+                 val banner_image_url: String = "",
                  val latitude: Double = MapUtil.DEFAULT_LAT_LNG,
                  val longitude: Double = MapUtil.DEFAULT_LAT_LNG,
                  val check_ins: HashMap<String, Boolean> = HashMap<String,Boolean>()) {
 
     @Exclude
     fun getLatLng() = LatLng(latitude, longitude)
+
+    @Exclude
+    fun hasNoLocation() = latitude == MapUtil.DEFAULT_LAT_LNG || longitude == MapUtil.DEFAULT_LAT_LNG
 }

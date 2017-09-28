@@ -33,8 +33,8 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
 
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, reserveId: Int)
-            = Intent(context, ReserveInfoActivity::class.java).putExtra("chosen_element", reserveId)
+        fun getStartIntent(context: Context, reserveId: Int): Intent
+                = Intent(context, ReserveInfoActivity::class.java).putExtra("chosen_element", reserveId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
