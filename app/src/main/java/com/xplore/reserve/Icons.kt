@@ -22,4 +22,6 @@ object Icons {
             R.drawable.ic_castle_grey600_36dp,
             R.drawable.ic_paw_grey600_36dp
     )
+
+    val iliauni = R.drawable.ic_marker_drop
 }
