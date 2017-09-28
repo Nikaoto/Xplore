@@ -1,4 +1,4 @@
-package com.xplore
+/*package com.xplore
 
 import android.content.Context
 import android.database.Cursor
@@ -100,4 +100,4 @@ class IliauniDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAM
         //
     }
 
-}
+} */

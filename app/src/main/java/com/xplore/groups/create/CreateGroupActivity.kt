@@ -320,6 +320,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                     SELECT_FROM_MAP_REQ_CODE -> {
                         chosenDestId = Group.DESTINATION_DEFAULT
 
+                        //TODO replace all 0.0 s with MapUtil.DEFAULT_LAT_LNG
                         //Getting image
                         destinationLat = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
                         destinationLng = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)
@@ -335,6 +336,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
                     }
 
                     SET_MEETUP_LOCATION_REQ_CODE -> {
+                        //TODO replace all 0.0 s with MapUtil.DEFAULT_LAT_LNG
                         //Getting chosen meetup location
                         meetupLat = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LAT, 0.0)
                         meetupLng = data.getDoubleExtra(SetDestinationMapActivity.RESULT_DEST_LNG, 0.0)

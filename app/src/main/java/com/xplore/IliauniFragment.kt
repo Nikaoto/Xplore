@@ -11,7 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import com.xplore.reserve.ReserveInfoActivity
+import com.xplore.util.FirebaseUtil
 import kotlinx.android.synthetic.main.iliauni_library.*
 import kotlinx.android.synthetic.main.stand_card.view.*
 import org.jetbrains.anko.doAsync
@@ -29,10 +34,6 @@ class IliauniFragment : Fragment() {
 
     private val TAG = "iliauniFrag"
 
-    private val database: IliauniDatabaseHelper by lazy {
-        IliauniDatabaseHelper(activity)
-    }
-
     private val stands = ArrayList<Stand>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
@@ -42,30 +43,33 @@ class IliauniFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         standsRecyclerView.layoutManager = LinearLayoutManager(activity);
+        standsRecyclerView.adapter = StandRecyclerViewAdapter()
 
         // Loading stand info from db
-        database.openDataBase()
-        doAsync {
-            stands.addAll(database.getAllStands())
+        FirebaseUtil.getOrderedStandsRef().addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                        if (dataSnapshot != null) {
+                            for (standSnapshot in dataSnapshot.children) {
+                                val stand = standSnapshot.getValue(Stand::class.java)
+                                if (stand != null) {
+                                    stand.id = standSnapshot.key
+                                    stands.add(stand)
 
-            database.close()
-            uiThread {
-                standsRecyclerView.adapter = StandRecyclerViewAdapter()
-            }
-        }
+                                    if (standsRecyclerView != null) {
+                                        standsRecyclerView.adapter.notifyDataSetChanged()
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-        /*Log.i(TAG, "stands:")
-        database.openDataBase()
-        for (stand in stands) {
-            Log.i(TAG, "name = ${stand.name}")
-            Log.i(TAG, "desc = ${stand.description}")
-            Log.i(TAG, "lat = ${stand.latitude}")
-            Log.i(TAG, "lng = ${stand.longitude}")
-        }
-        database.close()*/
+            override fun onCancelled(p0: DatabaseError?) { }
+        })
     }
 
-    private inner class StandRecyclerViewAdapter() : RecyclerView.Adapter<StandRecyclerViewAdapter.StandViewHolder>() {
+    private inner class StandRecyclerViewAdapter
+        : RecyclerView.Adapter<StandRecyclerViewAdapter.StandViewHolder>() {
 
         inner class StandViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             internal val standName: TextView = itemView.standTextView
@@ -80,14 +84,19 @@ class IliauniFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: StandViewHolder, position: Int) {
-            val ( _, name, _, image, _, _) = stands[position]
+            // Destructure current stand for loading data (more readably)
+            val (name, showTitle, _, image_url, _, _, _) = stands[position]
 
-            if (name.length > 1) {
+            // Title
+            if (showTitle) {
                 holder.standName.visibility = View.VISIBLE
                 holder.standName.text = name
             }
 
-            holder.standImage.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.size))
+            // Image
+            Picasso.with(activity)
+                    .load(image_url)
+                    .into(holder.standImage)
 
             holder.itemView.setOnClickListener {
                 //activity.startActivity(ReserveInfoActivity.getStartIntent(activity, results[position].id))
@@ -96,5 +105,4 @@ class IliauniFragment : Fragment() {
 
         override fun getItemCount(): Int = stands.size
     }
-
 }

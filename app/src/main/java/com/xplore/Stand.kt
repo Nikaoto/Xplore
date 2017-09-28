@@ -1,12 +1,18 @@
 package com.xplore
 
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.database.Exclude
+import com.xplore.util.MapUtil
+
 /**
  * Created by Nika on 9/25/2017.
  *
- * Used for ORM in Iliauni update
+ * Used for Firebase ORM in Iliauni update
  *
  */
 
+/*
+// Old Stand class for Sqlite
 data class Stand(val id: Int, val name: String, val description: String, val image: ByteArray,
                  val latitude: Double, val longitude: Double) {
 
@@ -19,4 +25,17 @@ data class Stand(val id: Int, val name: String, val description: String, val ima
         val COLUMN_LAT = "latitude"
         val COLUMN_LNG = "longitude"
     }
+}*/
+
+
+data class Stand(var id: String = "",
+                 val show_title: Boolean = false,
+                 val description: String = "",
+                 val image_url: String = "",
+                 val latitude: Double = MapUtil.DEFAULT_LAT_LNG,
+                 val longitude: Double = MapUtil.DEFAULT_LAT_LNG,
+                 val check_ins: HashMap<String, Boolean> = HashMap<String,Boolean>()) {
+
+    @Exclude
+    fun getLatLng() = LatLng(latitude, longitude)
 }

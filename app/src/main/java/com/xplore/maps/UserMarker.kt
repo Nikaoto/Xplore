@@ -16,6 +16,7 @@ class UserMarker (var name: String = "",
                   var longitude: Double = MapUtil.DEFAULT_LAT_LNG,
                   val hue: Float = MapUtil.getRandomMarkerHue()) {
 
+    // Exclude from Firebase ORM so location node isn't created / downloaded as null
     @Exclude
     fun getLocation() = LatLng(latitude, longitude)
 }

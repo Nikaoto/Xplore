@@ -6,7 +6,10 @@ import com.xplore.General
 
 /**
  * Created by Nika on 9/7/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * A singleton class meant for utility functions with Firebase.
+ * The "F_" prefix means it's the name of a Firebase node.
+ *
  */
 
 object FirebaseUtil {
@@ -84,4 +87,25 @@ object FirebaseUtil {
             })
         }
     }
+
+
+    //TODO remove everything below after iliauni picnic ends (maybe refractor for other events?)
+
+    // Iliauni Science Picnic 2017 update stuff
+    const val F_CHECKINS = "checkins"
+    const val F_DESCRIPTION = "description"
+    const val F_SHOW_TITLE = "show_title"
+    const val F_IMAGE_URL = "image_url"
+    const val F_ORDER = "order"
+    const val F_ILIAUNI_STANDS = "iliauni_stands"
+    @JvmField val standsRef = FirebaseDatabase.getInstance().getReference(F_ILIAUNI_STANDS)
+
+    @JvmStatic
+    fun getStandRef(standId: String) = standsRef.child(standId)
+
+    @JvmStatic
+    fun getOrderedStandsRef() = standsRef.orderByChild(F_ORDER)
+
+    //@JvmStatic
+    //fun checkInStand(standId: String) =
 }
