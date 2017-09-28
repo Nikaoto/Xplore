@@ -91,7 +91,6 @@
         <!-- Reserves -->
         <activity
             android:name=".reserve.ReserveInfoActivity"
-            android:label="@string/activity_library_title"
             android:screenOrientation="portrait" />
 
         <!-- Groups -->
@@ -160,6 +159,11 @@
         <activity
             android:name=".AboutActivity"
             android:label="@string/nav_about" />
+
+        <!-- TODO remove this later -->
+        <!-- Stand info for Iliauni Science Picnic 2017(temporary) -->
+        <activity android:name=".StandInfoActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.version"
