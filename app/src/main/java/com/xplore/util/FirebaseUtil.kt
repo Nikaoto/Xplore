@@ -1,8 +1,6 @@
 package com.xplore.util
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.database.*
 import com.xplore.General
 
@@ -109,8 +107,7 @@ object FirebaseUtil {
     fun getOrderedStandsRef(): Query = standsRef.orderByChild(F_ORDER)
 
     @JvmStatic
-    fun checkIn(standId: String, context: Context) {
+    fun checkIn(standId: String) {
         getStandRef(standId).child(F_CHECKINS).child(General.currentUserId).setValue(true)
-        Toast.makeText(context, "Checked Into $standId!", Toast.LENGTH_SHORT).show() //TODO string resources
     }
 }

@@ -159,7 +159,7 @@ class GroupMapActivity : BaseMapActivity() {
     private fun zoomTo(location: LatLng?, map: GoogleMap) {
         if (location != null) {
             map.moveCamera(CameraUpdateFactory.newLatLng(location))
-            map.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT.toFloat()))
+            map.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_AMOUNT))
         }
     }
 
@@ -173,7 +173,7 @@ class GroupMapActivity : BaseMapActivity() {
         if (zoomToDestination) {
             //Move camera to destination
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destinationLocation,
-                    ZOOM_AMOUNT.toFloat())
+                    ZOOM_AMOUNT)
             googleMap.animateCamera(cameraUpdate)
         }
 

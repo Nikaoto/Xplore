@@ -98,7 +98,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
             destinationMarker = googleMap.addMarker(buildMarker(destLocation, destName))
 
             // Move camera to destination
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destLocation, ZOOM_AMOUNT.toFloat())
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destLocation, ZOOM_AMOUNT)
             googleMap.animateCamera(cameraUpdate)
         }
         googleMap.setOnMapLongClickListener { latLng: LatLng ->

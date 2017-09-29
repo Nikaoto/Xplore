@@ -1,15 +1,15 @@
 package com.xplore
 
 import android.app.Fragment
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -35,6 +35,23 @@ class IliauniFragment : Fragment() {
     private val TAG = "iliauniFrag"
 
     private val stands = ArrayList<Stand>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.map, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_open_map) {
+            activity.startActivity(Intent(activity, IliauniMapActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
             : View = inflater.inflate(R.layout.iliauni_library, container, false)
@@ -87,12 +104,6 @@ class IliauniFragment : Fragment() {
             // Destructure current stand for loading data (more readably)
             val (name, showTitle, _, image_url, _, _, _) = stands[position]
 
-            // Title
-            if (showTitle) {
-                holder.standName.visibility = View.VISIBLE
-                holder.standName.text = name
-            }
-
             // Image
             if (image_url.isNotEmpty()) {
                 Picasso.with(activity)
@@ -100,6 +111,12 @@ class IliauniFragment : Fragment() {
                         .into(holder.standImage)
             } else {
                 holder.standImage.visibility = View.GONE
+            }
+
+            // Title
+            if (showTitle || image_url.isEmpty()) {
+                holder.standName.visibility = View.VISIBLE
+                holder.standName.text = name
             }
 
             holder.itemView.setOnClickListener {

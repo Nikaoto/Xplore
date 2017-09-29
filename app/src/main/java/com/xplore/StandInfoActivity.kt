@@ -33,8 +33,9 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         const val ARG_CHOSEN_STAND_ID = "chosen_stand"
 
         @JvmStatic
-        fun getStartIntent(context: Context, standId: String): Intent
-                = Intent(context, StandInfoActivity::class.java).putExtra(ARG_CHOSEN_STAND_ID, standId)
+        fun getStartIntent(context: Context, standId: String): Intent =
+                Intent(context, StandInfoActivity::class.java)
+                        .putExtra(ARG_CHOSEN_STAND_ID, standId)
     }
 
     private val standId: String by lazy {
@@ -113,17 +114,16 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         if (stand.hasNoLocation()) {
             showonmapButton.visibility = View.GONE
         } else {
+            // Show on map
             showonmapButton.setOnClickListener {
+                startActivity(
+                        IliauniMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
+            }
 
-                //TODO add zoom func to iliauni maps act
-                /*startActivity(GroupMapActivity.getStartIntent(
-                                this,
-                                true,
-                                reserve.name,
-                                reserve.location.latitude,
-                                reserve.location.longitude
-                        )
-                )*/
+            // FAB also shows on map
+            reserveIconFAB.setOnClickListener {
+                startActivity(
+                        IliauniMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
             }
         }
     }

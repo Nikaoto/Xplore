@@ -30,7 +30,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     private val TAG = "bmap"
 
-    open val ZOOM_AMOUNT = 15
+    open val ZOOM_AMOUNT = 15f
     open val UPDATE_INTERVAL = 5000L
     open val FASTEST_UPDATE_INTERVAL = 1000L
     open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY

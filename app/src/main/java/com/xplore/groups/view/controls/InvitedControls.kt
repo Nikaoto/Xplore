@@ -103,13 +103,13 @@ class InvitedControls : Fragment() {
 
     private fun acceptInvite() {
         stopListeningForInviteCancelation()
-        //Add to joined groups
+        // Add to joined groups
         joinedGroupIdsRef.child(groupId).setValue(false)
-        //Remove from invited groups
+        // Remove from invited groups
         invitedGroupIdsRef.child(groupId).removeValue()
-        //Remove user id from group's invited_member_ids
+        // Remove user id from group's invited_member_ids
         currentGroupRef.child(F_INVITED_MEMBER_IDS).child(General.currentUserId).removeValue()
-        //Add user id to group's memberIds
+        // Add user id to group's memberIds
         currentGroupRef.child(F_MEMBER_IDS).child(General.currentUserId).setValue(false)
 
         refresh()
@@ -117,9 +117,9 @@ class InvitedControls : Fragment() {
 
     private fun declineInvite() {
         stopListeningForInviteCancelation()
-        //Remove from invited groups
+        // Remove from invited groups
         invitedGroupIdsRef.child(groupId).removeValue()
-        //Remove this user from group's invited users
+        // Remove this user from group's invited users
         currentGroupRef.child("invited_member_ids").child(General.currentUserId).removeValue()
 
         refresh()
