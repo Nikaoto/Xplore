@@ -46,10 +46,6 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     private val PREFS_LANGUAGE = "prefs_lang"
     private val PREFS_STRING_LANGUAGE = "lang"
 
-    private val ENGLISH_LANGUAGE_CODE = "en"
-    private val GEORGIAN_LANGUAGE_CODE = "ka"
-    private val RUSSIAN_LANGUAGE_CODE = "ru"
-
     private val drawer: DrawerLayout by lazy {
         findViewById(R.id.drawer_layout) as DrawerLayout
     }
@@ -140,8 +136,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         if (currentLanguage.isEmpty()) {
             //This only executes if LanguageSelectAct failed to write to prefs
             //Set English as language
-            prefs.edit().putString(PREFS_STRING_LANGUAGE, ENGLISH_LANGUAGE_CODE).commit()
-            DBManager.DB_TABLE = ENGLISH_LANGUAGE_CODE
+            prefs.edit().putString(PREFS_STRING_LANGUAGE, LanguageUtil.ENGLISH_LANGUAGE_CODE).commit()
+            DBManager.DB_TABLE = LanguageUtil.ENGLISH_LANGUAGE_CODE
         } else {
             DBManager.DB_TABLE = currentLanguage
         }
@@ -237,9 +233,10 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                     popLoginMenu()
                 }
 
-            R.id.nav_map -> startActivity(Intent(this, BaseMapActivity::class.java))
+            R.id.nav_map -> startActivity(Intent(this, IliauniMapActivity::class.java))
 
             R.id.nav_library -> {
+
                 navigationView.setCheckedItem(R.id.nav_library)
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

@@ -74,10 +74,6 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
             }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun TextView.safeSetText(txt: String?) {
         if (txt != null && txt.isNotEmpty()) {
             this.text = txt

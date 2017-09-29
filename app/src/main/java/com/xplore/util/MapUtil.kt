@@ -51,7 +51,6 @@ object MapUtil {
     @JvmStatic
     fun getRandomMarkerHue(): Float {
         val hue = Random(System.currentTimeMillis()).nextFloat() * MAX_MARKER_HUE
-        Random();
         return hue
     }
 }

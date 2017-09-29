@@ -155,7 +155,7 @@ class GroupMapActivity : BaseMapActivity() {
         return markerOptions
     }
 
-    //Zooms the map to a position
+    // Zooms the map to a position
     private fun zoomTo(location: LatLng?, map: GoogleMap) {
         if (location != null) {
             map.moveCamera(CameraUpdateFactory.newLatLng(location))
@@ -211,9 +211,9 @@ class GroupMapActivity : BaseMapActivity() {
                             val marker = markerSnapshot.getValue(UserMarker::class.java)
 
                             if (marker != null) {
-                                //Creating listener for member
+                                // Creating listener for member
                                 val listener = object : ChildEventListener {
-                                    //Creates new UserMarker from data and puts it into the hashmap
+                                    // Creates new UserMarker from data and puts it into the hashmap
                                     override fun onChildAdded(data: DataSnapshot?, p1: String?) {
                                         Log.i(TAG, "added child")
                                         val mo = MarkerOptions()
@@ -222,10 +222,10 @@ class GroupMapActivity : BaseMapActivity() {
                                         mo.icon(BitmapDescriptorFactory.defaultMarker(marker.hue))
 
                                         if (!mapMarkers.containsKey(key)) {
-                                            //Add marker if it's new
+                                            // Add marker if it's new
                                             mapMarkers.put(key, googleMap.addMarker(mo))
                                         } else {
-                                            //Update position
+                                            // Update position
                                             mapMarkers[key]?.position = mo.position
                                         }
                                     }
