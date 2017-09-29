@@ -97,7 +97,7 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             Picasso.with(this)
                     .load(stand.banner_image_url)
                     .into(standImageView)
-        } else {
+        } else if (stand.image_url.isNotEmpty()){
             Picasso.with(this)
                     .load(stand.image_url)
                     .into(standImageView)

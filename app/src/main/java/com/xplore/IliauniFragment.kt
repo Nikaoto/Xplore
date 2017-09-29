@@ -94,9 +94,13 @@ class IliauniFragment : Fragment() {
             }
 
             // Image
-            Picasso.with(activity)
-                    .load(image_url)
-                    .into(holder.standImage)
+            if (image_url.isNotEmpty()) {
+                Picasso.with(activity)
+                        .load(image_url)
+                        .into(holder.standImage)
+            } else {
+                holder.standImage.visibility = View.GONE
+            }
 
             holder.itemView.setOnClickListener {
                 activity.startActivity(StandInfoActivity.getStartIntent(activity, name))
