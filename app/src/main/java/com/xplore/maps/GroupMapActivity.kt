@@ -76,9 +76,9 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
-    //Markers for member tracking
+    // Markers for member tracking
     private val mapMarkers = HashMap<String, Marker>()
-    //Holds references to each members' location so we can disable them OnDestroy()
+    // Holds references to each members' location so we can disable them OnDestroy()
     private val listenerMap = HashMap<String, ChildEventListener>()
 
     // Passed variables
@@ -163,12 +163,13 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        super.onMapReady(googleMap)
+    override fun configureMap(googleMap: GoogleMap) {
+        super.configureMap(googleMap)
 
-        //Displays marker at destinaiton
+        // Display marker at destination
         googleMap.addMarker(buildDestinationMarker())
-        //Zooms to destination
+
+        // Zoom to destination
         if (zoomToDestination) {
             //Move camera to destination
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destinationLocation,

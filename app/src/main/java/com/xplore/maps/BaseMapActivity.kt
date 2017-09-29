@@ -88,21 +88,26 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         if (checkPermissions()) {
-            startLocationUpdates()
-            googleMap.isMyLocationEnabled = true
-            googleMap.setOnMyLocationButtonClickListener {
-                if (!checkPermissions()) {
-                    requestPermissions()
-                }
-                checkLocationEnabled()
-                false
-            }
+            configureMap(googleMap)
         } else {
             requestPermissions()
         }
 
         // DEMO ONLY
         //configureKmlButton(googleMap)
+    }
+
+    // Does things to map; override this instead of onMapReady
+    open fun configureMap(googleMap: GoogleMap) {
+        startLocationUpdates()
+        googleMap.isMyLocationEnabled = true
+        googleMap.setOnMyLocationButtonClickListener {
+            if (!checkPermissions()) {
+                requestPermissions()
+            }
+            checkLocationEnabled()
+            false
+        }
     }
 
     private fun createLocationRequest(): LocationRequest {
@@ -119,6 +124,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         return builder.build()
     }
 
+    // Does whatever is inside when current location is changed
     open val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult?.let {
