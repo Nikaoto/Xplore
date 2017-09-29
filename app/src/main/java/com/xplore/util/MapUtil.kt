@@ -30,6 +30,8 @@ object MapUtil {
     //Used when calculating random hue for map markers
     const val MAX_MARKER_HUE = 330F
 
+    val rand by lazy { Random(System.currentTimeMillis()) }
+
     @JvmStatic
     fun getMapUrl(lat: Double, lng: Double,
                   width: Int = DEFAULT_WIDTH, height: Int = DEFAULT_HEIGHT,
@@ -50,7 +52,7 @@ object MapUtil {
 
     @JvmStatic
     fun getRandomMarkerHue(): Float {
-        val hue = Random(System.currentTimeMillis()).nextFloat() * MAX_MARKER_HUE
-        return hue
+        rand.nextFloat()
+        return rand.nextFloat() * MAX_MARKER_HUE
     }
 }
