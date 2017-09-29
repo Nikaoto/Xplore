@@ -165,6 +165,10 @@
         <activity android:name=".StandInfoActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Shows stands and check-ins for Iliauni Science Picnic -->
+        <activity android:name=".IliauniMapActivity"
+            android:label="@string/nav_map"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
