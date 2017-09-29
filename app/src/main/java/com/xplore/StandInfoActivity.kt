@@ -57,6 +57,7 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                         if (dataSnapshot != null) {
                             val stand = dataSnapshot.getValue(Stand::class.java)
                             if (stand != null) {
+                                stand.id = dataSnapshot.key
                                 displayData(stand)
                             } else {
                                 finish()
@@ -91,7 +92,9 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private fun displayData(stand: Stand) {
         // Name
-        collapsingToolbar.title = stand.id
+        if (stand.show_title) {
+            collapsingToolbar.title = stand.id
+        }
 
         // Image
         if (stand.banner_image_url.isNotEmpty()) {

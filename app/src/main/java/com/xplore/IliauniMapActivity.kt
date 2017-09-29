@@ -1,5 +1,6 @@
 package com.xplore
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -137,10 +138,35 @@ class IliauniMapActivity : BaseMapActivity() {
                                 BitmapDescriptorFactory.fromResource(R.drawable.ic_flag))
 
                         value.checkedIn = true
+
+                        if (everyStandCheckedIn()) {
+                            showVictoryMessage()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun everyStandCheckedIn(): Boolean {
+        for ((_, value) in standMarkers) {
+            if (!value.checkedIn) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun showVictoryMessage() {
+        AlertDialog.Builder(this@IliauniMapActivity)
+                .setTitle("ყოჩაღ!")
+                .setMessage("თქვენ დაჩექინდით ყველა მონიშნულ სტენდში. " +
+                        "დაბრუნდით Xplore-ის სტენდთან და მიიღეთ საჩუქარი " +
+                        "ჩვენგან! გვანახეთ ეს შეტყობინება, ამის სქრინი ან " +
+                        "შემდეგი კოდი ${General.currentUserId} თქვენი " +
+                        "გმარჯვების დასტურად!")
+                .setPositiveButton(R.string.okay, null)
+                .create().show()
     }
 
     private class StandMarker (val latitude: Double = MapUtil.DEFAULT_LAT_LNG,
