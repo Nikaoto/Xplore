@@ -37,7 +37,7 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 = Intent(context, StandInfoActivity::class.java).putExtra(ARG_CHOSEN_STAND_ID, standId)
     }
 
-    val standId: String by lazy {
+    private val standId: String by lazy {
         intent.getStringExtra(ARG_CHOSEN_STAND_ID)
     }
 
@@ -115,6 +115,7 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         } else {
             showonmapButton.setOnClickListener {
 
+                //TODO add zoom func to iliauni maps act
                 /*startActivity(GroupMapActivity.getStartIntent(
                                 this,
                                 true,

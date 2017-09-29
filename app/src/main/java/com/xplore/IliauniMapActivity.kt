@@ -120,9 +120,10 @@ class IliauniMapActivity : BaseMapActivity() {
                     val dist = value.getDistanceFrom(locationResult.lastLocation)
                     Log.i(TAG, "Distance from $key is $dist")
 
-                    if (dist <= CHECK_IN_DISTANCE) {
-                        Toast.makeText(this@IliauniMapActivity,
-                                "Checked Into $key!", Toast.LENGTH_SHORT).show()
+                    if (!value.checkedIn) {
+                        if (dist <= CHECK_IN_DISTANCE) {
+                            FirebaseUtil.checkIn(key, this@IliauniMapActivity)
+                        }
                     }
                 }
             }
