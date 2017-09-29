@@ -250,8 +250,8 @@ class DBManager(private val mContext: Context,
         } else return 0
     }
 
-    //Finds the Id of an entry by every field in Database and returns it
-    fun getIdFromQuery(query: String, table: String): ArrayList<Int> {
+    // Finds the Id of an entry by every field in Database and returns it
+    fun getIdsFromQuery(query: String, table: String = TABLE): ArrayList<Int> {
         val answers = ArrayList<Int>()
 
         //TODO add categorized search
@@ -271,7 +271,7 @@ class DBManager(private val mContext: Context,
             }
         }
         catch (e: Exception){
-            Log.println(Log.ERROR, "database", "getIdFromQuery failed")
+            Log.println(Log.ERROR, "database", "getIdsFromQuery failed")
         }
         finally {
             cursor.close()
