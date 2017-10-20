@@ -1,5 +1,6 @@
 package com.xplore
 
+import android.app.Activity
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
@@ -144,11 +145,10 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     private fun openHomePage() {
-        navigationView.setCheckedItem(R.id.nav_iliauni_library)
+        navigationView.setCheckedItem(R.id.nav_library)
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragment_container, IliauniFragment()).commit()
-        //TODO^ iliauni: change to LibraryFragment() and nav_library after event ends
+                .replace(R.id.fragment_container, LibraryFragment()).commit()
     }
 
     override fun onResume() {
@@ -223,6 +223,23 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
     private fun popLoginMenu() = General.popSignInMenu(0.8, 0.6, currentFocus, this)
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        data?.let {
+            super.onActivityResult(requestCode, resultCode, it)
+            if (requestCode == LibraryFragment.REQ_CODE_RESERVE_INFO) {
+                val searchDestId = it.getIntExtra(LibraryFragment.ARG_GROUP_SEARCH_DESTINATION_ID,
+                        -1)
+
+                if (resultCode == Activity.RESULT_OK) {
+                    fragmentManager.beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .replace(R.id.fragment_container,
+                                    SearchGroupsFragment.newInstance(searchDestId)).commit()
+                }
+            }
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when (id) {
@@ -233,7 +250,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                     popLoginMenu()
                 }
 
-            R.id.nav_map -> startActivity(Intent(this, IliauniMapActivity::class.java))
+            R.id.nav_map -> startActivity(Intent(this, BaseMapActivity::class.java))
 
             R.id.nav_library -> {
 
@@ -241,13 +258,6 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.fragment_container, LibraryFragment()).commit()
-            }
-
-            R.id.nav_iliauni_library -> {
-                navigationView.setCheckedItem(R.id.nav_iliauni_library)
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .replace(R.id.fragment_container, IliauniFragment()).commit()
             }
 
             R.id.nav_my_groups ->

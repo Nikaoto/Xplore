@@ -13,13 +13,6 @@
             android:id="@+id/nav_library"
             android:title="@string/nav_lib"
             android:icon="@drawable/ic_nav_library"/>
-
-        <!-- TODO remove this after Iliauni event ends -->
-        <item
-            android:checkable="true"
-            android:id="@+id/nav_iliauni_library"
-            android:title="@string/iliauni_picnic"
-            android:icon="@drawable/ic_iliauni"/>
     </group>
 
     <item

@@ -162,11 +162,11 @@
 
         <!-- TODO remove this later -->
         <!-- Stand info for Iliauni Science Picnic 2017(temporary) -->
-        <activity android:name=".StandInfoActivity"
+        <activity android:name=".iliauni.StandInfoActivity"
             android:screenOrientation="portrait" />
 
         <!-- Shows stands and check-ins for Iliauni Science Picnic -->
-        <activity android:name=".IliauniMapActivity"
+        <activity android:name=".iliauni.IliauniMapActivity"
             android:label="@string/nav_map"/>
 
         <meta-data

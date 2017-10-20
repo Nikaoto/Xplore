@@ -1,5 +1,6 @@
 package com.xplore.reserve
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.v4.view.ViewCompat
 import android.view.View
 import android.widget.TextView
+import com.xplore.General
 import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.database.DBManager
@@ -20,7 +22,7 @@ import kotlinx.android.synthetic.main.reserve_info.*
 * ეს მარტივი ფრაგმენტი ანახებს ნაკრძალის ინფორმაციას
 *
 * Description:
-* This is a simple fragment that shows info about a certain reserve
+* This is a simple fragment that shows info of a certain reserve
 *
 */
 
@@ -32,9 +34,16 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
     private var isImageHidden = false
 
     companion object {
+        private const val ARG_CHOSEN_ELEMENT = "chosen_element"
+
         @JvmStatic
         fun getStartIntent(context: Context, reserveId: Int): Intent
-                = Intent(context, ReserveInfoActivity::class.java).putExtra("chosen_element", reserveId)
+                = Intent(context, ReserveInfoActivity::class.java)
+                    .putExtra(ARG_CHOSEN_ELEMENT, reserveId)
+    }
+
+    private val chosenReserve: Int by lazy {
+        intent.getIntExtra(ARG_CHOSEN_ELEMENT, 0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,16 +52,15 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
         appBar.addOnOffsetChangedListener(this)
-        //Sets up Layout acording to info from chosen Reserve
-        val chosenReserve = intent.getIntExtra("chosen_element", 0)
+        // Set up Layout according to info from chosen Reserve
         displayData(LoadReserve(chosenReserve))
     }
 
-    //Loads reserve from database by Id and returns it
+    // Loads reserve from database by Id and returns it
     private fun LoadReserve(resId: Int): Reserve {
         val dbManager = DBManager(this)
         dbManager.openDataBase()
-        //Getting reserve info from DB
+        // Get reserve info from DB
         return dbManager.getReserve(resId)
     }
 
@@ -128,5 +136,23 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
                 )
             }
         }
+
+        // Find Hikes With This Destination
+        if (General.isUserSignedIn()) {
+            findTripsButton.setOnClickListener {
+                val resultIntent = Intent()
+                resultIntent.putExtra(LibraryFragment.ARG_GROUP_SEARCH_DESTINATION_ID,
+                        chosenReserve)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
+        } else {// TODO make this pop signin dialog?
+            findTripsButton.isEnabled = false
+        }
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        super.onBackPressed()
     }
 }

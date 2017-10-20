@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.iliauni
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude

@@ -39,7 +39,9 @@ class ReserveCardRecyclerViewAdapter(val results: List<ReserveCard>,
         holder.reserveIcon.setImageResource(icons[results[position].iconId])
         holder.itemView.setOnClickListener {
             General.hideKeyboard(activity)
-            activity.startActivity(ReserveInfoActivity.getStartIntent(activity, results[position].id))
+            activity.startActivityForResult(
+                    ReserveInfoActivity.getStartIntent(activity, results[position].id),
+                    LibraryFragment.REQ_CODE_RESERVE_INFO)
         }
     }
 

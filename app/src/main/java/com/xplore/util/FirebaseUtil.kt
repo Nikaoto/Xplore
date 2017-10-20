@@ -39,6 +39,7 @@ object FirebaseUtil {
 
     // Group nodes
     const val F_GROUP_NAME = "name"
+    const val F_DESTINATION_ID = "destination_id"
     const val F_START_DATE = "start_date"
     const val F_END_DATE = "end_date"
         // Locations nodes

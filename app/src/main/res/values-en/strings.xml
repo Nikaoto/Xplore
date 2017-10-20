@@ -242,5 +242,6 @@
     <string name="meetup">Meet Up</string>
     <string name="meetup_location">Meetup Location</string>
     <string name="iliauni_picnic">Iliauni Picnic</string>
+    <string name="find_hikes_with_this_destination">View hikes</string>
 
 </resources>

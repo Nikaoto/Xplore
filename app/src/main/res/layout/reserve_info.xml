@@ -231,9 +231,25 @@
 
             </android.support.v7.widget.CardView>
 
+
+            <!-- Show on map -->
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/showonmapButton"
                 android:text="@string/show_on_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                app:backgroundTint="@color/colorAccent"
+                android:padding="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+
+            <!-- Find trips with this destination -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/findTripsButton"
+                android:text="@string/find_hikes_with_this_destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"

@@ -234,6 +234,7 @@
     <string name="meetup">Встреча</string>
     <string name="meetup_location">Место Встречи</string>
     <string name="iliauni_picnic">Iliauni Picnic</string>
+    <string name="find_hikes_with_this_destination">Найдите походы</string>
 
     <!-- -->
 </resources>

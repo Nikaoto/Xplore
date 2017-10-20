@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.iliauni
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.R
 import com.xplore.base.BaseActivity
 import com.xplore.reserve.Icons
 import com.xplore.util.FirebaseUtil

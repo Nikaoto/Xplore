@@ -1,14 +1,19 @@
 package com.xplore.reserve
 
+import android.app.Activity
+import android.app.FragmentTransaction
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import com.xplore.R
 import com.xplore.base.SearchFragment
 import com.xplore.database.DBManager
+import com.xplore.groups.search.SearchGroupsFragment
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -19,6 +24,13 @@ import java.util.*
  */
 
 class LibraryFragment : SearchFragment() {
+
+    companion object {
+        const val REQ_CODE_RESERVE_INFO = 1
+        const val ARG_GROUP_SEARCH_DESTINATION_ID = "search_dest_id"
+    }
+
+    private lateinit var act: Activity
 
     private val dbManager: DBManager by lazy { DBManager(activity) }
 
@@ -53,12 +65,14 @@ class LibraryFragment : SearchFragment() {
     fun firstDisplayData() {
         dbManager.openDataBase()
 
+        act = activity
+
         // Load all reserveCards in a separate thread
         doAsync {
             answerCards.addAll(dbManager.getAllReserveCards())
 
             uiThread {
-                resultsRV.adapter = ReserveCardRecyclerViewAdapter(answerCards, activity, Icons.grey)
+                resultsRV.adapter = ReserveCardRecyclerViewAdapter(answerCards, act, Icons.grey)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.xplore.groups.search;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import com.xplore.user.User;
 
 import java.util.ArrayList;
 
+import static com.xplore.util.FirebaseUtil.F_DESTINATION_ID;
 import static com.xplore.util.FirebaseUtil.F_GROUP_NAME;
 import static com.xplore.util.FirebaseUtil.F_MEMBER_IDS;
 import static com.xplore.util.FirebaseUtil.F_START_DATE;
@@ -38,8 +41,18 @@ import static com.xplore.util.FirebaseUtil.usersRef;
  * Created by Nikaoto on 2/8/2017.
  */
 
-//TODO add searching
 public class SearchGroupsFragment extends SearchFragment {
+
+
+    private static String ARG_DESTINATION_ID = "query";
+
+    public static SearchGroupsFragment newInstance(int destId) {
+        Fragment f = new SearchGroupsFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_DESTINATION_ID, destId);
+        f.setArguments(args);
+        return (SearchGroupsFragment) f;
+    }
 
     private boolean firstLoad;
 
@@ -67,7 +80,7 @@ public class SearchGroupsFragment extends SearchFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Opens CreateGroupFragment
+                // Opens CreateGroupFragment
                 startActivity(CreateGroupActivity.Companion.getStartIntent(getActivity()));
             }
         });
@@ -119,37 +132,62 @@ public class SearchGroupsFragment extends SearchFragment {
         return (int) groupSnapshot.child(F_MEMBER_IDS).getChildrenCount();
     }
 
+    // Loads all groups (with searching by destination or just viewing)
     private void loadData() {
-        //TODO change this after adding sort by options
-        groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    //Geting group info
-                    GroupCard tempCard = snapshot.getValue(GroupCard.class);
-                    //group id
-                    tempCard.setId(snapshot.getKey());
-                    tempCard.setMemberCount(getMemberCount(snapshot));
-                    //Leader id
-                    //TODO change when multiple leaders are added
-                    for (DataSnapshot memberId : snapshot.child(F_MEMBER_IDS).getChildren()) {
-                        if (memberId.getValue(Boolean.class)) {
-                            tempCard.setLeaderId(memberId.getKey());
-                        }
-                    }
+        // Check if searching from reserve
+        Bundle b = getArguments();
+        if (b != null && b.getInt(ARG_DESTINATION_ID, -1) != -1) {
+            int destId = b.getInt(ARG_DESTINATION_ID, -1);
 
-                    //adding it to the list
-                    groupCards.add(tempCard);
-                }
-                if (getActivity() != null) {
-                    sortLeaderInfo();
+            // TODO add some sign that the user searched with the reserve
+
+            groupsRef.orderByChild(F_DESTINATION_ID).equalTo(destId).limitToFirst(100)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            loadDataFromSnapshot(dataSnapshot);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+        } else {
+
+            //TODO change this after adding sort by options
+            groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            loadDataFromSnapshot(dataSnapshot);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+        }
+    }
+
+    // Loads groups from snapshot
+    private void loadDataFromSnapshot(DataSnapshot dataSnapshot) {
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            //Geting group info
+            GroupCard tempCard = snapshot.getValue(GroupCard.class);
+            //group id
+            tempCard.setId(snapshot.getKey());
+            tempCard.setMemberCount(getMemberCount(snapshot));
+            //Leader id
+            //TODO change when multiple leaders are added
+            for (DataSnapshot memberId : snapshot.child(F_MEMBER_IDS).getChildren()) {
+                if (memberId.getValue(Boolean.class)) {
+                    tempCard.setLeaderId(memberId.getKey());
                 }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
+            //adding it to the list
+            groupCards.add(tempCard);
+        }
+        if (getActivity() != null) {
+            sortLeaderInfo();
+        }
     }
 
     //Goes over every user in firebase to check which of them are leaders (to get leader image)
@@ -201,7 +239,7 @@ public class SearchGroupsFragment extends SearchFragment {
 
         // Search by group name
         // TODO add more search filters
-        groupsRef.orderByChild(F_GROUP_NAME).startAt(query).endAt(query+"\uf8ff").limitToFirst(100)
+        groupsRef.orderByChild(F_GROUP_NAME).startAt(query+"\uf8ff").limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

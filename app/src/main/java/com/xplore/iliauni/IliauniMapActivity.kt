@@ -1,4 +1,4 @@
-package com.xplore
+package com.xplore.iliauni
 
 import android.app.AlertDialog
 import android.content.Context
@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
+import com.xplore.General
+import com.xplore.R
 import com.xplore.maps.BaseMapActivity
 import com.xplore.util.FirebaseUtil
 import com.xplore.util.MapUtil
@@ -131,7 +133,7 @@ class IliauniMapActivity : BaseMapActivity() {
                         FirebaseUtil.checkIn(key)
 
                         Toast.makeText(this@IliauniMapActivity, "Checked Into $key!",
-                                Toast.LENGTH_SHORT).show() //TODO string resources
+                                Toast.LENGTH_SHORT).show()
 
                         // Place flag instead of pin
                         value.mapMarker?.setIcon(

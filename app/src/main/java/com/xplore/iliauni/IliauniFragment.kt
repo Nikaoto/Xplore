@@ -1,26 +1,21 @@
-package com.xplore
+package com.xplore.iliauni
 
 import android.app.Fragment
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.TextView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import com.xplore.reserve.ReserveInfoActivity
+import com.xplore.R
 import com.xplore.util.FirebaseUtil
 import kotlinx.android.synthetic.main.iliauni_library.*
 import kotlinx.android.synthetic.main.stand_card.view.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 
 /**

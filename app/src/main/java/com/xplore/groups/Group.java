@@ -1,5 +1,7 @@
 package com.xplore.groups;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.HashMap;
 
 /**
@@ -46,6 +48,7 @@ public class Group {
         return start_time.length() != 0;
     }
 
+    @Exclude
     public boolean isDestinationReserve() {
         return destination_id != DESTINATION_DEFAULT;
     }
