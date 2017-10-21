@@ -30,19 +30,19 @@ class LanguageSelectActivity : BaseActivity() {
         setContentView(R.layout.intro_language_select)
 
         Log.i(TAG, "oncreate language select")
-        //Georgian Language selected
+        // Georgian Language selected
         georgianCard.setOnClickListener {
             LanguageUtil.changeLocale(LanguageUtil.GEORGIAN_LANGUAGE_CODE, this)
             startWelcomeActivity()
         }
 
-        //English Language selected
+        // English Language selected
         englishCard.setOnClickListener {
             LanguageUtil.changeLocale(LanguageUtil.ENGLISH_LANGUAGE_CODE, this)
             startWelcomeActivity()
         }
 
-        //Russian Language selected
+        // Russian Language selected
         russianCard.setOnClickListener {
             LanguageUtil.changeLocale(LanguageUtil.RUSSIAN_LANGUAGE_CODE, this)
             startWelcomeActivity()

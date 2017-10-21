@@ -44,6 +44,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.xplore.ApiManager;
 import com.xplore.General;
+import com.xplore.MainActivity;
 import com.xplore.R;
 import com.xplore.base.BaseAppCompatActivity;
 
@@ -61,6 +62,12 @@ import static com.xplore.General.currentUserId;
 
 
 public class SignInActivity extends BaseAppCompatActivity {
+
+    public static String ARG_SHOULD_LAUNCH_MAIN_ACT = "shouldLaunchMainAct";
+    public static Intent getStartIntent(Context context, boolean shouldLaunchMainAct) {
+        return new Intent(context, SignInActivity.class)
+                .putExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, shouldLaunchMainAct);
+    }
 
     private static String TAG = "brejk";
 
@@ -93,8 +100,11 @@ public class SignInActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean shouldShowBackBtn = !getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false);
+        if (shouldShowBackBtn) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         setTitle(R.string.activity_authorization_title);
@@ -244,7 +254,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                 else {
                     accountStatus = JUST_LOGGED_IN;
                     Toast.makeText(SignInActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
-                    finish();
+                    finishActivity();
                 }
             }
 
@@ -305,7 +315,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             case REQ_REGISTER: {
                 Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
                 General.accountStatus = General.JUST_LOGGED_IN;
-                finish();
+                finishActivity();
                 break;
             }
         }
@@ -427,6 +437,13 @@ public class SignInActivity extends BaseAppCompatActivity {
         }
     }
 
+    private void finishActivity() {
+        finish();
+        if (getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false)) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
     private void makeBorderRed(EditText et) {
         et.setBackgroundResource(R.drawable.edit_text_border_red);
     }
@@ -457,9 +474,7 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (popupWindow == null) {
-            super.onBackPressed();
-        } else if (!popupWindow.isShowing()) {
+        if (popupWindow == null || !popupWindow.isShowing()) {
             super.onBackPressed();
         }
     }
@@ -467,7 +482,15 @@ public class SignInActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(accountStatus > 0) //If Logged in
+        if(General.isUserLoggedIn()) {
+            if (popupWindow != null && popupWindow.isShowing()) {
+                popupWindow.dismiss();
+            }
+        }
+
+        /*
+        if(General.isUserLoggedIn()) {
             popupWindow.dismiss();
+        }*/
     }
 }

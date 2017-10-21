@@ -45,7 +45,7 @@ public class SearchGroupsFragment extends SearchFragment {
 
 
     private static String ARG_DESTINATION_ID = "query";
-
+    // Used to search for groups by destination
     public static SearchGroupsFragment newInstance(int destId) {
         Fragment f = new SearchGroupsFragment();
         Bundle args = new Bundle();
@@ -113,7 +113,9 @@ public class SearchGroupsFragment extends SearchFragment {
 
     @Override
     public void setUpSearchView(SearchView newSearchView) {
-        newSearchView.setQueryHint(getResources().getString(R.string.search_groups_hint));
+        if (getActivity() != null) {
+            newSearchView.setQueryHint(getResources().getString(R.string.search_groups_hint));
+        }
     }
 
     private void prepareToLoadData() {

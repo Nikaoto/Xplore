@@ -31,6 +31,6 @@
     <color name="slide3_background">#ec3c4c</color>
     <color name="slide3_background_dark">#9e2733</color>
     <color name="slide4_background">#F7C873</color>
-    <color name="slide5_background_dark">#ff263238</color>
+    <color name="slide4_background_dark">#ff263238</color>
 
 </resources>

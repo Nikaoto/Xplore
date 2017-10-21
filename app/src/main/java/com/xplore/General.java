@@ -123,11 +123,16 @@ public class General {
         return getDateInt(y, m, d);
     }
 
+    public static boolean isUserLoggedIn() {
+        return accountStatus != NOT_LOGGED_IN;
+    }
+
+    // DOES NOT REURN CORRECT ANSWER, USED FOR SOMETHING ELSE
     public static boolean isUserSignedIn() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             currentUserId = user.getUid();
-            //Try to authenticate with firebase
+            // Try to authenticate with firebase
             return true;
         } else {
             return false;

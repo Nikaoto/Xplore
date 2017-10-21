@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.account.SignInActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
@@ -127,7 +128,6 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             refreshUserProfileViews(this)
         }
 
-        openHomePage()
         General.hideKeyboard(this)
     }
 
@@ -148,7 +148,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         navigationView.setCheckedItem(R.id.nav_library)
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragment_container, LibraryFragment()).commit()
+                .replace(R.id.fragment_container, SearchGroupsFragment()).commit()
     }
 
     override fun onResume() {
@@ -164,17 +164,18 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             recreate()
         }
 
-        //Reloads user related content when new login occurs
+        // Reloads user related content when new login occurs
         if (General.accountStatus == General.JUST_LOGGED_IN) {
             notificationManager.reset()
             refreshUserProfileViews(this)
             General.accountStatus = General.LOGGED_IN
         }
 
-        //Disables notification manager and opens homepage if logged out / not logged in
+        // Disables notification manager and opens homepage if logged out / not logged in
         if (General.accountStatus == General.NOT_LOGGED_IN && !appJustLaunched) {
             notificationManager.disable()
-            openHomePage()
+            finish()
+            startActivity(SignInActivity.getStartIntent(this, true))
         }
 
         //Clears user related content whe logged out

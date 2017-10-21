@@ -138,7 +138,7 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         }
 
         // Find Hikes With This Destination
-        if (General.isUserSignedIn()) {
+        if (General.isUserLoggedIn()) {
             findTripsButton.setOnClickListener {
                 val resultIntent = Intent()
                 resultIntent.putExtra(LibraryFragment.ARG_GROUP_SEARCH_DESTINATION_ID,

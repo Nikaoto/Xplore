@@ -8,9 +8,9 @@ import android.util.Log
 import com.heinrichreimersoftware.materialintro.app.IntroActivity
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide
-import com.xplore.MainActivity
 import com.xplore.R
 import com.xplore.StartingActivity
+import com.xplore.account.SignInActivity
 import com.xplore.base.XploreContextWrapper
 import com.xplore.settings.LanguageUtil
 
@@ -18,7 +18,7 @@ import com.xplore.settings.LanguageUtil
  * Created by Nik on 8/24/2017.
  *
  * This is the welcome/tutorial screen for first time users; This is the first real interaction that
- * the user has with Xplore, so make it count! (First impressions'n all, y'know)
+ * the user has with Xplore, so make it count!
  *
  */
 
@@ -26,8 +26,8 @@ class WelcomeActivity : IntroActivity() {
 
     val TAG = "welcome_act"
 
-    //If this is true, main act is launched when this activity finishes
-    private var shouldOpenMainAct = false
+    // If this is true, signin act is launched when this activity finishes
+    private var shouldOpenSignInAct = false
 
     override fun attachBaseContext(newBase: Context) {
         val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))
@@ -43,17 +43,17 @@ class WelcomeActivity : IntroActivity() {
         buttonNextFunction = BUTTON_NEXT_FUNCTION_NEXT_FINISH
 
         addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(position: Int, positionOffset: Float,
+                                        positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
                 if (position == slides.size - 1) {
                     Log.i(TAG, "last slide")
-
                     if (StartingActivity.shouldShowWelcomeScreen(this@WelcomeActivity)) {
                         StartingActivity.stopShowingWelcomeScreen(this@WelcomeActivity)
-                        shouldOpenMainAct = true
+                        shouldOpenSignInAct = true
                     }
                 }
             }
@@ -81,13 +81,23 @@ class WelcomeActivity : IntroActivity() {
                 .backgroundDark(R.color.slide3_background_dark)
                 .fragment(R.layout.slide3_fragment, R.style.Theme_AppCompat_Light)
                 .build())
+
+/*        val loginSlide = FragmentSlide.Builder()
+                .background(R.color.slide4_background)
+                .backgroundDark(R.color.slide4_background_dark)
+                .fragment(R.layout.signin, R.style.Theme_AppCompat_Light)
+                .canGoForward(General.isUserSignedIn())
+                .build()
+
+        addSlide(loginSlide)*/
+
     }
 
-    //Opens main act if shouldOpenMainAct
+    // Opens main act if shouldOpenSignInAct
     override fun onDestroy() {
         super.onDestroy()
-        if (shouldOpenMainAct) {
-            startActivity(Intent(this, MainActivity::class.java))
+        if (shouldOpenSignInAct) {
+            startActivity(SignInActivity.getStartIntent(this, true))
         }
     }
 }

@@ -252,7 +252,7 @@
     <string name="error_email_taken">ელ-ფოსტა დაკავებულია</string>
     <string name="log_out">გამოსვლა</string>
     <string name="logged_in">ავტორიზებულია</string>
-    <string name="logged_out">სისტემიდან გამოხვედით</string>
+    <string name="logged_out">Xplore-დან გამოხვედით</string>
 
     <!-- Language Settings-->
     <string name="current_language_georgian">ქართული</string>
