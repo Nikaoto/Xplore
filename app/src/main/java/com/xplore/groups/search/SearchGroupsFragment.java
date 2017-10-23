@@ -57,11 +57,16 @@ public class SearchGroupsFragment extends SearchFragment {
     private boolean firstLoad;
 
     private RecyclerView resultsRV;
+    private FloatingActionButton fab;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
 
-    private Boolean allowRefresh = false;
+    // Used to refresh the whole fragment in onResume to update cards
+    private boolean allowRefresh = false;
+
+    // Determines whether the data should reload when user clears search text
+    private boolean canReset = false;
 
     @Nullable
     @Override
@@ -76,7 +81,7 @@ public class SearchGroupsFragment extends SearchFragment {
         TimeManager.refreshGlobalTimeStamp();
 
         // FAB
-        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
+        fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,19 +107,24 @@ public class SearchGroupsFragment extends SearchFragment {
             }
         });
 
-        // Checking internet and displaying data
-        if(!General.isNetConnected(getActivity())) {
-            General.createNetErrorDialog(getActivity());
-        } else if (getActivity() != null) {
-            prepareToLoadData();
-            loadData();
-        }
+        firstLoadData();
     }
 
     @Override
     public void setUpSearchView(SearchView newSearchView) {
         if (getActivity() != null) {
             newSearchView.setQueryHint(getResources().getString(R.string.search_groups_hint));
+        }
+    }
+
+    // Checks internet and displays data
+    private void firstLoadData() {
+        canReset = false;
+        if(!General.isNetConnected(getActivity())) {
+            General.createNetErrorDialog(getActivity());
+        } else if (getActivity() != null) {
+            prepareToLoadData();
+            loadData();
         }
     }
 
@@ -237,11 +247,12 @@ public class SearchGroupsFragment extends SearchFragment {
 
     @Override
     public boolean onSearch(@NonNull String query) {
+        canReset = true;
         prepareToLoadData();
 
         // Search by group name
         // TODO add more search filters
-        groupsRef.orderByChild(F_GROUP_NAME).startAt(query+"\uf8ff").limitToFirst(100)
+        groupsRef.orderByChild(F_GROUP_NAME).startAt(query).endAt(query+"\uf8ff").limitToFirst(100)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -283,6 +294,14 @@ public class SearchGroupsFragment extends SearchFragment {
         return super.onSearch(query);
     }
 
+    @Override
+    public boolean onReset() {
+        if (canReset) {
+            firstLoadData();
+        }
+        return super.onReset();
+    }
+
     private void postLoadData() {
         firstLoad = false;
         hideProgressBar();
@@ -295,7 +314,7 @@ public class SearchGroupsFragment extends SearchFragment {
             postLoadData();
         }
 
-        //Checking if refresh needed
+        // Checking if refresh needed
         if (allowRefresh) {
             allowRefresh = false;
             getFragmentManager().beginTransaction()

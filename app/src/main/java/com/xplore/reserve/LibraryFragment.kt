@@ -84,7 +84,15 @@ class LibraryFragment : SearchFragment() {
     override fun onSearch(query: String): Boolean {
         showProgressBar()
         searchListItems(query, dbManager)
-        return false
+        return super.onSearch(query)
+    }
+
+    override fun onReset(): Boolean {
+        if (resultsRV.adapter.itemCount < dbManager.rowCount) {
+            init()
+            firstDisplayData()
+        }
+        return super.onReset()
     }
 
     //Searches DB for query

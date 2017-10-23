@@ -37,12 +37,29 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         newSearchView?.queryHint = resources.getString(R.string.search_hint)
     }
 
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText == null || newText.trim().isEmpty()) {
+            onReset()
+        }
+        return false
+    }
+
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query == null || query.trim().isEmpty()) {
             return false
         } else {
             return onSearch(query)
         }
+    }
+
+    open fun onSearch(query: String): Boolean {
+        // Here we write searching logic
+        return false
+    }
+
+    open fun onReset(): Boolean {
+        // This is called when the query text is cleared/deleted
+        return false
     }
 
     fun showProgressBar() {
@@ -67,12 +84,4 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
     }
-
-    open fun onSearch(query: String): Boolean {
-        // Here we write searching logic
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean = false
-
 }
