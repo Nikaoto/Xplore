@@ -13,13 +13,13 @@
     <string name="slide2_example_group_destination_name">Dariali Gorge</string>
     <string name="slide2_example_group_days_left">in 1 month</string>
     <string name="slide2_example_group_duration">2 days</string>
-    <string name="slide2_beenhere_description">at least one member is familiar with the group\'s
+    <string name="slide2_beenhere_description">At least one member is familiar with the group\'s
         destination</string>
-    <string name="slide2_invite_description">you\'ve received an invite or sent a join request to the
+    <string name="slide2_invite_description">You\'ve received an invite or sent a join request to the
         group</string>
-    <string name="slide2_group_member_count_description">number of members in the group</string>
-    <string name="slide2_hike_duration_description">duration of the hike</string>
-    <string name="slide2_hike_date">hike starting date</string>
+    <string name="slide2_group_member_count_description">Number of members in the group</string>
+    <string name="slide2_hike_duration_description">Duration of the hike</string>
+    <string name="slide2_hike_date">Hike starting date</string>
 
     <!-- Discussion -->
     <string name="discussion_message_hint">Write a message…</string>
