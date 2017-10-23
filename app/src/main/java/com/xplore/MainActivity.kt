@@ -145,7 +145,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     private fun openHomePage() {
-        navigationView.setCheckedItem(R.id.nav_library)
+        navigationView.setCheckedItem(R.id.nav_find_create_groups)
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fragment_container, SearchGroupsFragment()).commit()
