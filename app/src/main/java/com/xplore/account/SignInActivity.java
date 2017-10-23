@@ -51,6 +51,7 @@ import com.xplore.base.BaseAppCompatActivity;
 import static com.xplore.General.JUST_LOGGED_IN;
 import static com.xplore.General.accountStatus;
 import static com.xplore.General.currentUserId;
+import static com.xplore.util.FirebaseUtil.F_EMAIL;
 
 /**
  * Created by Nikaoto on 3/8/2017.
@@ -124,6 +125,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         xploreSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                toastLoading();
                 signInWithFacebook = false;
                 xploreSignIn();
             }
@@ -134,6 +136,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                toastLoading();
                 signInWithFacebook = false;
                 googleSignIn();
             }
@@ -144,6 +147,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         facebookSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                toastLoading();
                 signInWithFacebook = true;
                 facebookSignIn();
             }
@@ -177,7 +181,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         if (loginFieldsValid()) {
             final String email = emailEditText.getText().toString();
             final String password = passwordEditText.getText().toString();
-            Query query = usersRef.orderByChild("email").equalTo(email);
+            Query query = usersRef.orderByChild(F_EMAIL).equalTo(email);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -238,6 +242,10 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     private void facebookSignIn() {
         popupWindow = General.popLoadingBar(0.8, 0.8, this);
+    }
+
+    private void toastLoading() {
+        Toast.makeText(SignInActivity.this, R.string.loading, Toast.LENGTH_SHORT).show();
     }
 
     // If user doesn't exist -> start RegisterAct

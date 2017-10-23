@@ -274,6 +274,6 @@
     <!-- Strings related to login -->
     <string name="error_field_required">ველის შევსება აუცილებელია</string>
     <string name="error_invalid_email">ელ-ფოსტა არასწორია</string>
-    <string name="error_invalid_password">პაროლი არ არის საკმარისად გრძელი (მინ. 6 ნიშანი)</string>
+    <string name="error_invalid_password">პაროლი არ არის საკმარისად გრძელი (მინ. 6 სიმბოლო)</string>
 
 </resources>
