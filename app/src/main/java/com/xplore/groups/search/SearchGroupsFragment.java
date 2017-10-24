@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,6 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 
 public class SearchGroupsFragment extends SearchFragment {
 
-
     private static String ARG_DESTINATION_ID = "query";
     // Used to search for groups by destination
     public static SearchGroupsFragment newInstance(int destId) {
@@ -53,6 +51,8 @@ public class SearchGroupsFragment extends SearchFragment {
         f.setArguments(args);
         return (SearchGroupsFragment) f;
     }
+
+    private static int FAB_HIDE_SCROLL_DY = 2;
 
     private boolean firstLoad;
 
@@ -97,7 +97,7 @@ public class SearchGroupsFragment extends SearchFragment {
         resultsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
+                if (dy > FAB_HIDE_SCROLL_DY) {
                     fab.hide();
                 } else {
                     fab.show();
@@ -232,9 +232,7 @@ public class SearchGroupsFragment extends SearchFragment {
                         }
                     }
                 } else {
-                    // Couldn't find results
-                    Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT)
-                            .show();
+                    nothingFound();
                 }
                 if(getActivity() != null) {
                     postLoadData();
@@ -247,6 +245,7 @@ public class SearchGroupsFragment extends SearchFragment {
 
     @Override
     public boolean onSearch(@NonNull String query) {
+        fab.show();
         canReset = true;
         prepareToLoadData();
 
@@ -302,9 +301,16 @@ public class SearchGroupsFragment extends SearchFragment {
         return super.onReset();
     }
 
+    private void nothingFound() {
+        Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT).show();
+    }
+
     private void postLoadData() {
         firstLoad = false;
         hideProgressBar();
+        if (displayCards.isEmpty()) {
+            nothingFound();
+        }
     }
 
     @Override

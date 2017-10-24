@@ -57,11 +57,11 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    open fun onSearchClick(v: View) {
+    open fun onSearchClick(v: View?) {
         // Called when search icon is clicked
     }
 
-    open fun onSearchTextViewClick(v: View) {
+    open fun onSearchTextViewClick(v: View?) {
         // Called when the TextView inside the SearchView is clicked
     }
 
