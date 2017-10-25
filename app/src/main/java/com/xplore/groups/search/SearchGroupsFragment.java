@@ -9,6 +9,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -38,12 +40,15 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 
 /**
  * Created by Nikaoto on 2/8/2017.
+ *
+ *  მომხმარებელი ამ ფრაგმენტიდან ეძებს დაგეგმილ ლაშქრობებს ან ქმნის ახალს (FAB-ით).
+ *
  */
 
 public class SearchGroupsFragment extends SearchFragment {
 
     private static String ARG_DESTINATION_ID = "query";
-    // Used to search for groups by destination
+    // Used to search for groups by destination (from ReserveInfoAct->Find Groups w/ This Dest)
     public static SearchGroupsFragment newInstance(int destId) {
         Fragment f = new SearchGroupsFragment();
         Bundle args = new Bundle();

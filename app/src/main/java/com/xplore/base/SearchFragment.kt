@@ -19,6 +19,8 @@ import com.xplore.R
 
 open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
+    // TODO create FilterSearchFragment and inherit this; override onCreateOptionsMenu
+
     private var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
