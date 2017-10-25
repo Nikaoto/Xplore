@@ -39,6 +39,13 @@
     <string name="about_twitter">Подпишитесь на нас в Twitter</string>
     <string name="about_website">Посетите наш веб-сайт</string>
 
+    <!-- Group Filters -->
+    <string name="search_by">Искать по…</string>
+    <string-array name="group_filters">
+        <item>Имя</item>
+        <item>Направление</item>
+    </string-array>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="activity_create_group_title">Создать группу</string>

@@ -31,6 +31,12 @@
     <string name="about_instagram">Follow us on Instagram</string>
     <string name="about_website">Visit our website</string>
 
+    <!-- Group Filters -->
+    <string name="search_by">Search by…</string>
+    <string-array name="group_filters">
+        <item>Name</item>
+        <item>Destination</item>
+    </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
