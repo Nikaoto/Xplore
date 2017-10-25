@@ -47,17 +47,19 @@ import com.xplore.General;
 import com.xplore.MainActivity;
 import com.xplore.R;
 import com.xplore.base.BaseAppCompatActivity;
+import com.xplore.util.FirebaseUtil;
 
 import static com.xplore.General.JUST_LOGGED_IN;
 import static com.xplore.General.accountStatus;
 import static com.xplore.General.currentUserId;
 import static com.xplore.util.FirebaseUtil.F_EMAIL;
+import static com.xplore.util.FirebaseUtil.usersRef;
 
 /**
  * Created by Nikaoto on 3/8/2017.
  *
- * Handles sign in with Google and Facebook
- * Launches RegisterAct if new user
+ * Handles sign in with Google and Facebook.
+ * Launches RegisterAct if new user.
  *
  */
 
@@ -79,9 +81,6 @@ public class SignInActivity extends BaseAppCompatActivity {
     private static final int REQ_GOOGLE_SIGN_IN = 1;
     //private static final int REQ_FACEBOOK_SIGN_IN = 2;
     private static final int REQ_REGISTER = 3;
-
-    // Firebase
-    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
     // For google login
     private GoogleApiClient googleApiClient;
@@ -125,9 +124,13 @@ public class SignInActivity extends BaseAppCompatActivity {
         xploreSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toastLoading();
-                signInWithFacebook = false;
-                xploreSignIn();
+                if (General.isNetConnected(SignInActivity.this)) {
+                    toastLoading();
+                    signInWithFacebook = false;
+                    xploreSignIn();
+                } else {
+                    General.createNetErrorDialog(SignInActivity.this);
+                }
             }
         });
 
@@ -136,9 +139,13 @@ public class SignInActivity extends BaseAppCompatActivity {
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toastLoading();
-                signInWithFacebook = false;
-                googleSignIn();
+                if (General.isNetConnected(SignInActivity.this)) {
+                    toastLoading();
+                    signInWithFacebook = false;
+                    googleSignIn();
+                } else {
+                    General.createNetErrorDialog(SignInActivity.this);
+                }
             }
         });
 
@@ -147,9 +154,13 @@ public class SignInActivity extends BaseAppCompatActivity {
         facebookSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toastLoading();
-                signInWithFacebook = true;
-                facebookSignIn();
+                if (General.isNetConnected(SignInActivity.this)) {
+                    toastLoading();
+                    signInWithFacebook = true;
+                    facebookSignIn();
+                } else {
+                    General.createNetErrorDialog(SignInActivity.this);
+                }
             }
         });
         callbackManager = CallbackManager.Factory.create();
@@ -164,12 +175,12 @@ public class SignInActivity extends BaseAppCompatActivity {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                popupWindow.dismiss();
+                dismissPopupWindow();
             }
 
             @Override
             public void onError(FacebookException error) {
-                popupWindow.dismiss();
+                dismissPopupWindow();
                 Log.d(TAG, "facebook:onError", error);
                 Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
             }
@@ -315,7 +326,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                     GoogleSignInAccount account = result.getSignInAccount();
                     firebaseAuthWithGoogle(account);
                 } else {
-                    popupWindow.dismiss();
+                    dismissPopupWindow();
                 }
                 break;
             }
@@ -385,9 +396,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
-                        }
+                        dismissPopupWindow();
                     }
                 }).create();
     }
@@ -408,9 +417,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                     Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
                 }
 
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                }
+                dismissPopupWindow();
             }
         };
     }
@@ -436,7 +443,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             makeBorderRed(emailEditText);
             Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show();
             return false;
-        } else if (passwordEditText.length() < 6) {
+        } else if (passwordEditText.length() < FirebaseUtil.MIN_PASS_LENGTH) {
             makeBorderRed(passwordEditText);
             Toast.makeText(this, R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
             return false;
@@ -458,6 +465,13 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     private void makeBorderGreen(EditText et) {
         et.setBackgroundResource(R.drawable.edit_text_border);
+    }
+
+    // Safely dismisses the popup window
+    private void dismissPopupWindow() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
     }
 
     @Override
@@ -490,7 +504,7 @@ public class SignInActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(General.isUserLoggedIn()) {
+        if (General.isUserLoggedIn()) {
             if (popupWindow != null && popupWindow.isShowing()) {
                 popupWindow.dismiss();
             }

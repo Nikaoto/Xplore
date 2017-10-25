@@ -18,6 +18,9 @@ object FirebaseUtil {
 
     const val REP = 1
 
+    // TODO put this somewhere else
+    const val MIN_PASS_LENGTH = 6
+
     // Main Nodes
     const val F_date = "date"
     const val F_USERS = "users"
