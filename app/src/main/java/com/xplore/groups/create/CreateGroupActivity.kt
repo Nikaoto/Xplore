@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import android.view.View
 import android.widget.DatePicker
 import android.widget.Toast
@@ -16,7 +17,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.General.currentUserId
 import com.xplore.R
-import com.xplore.base.BaseActivity
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.maps.GroupMapActivity
@@ -46,13 +47,13 @@ import com.xplore.util.MapUtil
 
  */
 
-open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
+open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     //Database
-    val dbManager: DBManager by lazy { DBManager(this) }
+    private val dbManager: DBManager by lazy { DBManager(this) }
 
     //Firebase
-    val joinedGroupsRef: DatabaseReference by lazy {
+    private val joinedGroupsRef: DatabaseReference by lazy {
         getCurrentUserRef().child(F_GROUP_IDS)
     }
 
@@ -94,7 +95,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
     private var meetupLat = 0.0
     private var meetupLng = 0.0
 
-    var selecting = SELECTION_NONE
+    private var selecting = SELECTION_NONE
 
     private var groupImageUrl = ""
     private var groupName = ""
@@ -117,8 +118,14 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
 
         setTitle(R.string.activity_create_group_title)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initMemberRecyclerView()
         initClickEvents()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initMemberRecyclerView() {
@@ -211,7 +218,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    fun startSettingMeetupLocation() {
+    private fun startSettingMeetupLocation() {
         if (meetupLat != 0.0 && meetupLng != 0.0) {
             startActivityForResult(
                     SetDestinationMapActivity.getStartIntent(this,
@@ -224,7 +231,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    fun showDestinationDialog() {
+    private fun showDestinationDialog() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.activity_choose_destination_title)
                 .setMessage(R.string.choose_from)
@@ -361,7 +368,7 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    fun ArrayList<String>.toMap(): HashMap<String, Boolean> {
+    private fun ArrayList<String>.toMap(): HashMap<String, Boolean> {
         val temp = HashMap<String, Boolean>(this.size)
         for(item in this) {
             temp.put(item, true)
@@ -378,8 +385,9 @@ open class CreateGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListe
         //get experience question
         val exp = experienceAns != EXPERIENCE_ANS_NO
 
-        //TODO when uploading group, add lowercase name as 'search name' (to enable case-insensitive searching) and 'display name' as inputted name
-
+        /* TODO when uploading group, add lowercase name as 'search name' (to enable
+        case-insensitive searching) and 'display name' as inputted name. Only for Firebase though
+         */
         return UploadableGroup(
                 key, //Firebase Unique Group Key
                 groupName,
