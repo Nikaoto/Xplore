@@ -37,8 +37,8 @@
                 <ImageView
                     android:id="@+id/userImageView"
                     tools:src="@drawable/user_default_profile_image"
-                    android:layout_marginLeft="15dp"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_alignParentStart="true"
                     android:layout_width="@dimen/user_profile_image_large_size"
                     android:layout_height="@dimen/user_profile_image_large_size"
                     android:scaleType="centerCrop"/>
@@ -51,10 +51,9 @@
                     android:layout_width="wrap_content"
                     android:gravity="center"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_below="@id/divider"
-                    android:layout_toRightOf="@id/userImageView"
+                    android:layout_toEndOf="@id/userImageView"
                     android:textSize="21sp"
                     android:textAllCaps="true"
                     android:textStyle="bold"
@@ -72,7 +71,7 @@
                 android:textColor="@color/black"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp" />
 
             <!-- Email -->
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fullNameTextView"
                 android:textSize="20sp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="4dp"/>
 
             <!-- Space / footer divider -->
@@ -100,7 +99,7 @@
                 android:src="@drawable/ic_cake"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_toRightOf="@id/footerDivider"
+                android:layout_toEndOf="@id/footerDivider"
                 android:layout_alignParentBottom="true"/>
 
             <!-- Birth Date -->
@@ -109,12 +108,11 @@
                 tools:text="1999/10/30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:gravity="bottom|left"
+                android:layout_marginStart="4dp"
+                android:gravity="bottom|start"
                 android:textSize="18sp"
                 android:layout_below="@id/emailTextView"
-                android:layout_toRightOf="@id/birthdayIcon"
-                android:layout_alignParentRight="true"
+                android:layout_toEndOf="@id/birthdayIcon"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true" />
 
@@ -124,9 +122,8 @@
                 android:src="@drawable/ic_phone"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"/>
 
             <!-- Phone Number -->
@@ -135,11 +132,11 @@
                 tools:text="599123456"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/phoneIcon"
-                android:layout_toLeftOf="@id/footerDivider"
-                android:gravity="bottom|left"
+                android:layout_toEndOf="@id/phoneIcon"
+                android:layout_toStartOf="@id/footerDivider"
+                android:gravity="bottom|start"
                 android:textSize="18sp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
