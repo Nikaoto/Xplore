@@ -2,12 +2,8 @@ package com.xplore.base
 
 import android.app.Fragment
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import com.xplore.R
 
 /**
@@ -103,21 +99,25 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     fun showProgressBar() {
         searchView?.let {
-            val id = it.context.resources.getIdentifier("android:id/search_plate", null, null)
-            val progressBar = it.findViewById(id).findViewById(R.id.searchProgressBar)
+            val id = it.context.resources
+                    .getIdentifier("android:id/search_plate", null, null)
+            val progressBar = it.findViewById<LinearLayout>(id)
+                    .findViewById<ProgressBar>(R.id.searchProgressBar)
             if (progressBar != null) {
                 progressBar.animate().setDuration(200).alpha(1f).start()
             } else {
                 val view = LayoutInflater.from(activity).inflate(R.layout.loading_icon, null)
-                (it.findViewById(id) as ViewGroup).addView(view, 1)
+                (it.findViewById<ViewGroup>(id)).addView(view, 1)
             }
         }
     }
 
     fun hideProgressBar() {
         searchView?.let {
-            val id = it.context.resources.getIdentifier("android:id/search_plate", null, null)
-            val progressBar = it.findViewById(id).findViewById(R.id.searchProgressBar)
+            val id = it.context.resources
+                    .getIdentifier("android:id/search_plate", null, null)
+            val progressBar = it.findViewById<LinearLayout>(id)
+                    .findViewById<ProgressBar>(R.id.searchProgressBar)
             if (progressBar != null) {
                 progressBar.animate().setDuration(200).alpha(0f).start()
             }

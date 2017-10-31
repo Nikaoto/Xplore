@@ -37,8 +37,8 @@ class MemberListAdapter(private val context: Context,
 
     //The holder of the user layout
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var rep_txt: TextView = itemView.findViewById(R.id.member_rep_text) as TextView
-        var memberImage: ImageView = itemView.findViewById(R.id.member_profile_image) as ImageView
+        var rep_txt: TextView = itemView.findViewById<TextView>(R.id.member_rep_text)
+        var memberImage: ImageView = itemView.findViewById<ImageView>(R.id.member_profile_image)
     }
 
     //Inflate a user layout

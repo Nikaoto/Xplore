@@ -49,7 +49,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     private val PREFS_STRING_LANGUAGE = "lang"
 
     private val drawer: DrawerLayout by lazy {
-        findViewById(R.id.drawer_layout) as DrawerLayout
+        findViewById<DrawerLayout>(R.id.drawer_layout)
     }
 
     private var appJustLaunched = true
@@ -77,8 +77,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         //Setting up user profile inside drawer header
         val navHeaderView = navigationView.getHeaderView(0)
-        userImageView = navHeaderView.findViewById(R.id.drawer_image) as ImageView
-        userFullNameTextView = navHeaderView.findViewById(R.id.userFullNameTextView) as TextView
+        userImageView = navHeaderView.findViewById<ImageView>(R.id.drawer_image)
+        userFullNameTextView = navHeaderView.findViewById<TextView>(R.id.userFullNameTextView)
         userImageView.setOnClickListener {
             if (General.isUserSignedIn()) {
                 General.openUserProfile(this@MainActivity, General.currentUserId)
@@ -88,7 +88,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         }
         //
 
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
@@ -115,7 +115,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         notificationManager = NotificationManager(
                 drawerBadge,
                 MenuItemCompat.getActionView(navigationView.getMenu()
-                        .findItem(R.id.nav_my_groups)).findViewById(R.id.myGroupsBadge) as TextView
+                        .findItem(R.id.nav_my_groups)).findViewById<TextView>(R.id.myGroupsBadge)
         )
 
         toggle.drawerArrowDrawable = drawerBadge

@@ -37,7 +37,7 @@ class LibraryFragment : SearchFragment() {
     private val answerCards = ArrayList<ReserveCard>()
 
     private val resultsRV: RecyclerView by lazy {
-        view.findViewById(R.id.resultsRV) as RecyclerView
+        view.findViewById<RecyclerView>(R.id.resultsRV)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
