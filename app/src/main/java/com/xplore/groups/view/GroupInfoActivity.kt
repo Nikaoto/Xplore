@@ -24,6 +24,10 @@ import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User
 import com.xplore.util.DateUtil
+import com.xplore.util.FirebaseUtil.F_FNAME
+import com.xplore.util.FirebaseUtil.F_LOCATIONS
+import com.xplore.util.FirebaseUtil.groupsRef
+import com.xplore.util.FirebaseUtil.usersRef
 import com.xplore.util.ImageUtil
 import com.xplore.util.MapUtil
 import kotlinx.android.synthetic.main.group_info2.*
@@ -33,31 +37,34 @@ import java.util.*
 
 /**
 * Created by Nikaoto on 2/12/2017.
-* TODO write description of this class - what it does and why.
+*
+* ჯგუფის ინფოს ნახულობს იუზერი აქ. Member-, Outsider- და InvitedControls ფრაგმენტებს ტვირთავს
+* ლეიაუთის თავში ინტერაქციისთვის (კონტროლები და მოქმედებები).
+*
+* User views group information here. The Member-, Outsider-, and InvitedControls fragments
+* are loaded at the top of the layout to allow interaction (and controls/actions).
+*
 */
 
 class GroupInfoActivity : BaseActivity() {
 
     companion object {
+        private const val ARG_GROUP_ID = "groupId"
+
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String)
+        fun getStartIntent(context: Context, groupId: String): Intent
                 = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
     }
 
     //Firebase
-    private val F_LOCATIONS = "locations"
-    private val F_FNAME = "fname"
-    private val DBref = FirebaseDatabase.getInstance().reference
-    private val groupsRef = DBref.child("groups")
-    private val usersRef = DBref.child("users")
     private val currentGroupRef: DatabaseReference by lazy {
         groupsRef.child(groupId)
     }
 
     private val groupId: String by lazy {
-        intent.getStringExtra("groupId")
+        intent.getStringExtra(ARG_GROUP_ID)
     }
-    private var memberCount = 1
+    private var memberCount = 1 // Min 1, the leader
     private val members = ArrayList<User>()
     private lateinit var leader: User
 
