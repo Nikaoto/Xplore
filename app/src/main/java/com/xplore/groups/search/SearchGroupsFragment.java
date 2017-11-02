@@ -9,8 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -67,7 +65,7 @@ public class SearchGroupsFragment extends SearchFragment {
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
 
-    // Used to refresh the whole fragment in onResume to update cards
+    // Used to refreshFragment the whole fragment in onResume to update cards
     private boolean allowRefresh = false;
 
     // Determines whether the data should reload when user clears search text
@@ -86,7 +84,7 @@ public class SearchGroupsFragment extends SearchFragment {
         TimeManager.refreshGlobalTimeStamp();
 
         // FAB
-        fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
+        fab = view.findViewById(R.id.createGroupFAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +94,7 @@ public class SearchGroupsFragment extends SearchFragment {
         });
 
         // RecyclerView
-        resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
+        resultsRV = view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         resultsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -325,14 +323,24 @@ public class SearchGroupsFragment extends SearchFragment {
             postLoadData();
         }
 
-        // Checking if refresh needed
+        // Checking if refreshFragment needed
         if (allowRefresh) {
-            allowRefresh = false;
-            getFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .detach(this).attach(this).commit();
+            refreshFragment();
         } else {
             allowRefresh = true;
         }
+    }
+
+    private void refreshFragment() {
+        allowRefresh = false;
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .detach(this).attach(this).commit();
+    }
+
+    @Override
+    public void onRefreshed() {
+        super.onRefreshed();
+        refreshFragment();
     }
 }

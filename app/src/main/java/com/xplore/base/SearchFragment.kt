@@ -40,7 +40,7 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search, menu)
+        inflater.inflate(R.menu.search_refresh, menu)
         val searchItem = menu.findItem(R.id.action_search) as MenuItem
         searchView = searchItem.actionView as SearchView
         searchView?.let {
@@ -55,8 +55,19 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_refresh) {
+            onRefreshed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    open fun onRefreshed() {
+        // Called when refresh icon clicked or dragged down
+    }
+
     open fun onSearchClick(v: View?) {
-        // Called when search icon is clicked
+        // Called when search icon clicked
     }
 
     open fun onSearchTextViewClick(v: View?) {
