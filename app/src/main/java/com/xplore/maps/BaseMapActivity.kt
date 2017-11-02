@@ -16,7 +16,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.maps.android.kml.KmlLayer
+import com.google.maps.android.data.kml.KmlLayer
 import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 import kotlinx.android.synthetic.main.activity_maps.*
