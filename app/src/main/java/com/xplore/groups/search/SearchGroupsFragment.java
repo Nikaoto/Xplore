@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class SearchGroupsFragment extends SearchFragment {
     private boolean firstLoad;
 
     private RecyclerView resultsRV;
+    private SwipeRefreshLayout refreshLayout;
     private FloatingActionButton fab;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
@@ -90,6 +92,15 @@ public class SearchGroupsFragment extends SearchFragment {
             public void onClick(View view) {
                 // Opens CreateGroupFragment
                 startActivity(CreateGroupActivity.Companion.getStartIntent(getActivity()));
+            }
+        });
+
+        // Refresh Layout
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshFragment();
             }
         });
 
@@ -332,6 +343,7 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     private void refreshFragment() {
+        refreshLayout.setRefreshing(true);
         allowRefresh = false;
         getFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -339,8 +351,8 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     @Override
-    public void onRefreshed() {
-        super.onRefreshed();
+    public void onRefreshClicked() {
+        super.onRefreshClicked();
         refreshFragment();
     }
 }

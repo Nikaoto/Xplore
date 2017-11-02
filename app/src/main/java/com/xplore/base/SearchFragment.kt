@@ -57,12 +57,12 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_refresh) {
-            onRefreshed()
+            onRefreshClicked()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    open fun onRefreshed() {
+    open fun onRefreshClicked() {
         // Called when refresh icon clicked or dragged down
     }
 
