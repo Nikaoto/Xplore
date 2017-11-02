@@ -249,5 +249,7 @@
     <string name="meetup_location">Meetup Location</string>
     <string name="iliauni_picnic">Iliauni Picnic</string>
     <string name="find_hikes_with_this_destination">View hikes</string>
+    <string name="mobile_number_reason_title">Mobile Number</string>
+    <string name="mobile_number_reason_message">Required so your teammates can contact you</string>
 
 </resources>

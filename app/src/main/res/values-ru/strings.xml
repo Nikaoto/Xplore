@@ -242,6 +242,8 @@
     <string name="meetup_location">Место Встречи</string>
     <string name="iliauni_picnic">Iliauni Picnic</string>
     <string name="find_hikes_with_this_destination">Найдите походы</string>
+    <string name="mobile_number_reason_title">Мобильный Номер</string>
+    <string name="mobile_number_reason_message">Требуется только для того, чтобы ваши друзья могли с вами связаться</string>
 
     <!-- -->
 </resources>

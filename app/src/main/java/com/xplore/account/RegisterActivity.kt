@@ -17,12 +17,12 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.view.MotionEvent
 import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.database.Exclude
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -36,7 +36,6 @@ import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.base.BaseActivity
 import com.xplore.user.UploadUser
-import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -70,7 +69,8 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     // Users profile image url
     var imagePath: Uri? = null
-    //TODO AI check for face in photo?
+
+    var mobileNumberMessageShown = false
 
     //TODO add age restriction constant to resources
     private val ageRestriction: Int = 15
@@ -134,8 +134,27 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         birthDateTextView.setOnClickListener {
             onBirthDateSelected(globalTimeStamp)
         }
+
+        numEditText.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                showMobileNumberReason()
+            }
+            false
+        }
+
         doneButton.setOnClickListener {
             onDoneButtonClick()
+        }
+    }
+
+    open fun showMobileNumberReason() {
+        if (!mobileNumberMessageShown) {
+            mobileNumberMessageShown = true
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.mobile_number_reason_title)
+                    .setMessage(R.string.mobile_number_reason_message)
+                    .setPositiveButton(R.string.okay, null)
+                    .create().show()
         }
     }
 

@@ -221,6 +221,9 @@
     <string name="first_name">სახელი</string>
     <string name="last_name">გვარი</string>
     <string name="mobile_number">მობილურის ნომერი</string>
+    <string name="mobile_number_reason_title">ტელეფონის ნომერი</string>
+    <string name="mobile_number_reason_message">
+        საჭიროა მხოლოდ თანამოლაშქრეებმა რომ შეძლონ თქვენთან დაკავშირება</string>
     <string name="date_format">წელი/თვე/დღე</string>
     <string name="profile_picture">პროფილის ფოტო</string>
     <string name="click_to_change">დააჭირეთ რომ შეცვალოთ</string>
