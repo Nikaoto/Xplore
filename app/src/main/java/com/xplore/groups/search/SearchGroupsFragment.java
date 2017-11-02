@@ -1,7 +1,6 @@
 package com.xplore.groups.search;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,7 +66,7 @@ public class SearchGroupsFragment extends SearchFragment {
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
 
-    // Used to refreshFragment the whole fragment in onResume to update cards
+    // Used to refreshData the whole fragment in onResume to update cards
     private boolean allowRefresh = false;
 
     // Determines whether the data should reload when user clears search text
@@ -97,13 +96,15 @@ public class SearchGroupsFragment extends SearchFragment {
 
         // Refresh Layout
         refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeResources(R.color.refresh_color_1,
+                R.color.refresh_color_2,
+                R.color.refresh_color_3);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshFragment();
+                refreshData();
             }
         });
-
         // RecyclerView
         resultsRV = view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -320,6 +321,7 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     private void postLoadData() {
+        refreshLayout.setRefreshing(false);
         firstLoad = false;
         hideProgressBar();
         if (displayCards.isEmpty()) {
@@ -334,25 +336,22 @@ public class SearchGroupsFragment extends SearchFragment {
             postLoadData();
         }
 
-        // Checking if refreshFragment needed
+        // Checking if refreshData needed
         if (allowRefresh) {
-            refreshFragment();
+            refreshData();
         } else {
             allowRefresh = true;
         }
     }
 
-    private void refreshFragment() {
+    private void refreshData() {
         refreshLayout.setRefreshing(true);
-        allowRefresh = false;
-        getFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .detach(this).attach(this).commit();
+        firstLoadData();
     }
 
     @Override
     public void onRefreshClicked() {
         super.onRefreshClicked();
-        refreshFragment();
+        refreshData();
     }
 }

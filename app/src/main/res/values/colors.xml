@@ -19,6 +19,10 @@
     <color name="white">#FFFFFF</color>
     <color name="wallet_holo_blue_light">#ff33b5e5</color>
 
+    <color name="refresh_color_1">#48c201</color>
+    <color name="refresh_color_2">#ff4051</color>
+    <color name="refresh_color_3">#46d196</color>
+
     <!-- Welcome Screen Slide colors -->
 
     <color name="welcome_screen_slide_title">#FFFFFF</color>
