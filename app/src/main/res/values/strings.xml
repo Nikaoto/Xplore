@@ -68,6 +68,7 @@
     <string name="sign_in_slash_register">შესვლა / რეგისტრაცია</string>
     <string name="search">ძებნა</string>
     <string name="loading">იტვირთება…</string>
+    <string name="please_wait">გთხოვთ დაიცადოთ…</string>
 
     <!-- Texts -->
     <string name="error">მოხდა შეცდომა</string>
