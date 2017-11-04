@@ -33,6 +33,8 @@ import com.xplore.user.UserProfileActivity;
 import java.util.Calendar;
 import java.util.Date;
 
+import kotlin.jvm.JvmOverloads;
+
 /**
  * Created by Nikaoto on 2/24/2017.
  */
@@ -41,20 +43,36 @@ public class General {
 
     //TODO create current User Singleton object
 
-    //==== Account status stuff ===
+    /*==== Account status stuff ==== */
     public static final int LOGGED_IN = 1;
     public static final int JUST_LOGGED_IN = 3;
     public static final int NOT_LOGGED_IN = 0;
+    public static final int NOT_REGISTERED = 4;
 
-    //Used for managing notifications at MainAct
-    public static int accountStatus = NOT_LOGGED_IN;
+    // Used for managing notifications at MainAct
+    public static int accountStatus = NOT_LOGGED_IN; // TODO account
     //=================
 
-    public static int appWidth, appHeight;
+    private static int appWidth, appHeight;
     public static String currentUserId;
-    public static String DB_TABLE; //The language table to use from database
 
-    public static void InitDisplayMetrics(Activity activity) {
+    // TODO account
+    public static String PREFS_REGISTRATION = "prefs_registration";
+    public static String PREFS_FULLY_REGISTERED = "fully_registered";
+    // TODO account
+    public static boolean hasFinishedRegistration(Context context) {
+        return context.getSharedPreferences(PREFS_REGISTRATION, 0)
+                .getBoolean(PREFS_FULLY_REGISTERED, false);
+    }
+    // TODO account
+    public static void setRegistrationFinished(Context context, boolean finished) {
+        context.getSharedPreferences(PREFS_REGISTRATION, 0)
+                .edit()
+                .putBoolean(PREFS_FULLY_REGISTERED, finished)
+                .apply();
+    }
+
+    public static void initDisplayMetrics(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         appWidth = dm.widthPixels;
@@ -70,14 +88,6 @@ public class General {
         } else {
             accountStatus = NOT_LOGGED_IN;
             currentUserId = "";
-        }
-    }
-
-    public static void setCurrentTable(Context context) {
-        if(context != null) {
-            DB_TABLE = context.getSharedPreferences("lang", 0).getString("lang", "en");
-        } else {
-            DB_TABLE = "en";
         }
     }
 
@@ -354,10 +364,12 @@ public class General {
 
     public static void vibrateDevice(Context context, Long time) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (time != null) {
+        if (v != null) {
             v.vibrate(time);
-        } else {
-            v.vibrate(20L);
         }
+    }
+
+    public static void vibrateDevice(Context context) {
+        vibrateDevice(context, 20L);
     }
 }

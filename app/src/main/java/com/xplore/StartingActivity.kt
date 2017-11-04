@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.xplore.account.SignInActivity
 import com.xplore.intro.LanguageSelectActivity
-import com.xplore.util.FirebaseUtil
 
 /**
  * Created by Nikaoto on 8/26/2017.
@@ -39,28 +38,37 @@ class StartingActivity : AppCompatActivity() {
 
     val TAG = "jiga"
 
+    private fun start(intent: Intent) {
+        startActivity(intent)
+        this.finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.i(TAG, "oncreate startingact")
 
-        finish()
-
         General.refreshAccountStatus()
 
+        // Welcome Screen
         if (shouldShowWelcomeScreen(this)) {
-            Log.i(TAG, "is first boot, starting language select")
+            Log.i(TAG, "IS first boot, starting language select")
 
-            startActivity(Intent(this, LanguageSelectActivity::class.java))
-        } else if (!General.isUserLoggedIn()) {
-            Log.i(TAG, "is not first boot and user not signed in, starting signing act")
-
-            startActivity(SignInActivity.getStartIntent(this, true))
-        } else {
-            Log.i(TAG, "is not first boot and user is signed in, starting main act")
-
-            // TODO Check if user has finished registration
-            startActivity(Intent(this, MainActivity::class.java))
+            start(Intent(this, LanguageSelectActivity::class.java))
+            return
         }
+
+        // Sign In
+        if (!General.isUserLoggedIn() || !General.isNetConnected(this)) {
+            Log.i(TAG, "NOT first boot; user NOT signed in, starting signin act")
+
+            start(SignInActivity.getStartIntent(this, true))
+            return
+        }
+
+        // Main Act
+        Log.i(TAG, "NOT first boot; user IS signed in, opening main act")
+
+        start(Intent(this@StartingActivity, MainActivity::class.java))
     }
 }

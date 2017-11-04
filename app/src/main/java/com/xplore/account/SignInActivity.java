@@ -1,5 +1,6 @@
 package com.xplore.account;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,8 +39,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.xplore.ApiManager;
@@ -50,6 +49,7 @@ import com.xplore.base.BaseAppCompatActivity;
 import com.xplore.util.FirebaseUtil;
 
 import static com.xplore.General.JUST_LOGGED_IN;
+import static com.xplore.General.NOT_LOGGED_IN;
 import static com.xplore.General.accountStatus;
 import static com.xplore.General.currentUserId;
 import static com.xplore.util.FirebaseUtil.F_EMAIL;
@@ -79,7 +79,7 @@ public class SignInActivity extends BaseAppCompatActivity {
     private boolean signInWithFacebook = false;
 
     private static final int REQ_GOOGLE_SIGN_IN = 1;
-    //private static final int REQ_FACEBOOK_SIGN_IN = 2;
+
     private static final int REQ_REGISTER = 3;
 
     // For google login
@@ -94,6 +94,8 @@ public class SignInActivity extends BaseAppCompatActivity {
 
     private EditText emailEditText;
     private EditText passwordEditText;
+
+    private boolean shouldCheckUserExists = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,9 +113,6 @@ public class SignInActivity extends BaseAppCompatActivity {
 
         // Building Google Api Client
         googleApiClient = ApiManager.getGoogleAuthApiClient(this);
-
-        // Setting up auth state listener
-        setUpAuthStateListener();
 
         // Initialize login fields
         emailEditText = (EditText) findViewById(R.id.emailEditText);
@@ -256,13 +255,13 @@ public class SignInActivity extends BaseAppCompatActivity {
     }
 
     private void toastLoading() {
-        Toast.makeText(SignInActivity.this, R.string.loading, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SignInActivity.this, R.string.loading, Toast.LENGTH_LONG).show();
     }
 
     // If user doesn't exist -> start RegisterAct
     // If user exists -> confirm log in and finish
     private void checkUserExists(final FirebaseUser user) {
-        Log.println(Log.INFO, "firebaseuser", "User FullName = "+user.getDisplayName());
+        // Uid to find if user exists
         Query query = usersRef.orderByKey().equalTo(user.getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -332,9 +331,26 @@ public class SignInActivity extends BaseAppCompatActivity {
             }
 
             case REQ_REGISTER: {
-                Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
-                General.accountStatus = General.JUST_LOGGED_IN;
-                finishActivity();
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
+                    General.accountStatus = General.JUST_LOGGED_IN;
+                    finishActivity();
+                } else {
+                    shouldCheckUserExists = false;
+                    googleApiClient.connect();
+                    googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
+                            FirebaseUtil.forceLogOut(SignInActivity.this, googleApiClient);
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                            Toast.makeText(SignInActivity.this, R.string.error, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+                }
                 break;
             }
         }
@@ -402,19 +418,23 @@ public class SignInActivity extends BaseAppCompatActivity {
     }
 
 
+    // Called when authorized using any service
     private FirebaseAuth.AuthStateListener setUpAuthStateListener() {
         return new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                if (user != null & shouldCheckUserExists) {
                     // User signed in
+                    Log.i("sign-in-act", "checking user exists");
                     currentUserId = user.getUid();
 
-                    checkUserExists(user); //creates user in case it doesn't exist
+                    checkUserExists(user); // creates user in case it doesn't exist
                 } else {
                     // User signed out
                     Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
+                    shouldCheckUserExists = true;
+                    accountStatus = NOT_LOGGED_IN;
                 }
 
                 dismissPopupWindow();
@@ -453,6 +473,7 @@ public class SignInActivity extends BaseAppCompatActivity {
     }
 
     private void finishActivity() {
+        General.setRegistrationFinished(this, true);
         finish();
         if (getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false)) {
             startActivity(new Intent(this, MainActivity.class));
@@ -509,10 +530,5 @@ public class SignInActivity extends BaseAppCompatActivity {
                 popupWindow.dismiss();
             }
         }
-
-        /*
-        if(General.isUserLoggedIn()) {
-            popupWindow.dismiss();
-        }*/
     }
 }

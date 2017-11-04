@@ -45,10 +45,12 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
         private var googleApiClient: GoogleApiClient? = null
 
+        // TODO use setArguments for fragment
         constructor(authClient: GoogleApiClient) : this() {
             this.googleApiClient = authClient
         }
 
+        // TODO remove this logOut and use FirebaseUtil's logOut()
         fun logOut() {
             if(General.accountStatus == General.LOGGED_IN){
                 // Firebase log out
@@ -63,6 +65,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 // Reset current user
                 General.currentUserId = ""
                 General.accountStatus = General.NOT_LOGGED_IN
+                General.setRegistrationFinished(activity, false)
                 Toast.makeText(activity, R.string.logged_out, Toast.LENGTH_SHORT).show()
                 activity.finish()
             }

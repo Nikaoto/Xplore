@@ -71,7 +71,7 @@ class MemberListAdapter(private val context: Context,
             holder.memberImage.setOnLongClickListener {
                 currentMember = users[position]
                 if (currentMember.id != General.currentUserId) {
-                    General.vibrateDevice(context, null)
+                    General.vibrateDevice(context)
                     AlertDialog.Builder(context)
                             .setTitle(context.resources.getString(R.string.to_remove)+" "
                                     + currentMember.fname +

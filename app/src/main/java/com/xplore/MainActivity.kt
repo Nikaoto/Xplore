@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -18,11 +19,15 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.xplore.account.RegisterActivity
 import com.xplore.account.SignInActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
@@ -35,12 +40,15 @@ import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
 import com.xplore.user.UserCard
+import com.xplore.util.FirebaseUtil.usersRef
 import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
-/**
+/*
  * Created by Nik on 8/25/2017.
- * Replacement for MainAct in Kotlin
+ *
+ * The main activity
+ *
  */
 
 class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -69,11 +77,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         setContentView(R.layout.activity_main)
 
-        General.InitDisplayMetrics(this)
+        General.initDisplayMetrics(this)
         General.refreshAccountStatus()
-
-        //Setting up navigation view
-        navigationView.setCheckedItem(R.id.nav_library)
 
         //Setting up user profile inside drawer header
         val navHeaderView = navigationView.getHeaderView(0)
@@ -114,7 +119,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         notificationManager = NotificationManager(
                 drawerBadge,
-                MenuItemCompat.getActionView(navigationView.getMenu()
+                //navigationView.menu.findItem(R.id.nav_my_groups).getActionView().findViewById<TextView>(R.id.myGroupsBadge) // TODO test this possible fix
+                MenuItemCompat.getActionView(navigationView.menu
                         .findItem(R.id.nav_my_groups)).findViewById<TextView>(R.id.myGroupsBadge)
         )
 
@@ -312,8 +318,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
 
-    //TODO check this and remove
+/*    //TODO check this and remove
     override fun onSaveInstanceState(outState: Bundle?) {
         //Leave empty. Bug on API 11+
-    }
+    }*/
 }

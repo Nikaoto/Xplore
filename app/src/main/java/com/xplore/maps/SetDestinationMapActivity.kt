@@ -102,7 +102,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
             googleMap.animateCamera(cameraUpdate)
         }
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
-            General.vibrateDevice(this@SetDestinationMapActivity, null)
+            General.vibrateDevice(this@SetDestinationMapActivity)
             destinationMarker?.remove()
             destinationMarker = googleMap.addMarker(buildMarker(latLng, getString(R.string.destination)))
         }

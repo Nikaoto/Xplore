@@ -1,8 +1,16 @@
 package com.xplore.util
 
+import android.app.Activity
 import android.util.Log
+import android.widget.Toast
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.xplore.General
+import com.xplore.R
 
 /**
  * Created by Nika on 9/7/2017.
@@ -56,6 +64,30 @@ object FirebaseUtil {
     const val F_MEMBER_IDS = "member_ids"
     const val F_INVITED_MEMBER_IDS = "invited_member_ids"
 
+    @JvmStatic
+    fun logOut(act: Activity, googleApiClient: GoogleApiClient) {
+        if(General.accountStatus == General.LOGGED_IN){
+            forceLogOut(act, googleApiClient)
+        }
+    }
+
+    @JvmStatic
+    fun forceLogOut(act: Activity, googleApiClient: GoogleApiClient) {
+        // Firebase log out
+        FirebaseAuth.getInstance().signOut()
+
+        // Facebook log out
+        LoginManager.getInstance().logOut()
+
+        // Google log out
+        Auth.GoogleSignInApi.signOut(googleApiClient)
+
+        // Reset current user
+        General.currentUserId = ""
+        General.accountStatus = General.NOT_LOGGED_IN
+        General.setRegistrationFinished(act, false)
+        Toast.makeText(act, R.string.logged_out, Toast.LENGTH_SHORT).show()
+    }
 
     @JvmField
     val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)

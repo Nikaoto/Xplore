@@ -6,9 +6,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.user.UserCard
 
-/**
+/*
  * Created by Nika on 8/6/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Used solely for SearchUserAct
+ *
  */
 
 class FirebaseUserSearch(var displayUserCards: ArrayList<UserCard>, val displayAction: () -> Unit) {

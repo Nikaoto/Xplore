@@ -17,25 +17,30 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.soundcloud.android.crop.Crop
 import com.squareup.picasso.Picasso
+import com.xplore.ApiManager
 import com.xplore.General
 import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.base.BaseActivity
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.UploadUser
+import com.xplore.util.FirebaseUtil
 import com.xplore.util.FirebaseUtil.DEFAULT_IMAGE_URL
 import com.xplore.util.FirebaseUtil.MIN_AGE
 import kotlinx.android.synthetic.main.register_layout.*
@@ -52,7 +57,7 @@ import java.util.*
 *
 */
 
-open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
+open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     /* Request Codes */
     private val NONE = 0
@@ -79,6 +84,23 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
                 .putExtra(ARG_EMAIL, email)
                 .putExtra(ARG_PHOTO_URL, photoUrl.toString())
     }
+
+    /* Google Api Client stuff (for logout) */
+    private val googleApiClient: GoogleApiClient by lazy {
+        ApiManager.getGoogleAuthApiClient(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        googleApiClient.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        googleApiClient.disconnect()
+    }
+
+    //
 
     // Firebase Storage
     private val storageRef = FirebaseStorage.getInstance().reference
@@ -119,6 +141,8 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        General.setRegistrationFinished(this, false);
+
         initLayout()
         fillFields()
         initClickEvents()
@@ -126,6 +150,19 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     open fun initLayout() {
         setContentView(R.layout.register_layout)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setTitle(R.string.register)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_CANCELED)
+        //FirebaseUtil.logOut(this, googleApiClient)
+        finish()
     }
 
     open fun fillFields() {
@@ -346,10 +383,9 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<out String>?,
-                                            grantResults: IntArray?) {
-        if (grantResults != null && grantResults.isNotEmpty()
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                                            permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             when (requestCode) {
                 CAMERA_PERMISSION_REQUEST_CODE -> prepareCamera()
                 GALLERY_PERMISSION_REQUEST_CODE -> Crop.pickImage(this)
@@ -506,11 +542,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         return sampleSize
     }
 
-    override fun onBackPressed() {
-        // Leave empty, so user doesn't accidentally exit during registration
-    }
-
-    fun TextView.safeSetText(s: String?) {
+    private fun TextView.safeSetText(s: String?) {
         if (s != null) {
             this.text = s
         } else {
