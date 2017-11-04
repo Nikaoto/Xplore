@@ -53,7 +53,7 @@ class EditProfileActivity : RegisterActivity() {
 
     override fun initLayout() {
         setContentView(R.layout.register_layout)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setTitle(R.string.edit_profile)
 
         cancelButton.visibility = View.VISIBLE
