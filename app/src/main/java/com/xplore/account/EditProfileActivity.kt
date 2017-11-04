@@ -66,8 +66,10 @@ class EditProfileActivity : RegisterActivity() {
         fnameEditText.setText(currentUser.fname)
         lnameEditText.setText(currentUser.lname)
         emailEditText.setText(currentUser.email)
+        emailEditText.isEnabled = false
+        emailEditText.isFocusable = false
         numEditText.setText(currentUser.tel_num)
-        birthDateTextView.setText(DateUtil.putSlashesInDate(currentUser.birth_date))
+        birthDateTextView.text = DateUtil.putSlashesInDate(currentUser.birth_date)
 
         bYear = DateUtil.getYear(currentUser.birth_date.toString())
         bMonth = DateUtil.getMonth(currentUser.birth_date.toString())

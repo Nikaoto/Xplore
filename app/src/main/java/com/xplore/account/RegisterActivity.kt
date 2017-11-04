@@ -36,6 +36,8 @@ import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
 import com.xplore.base.BaseActivity
 import com.xplore.user.UploadUser
+import com.xplore.util.FirebaseUtil.DEFAULT_IMAGE_URL
+import com.xplore.util.FirebaseUtil.MIN_AGE
 import kotlinx.android.synthetic.main.register_layout.*
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -43,37 +45,53 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
-/**
+/*
 * Created by Nikaoto on 3/11/2017.
-* TODO write description of this class - what it does and why.
+*
+* Handles full registration after authentication.
+*
 */
 
 open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     /* Request Codes */
-    val NONE = 0
-    val CAMERA_PERMISSION_REQUEST_CODE = 1;
-    val GALLERY_PERMISSION_REQUEST_CODE = 2;
-    val ACTION_SNAP_IMAGE = 3
+    private val NONE = 0
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1;
+    private val GALLERY_PERMISSION_REQUEST_CODE = 2;
+    private val ACTION_SNAP_IMAGE = 3
 
     //
-    private val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
-    val PIC_KILOBYTE_LIMIT = 25
+    private val PIC_KILOBYTE_LIMIT = 25
 
-    // Firebase
-    val storageRef = FirebaseStorage.getInstance().reference
-    fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
+    companion object {
+        // Args
+        const val ARG_USER_ID = "userId"
+        const val ARG_FULL_NAME = "fullName"
+        const val ARG_EMAIL = "email"
+        const val ARG_PHOTO_URL = "photoUrl"
+
+        @JvmStatic
+        fun getStartIntent(context: Context, userId: String, fullName: String?, email: String?,
+                           photoUrl: Uri?): Intent
+                = Intent(context, RegisterActivity::class.java)
+                .putExtra(ARG_USER_ID, userId)
+                .putExtra(ARG_FULL_NAME, fullName)
+                .putExtra(ARG_EMAIL, email)
+                .putExtra(ARG_PHOTO_URL, photoUrl.toString())
+    }
+
+    // Firebase Storage
+    private val storageRef = FirebaseStorage.getInstance().reference
+    private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
 
     // File provider authority string
-    val authority = "com.xplore.fileprovider"
+    private val authority = "com.xplore.fileprovider"
 
     // Users profile image url
     var imagePath: Uri? = null
 
     var mobileNumberMessageShown = false
 
-    //TODO add age restriction constant to resources
-    private val ageRestriction: Int = 15
     var bYear: Int = 0
     var bMonth: Int = 0
     var bDay: Int = 0
@@ -82,29 +100,18 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     // User data
     open val userId: String by lazy {
-        intent.getStringExtra("userId")
+        intent.getStringExtra(ARG_USER_ID)
     }
     open val userProfilePicUrl: String by lazy {
-        intent.getStringExtra("photoUrl")
+        intent.getStringExtra(ARG_PHOTO_URL)
     }
     private val userFullName: String by lazy {
-        intent.getStringExtra("fullName")
+        intent.getStringExtra(ARG_FULL_NAME)
     }
     private val userEmail: String by lazy {
-        intent.getStringExtra("email")
+        intent.getStringExtra(ARG_EMAIL)
     }
     //
-
-    companion object {
-        @JvmStatic
-        fun getStartIntent(context: Context, userId: String, fullName: String?, email: String?,
-                           photoUrl: Uri?): Intent
-                = Intent(context, RegisterActivity::class.java)
-                    .putExtra("userId", userId)
-                    .putExtra("fullName", fullName)
-                    .putExtra("email", email)
-                    .putExtra("photoUrl", photoUrl.toString())
-    }
 
     init {
         refreshGlobalTimeStamp()
@@ -126,6 +133,8 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         fnameEditText.safeSetText(separateFullName(userFullName, 0))
         lnameEditText.safeSetText(separateFullName(userFullName, 1))
         emailEditText.safeSetText(userEmail)
+        emailEditText.isEnabled = false
+        emailEditText.isFocusable = false
     }
 
     open fun initClickEvents() {
@@ -158,7 +167,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    open fun onBirthDateSelected(timeStamp: Long, offSet: Int = ageRestriction) {
+    open fun onBirthDateSelected(timeStamp: Long, offSet: Int = MIN_AGE) {
         val fragment = com.xplore.DatePickerFragment(this, timeStamp, offSet)
         fragment.show(fragmentManager, "datePicker")
     }
@@ -232,7 +241,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         if (General.isNetConnected(this@RegisterActivity)) {
 
             //Checking if age is OK
-            if (General.calculateAge(globalTimeStamp, year, month, day) >= ageRestriction) {
+            if (General.calculateAge(globalTimeStamp, year, month, day) >= MIN_AGE) {
                 bYear = year
                 bMonth = month
                 bDay = day
@@ -241,7 +250,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
             } else {
                 val res = this@RegisterActivity.resources
                 Toast.makeText(this@RegisterActivity, res.getString(R.string.you_must_be_at_least) +
-                        " " + ageRestriction + " " + res.getString(R.string.years_to_use_xplore),
+                        " " + MIN_AGE + " " + res.getString(R.string.years_to_use_xplore),
                         Toast.LENGTH_SHORT).show()
             }
         } else
@@ -250,8 +259,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
 
     // Uploads all textual user data to Firebase
     open fun addUserEntryToDataBase(user: UploadUser) {
-        if (user.profile_picture_url == null ||  user.profile_picture_url == "null"
-                || user.profile_picture_url.isEmpty()) {
+        if (user.profile_picture_url == "null" || user.profile_picture_url.isEmpty()) {
             user.profile_picture_url = DEFAULT_IMAGE_URL
         }
         val userData = user.toMap()
@@ -414,17 +422,22 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    fun getPicturePath(picName: String)
-            = getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath + "/" + picName
+    private fun getPicturePath(picName: String): String {
+        return getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath + "/" + picName
+    }
 
-    fun File.getUri() = FileProvider.getUriForFile(this@RegisterActivity, authority, this)
+    private fun File.getUri(): Uri {
+        return FileProvider.getUriForFile(this@RegisterActivity, authority, this)
+    }
 
     //Starts cropping activity with code Crop.REQUEST_CROP
-    fun cropImage(input: Uri, output: Uri) = Crop.of(input, output).asSquare().start(this)
+    private fun cropImage(input: Uri, output: Uri) {
+        return Crop.of(input, output).asSquare().start(this)
+    }
 
     // Returns temporary file for storing cropped picture
     @Throws(IOException::class)
-    fun createImageFile(): File {
+    private fun createImageFile(): File {
         val imageFileName = "profile_pic_"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
@@ -438,7 +451,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
         this.sendBroadcast(mediaScanIntent)
     }
 
-    fun resizeAndCompressImage(filePath: String): String {
+    private fun resizeAndCompressImage(filePath: String): String {
         val MAX_IMAGE_SIZE = PIC_KILOBYTE_LIMIT * 1024 // 10 kilobytes
 
         //Decode with inJustDecodeBounds so we can resize it first
@@ -477,7 +490,7 @@ open class RegisterActivity : BaseActivity(), DatePickerDialog.OnDateSetListener
     }
 
     //Calculates largest sample size that is the power of 2
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         val width = options.outWidth
         val height = options.outHeight
         var sampleSize = 1

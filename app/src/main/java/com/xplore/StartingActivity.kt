@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.xplore.account.SignInActivity
 import com.xplore.intro.LanguageSelectActivity
+import com.xplore.util.FirebaseUtil
 
 /**
  * Created by Nikaoto on 8/26/2017.
@@ -22,7 +23,7 @@ class StartingActivity : AppCompatActivity() {
         const val PREFS_BOOLEAN_FIRST_BOOT = "first_boot"
 
 
-        //Returns true if first ever app boot
+        // Returns true if first ever app boot
         @JvmStatic
         fun shouldShowWelcomeScreen(context: Context) =
                 context.getSharedPreferences(PREFS_BOOT, 0)
@@ -58,6 +59,7 @@ class StartingActivity : AppCompatActivity() {
         } else {
             Log.i(TAG, "is not first boot and user is signed in, starting main act")
 
+            // TODO Check if user has finished registration
             startActivity(Intent(this, MainActivity::class.java))
         }
     }

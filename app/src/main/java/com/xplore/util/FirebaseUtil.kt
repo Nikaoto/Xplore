@@ -16,9 +16,12 @@ object FirebaseUtil {
 
     private const val TAG = "firebase_util"
 
-    const val REP = 1
+    const val REP = 1 // Starting reputation
+    // URL of default image to assign if no image uploaded upon registration
+    const val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/user_default_profile_image.jpg?alt=media&token=9ef3891f-4525-414d-8039-061cdc65654e"
 
     // TODO put this somewhere else
+    const val MIN_AGE = 15
     const val MIN_PASS_LENGTH = 6
 
     // Main Nodes
