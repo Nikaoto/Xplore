@@ -8,7 +8,6 @@ Xplore_Demo.iml
 .idea/modules.xml
 *.kml
 secrets.xml
-app/src/main/assets/*.db
 google-services.json
 google_maps_api.xml
 gradle/wrapper/gradle-wrapper.properties
