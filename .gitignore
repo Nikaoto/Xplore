@@ -6,6 +6,8 @@ xplore.iml
 Xplore_Demo.iml
 .idea/libraries
 .idea/modules.xml
+.idea/misc.xml
+.idea/gradle.xml
 *.kml
 secrets.xml
 google-services.json
