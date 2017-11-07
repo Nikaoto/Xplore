@@ -52,6 +52,8 @@ import static com.xplore.General.JUST_LOGGED_IN;
 import static com.xplore.General.NOT_LOGGED_IN;
 import static com.xplore.General.accountStatus;
 import static com.xplore.General.currentUserId;
+import static com.xplore.util.FirebaseUtil.FB_PROFILE_PIC_HEIGHT;
+import static com.xplore.util.FirebaseUtil.FB_PROFILE_PIC_WIDTH;
 import static com.xplore.util.FirebaseUtil.F_EMAIL;
 import static com.xplore.util.FirebaseUtil.usersRef;
 
@@ -287,7 +289,9 @@ public class SignInActivity extends BaseAppCompatActivity {
             for (UserInfo profile : user.getProviderData()) {
                 if (FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
                     fbId = profile.getUid();
-                    String photoUrl = "https://graph.facebook.com/" + fbId + "/picture?height=300";
+                    String photoUrl = "https://graph.facebook.com/" + fbId
+                            + "/picture?height=" + FB_PROFILE_PIC_HEIGHT
+                            + "&width=" + FB_PROFILE_PIC_WIDTH;
                     startActivityForResult(
                             RegisterActivity.getStartIntent(
                                     SignInActivity.this,
