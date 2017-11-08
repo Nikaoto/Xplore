@@ -85,7 +85,7 @@ public class SearchGroupsFragment extends SearchFragment {
         TimeManager.refreshGlobalTimeStamp();
 
         // FAB
-        fab = view.findViewById(R.id.createGroupFAB);
+        fab = (FloatingActionButton) view.findViewById(R.id.createGroupFAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class SearchGroupsFragment extends SearchFragment {
         });
 
         // Refresh Layout
-        refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshLayout);
         refreshLayout.setColorSchemeResources(R.color.refresh_color_1,
                 R.color.refresh_color_2,
                 R.color.refresh_color_3);
@@ -106,7 +106,7 @@ public class SearchGroupsFragment extends SearchFragment {
             }
         });
         // RecyclerView
-        resultsRV = view.findViewById(R.id.resultsRV);
+        resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         resultsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
