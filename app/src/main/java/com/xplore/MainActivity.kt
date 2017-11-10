@@ -46,7 +46,7 @@ import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 /*
- * Created by Nik on 8/25/2017.
+ * Created by Nikaoto on 8/25/2017.
  *
  * The main activity
  *
@@ -68,7 +68,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
     private lateinit var notificationManager: NotificationManager
 
-    val TAG = "jiga"
+    private val TAG = " main-act"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
@@ -98,7 +98,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        //Used to hide keyboard when drawer is clicked
+        // Used to hide keyboard when drawer is clicked
         val toggle = object : ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -115,7 +115,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         //TODO create a timer which checks for notifs every 30s and gives notification + updates badges
 
-        //Badge for notifications
+        // Badge for notifications
         val drawerBadge = BadgeDrawerArrowDrawable(toolbar.context)
 
         notificationManager = NotificationManager(
@@ -143,9 +143,10 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         val prefs = getSharedPreferences(PREFS_LANGUAGE, 0)
         val currentLanguage = prefs.getString(PREFS_STRING_LANGUAGE, "")
         if (currentLanguage.isEmpty()) {
-            //This only executes if LanguageSelectAct failed to write to prefs
-            //Set English as language
-            prefs.edit().putString(PREFS_STRING_LANGUAGE, LanguageUtil.ENGLISH_LANGUAGE_CODE).commit()
+            // This only executes if LanguageSelectAct failed to write to prefs
+            // Set English as language
+            prefs.edit().putString(PREFS_STRING_LANGUAGE, LanguageUtil.ENGLISH_LANGUAGE_CODE)
+                    .commit()
             DBManager.DB_TABLE = LanguageUtil.ENGLISH_LANGUAGE_CODE
         } else {
             DBManager.DB_TABLE = currentLanguage
@@ -164,7 +165,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         Log.i(TAG, "onresume main act")
 
-        //Refreshes app if language changed
+        // Refreshes app if language changed
         if (LanguageUtil.languagePrefsChanged) {
             Log.i(TAG, "lang prefs changed, recreating main act")
 
@@ -186,7 +187,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             startActivity(SignInActivity.getStartIntent(this, true))
         }
 
-        //Clears user related content whe logged out
+        // Clears user related content whe logged out
         if (!General.isUserSignedIn()) {
             userFullNameTextView.visibility = View.GONE
             Picasso.with(this)
@@ -251,6 +252,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+
         when (id) {
             R.id.nav_profile ->
                 if (General.isUserSignedIn()) {
@@ -316,12 +318,5 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             startActivity(Intent(this, SettingsActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
-
     }
-
-
-/*    //TODO check this and remove
-    override fun onSaveInstanceState(outState: Bundle?) {
-        //Leave empty. Bug on API 11+
-    }*/
 }
