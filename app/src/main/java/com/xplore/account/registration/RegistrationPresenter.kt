@@ -1,6 +1,8 @@
 package com.xplore.account.registration
 
 import com.xplore.base.BasePresenterImpl
+import com.xplore.user.User
+import com.xplore.util.FirebaseUtil
 
 /**
  * Created by Nika on 11/10/2017.
@@ -9,7 +11,6 @@ import com.xplore.base.BasePresenterImpl
 
 class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         RegistrationContract.Presenter {
-
 
     override fun separateFullName(fullName: String?): Array<String> {
         if (fullName == null) {
@@ -25,11 +26,17 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         return names
     }
 
-    override fun checkAge(age: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun isValidAge(age: Int): Boolean = age >= FirebaseUtil.MIN_AGE
+
+    override fun isValidEmail(email: String): Boolean {
+        return false
     }
 
-    override fun checkFieldsValid(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun isValidDate(date: String): Boolean {
+        return false
+    }
+
+    override fun submitFields(user: User) {
+
     }
 }

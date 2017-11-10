@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.xplore.R
-import com.xplore.TimeManager
 import com.xplore.base.BaseAct
+import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -133,12 +133,62 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         unHighlightBorder(birthDateTextView)
     }
 
-    override fun onBirthDateSelected() {
-        
+    override fun fieldError(v: View, msgResId: Int): Boolean {
+        highlightBorder(v)
+        scrollToView(v)
+
+        showMessage(msgResId)
+        return false
     }
 
-    override fun onDoneButtonClick() {
+    override fun fieldError(v: View): Boolean = fieldError(v, R.string.error_field_required)
 
+    override fun scrollToView(v: View) {
+        scrollView.post {
+            scrollView.smoothScrollTo(0, v.bottom)
+        }
+    }
+
+    override fun onBirthDateSelected() {
+        // TODO add date picker by Guga
+    }
+
+    private fun TextView.str() = this.text.trim().toString()
+    private fun TextView.isEmpty() = this.text.isEmpty()
+
+    override fun onDoneButtonClick() {
+        val tempUser = User(userId, fnameEditText.str(), lnameEditText.str(), numEditText.str(),
+                emailEditText.str(), userPhotoUrl)
+
+        if (fieldsValid()) {
+            presenter.submitFields(tempUser)
+        }
+    }
+
+    override fun fieldsValid(): Boolean {
+        if (fnameEditText.isEmpty()) {
+            return fieldError(fnameEditText)
+        }
+        if (lnameEditText.isEmpty()) {
+            return fieldError(lnameEditText)
+        }
+        if (emailEditText.isEmpty()) {
+            return fieldError(emailEditText)
+        }
+        if (!presenter.isValidEmail(emailEditText.str())) {
+            return fieldError(emailEditText, R.string.error_invalid_email)
+        }
+        if (numEditText.isEmpty()) {
+            return fieldError(numEditText)
+        }
+        if (birthDateTextView.isEmpty()) {
+            return fieldError(birthDateTextView)
+        }
+        if (!presenter.isValidDate(birthDateTextView.str())) {
+            return fieldError(birthDateTextView)
+        }
+
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
