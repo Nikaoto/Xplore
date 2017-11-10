@@ -4,7 +4,7 @@ package com.xplore.base
  * Created by Nika on 11/10/2017.
  */
 
-class BasePresenterImpl<V : BaseView> : BasePresenter<V> {
+open class BasePresenterImpl<V : BaseView> : BasePresenter<V> {
 
     protected var view: V? = null
 
