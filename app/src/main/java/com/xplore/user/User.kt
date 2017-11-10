@@ -1,9 +1,8 @@
 package com.xplore.user
 
-
 import java.io.Serializable
 
-/**
+/*
  * Created by Nikaoto on 2/11/2017.
  */
 
@@ -18,5 +17,6 @@ open class User(
         val reputation: Int = 0,
         val birth_date: Int = 0
 ) : Serializable {
+
     fun getFullName() = "$fname $lname"
 }
