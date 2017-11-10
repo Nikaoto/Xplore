@@ -367,7 +367,13 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
 
     fun EditText.str() = this.text.trim().toString()
 
-    /* Everything below is code needed for profile picture choosing or taking functionality */
+    //
+    //
+    //
+    /* Everything below is code needed for profile picture choosing/taking functionality */
+    //
+    //
+    //
 
     // Requests permissions for given module with the passed request code and permissionType
     fun requestModulePermission(activity: Activity, permission: String, requestCode: Int,
