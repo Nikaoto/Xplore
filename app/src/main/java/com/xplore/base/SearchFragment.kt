@@ -107,31 +107,4 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         // This is called when the query text is cleared/deleted
         return false
     }
-
-    fun showProgressBar() {
-        searchView?.let {
-            val id = it.context.resources
-                    .getIdentifier("android:id/search_plate", null, null)
-            val progressBar = it.findViewById<LinearLayout>(id)
-                    .findViewById<ProgressBar>(R.id.searchProgressBar)
-            if (progressBar != null) {
-                progressBar.animate().setDuration(200).alpha(1f).start()
-            } else {
-                val view = LayoutInflater.from(activity).inflate(R.layout.loading_icon, null)
-                (it.findViewById<ViewGroup>(id)).addView(view, 1)
-            }
-        }
-    }
-
-    fun hideProgressBar() {
-        searchView?.let {
-            val id = it.context.resources
-                    .getIdentifier("android:id/search_plate", null, null)
-            val progressBar = it.findViewById<LinearLayout>(id)
-                    .findViewById<ProgressBar>(R.id.searchProgressBar)
-            if (progressBar != null) {
-                progressBar.animate().setDuration(200).alpha(0f).start()
-            }
-        }
-    }
 }

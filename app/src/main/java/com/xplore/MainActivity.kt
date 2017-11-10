@@ -1,5 +1,6 @@
 package com.xplore
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.FragmentTransaction
 import android.content.Context
@@ -80,10 +81,10 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         General.initDisplayMetrics(this)
         General.refreshAccountStatus()
 
-        //Setting up user profile inside drawer header
+        // Setting up user profile inside drawer header
         val navHeaderView = navigationView.getHeaderView(0)
-        userImageView = navHeaderView.findViewById<ImageView>(R.id.drawer_image)
-        userFullNameTextView = navHeaderView.findViewById<TextView>(R.id.userFullNameTextView)
+        userImageView = navHeaderView.findViewById<ImageView>(R.id.drawer_image) as ImageView
+        userFullNameTextView = navHeaderView.findViewById<ImageView>(R.id.userFullNameTextView) as TextView
         userImageView.setOnClickListener {
             if (General.isUserSignedIn()) {
                 General.openUserProfile(this@MainActivity, General.currentUserId)
@@ -119,9 +120,10 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         notificationManager = NotificationManager(
                 drawerBadge,
-                //navigationView.menu.findItem(R.id.nav_my_groups).getActionView().findViewById<TextView>(R.id.myGroupsBadge) // TODO test this possible fix
-                MenuItemCompat.getActionView(navigationView.menu
-                        .findItem(R.id.nav_my_groups)).findViewById<TextView>(R.id.myGroupsBadge)
+                navigationView.menu.findItem(R.id.nav_my_groups)
+                        .actionView.findViewById<TextView>(R.id.myGroupsBadge) as TextView // TODO test this possible fix
+                /*MenuItemCompat.getActionView(navigationView.menu
+                        .findItem(R.id.nav_my_groups)).findViewById<TextView>(R.id.myGroupsBadge)*/
         )
 
         toggle.drawerArrowDrawable = drawerBadge

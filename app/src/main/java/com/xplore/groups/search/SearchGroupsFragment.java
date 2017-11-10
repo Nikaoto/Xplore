@@ -144,8 +144,6 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     private void prepareToLoadData() {
-        showProgressBar();
-
         groupCards.clear();
         displayCards.clear();
         firstLoad = true;
@@ -323,7 +321,6 @@ public class SearchGroupsFragment extends SearchFragment {
     private void postLoadData() {
         refreshLayout.setRefreshing(false);
         firstLoad = false;
-        hideProgressBar();
         if (displayCards.isEmpty()) {
             nothingFound();
         }

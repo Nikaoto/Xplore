@@ -1,13 +1,13 @@
 package com.xplore.base
 
-/**
+/*
  * Created by Nikaoto on 9/6/2017.
  *
  * AppCompatActivity that refreshes when resumed
  *
  */
 
-open class BaseRefreshableAppCompatActivity : BaseAppCompatActivity() {
+abstract class BaseRefreshableAppCompatActivity : BaseAppCompatActivity() {
 
     open var allowRefresh = false
 

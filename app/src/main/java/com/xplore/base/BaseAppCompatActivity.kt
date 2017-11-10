@@ -9,7 +9,7 @@ import com.xplore.settings.LanguageUtil
  * TODO write description of this class - what it does and why.
  */
 
-open class BaseAppCompatActivity : AppCompatActivity() {
+abstract class BaseAppCompatActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))

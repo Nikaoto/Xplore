@@ -181,7 +181,7 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
             onBirthDateSelected(globalTimeStamp)
         }
 
-        numEditText.setOnTouchListener { view, motionEvent ->
+        numEditText.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 showMobileNumberReason()
             }

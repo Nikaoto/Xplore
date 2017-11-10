@@ -36,9 +36,7 @@ class LibraryFragment : SearchFragment() {
 
     private val answerCards = ArrayList<ReserveCard>()
 
-    private val resultsRV: RecyclerView by lazy {
-        view.findViewById<RecyclerView>(R.id.resultsRV)
-    }
+    private lateinit var resultsRV: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +48,9 @@ class LibraryFragment : SearchFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        resultsRV = view.findViewById<RecyclerView>(R.id.resultsRV)
+
         init()
         firstDisplayData()
     }
@@ -82,7 +83,6 @@ class LibraryFragment : SearchFragment() {
     }
 
     override fun onSearch(query: String): Boolean {
-        showProgressBar()
         searchListItems(query, dbManager)
         return super.onSearch(query)
     }
@@ -111,8 +111,6 @@ class LibraryFragment : SearchFragment() {
         }
         //Displaying the changes/results
         resultsRV.adapter.notifyDataSetChanged()
-
-        hideProgressBar()
     }
 
     override fun onDestroy() {
