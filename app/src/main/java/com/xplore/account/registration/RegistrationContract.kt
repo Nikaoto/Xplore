@@ -14,17 +14,37 @@ interface RegistrationContract {
 
     interface View : BaseView {
 
-        fun fillFields()
+        // View Getters/Setters
+
+        fun setFnameText(text: String)
+        fun getFnameText(): String
+
+        fun setLnameText(text: String)
+        fun getLnameText(): String
+
+        fun setEmailText(text: String)
+        fun getEmailText(): String
+
+        fun setMobileNumberText(text: String)
+        fun getMobileNumberText(): String
+
+        fun setBirthDateText(text: String)
+        fun getBirthDateText(): String
+
+        // End of View Getters/Setters
+
+
+        fun initProfilePhoto(photoUrl: String)
 
         fun initClickEvents()
-
-        var mobileNumberMessageShown: Boolean
 
         fun highlightBorder(v: android.view.View)
 
         fun unHighlightBorder(v: android.view.View)
 
         fun unHighlightAllEditTexts()
+
+        fun showLoadingMessage()
 
         fun showMobileNumberReason()
 
@@ -36,21 +56,29 @@ interface RegistrationContract {
 
         fun onBirthDateSelected()
 
-        fun onDoneButtonClick()
-
         fun fieldsValid(): Boolean
     }
 
     interface Presenter : BasePresenter<View> {
 
+        fun onCreate()
+
+        fun fillFields()
+
+        var mobileNumberReasonShown: Boolean
+
+        fun onBirthDateClicked()
+
+        fun onMobileNumberTouched()
+
+        fun onDoneButtonClicked()
+
         fun separateFullName(fullName: String?): Array<String>
 
         fun isValidAge(age: Int): Boolean
 
-        fun isValidDate(date: String): Boolean
+        fun fieldsValid(): Boolean
 
-        fun isValidEmail(email: String): Boolean
-
-        fun submitFields(user: User)
+        fun submitUserData(user: User)
     }
 }

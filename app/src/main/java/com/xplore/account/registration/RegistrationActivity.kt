@@ -3,16 +3,14 @@ package com.xplore.account.registration
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
+import com.xplore.General
 import com.xplore.R
 import com.xplore.base.BaseAct
-import com.xplore.user.User
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -26,6 +24,12 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     override var presenter: RegistrationContract.Presenter = RegistrationPresenter()
 
     companion object {
+        // Activity Request Codes
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 1
+        private const val GALLERY_PERMISSION_REQUEST_CODE = 2;
+        private const val ACTION_SNAP_IMAGE = 3
+
+        // Args
         const val ARG_USER_ID = "userId"
         const val ARG_FULL_NAME = "fullName"
         const val ARG_EMAIL = "email"
@@ -34,32 +38,14 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         // TODO pass object to this and deserialize it later
         @JvmStatic
         fun newIntent(context: Context, userId: String, fullName: String?, email: String?,
-                      photoUrl: Uri?): Intent {
+                      photoUrl: String): Intent {
             return Intent(context, RegistrationActivity::class.java)
                     .putExtra(ARG_FULL_NAME, fullName)
                     .putExtra(ARG_USER_ID, userId)
                     .putExtra(ARG_EMAIL, email)
-                    .putExtra(ARG_PHOTO_URL, photoUrl.toString())
+                    .putExtra(ARG_PHOTO_URL, photoUrl)
         }
     }
-
-    private val userFullName: String by lazy {
-        intent.getStringExtra(ARG_FULL_NAME)
-    }
-
-    private val userId: String by lazy {
-        intent.getStringExtra(ARG_USER_ID)
-    }
-
-    private val userEmail: String by lazy {
-        intent.getStringExtra(ARG_EMAIL)
-    }
-
-    private val userPhotoUrl: String by lazy {
-        intent.getStringExtra(ARG_PHOTO_URL)
-    }
-
-    override var mobileNumberMessageShown: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +54,10 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         setContentView(R.layout.register_layout)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fillFields()
+        presenter.onCreate()
+        // TODO remove this when interactor is added
+        emailEditText.isEnabled = false
+        emailEditText.isFocusable = false
     }
 
     private fun TextView.safeSetText(s: String?) {
@@ -79,46 +68,37 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         }
     }
 
-    override fun fillFields() {
-        val names = presenter.separateFullName(userFullName)
+    override fun initProfilePhoto(photoUrl: String) {
 
-        fnameEditText.safeSetText(names[0])
-        lnameEditText.safeSetText(names[1])
-        emailEditText.safeSetText(userEmail)
-
-        emailEditText.isEnabled = userEmail.isEmpty()
-        emailEditText.isFocusable = userEmail.isEmpty()
     }
 
     override fun initClickEvents() {
-        //initProfileImage(userProfilePicUrl)
-
         birthDateTextView.setOnClickListener {
-            onBirthDateSelected()
+            presenter.onBirthDateClicked()
         }
 
-        numEditText.setOnTouchListener { _, motionEvent ->
+        mobileNumberEditText.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
-                showMobileNumberReason()
+                presenter.onMobileNumberTouched()
             }
             false
         }
 
         doneButton.setOnClickListener {
-            onDoneButtonClick()
+            presenter.onDoneButtonClicked()
         }
     }
 
-    override fun showMobileNumberReason() {
-        if (!mobileNumberMessageShown) {
-            mobileNumberMessageShown = true
+    override fun showLoadingMessage() {
+        showLongMessage(R.string.loading)
+    }
 
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.mobile_number_reason_title)
-                    .setMessage(R.string.mobile_number_reason_message)
-                    .setPositiveButton(R.string.okay, null)
-                    .create().show()
-        }
+    override fun showMobileNumberReason() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.mobile_number_reason_title)
+                .setMessage(R.string.mobile_number_reason_message)
+                .setPositiveButton(R.string.okay, null)
+                .create().show()
     }
 
     override fun highlightBorder(v: View) = v.setBackgroundResource(R.drawable.edit_text_border_red)
@@ -129,7 +109,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         unHighlightBorder(fnameEditText)
         unHighlightBorder(lnameEditText)
         unHighlightBorder(emailEditText)
-        unHighlightBorder(numEditText)
+        unHighlightBorder(mobileNumberEditText)
         unHighlightBorder(birthDateTextView)
     }
 
@@ -156,15 +136,6 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     private fun TextView.str() = this.text.trim().toString()
     private fun TextView.isEmpty() = this.text.isEmpty()
 
-    override fun onDoneButtonClick() {
-        val tempUser = User(userId, fnameEditText.str(), lnameEditText.str(), numEditText.str(),
-                emailEditText.str(), userPhotoUrl)
-
-        if (fieldsValid()) {
-            presenter.submitFields(tempUser)
-        }
-    }
-
     override fun fieldsValid(): Boolean {
         if (fnameEditText.isEmpty()) {
             return fieldError(fnameEditText)
@@ -175,18 +146,16 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         if (emailEditText.isEmpty()) {
             return fieldError(emailEditText)
         }
-        if (!presenter.isValidEmail(emailEditText.str())) {
+        if (!General.isValidEmail(emailEditText.str())) {
             return fieldError(emailEditText, R.string.error_invalid_email)
         }
-        if (numEditText.isEmpty()) {
-            return fieldError(numEditText)
+        if (mobileNumberEditText.isEmpty()) {
+            return fieldError(mobileNumberEditText)
         }
         if (birthDateTextView.isEmpty()) {
             return fieldError(birthDateTextView)
         }
-        if (!presenter.isValidDate(birthDateTextView.str())) {
-            return fieldError(birthDateTextView)
-        }
+        // TODO check birth dates != 0
 
         return true
     }
@@ -198,5 +167,25 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
     override fun onBackPressed() {
         super.onBackPressed()
+        // Log user out
     }
+
+    // View Getters/Setters
+
+    override fun setFnameText(text: String) = fnameEditText.setText(text)
+    override fun getFnameText() = fnameEditText.text.toString()
+
+    override fun setLnameText(text: String) = lnameEditText.setText(text)
+    override fun getLnameText() = lnameEditText.text.toString()
+
+    override fun setEmailText(text: String) = emailEditText.setText(text)
+    override fun getEmailText() = emailEditText.text.toString()
+
+    override fun setMobileNumberText(text: String) = mobileNumberEditText.setText(text)
+    override fun getMobileNumberText() = mobileNumberEditText.text.toString()
+
+    override fun setBirthDateText(text: String) = birthDateTextView.setText(text)
+    override fun getBirthDateText() = birthDateTextView.text.toString()
+
+    // End of view Getters/Setters
 }
