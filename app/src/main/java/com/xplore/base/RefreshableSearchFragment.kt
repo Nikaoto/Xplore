@@ -56,13 +56,6 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.action_refresh) {
-            onRefreshed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     open fun onSearchClick(v: View?) {
         // Called when search icon clicked
     }

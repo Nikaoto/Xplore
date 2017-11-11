@@ -122,6 +122,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     // Checks internet and displays data
     private void firstLoadData() {
+        setLoading(true);
         canReset = false;
         if(!General.isNetConnected(getActivity())) {
             General.createNetErrorDialog(getActivity());
@@ -331,7 +332,6 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     }
 
     private void refreshData() {
-        setLoading(true);
         firstLoadData();
     }
 
