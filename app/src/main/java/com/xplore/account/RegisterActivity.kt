@@ -175,7 +175,7 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
             onBirthDateSelected(globalTimeStamp)
         }
 
-        numEditText.setOnTouchListener { _, motionEvent ->
+        mobileNumberEditText.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 showMobileNumberReason()
             }
@@ -237,7 +237,7 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
                     userId,
                     fnameEditText.str(),
                     lnameEditText.str(),
-                    numEditText.str(),
+                    mobileNumberEditText.str(),
                     emailEditText.str(),
                     userProfilePicUrl,
                     0,
@@ -309,7 +309,7 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
         makeBorderGreen(fnameEditText)
         makeBorderGreen(lnameEditText)
         makeBorderGreen(emailEditText)
-        makeBorderGreen(numEditText)
+        makeBorderGreen(mobileNumberEditText)
         makeBorderGreen(birthDateTextView)
 
         if (fnameEditText.text.isEmpty()) {
@@ -322,8 +322,8 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
             makeBorderRed(emailEditText)
             Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show()
             return false
-        } else if (numEditText.text.isEmpty()) {
-            return fieldError(numEditText)
+        } else if (mobileNumberEditText.text.isEmpty()) {
+            return fieldError(mobileNumberEditText)
         } else if (birthDateTextView.text.isEmpty()) {
             return fieldError(birthDateTextView)
         } else if (bYear == 0 || bMonth == 0 || bDay == 0) {

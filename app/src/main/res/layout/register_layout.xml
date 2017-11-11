@@ -124,20 +124,20 @@
             android:layout_marginTop="@dimen/reg_text_margin_top">
 
             <TextView
-                android:id="@+id/numLabelTextView"
+                android:id="@+id/mobileNumberLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mobile_number"
-                android:labelFor="@id/numEditText"
+                android:labelFor="@id/mobileNumberEditText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
-                android:layout_alignBaseline="@+id/numEditText" />
+                android:layout_alignBaseline="@+id/mobileNumberEditText" />
 
             <EditText
-                android:id="@+id/numEditText"
+                android:id="@+id/mobileNumberEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/numLabelTextView"
+                android:layout_toRightOf="@id/mobileNumberLabelTextView"
                 android:inputType="number"
                 android:layout_marginLeft="@dimen/reg_text_margin_left"
                 android:background="@drawable/edit_text_border"

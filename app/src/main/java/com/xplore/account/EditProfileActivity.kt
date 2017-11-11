@@ -68,7 +68,7 @@ class EditProfileActivity : RegisterActivity() {
         emailEditText.setText(currentUser.email)
         emailEditText.isEnabled = false
         emailEditText.isFocusable = false
-        numEditText.setText(currentUser.tel_num)
+        mobileNumberEditText.setText(currentUser.tel_num)
         birthDateTextView.text = DateUtil.putSlashesInDate(currentUser.birth_date)
 
         bYear = DateUtil.getYear(currentUser.birth_date.toString())
@@ -150,7 +150,7 @@ class EditProfileActivity : RegisterActivity() {
         if (birthDateTextView.text.toString() != DateUtil.putSlashesInDate(currentUser.birth_date)) {
             return true
         }
-        if (numEditText.str() != currentUser.tel_num) {
+        if (mobileNumberEditText.str() != currentUser.tel_num) {
             return true
         }
         if (imagePath != null) {
