@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.R
 import com.xplore.TimeManager
-import com.xplore.base.RefreshableFragment
+import com.xplore.base.refreshable.RefreshableFragment
 import com.xplore.database.DBManager
 import com.xplore.groups.GroupCard
 import com.xplore.groups.GroupCardRecyclerViewAdapter

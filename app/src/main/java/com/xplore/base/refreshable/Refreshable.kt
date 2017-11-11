@@ -1,4 +1,4 @@
-package com.xplore.base
+package com.xplore.base.refreshable
 
 import android.support.v4.widget.SwipeRefreshLayout
 

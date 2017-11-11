@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
-import com.xplore.base.RefreshableSearchFragment;
+import com.xplore.base.refreshable.RefreshableSearchFragment;
 import com.xplore.database.DBManager;
 import com.xplore.groups.GroupCard;
 import com.xplore.groups.GroupCardRecyclerViewAdapter;

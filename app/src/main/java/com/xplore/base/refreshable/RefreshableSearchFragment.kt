@@ -1,4 +1,4 @@
-package com.xplore.base
+package com.xplore.base.refreshable
 
 import android.os.Bundle
 import android.view.*

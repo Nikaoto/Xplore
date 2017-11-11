@@ -1,4 +1,4 @@
-package com.xplore.base
+package com.xplore.base.refreshable
 
 import android.app.Fragment
 import android.os.Bundle
@@ -6,9 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.SearchView
 import com.xplore.R
+import com.xplore.base.refreshable.Refreshable
 
 /*
  * Created by Nika on 11/11/2017.
