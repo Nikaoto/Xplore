@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.xplore.General;
 import com.xplore.R;
 import com.xplore.TimeManager;
-import com.xplore.base.SearchFragment;
+import com.xplore.base.RefreshableSearchFragment;
 import com.xplore.database.DBManager;
 import com.xplore.groups.GroupCard;
 import com.xplore.groups.GroupCardRecyclerViewAdapter;
@@ -43,7 +43,7 @@ import static com.xplore.util.FirebaseUtil.usersRef;
  *
  */
 
-public class SearchGroupsFragment extends SearchFragment {
+public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     private static String ARG_DESTINATION_ID = "query";
     // Used to search for groups by destination (from ReserveInfoAct->Find Groups w/ This Dest)
@@ -60,7 +60,6 @@ public class SearchGroupsFragment extends SearchFragment {
     private boolean firstLoad;
 
     private RecyclerView resultsRV;
-    private SwipeRefreshLayout refreshLayout;
     private FloatingActionButton fab;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
@@ -94,21 +93,11 @@ public class SearchGroupsFragment extends SearchFragment {
             }
         });
 
-        // Refresh Layout
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshLayout);
-        refreshLayout.setColorSchemeResources(R.color.refresh_color_1,
-                R.color.refresh_color_2,
-                R.color.refresh_color_3);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshData();
-            }
-        });
+        initRefreshLayout((SwipeRefreshLayout) view.findViewById(R.id.refreshLayout));
+
         // RecyclerView
         resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
         resultsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         resultsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -117,7 +106,6 @@ public class SearchGroupsFragment extends SearchFragment {
                 } else {
                     fab.show();
                 }
-
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
@@ -319,7 +307,7 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     private void postLoadData() {
-        refreshLayout.setRefreshing(false);
+        setLoading(false);
         firstLoad = false;
         if (displayCards.isEmpty()) {
             nothingFound();
@@ -342,13 +330,13 @@ public class SearchGroupsFragment extends SearchFragment {
     }
 
     private void refreshData() {
-        refreshLayout.setRefreshing(true);
+        setLoading(true);
         firstLoadData();
     }
 
     @Override
-    public void onRefreshClicked() {
-        super.onRefreshClicked();
+    public void onRefreshed() {
+        super.onRefreshed();
         refreshData();
     }
 }

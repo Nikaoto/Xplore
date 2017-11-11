@@ -84,7 +84,7 @@ class ManageRequestsActivity : BaseAppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.refresh_menu, menu)
+        menuInflater.inflate(R.menu.refresh, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

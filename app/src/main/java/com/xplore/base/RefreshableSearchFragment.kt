@@ -41,6 +41,7 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_refresh, menu)
+
         val searchItem = menu.findItem(R.id.action_search) as MenuItem
         searchView = searchItem.actionView as SearchView
         searchView?.let {
@@ -55,15 +56,11 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_refresh) {
-            onRefreshClicked()
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_refresh) {
+            onRefreshed()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    open fun onRefreshClicked() {
-        // Called when refresh icon clicked or dragged down
     }
 
     open fun onSearchClick(v: View?) {

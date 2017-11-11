@@ -1,8 +1,8 @@
 package com.xplore.groups.my
 
-import android.app.Fragment
 import android.app.FragmentTransaction
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.xplore.R
 import com.xplore.TimeManager
+import com.xplore.base.RefreshableFragment
 import com.xplore.database.DBManager
 import com.xplore.groups.GroupCard
 import com.xplore.groups.GroupCardRecyclerViewAdapter
@@ -32,7 +33,7 @@ import kotlinx.android.synthetic.main.my_groups.*
  *
  */
 
-class MyGroupsFragment() : Fragment() {
+class MyGroupsFragment() : RefreshableFragment() {
 
     //Firebase References
     private val firebaseUsersRef = FirebaseDatabase.getInstance().reference.child("users")
@@ -67,8 +68,12 @@ class MyGroupsFragment() : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInst: Bundle?)
             = inflater.inflate(R.layout.my_groups, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         TimeManager.refreshGlobalTimeStamp()
+
+        initRefreshLayout(view.findViewById<SwipeRefreshLayout>(R.id.refreshLayout))
+        setLoading(true)
+
         //Getting bundle arguments
         joinedGroups = arguments.getSerializable("joinedGroupIds") as HashMap<String, Boolean>
         invitedGroups = arguments.getSerializable("invitedGroupIds") as HashMap<String, Boolean>
@@ -134,6 +139,9 @@ class MyGroupsFragment() : Fragment() {
                                 groupCard.leaderImageUrl = leaderCard.profile_picture_url
 
                                 groupCards.add(groupCard)
+
+                                setLoading(false)
+
                                 if (loadingbar != null) { //TODO throws NPE
                                     loadingbar.visibility = View.INVISIBLE
                                 }
@@ -163,5 +171,13 @@ class MyGroupsFragment() : Fragment() {
         } else {
             allowRefresh = true
         }
+    }
+
+    override fun onRefreshed() {
+        super.onRefreshed()
+        allowRefresh = false
+        fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
     }
 }

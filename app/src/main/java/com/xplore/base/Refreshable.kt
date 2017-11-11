@@ -1,6 +1,6 @@
 package com.xplore.base
 
-import android.view.View
+import android.support.v4.widget.SwipeRefreshLayout
 
 /*
  * Created by Nika on 11/11/2017.
@@ -8,11 +8,11 @@ import android.view.View
 
 interface Refreshable {
 
-    // TODO add shouldrefresh boolean (to initRefreshLayout?)
+    // TODO add shouldRefreshOnResume boolean (to initRefreshLayout?)
 
-    fun initRefreshLayout(view: View, layoutResId: Int)
+    fun initRefreshLayout(layout: SwipeRefreshLayout)
 
-    fun setRefreshing(isRefreshing: Boolean)
+    fun setLoading(isLoading: Boolean)
 
     fun onRefreshed()
 
