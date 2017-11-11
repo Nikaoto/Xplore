@@ -1,8 +1,10 @@
 package com.xplore.util
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Environment
 import com.xplore.CircleTransformation
 import com.xplore.R
@@ -24,6 +26,7 @@ object ImageUtil {
     const val PROFILE_PIC_WIDTH = 300
     const val PROFILE_PIC_HEIGHT = 300
 
+    const val FILE_PROVIDER_AUTHORITY = "com.xplore.fileprovider"
 
     @JvmStatic
     fun circle(context: Context, dimenId: Int): CircleTransformation {
@@ -42,6 +45,19 @@ object ImageUtil {
 
     @JvmStatic
     fun largeCircle(context: Context) = circle(context, R.dimen.user_profile_image_large_size)
+
+    // Adds picture to gallery
+    @JvmStatic
+    fun addPictureToGallery(context: Context, picturePath: String) {
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        mediaScanIntent.data = Uri.fromFile(File(picturePath))
+        context.sendBroadcast(mediaScanIntent)
+    }
+
+    // Creates path for a given picture name
+    @JvmStatic
+    fun getPicturePath(context: Context, picName: String): String =
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath + "/" + picName
 
     // Returns new path of resized and compressed image
     @JvmStatic

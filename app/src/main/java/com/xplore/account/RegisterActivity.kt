@@ -8,11 +8,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -37,19 +34,17 @@ import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.TimeManager.Companion.globalTimeStamp
 import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
-import com.xplore.base.BaseActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.UploadUser
-import com.xplore.util.FirebaseUtil
 import com.xplore.util.FirebaseUtil.DEFAULT_IMAGE_URL
 import com.xplore.util.FirebaseUtil.MIN_AGE
+import com.xplore.util.ImageUtil.FILE_PROVIDER_AUTHORITY
+import com.xplore.util.ImageUtil.addPictureToGallery
 import com.xplore.util.ImageUtil.createImageFile
+import com.xplore.util.ImageUtil.getPicturePath
 import com.xplore.util.ImageUtil.resizeAndCompressImage
 import kotlinx.android.synthetic.main.register_layout.*
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.*
 
 /*
@@ -107,9 +102,6 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
     // Firebase Storage
     private val storageRef = FirebaseStorage.getInstance().reference
     private fun firebaseStorageProfilePicUri(userId: String) = "users/$userId/profile_picture.jpg"
-
-    // File provider authority string
-    private val authority = "com.xplore.fileprovider"
 
     // Users profile image url
     var imagePath: Uri? = null
@@ -435,20 +427,20 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
             super.onActivityResult(requestCode, resultCode, data)
         }
 
-        /* Picking or Taking picture */
+        /* Picking or Snapping picture */
         when (requestCode) {
             ACTION_SNAP_IMAGE -> {
                 if(resultCode == Activity.RESULT_OK && imagePath != null) {
                     val temp = createImageFile(this)
                     cropImage(imagePath as Uri, temp.getUri())
-                    imagePath = Uri.parse(getPicturePath(temp.name))
-                    addPictureToGallery(imagePath.toString())
+                    imagePath = Uri.parse(getPicturePath(this, temp.name))
+                    addPictureToGallery(this, imagePath.toString())
                 }
             }
             Crop.REQUEST_PICK -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val tempFile = createImageFile(this)
-                    imagePath = Uri.parse(getPicturePath(tempFile.name))
+                    imagePath = Uri.parse(getPicturePath(this, tempFile.name))
                     cropImage(data.data, tempFile.getUri())
                 }
             }
@@ -466,24 +458,13 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
         }
     }
 
-    private fun getPicturePath(picName: String): String {
-        return getExternalFilesDir(Environment.DIRECTORY_PICTURES).absolutePath + "/" + picName
-    }
-
     private fun File.getUri(): Uri {
-        return FileProvider.getUriForFile(this@RegisterActivity, authority, this)
+        return FileProvider.getUriForFile(this@RegisterActivity, FILE_PROVIDER_AUTHORITY, this)
     }
 
     // Starts cropping activity with code Crop.REQUEST_CROP
     private fun cropImage(input: Uri, output: Uri) {
         return Crop.of(input, output).asSquare().start(this)
-    }
-
-    /* add picture to gallery */
-    private fun addPictureToGallery(picturePath: String) {
-        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        mediaScanIntent.data = Uri.fromFile(File(picturePath))
-        this.sendBroadcast(mediaScanIntent)
     }
 
     private fun TextView.safeSetText(s: String?) {
