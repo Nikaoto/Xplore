@@ -79,12 +79,12 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
 
         @JvmStatic
         fun getStartIntent(context: Context, userId: String, fullName: String?, email: String?,
-                           photoUrl: Uri?): Intent
+                           photoUrl: String): Intent
                 = Intent(context, RegisterActivity::class.java)
                 .putExtra(ARG_USER_ID, userId)
                 .putExtra(ARG_FULL_NAME, fullName)
                 .putExtra(ARG_EMAIL, email)
-                .putExtra(ARG_PHOTO_URL, photoUrl.toString())
+                .putExtra(ARG_PHOTO_URL, photoUrl)
     }
 
     /* Google Api Client stuff (for logout) */
