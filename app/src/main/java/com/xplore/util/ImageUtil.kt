@@ -85,7 +85,7 @@ object ImageUtil {
 
     // Calculates largest sample size that is the power of 2
     @JvmStatic
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         val width = options.outWidth
         val height = options.outHeight
         var sampleSize = 1

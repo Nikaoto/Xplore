@@ -60,5 +60,4 @@ object DateUtil {
 
         return builder.toString()
     }
-
 }
