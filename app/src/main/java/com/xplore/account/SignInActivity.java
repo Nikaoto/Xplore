@@ -298,20 +298,25 @@ public class SignInActivity extends BaseAppCompatActivity {
                                     user.getUid(),
                                     user.getDisplayName(),
                                     user.getEmail(),
-                                    Uri.parse(photoUrl)
+                                    photoUrl
                             ),
                             REQ_REGISTER);
                     break;
                 }
             }
         } else {
+            String userPhotoUrl = "";
+            if (user.getPhotoUrl() != null) {
+                userPhotoUrl = user.getPhotoUrl().toString();
+            }
+
             startActivityForResult(
                     RegisterActivity.getStartIntent(
                             SignInActivity.this,
                             user.getUid(),
                             user.getDisplayName(),
                             user.getEmail(),
-                            user.getPhotoUrl()
+                            userPhotoUrl
                     ),
                     REQ_REGISTER);
         }
