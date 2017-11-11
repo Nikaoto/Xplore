@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
@@ -11,7 +12,7 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.R
-import com.xplore.base.BaseActivity
+import com.xplore.base.refreshable.RefreshableActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.groups.view.controls.InvitedControls
@@ -46,7 +47,7 @@ import java.util.*
 *
 */
 
-class GroupInfoActivity : BaseActivity() {
+class GroupInfoActivity : RefreshableActivity() {
 
     companion object {
         private const val ARG_GROUP_ID = "groupId"
@@ -76,6 +77,11 @@ class GroupInfoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.group_info2)
+        supportActionBar?.hide()
+
+        initRefreshLayout(findViewById<SwipeRefreshLayout>(R.id.refreshLayout))
+        setLoading(true)
+
         //buildUserBase();
 
         TimeManager.refreshGlobalTimeStamp()
@@ -92,13 +98,13 @@ class GroupInfoActivity : BaseActivity() {
         super.onResume()
         if (allowRefresh) {
             allowRefresh = false
-            refresh()
+            onRefreshed()
         } else {
             allowRefresh = true
         }
     }
 
-    private fun refresh() {
+    override fun onRefreshed() {
         val intent = intent
         finish()
         startActivity(intent)
@@ -154,12 +160,7 @@ class GroupInfoActivity : BaseActivity() {
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
 
             openMapButton.visibility = View.VISIBLE
-            openMapButton.setOnClickListener {
-                //Leave this check, groupId is rarely null, but only when debugging w/ instant run
-                if (groupId != null) {
-                    showTripOnMap()
-                }
-            }
+            openMapButton.setOnClickListener { showTripOnMap() }
         }
     }
 
@@ -192,7 +193,7 @@ class GroupInfoActivity : BaseActivity() {
                 .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
     }
 
-    //Gets destination data (reserve id or custom location latlng) and displays it as the image
+    // Gets destination data (reserve id or custom location latlng) and displays it as the image
     private fun applyDestinationData() {
         if (currentGroup.destination_id != Group.DESTINATION_DEFAULT) {
             val dbManager = DBManager(this)
@@ -318,10 +319,10 @@ class GroupInfoActivity : BaseActivity() {
         finish()
     }
 
-    //Displays the already-retrieved data of the group
+    // Displays the already-retrieved data of the group
     private fun applyGroupData() {
-        //Displaying leader
-        //Profile picture
+        // Displaying leader
+        // Profile picture
         Picasso.with(this).invalidate(leader.profile_picture_url)
         Picasso.with(this)
                 .load(leader.profile_picture_url)
@@ -332,7 +333,7 @@ class GroupInfoActivity : BaseActivity() {
         }
 
         //Name
-        leaderNameTextView.text = "${leader.fname} ${leader.lname}"
+        leaderNameTextView.text = leader.getFullName()
 
         //Age
         val age = General.calculateAge(TimeManager.globalTimeStamp, leader.birth_date)
@@ -376,6 +377,8 @@ class GroupInfoActivity : BaseActivity() {
             val adapter = MemberListAdapter(this, members)
             membersRecyclerView.adapter = adapter
         }
+
+        setLoading(false)
     }
 
     private var counter = 0
@@ -412,7 +415,7 @@ class GroupInfoActivity : BaseActivity() {
         //After creating locations node (or if it's already present)
     }
 
-    //Puts a UserMarker object locations the given hashmap with given uId
+    // Puts a UserMarker locations object into the given hashmap with given uId
     private fun putUserMarker(locations: HashMap<String, UserMarker>, uId: String) {
         usersRef.child(uId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -434,7 +437,7 @@ class GroupInfoActivity : BaseActivity() {
         })
     }
 
-    //Displays information about the experience icon (X and tick)
+    // Displays information about the experience icon (X and tick)
     private fun popExperienceInfoDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.what_is_this)
