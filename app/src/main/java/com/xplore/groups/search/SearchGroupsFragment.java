@@ -323,6 +323,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
 
         // Checking if refreshData needed
         if (allowRefresh) {
+            allowRefresh = false;
             refreshData();
         } else {
             allowRefresh = true;
