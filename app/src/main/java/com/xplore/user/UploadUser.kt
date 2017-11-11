@@ -20,6 +20,9 @@ class UploadUser(id: String,
                  birth_date: Int)
     : User(id, fname, lname, tel_num, email, profile_picture_url, reputation, birth_date) {
 
+    constructor(user: User): this(user.id, user.fname, user.lname, user.tel_num, user.email,
+            user.profile_picture_url, user.reputation, user.birth_date)
+
     @Exclude
     fun toMap(): Map<String, Any> {
         val result = HashMap<String, Any>()

@@ -135,9 +135,14 @@ object FirebaseUtil {
     }
 
 
-    //TODO remove everything below after iliauni picnic ends (maybe refractor for other events?)
+    /*
+    *
+    * Iliauni Science Picnic 2017 update stuff
+    *
+    * DO NOT DELETE, MIGHT USE THIS FOR FUTURE EVENTS
+    *
+    */
 
-    // Iliauni Science Picnic 2017 update stuff
     const val F_CHECKINS = "checkins"
     const val F_DESCRIPTION = "description"
     const val F_SHOW_TITLE = "show_title"
@@ -156,4 +161,5 @@ object FirebaseUtil {
     fun checkIn(standId: String) {
         getStandRef(standId).child(F_CHECKINS).child(General.currentUserId).setValue(true)
     }
+    //
 }
