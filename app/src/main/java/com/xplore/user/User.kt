@@ -1,6 +1,9 @@
 package com.xplore.user
 
+import com.google.firebase.database.Exclude
+import com.xplore.util.FirebaseUtil
 import java.io.Serializable
+import java.util.HashMap
 
 /*
  * Created by Nikaoto on 2/11/2017.
@@ -18,5 +21,21 @@ open class User(
         val birth_date: Int = 0
 ) : Serializable {
 
+    @Exclude
     fun getFullName() = "$fname $lname"
+
+/*    @Exclude
+    fun toMap(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+
+        result.put(FirebaseUtil.F_FNAME, fname)
+        result.put(FirebaseUtil.F_LNAME, lname)
+        result.put(FirebaseUtil.F_PROFILE_PIC_URL, profile_picture_url)
+        result.put(FirebaseUtil.F_BIRTH_DATE, birth_date)
+        result.put(FirebaseUtil.F_TEL_NUM, tel_num)
+        result.put(FirebaseUtil.F_REPUTATION, reputation)
+        result.put(FirebaseUtil.F_EMAIL, email)
+
+        return result
+    }*/
 }
