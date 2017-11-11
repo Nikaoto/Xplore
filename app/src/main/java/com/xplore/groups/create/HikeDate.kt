@@ -10,7 +10,7 @@ import java.lang.StringBuilder
  *
  */
 
-class Date {
+class HikeDate {
     //Start
     var startYear = 0
     var startMonth = 0

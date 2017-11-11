@@ -68,7 +68,7 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
     private val initialInvitedMemberIds = ArrayList<String>()
 
 
-    private val date = Date()
+    private val date = HikeDate()
     private var selecting = SELECTION_NONE
 
     companion object {

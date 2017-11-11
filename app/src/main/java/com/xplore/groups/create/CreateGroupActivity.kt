@@ -104,7 +104,7 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
 
     private var invitedMemberIds = ArrayList<String>()
 
-    val date = Date()
+    val date = HikeDate()
 
     //TODO remove dependencies and inner objects/classes as much as possible
 
