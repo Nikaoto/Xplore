@@ -46,6 +46,7 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     private static String ARG_DESTINATION_ID = "query";
+
     // Used to search for groups by destination (from ReserveInfoAct->Find Groups w/ This Dest)
     public static SearchGroupsFragment newInstance(int destId) {
         Fragment f = new SearchGroupsFragment();
@@ -325,19 +326,21 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
         // Checking if refreshData needed
         if (allowRefresh) {
             allowRefresh = false;
-            refreshData();
+            onRefreshed();
         } else {
             allowRefresh = true;
         }
     }
 
-    private void refreshData() {
-        firstLoadData();
-    }
-
     @Override
     public void onRefreshed() {
         super.onRefreshed();
-        refreshData();
+
+        // Reloads with current query or if empty, loads anew
+        if (!isCurrentQueryEmpty()) {
+            onSearch(getCurrentQuery());
+        } else {
+            firstLoadData();
+        }
     }
 }

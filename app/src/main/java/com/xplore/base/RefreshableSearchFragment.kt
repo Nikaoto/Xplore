@@ -18,6 +18,9 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     // TODO create FilterSearchFragment (for filters and stuff) and inherit this; override onCreateOptionsMenu
 
     private var searchView: SearchView? = null
+    open var currentQuery: String = ""
+
+    fun isCurrentQueryEmpty(): Boolean = currentQuery.trim().isEmpty()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +87,7 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
         if (query == null || query.trim().isEmpty()) {
             return false
         } else {
+            currentQuery = query
             return onSearch(query)
         }
     }
