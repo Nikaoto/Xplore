@@ -1,19 +1,19 @@
 package com.xplore.base
 
-import android.app.Fragment
 import android.os.Bundle
 import android.view.*
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.SearchView
+import android.widget.TextView
 import com.xplore.R
 
-/**
- * Created by Nika on 9/4/2017.
- *
- * Base search fragment made for other fragment that uses a search to inherit
- *
+/*
+ * Created by Nika on 11/11/2017.
  */
 
-open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
+abstract class RefreshableSearchFragment : RefreshableFragment(),
+        SearchView.OnQueryTextListener {
 
     // TODO create FilterSearchFragment (for filters and stuff) and inherit this; override onCreateOptionsMenu
 
@@ -40,7 +40,7 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search, menu)
+        inflater.inflate(R.menu.search_refresh, menu)
         val searchItem = menu.findItem(R.id.action_search) as MenuItem
         searchView = searchItem.actionView as SearchView
         searchView?.let {
@@ -53,6 +53,17 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
         setUpSearchView(searchView)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_refresh) {
+            onRefreshClicked()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    open fun onRefreshClicked() {
+        // Called when refresh icon clicked or dragged down
     }
 
     open fun onSearchClick(v: View?) {
@@ -96,4 +107,5 @@ open class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         // This is called when the query text is cleared/deleted
         return false
     }
+
 }
