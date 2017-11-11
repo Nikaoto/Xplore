@@ -1,6 +1,7 @@
 package com.xplore.base
 
 import android.content.Context
+import android.content.Intent
 
 /*
  * Created by Nika on 11/10/2017.
@@ -9,6 +10,8 @@ import android.content.Context
 interface BaseView {
 
     fun getContext(): Context
+
+    fun returnIntent(): Intent
 
     fun showMessage(msg: String?)
 

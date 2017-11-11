@@ -1,6 +1,7 @@
 package com.xplore.base
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -16,6 +17,8 @@ abstract class BaseAct<in V : BaseView, T : BasePresenter<V>> : AppCompatActivit
     protected abstract var presenter: T
 
     override fun getContext(): Context = this
+
+    override fun returnIntent(): Intent = intent
 
     override fun attachBaseContext(newBase: Context) {
         val context = XploreContextWrapper.wrap(newBase, LanguageUtil.getCurrentLanguage(newBase))
