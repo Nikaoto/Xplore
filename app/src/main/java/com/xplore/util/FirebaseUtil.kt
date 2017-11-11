@@ -22,7 +22,7 @@ import com.xplore.R
 
 object FirebaseUtil {
 
-    private const val TAG = "firebase_util"
+    private const val TAG = "firebase-util"
 
     const val REP = 1 // Starting reputation
     // URL of default image to assign if no image uploaded upon registration
@@ -33,6 +33,11 @@ object FirebaseUtil {
     const val FB_PROFILE_PIC_WIDTH = 300
     const val MIN_AGE = 15
     const val MIN_PASS_LENGTH = 6
+
+    // Firebase Storage
+    const val PROFILE_PIC_KB_LIMIT = 25
+    const val PROFILE_PIC_NAME_PREFIX = "profile_pic_"
+    const val PROFILE_PIC_EXTENSION = ".jpg"
 
     // Main Nodes
     const val F_date = "date"

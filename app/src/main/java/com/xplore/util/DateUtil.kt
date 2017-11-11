@@ -2,14 +2,16 @@ package com.xplore.util
 
 import android.util.Log
 
-/**
+/*
  * Created by Nik on 9/6/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Helps with parsing and packing dates in format YYYY.MM.DD
+ *
  */
 
 object DateUtil {
 
-    private const val TAG = "dateutil"
+    private const val TAG = "date-util"
 
     @JvmStatic
     fun getYear(date: String): Int {

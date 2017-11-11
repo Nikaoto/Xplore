@@ -83,8 +83,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         // Setting up user profile inside drawer header
         val navHeaderView = navigationView.getHeaderView(0)
-        userImageView = navHeaderView.findViewById<ImageView>(R.id.drawer_image) as ImageView
-        userFullNameTextView = navHeaderView.findViewById<ImageView>(R.id.userFullNameTextView) as TextView
+        userImageView = navHeaderView.findViewById<ImageView>(R.id.drawer_image)
+        userFullNameTextView = navHeaderView.findViewById<TextView>(R.id.userFullNameTextView)
         userImageView.setOnClickListener {
             if (General.isUserSignedIn()) {
                 General.openUserProfile(this@MainActivity, General.currentUserId)
