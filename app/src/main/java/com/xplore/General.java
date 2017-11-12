@@ -220,9 +220,11 @@ public class General {
     }
 
     public static void openUserProfile(Activity activity, String userId) {
-        Intent intent = new Intent(activity, UserProfileActivity.class);
-        intent.putExtra("userId", userId);
-        activity.startActivity(intent);
+        if (userId == null) {
+            activity.startActivity(UserProfileActivity.newIntent(activity, currentUserId));
+        } else {
+            activity.startActivity(UserProfileActivity.newIntent(activity, userId));
+        }
     }
 
     public static void hideKeyboard(Activity context) {

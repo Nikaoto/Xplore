@@ -1,12 +1,14 @@
 package com.xplore.user
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.xplore.util.DateUtil
@@ -14,7 +16,8 @@ import com.xplore.General
 import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.account.EditProfileActivity
-import com.xplore.base.BaseRefreshableAppCompatActivity
+import com.xplore.base.refreshable.RefreshableActivity
+import com.xplore.util.FirebaseUtil.usersRef
 import kotlinx.android.synthetic.main.user_profile.*
 
 /**
@@ -30,10 +33,20 @@ import kotlinx.android.synthetic.main.user_profile.*
  *
  */
 
-class UserProfileActivity : BaseRefreshableAppCompatActivity() {
+class UserProfileActivity : RefreshableActivity() {
 
-    private val userId: String by lazy { getPassedUserId() }
-    private val usersRef = FirebaseDatabase.getInstance().reference.child("users")
+    companion object {
+
+        private const val ARG_USER_ID = "userId"
+
+        @JvmStatic
+        fun newIntent(context: Context, userId: String): Intent {
+            return Intent(context, UserProfileActivity::class.java)
+                    .putExtra(ARG_USER_ID, userId)
+        }
+    }
+
+    private val userId: String by lazy { intent.getStringExtra(ARG_USER_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +54,10 @@ class UserProfileActivity : BaseRefreshableAppCompatActivity() {
         title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fetchUserInfo(userId)
-    }
+        initRefreshLayout(findViewById<SwipeRefreshLayout>(R.id.refreshLayout))
+        setLoading(true)
 
-    private fun getPassedUserId(): String {
-        val tempUserId = intent.getStringExtra("userId")
-        if (tempUserId != null) {
-            return tempUserId
-        } else {
-            return General.currentUserId
-        }
+        fetchUserInfo(userId)
     }
 
     private fun fetchUserInfo(userId: String){
@@ -76,21 +83,29 @@ class UserProfileActivity : BaseRefreshableAppCompatActivity() {
     }
 
     private fun displayUserInfo(user: User){
-        //Removing small image from cache
+        // Remove small profile image from cache
         Picasso.with(this).invalidate(user.profile_picture_url)
-        //Loading profile picture
+        // Load profile picture
         Picasso.with(this)
                 .load(user.profile_picture_url)
                 .transform(ImageUtil.largeCircle(this))
                 .placeholder(R.drawable.picasso_load_anim)
                 .into(userImageView)
 
-        fullNameTextView.text = "${user.fname} ${user.lname}"
+        // Load textual data
+        fullNameTextView.text = user.getFullName()
         reputationCombinedTextView.text = user.reputation.toString() +
-                " " + resources.getString(R.string.reputation)
+                " "+ resources.getString(R.string.reputation)
         birthDateTextView.text = DateUtil.putSlashesInDate(user.birth_date)
         telephoneTextView.text = user.tel_num
         emailTextView.text = user.email
+
+        onFinishedLoading()
+    }
+
+    // Called when all layout and data loading is finished
+    private fun onFinishedLoading() {
+        setLoading(false)
     }
 
     private fun configureEditProfileButton(user: User) {
@@ -104,8 +119,16 @@ class UserProfileActivity : BaseRefreshableAppCompatActivity() {
         Toast.makeText(this@UserProfileActivity, R.string.error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onRefreshed() {
+        super.onRefreshed()
+
+        val intent = intent
         finish()
+        startActivity(intent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
         return super.onOptionsItemSelected(item)
     }
 }
