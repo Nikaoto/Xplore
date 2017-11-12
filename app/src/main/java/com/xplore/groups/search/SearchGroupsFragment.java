@@ -94,7 +94,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
             }
         });
 
-        initRefreshLayout((SwipeRefreshLayout) view.findViewById(R.id.refreshLayout));
+        initRefreshLayout((SwipeRefreshLayout) view.findViewById(R.id.refreshLayout), true);
 
         // RecyclerView
         resultsRV = (RecyclerView) view.findViewById(R.id.resultsRV);
@@ -321,14 +321,6 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
         super.onResume();
         if(!firstLoad) {
             onFinishedLoading();
-        }
-
-        // Checking if refreshData needed
-        if (allowRefresh) {
-            allowRefresh = false;
-            onRefreshed();
-        } else {
-            allowRefresh = true;
         }
     }
 

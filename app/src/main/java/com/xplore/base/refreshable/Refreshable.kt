@@ -8,11 +8,15 @@ import android.support.v4.widget.SwipeRefreshLayout
 
 interface Refreshable {
 
-    // TODO add shouldRefreshOnResume boolean (to initRefreshLayout?)
+    var shouldRefreshOnResume: Boolean
 
     fun initRefreshLayout(layout: SwipeRefreshLayout)
 
+    fun initRefreshLayout(layout: SwipeRefreshLayout, shouldRefreshOnResume: Boolean)
+
     fun setLoading(isLoading: Boolean)
+
+    fun refreshOnResume()
 
     fun onRefreshed()
 

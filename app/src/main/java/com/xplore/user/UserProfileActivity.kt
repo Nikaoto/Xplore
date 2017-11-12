@@ -54,7 +54,7 @@ class UserProfileActivity : RefreshableActivity() {
         title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        initRefreshLayout(findViewById<SwipeRefreshLayout>(R.id.refreshLayout))
+        initRefreshLayout(findViewById<SwipeRefreshLayout>(R.id.refreshLayout), true)
         setLoading(true)
 
         fetchUserInfo(userId)

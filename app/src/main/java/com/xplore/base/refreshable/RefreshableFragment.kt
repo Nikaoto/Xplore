@@ -17,12 +17,17 @@ abstract class RefreshableFragment : Fragment(), Refreshable {
 
     private var refreshLayout: SwipeRefreshLayout? = null
 
+    override var shouldRefreshOnResume: Boolean = false
+    private var allowRefresh = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun initRefreshLayout(layout: SwipeRefreshLayout) {
+    override fun initRefreshLayout(layout: SwipeRefreshLayout, shouldRefreshOnResume: Boolean) {
+        this.shouldRefreshOnResume = shouldRefreshOnResume
+
         refreshLayout = layout
         refreshLayout?.setColorSchemeResources(R.color.refresh_color_1, R.color.refresh_color_2,
                 R.color.refresh_color_3)
@@ -31,9 +36,13 @@ abstract class RefreshableFragment : Fragment(), Refreshable {
         }
     }
 
+    override fun initRefreshLayout(layout: SwipeRefreshLayout) {
+        initRefreshLayout(layout, false)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.refresh, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        return super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -48,4 +57,20 @@ abstract class RefreshableFragment : Fragment(), Refreshable {
     }
 
     override fun onRefreshed() {}
+
+    override fun onResume() {
+        super.onResume()
+        if (shouldRefreshOnResume) {
+            refreshOnResume()
+        }
+    }
+
+    override fun refreshOnResume() {
+        if (allowRefresh) {
+            allowRefresh = false
+            onRefreshed()
+        } else {
+            allowRefresh = true
+        }
+    }
 }

@@ -14,14 +14,22 @@ import com.xplore.base.BaseAppCompatActivity
 abstract class RefreshableActivity : BaseAppCompatActivity(), Refreshable {
 
     private var refreshLayout: SwipeRefreshLayout? = null
+    override var shouldRefreshOnResume: Boolean = false
+    private var allowRefresh = false
 
-    override fun initRefreshLayout(layout: SwipeRefreshLayout) {
+    override fun initRefreshLayout(layout: SwipeRefreshLayout, shouldRefreshOnResume: Boolean) {
+        this.shouldRefreshOnResume = shouldRefreshOnResume
+
         refreshLayout = layout
         refreshLayout?.setColorSchemeResources(R.color.refresh_color_1, R.color.refresh_color_2,
                 R.color.refresh_color_3)
         refreshLayout?.setOnRefreshListener {
             onRefreshed()
         }
+    }
+
+    override fun initRefreshLayout(layout: SwipeRefreshLayout) {
+        initRefreshLayout(layout, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -37,4 +45,19 @@ abstract class RefreshableActivity : BaseAppCompatActivity(), Refreshable {
 
     override fun onRefreshed() {}
 
+    override fun onResume() {
+        super.onResume()
+        if (shouldRefreshOnResume) {
+            refreshOnResume()
+        }
+    }
+
+    override fun refreshOnResume() {
+        if (allowRefresh) {
+            allowRefresh = false
+            onRefreshed()
+        } else {
+            allowRefresh = true
+        }
+    }
 }

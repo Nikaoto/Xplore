@@ -20,6 +20,9 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     private var searchView: SearchView? = null
     open var currentQuery: String = ""
 
+    override var shouldRefreshOnResume: Boolean = false
+    private var allowRefresh = false
+
     fun isCurrentQueryEmpty(): Boolean = currentQuery.trim().isEmpty()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,4 +105,19 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
         return false
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (shouldRefreshOnResume) {
+            refreshOnResume()
+        }
+    }
+
+    override fun refreshOnResume() {
+        if (allowRefresh) {
+            allowRefresh = false
+            onRefreshed()
+        } else {
+            allowRefresh = true
+        }
+    }
 }
