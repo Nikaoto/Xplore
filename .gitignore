@@ -9,6 +9,7 @@ Xplore_Demo.iml
 .idea/misc.xml
 .idea/gradle.xml
 *.kml
+app/build.gradle
 secrets.xml
 google-services.json
 google_maps_api.xml
