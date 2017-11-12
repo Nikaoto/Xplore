@@ -8,9 +8,12 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import com.xplore.General
 import com.xplore.R
 import com.xplore.base.BaseAct
+import com.xplore.user.User
+import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -55,7 +58,12 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         presenter.onCreate()
-        // TODO remove this when interactor is added
+    }
+
+    override fun fillUserInfo(firstName: String, lastName: String, email: String) {
+        fnameEditText.setText(firstName)
+        lnameEditText.setText(lastName)
+        emailEditText.setText(email)
         emailEditText.isEnabled = false
         emailEditText.isFocusable = false
     }
@@ -69,7 +77,10 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun initProfilePhoto(photoUrl: String) {
-
+        Picasso.with(this)
+                .load(photoUrl)
+                .transform(ImageUtil.mediumCircle(this))
+                .into(profileImageView)
     }
 
     override fun initClickEvents() {
@@ -85,7 +96,8 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         }
 
         doneButton.setOnClickListener {
-            presenter.onDoneButtonClicked()
+            presenter.submitUserData(fnameEditText.str(), lnameEditText.str(), emailEditText.str(),
+                    mobileNumberEditText.str(), 19991030) // TODO birth date here
         }
     }
 
@@ -101,11 +113,11 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
                 .create().show()
     }
 
-    override fun highlightBorder(v: View) = v.setBackgroundResource(R.drawable.edit_text_border_red)
+    override fun highlightField(v: View) = v.setBackgroundResource(R.drawable.edit_text_border_red)
 
     override fun unHighlightBorder(v: View) = v.setBackgroundResource(R.drawable.edit_text_border)
 
-    override fun unHighlightAllEditTexts() {
+    override fun unHighlightAllFields() {
         unHighlightBorder(fnameEditText)
         unHighlightBorder(lnameEditText)
         unHighlightBorder(emailEditText)
@@ -114,7 +126,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun fieldError(v: View, msgResId: Int): Boolean {
-        highlightBorder(v)
+        highlightField(v)
         scrollToView(v)
 
         showMessage(msgResId)
@@ -169,23 +181,4 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         super.onBackPressed()
         // Log user out
     }
-
-    // View Getters/Setters
-
-    override fun setFnameText(text: String) = fnameEditText.setText(text)
-    override fun getFnameText() = fnameEditText.text.toString()
-
-    override fun setLnameText(text: String) = lnameEditText.setText(text)
-    override fun getLnameText() = lnameEditText.text.toString()
-
-    override fun setEmailText(text: String) = emailEditText.setText(text)
-    override fun getEmailText() = emailEditText.text.toString()
-
-    override fun setMobileNumberText(text: String) = mobileNumberEditText.setText(text)
-    override fun getMobileNumberText() = mobileNumberEditText.text.toString()
-
-    override fun setBirthDateText(text: String) = birthDateTextView.setText(text)
-    override fun getBirthDateText() = birthDateTextView.text.toString()
-
-    // End of view Getters/Setters
 }

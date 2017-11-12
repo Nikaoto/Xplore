@@ -19,7 +19,8 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
     override var mobileNumberReasonShown: Boolean = false
 
     override fun onCreate() {
-        // Retrieving passed data
+        // TODO add newIntent and stuff here
+        // Retrieve passed data
         view?.returnIntent()?.let {
             userId = it.getStringExtra(RegistrationActivity.ARG_USER_ID)
             userFullName = it.getStringExtra(RegistrationActivity.ARG_FULL_NAME)
@@ -27,16 +28,9 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
             userPhotoUrl = it.getStringExtra(RegistrationActivity.ARG_PHOTO_URL)
         }
 
-        fillFields()
-    }
-
-    override fun fillFields() {
         val names = separateFullName(userFullName)
-        view?.let {
-            it.setFnameText(names[0])
-            it.setLnameText(names[1])
-            it.setEmailText(userEmail)
-        }
+        view?.fillUserInfo(names[0], names[1], userEmail)
+        view?.initProfilePhoto(userPhotoUrl)
     }
 
     override fun onBirthDateClicked() {
@@ -48,29 +42,6 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
             mobileNumberReasonShown = true
             view?.showMobileNumberReason()
         }
-    }
-
-    override fun onDoneButtonClicked() {
-        view?.let {
-            it.unHighlightAllEditTexts()
-            if (fieldsValid()) {
-                val tempUser = User(
-                        userId,
-                        it.getFnameText(),
-                        it.getLnameText(),
-                        it.getMobileNumberText(),
-                        it.getEmailText(),
-                        userPhotoUrl
-                )
-
-                it.showLoadingMessage()
-                submitUserData(tempUser)
-            }
-        }
-    }
-
-    override fun fieldsValid(): Boolean {
-        return false
     }
 
     override fun separateFullName(fullName: String?): Array<String> {
@@ -89,7 +60,9 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
 
     override fun isValidAge(age: Int): Boolean = age >= FirebaseUtil.MIN_AGE
 
-    override fun submitUserData(user: User) {
-        
+    override fun submitUserData(firstName: String, lastName: String, email: String,
+                                mobileNumber: String, birthDate: Int) {
+        // TODO change userPhotoUrl
+        val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
     }
 }
