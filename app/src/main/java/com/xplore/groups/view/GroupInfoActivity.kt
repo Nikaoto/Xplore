@@ -378,6 +378,11 @@ class GroupInfoActivity : RefreshableActivity() {
             membersRecyclerView.adapter = adapter
         }
 
+        onFinishedLoading()
+    }
+
+    // Called when all layout and data loading is finished
+    private fun onFinishedLoading() {
         setLoading(false)
     }
 

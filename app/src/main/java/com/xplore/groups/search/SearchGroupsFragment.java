@@ -238,7 +238,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
                     nothingFound();
                 }
                 if(getActivity() != null) {
-                    postLoadData();
+                    onFinishedLoading();
                 }
             }
             @Override
@@ -308,7 +308,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
         Toast.makeText(getActivity(), R.string.search_no_results, Toast.LENGTH_SHORT).show();
     }
 
-    private void postLoadData() {
+    private void onFinishedLoading() {
         setLoading(false);
         firstLoad = false;
         if (displayCards.isEmpty()) {
@@ -320,7 +320,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     public void onResume() {
         super.onResume();
         if(!firstLoad) {
-            postLoadData();
+            onFinishedLoading();
         }
 
         // Checking if refreshData needed

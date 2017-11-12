@@ -140,7 +140,7 @@ class MyGroupsFragment() : RefreshableFragment() {
 
                                 groupCards.add(groupCard)
 
-                                setLoading(false)
+                                onFinishedLoading()
 
                                 if (loadingbar != null) { //TODO throws NPE
                                     loadingbar.visibility = View.INVISIBLE
@@ -171,6 +171,11 @@ class MyGroupsFragment() : RefreshableFragment() {
         } else {
             allowRefresh = true
         }
+    }
+
+    // Called when all layout and data loading is finished
+    private fun onFinishedLoading() {
+        setLoading(false)
     }
 
     override fun onRefreshed() {
