@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'Nikaoto'
             keyPassword 'Otiashvili99'
-            storeFile file('E:/Documents/Xplore Documents/Development/xplore.keystore')
+            storeFile file('/home/desire-rawr/Documents/debug.keystore')
             storePassword 'qwertq5'
         }
     }
