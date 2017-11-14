@@ -52,7 +52,7 @@ interface RegistrationContract {
 
         var mobileNumberReasonShown: Boolean
 
-        fun onBirthDateSet(year: Int, month: Int, day: Int)
+        fun onBirthDateSet(year: Int, receivedMonth: Int, day: Int)
 
         fun onMobileNumberTouched()
 

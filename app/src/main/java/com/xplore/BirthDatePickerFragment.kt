@@ -12,8 +12,9 @@ import java.util.*
 class BirthDatePickerFragment(private val onDataSet: (view: DatePicker, year: Int, month: Int, day: Int) -> Unit)
     : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-        // Use the current date as the default date in the picker
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // Use the current Firebase date as the default date in the picker
+        TimeManager.refreshGlobalTimeStamp()
         val c = Calendar.getInstance()
         c.time = Date(TimeManager.globalTimeStamp)
         val year = c.get(Calendar.YEAR)

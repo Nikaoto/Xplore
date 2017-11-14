@@ -70,9 +70,10 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
     override fun submitUserData(firstName: String, lastName: String, email: String,
                                 mobileNumber: String, birthDate: Int) {
         view?.showMessage("uploading user; check log.i for info")
-        val tempuser = UploadUser(General.currentUserId, firstName, lastName, mobileNumber, email, "asd", 0, birthDate)
+        val tempuser = UploadUser(General.currentUserId, firstName, lastName, mobileNumber, email,
+                "asd", 0, birthDate)
 
-        Log.i("regact - user:", Gson().toJson(tempuser.toMap()))
+        Log.i("regact", Gson().toJson(tempuser.toMap()))
         // TODO change userPhotoUrl
         //val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
     }

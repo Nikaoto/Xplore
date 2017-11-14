@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -52,7 +53,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
     private lateinit var userId: String
     private lateinit var userPhotoUrl: String
-    private var birthDate: String = ""
+    private var birthDate: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +73,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         val names = presenter.separateFullName(userFullName)
         fillUserInfo(names[0], names[1], userEmail)
         initProfilePhoto(userPhotoUrl)
+        initClickEvents()
     }
 
     override fun fillUserInfo(firstName: String, lastName: String, email: String) {
@@ -102,13 +104,15 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         }
 
         doneButton.setOnClickListener {
-            presenter.submitUserData(fnameEditText.str(), lnameEditText.str(), emailEditText.str(),
-                    mobileNumberEditText.str(), 19991030) // TODO birth date here
+            if (fieldsValid()) {
+                presenter.submitUserData(fnameEditText.str(), lnameEditText.str(), emailEditText.str(),
+                        mobileNumberEditText.str(), birthDate)
+            }
         }
     }
 
     override fun onBirthDateSelected() {
-        BirthDatePickerFragment { dp, y, m, d -> presenter.onBirthDateSet(y, m, d) }
+        BirthDatePickerFragment({ dp, y, m, d -> presenter.onBirthDateSet(y, m, d) })
                 .show(fragmentManager, "dp")
     }
 
@@ -117,6 +121,8 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun fieldsValid(): Boolean {
+        unHighlightAllFields()
+
         if (fnameEditText.isEmpty()) {
             return fieldError(fnameEditText)
         }
@@ -132,7 +138,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         if (mobileNumberEditText.isEmpty()) {
             return fieldError(mobileNumberEditText)
         }
-        if (birthDateTextView.isEmpty()) {
+        if (birthDateTextView.isEmpty() || birthDate == 0) {
             return fieldError(birthDateTextView)
         }
 
