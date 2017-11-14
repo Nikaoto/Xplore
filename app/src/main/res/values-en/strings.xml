@@ -73,7 +73,7 @@
         once.
     </string>
     <string name="wifi_connect_dialog">
-        Please turn your mobile network or Wi-Fi on in order to create a group.
+        Please turn your mobile network or Wi-Fi on in order to proceed.
     </string>
     <string name="unable_to_connect">Unable to connect</string>
     <string name="enable_location">Enable Location</string>

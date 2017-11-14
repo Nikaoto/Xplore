@@ -78,9 +78,7 @@
     <string name="search_name_hint">მოძებნეთ სახელით</string>
     <string name="search_groups_hint">მოძებნეთ ჯგუფები</string>
     <string name="search_no_results">შედეგები ვერ მოიძებნა</string>
-    <string name="wifi_connect_dialog">
-        გთხოვთ ჩართოთ ინტერნეტკავშირი ახალი გუნდის შესაქმნელად.
-    </string>
+    <string name="wifi_connect_dialog">გთხოვთ ჩართოთ ინტერნეტი რომ განაგრძოთ.</string>
     <string name="unable_to_connect">ვერ მოხდა დაკავშირება</string>
     <string name="log_in_dialog">გთხოვთ გაიაროთ ავტორიზაცია რომ გამოიყენოთ ეს ფუნქცია</string>
     <string name="info_will_be_added">ინფორმაცია მალე დაემატება</string>

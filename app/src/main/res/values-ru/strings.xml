@@ -78,9 +78,7 @@
         Пожалуйстна нодключите к интернетом, чтобы загрузить карты. Вам придётся делать эта только
         один раз.
     </string>
-    <string name="wifi_connect_dialog">
-        Пожалуйста, включите Wi-Fi или мобильную сеть чтобы создать группу.
-    </string>
+    <string name="wifi_connect_dialog">Пожалуйста, включите Wi-Fi или мобильную сеть чтобы продолжать.</string>
     <string name="unable_to_connect">Невозможно подключиться</string>
     <string name="enable_location">Включите Местонахождение</string>
     <string name="please_enable_location">Пожайлуста включите местонахождение(Location)</string>
