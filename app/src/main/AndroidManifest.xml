@@ -135,6 +135,10 @@
             android:name=".account.RegisterActivity"
             android:label="@string/activity_register_title"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".account.registration.RegistrationActivity"
+            android:label="@string/activity_register_title"
+            android:screenOrientation="portrait" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".account.EditProfileActivity"
             android:label="@string/edit_profile"
