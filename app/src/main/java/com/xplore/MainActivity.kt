@@ -195,7 +195,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             openHomePage()
         }
 
-        //RegistrationActivity.newIntent(this, General.currentUserId, "Nika Oto", "nikaoto999@gmail.com", "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/users%2FMhNYTmLzuEanTbOTWK8m0Ju6Yf33%2Fprofile_picture.jpg?alt=media&token=5cc495d0-a194-4ec0-be46-0ddf1fba588b")
+        // Used for testing
+        //startActivity(RegistrationActivity.newIntent(this, General.currentUserId, "Nika Oto", "nikaoto999@gmail.com", "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/users%2FMhNYTmLzuEanTbOTWK8m0Ju6Yf33%2Fprofile_picture.jpg?alt=media&token=5cc495d0-a194-4ec0-be46-0ddf1fba588b"))
     }
 
     private fun refreshUserProfileViews(context: Context?) {
