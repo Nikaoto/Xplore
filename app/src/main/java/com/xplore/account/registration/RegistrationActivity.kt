@@ -50,14 +50,28 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         }
     }
 
+    private lateinit var userId: String
+    private lateinit var userPhotoUrl: String
+    private var birthDate: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Set up layout
         setTitle(R.string.activity_register_title)
         setContentView(R.layout.register_layout)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        presenter.onCreate()
+        // Retrieve passed data
+        userId = intent.getStringExtra(ARG_USER_ID)
+        userPhotoUrl = intent.getStringExtra(ARG_PHOTO_URL)
+        val userFullName = intent.getStringExtra(ARG_FULL_NAME)
+        val userEmail = intent.getStringExtra(ARG_EMAIL)
+
+        // Display data
+        val names = presenter.separateFullName(userFullName)
+        fillUserInfo(names[0], names[1], userEmail)
+        initProfilePhoto(userPhotoUrl)
     }
 
     override fun fillUserInfo(firstName: String, lastName: String, email: String) {
@@ -66,14 +80,6 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         emailEditText.setText(email)
         emailEditText.isEnabled = false
         emailEditText.isFocusable = false
-    }
-
-    private fun TextView.safeSetText(s: String?) {
-        if (s != null) {
-            this.text = s
-        } else {
-            this.text = ""
-        }
     }
 
     override fun initProfilePhoto(photoUrl: String) {
@@ -101,6 +107,52 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         }
     }
 
+    override fun onBirthDateSelected() {
+        // TODO add date picker by Guga
+    }
+
+    override fun fillBirthDateField(birthDate: String) {
+        birthDateTextView.text = birthDate
+    }
+
+    override fun fieldsValid(): Boolean {
+        if (fnameEditText.isEmpty()) {
+            return fieldError(fnameEditText)
+        }
+        if (lnameEditText.isEmpty()) {
+            return fieldError(lnameEditText)
+        }
+        if (emailEditText.isEmpty()) {
+            return fieldError(emailEditText)
+        }
+        if (!presenter.isValidEmail(emailEditText.str())) {
+            return fieldError(emailEditText, R.string.error_invalid_email)
+        }
+        if (mobileNumberEditText.isEmpty()) {
+            return fieldError(mobileNumberEditText)
+        }
+        if (birthDateTextView.isEmpty()) {
+            return fieldError(birthDateTextView)
+        }
+
+        presenter.checkBirthDateValid(birthDate)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        // TODO Log user out
+    }
+
+
+    /* Messages and Errors */
+
     override fun showLoadingMessage() {
         showLongMessage(R.string.loading)
     }
@@ -111,6 +163,16 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
                 .setMessage(R.string.mobile_number_reason_message)
                 .setPositiveButton(R.string.okay, null)
                 .create().show()
+    }
+
+    override fun displayBirthDateRestrictionError(ageLimit: Int) {
+
+    }
+
+    override fun scrollToView(v: View) {
+        scrollView.post {
+            scrollView.smoothScrollTo(0, v.bottom)
+        }
     }
 
     override fun highlightField(v: View) = v.setBackgroundResource(R.drawable.edit_text_border_red)
@@ -135,50 +197,19 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
     override fun fieldError(v: View): Boolean = fieldError(v, R.string.error_field_required)
 
-    override fun scrollToView(v: View) {
-        scrollView.post {
-            scrollView.smoothScrollTo(0, v.bottom)
-        }
-    }
 
-    override fun onBirthDateSelected() {
-        // TODO add date picker by Guga
-    }
+    /* Misc & Extension Functions */
 
     private fun TextView.str() = this.text.trim().toString()
+
     private fun TextView.isEmpty() = this.text.isEmpty()
 
-    override fun fieldsValid(): Boolean {
-        if (fnameEditText.isEmpty()) {
-            return fieldError(fnameEditText)
+    private fun TextView.safeSetText(s: String?) {
+        if (s != null) {
+            this.text = s
+        } else {
+            this.text = ""
         }
-        if (lnameEditText.isEmpty()) {
-            return fieldError(lnameEditText)
-        }
-        if (emailEditText.isEmpty()) {
-            return fieldError(emailEditText)
-        }
-        if (!General.isValidEmail(emailEditText.str())) {
-            return fieldError(emailEditText, R.string.error_invalid_email)
-        }
-        if (mobileNumberEditText.isEmpty()) {
-            return fieldError(mobileNumberEditText)
-        }
-        if (birthDateTextView.isEmpty()) {
-            return fieldError(birthDateTextView)
-        }
-        // TODO check birth dates != 0
-
-        return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        onBackPressed()
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        // Log user out
-    }
 }

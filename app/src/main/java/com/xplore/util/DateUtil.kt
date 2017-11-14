@@ -1,6 +1,8 @@
 package com.xplore.util
 
 import android.util.Log
+import com.xplore.TimeManager
+import java.util.*
 
 /*
  * Created by Nik on 9/6/2017.
@@ -59,5 +61,28 @@ object DateUtil {
         builder.insert(7, "/")
 
         return builder.toString()
+    }
+
+    @JvmStatic
+    fun calculateAge(bYear: Int, bMonth: Int, bDay: Int): Int {
+        // Get current date
+        val cal = Calendar.getInstance()
+        cal.time = Date(TimeManager.globalTimeStamp)
+        val nowYear = cal.get(Calendar.YEAR);
+        val nowMonth = cal.get(Calendar.MONTH) + 1;
+        val nowDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        // Subtract current and given dates and
+        var tempAge = nowYear - bYear;
+
+        // Calculate month & day differences
+        if(nowMonth > bMonth)
+            tempAge++;
+        else if(nowMonth == bMonth && nowDay >= bDay)
+            tempAge++;
+        else
+            tempAge--;
+
+        return tempAge;
     }
 }

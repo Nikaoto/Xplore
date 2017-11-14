@@ -37,12 +37,16 @@ interface RegistrationContract {
 
         fun onBirthDateSelected()
 
+        fun fillBirthDateField(birthDate: String)
+
+        fun displayBirthDateRestrictionError(ageLimit: Int)
+
         fun fieldsValid(): Boolean
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun onCreate()
+        fun onCreate(fullName: String, email: String, photoUrl: String)
 
         var mobileNumberReasonShown: Boolean
 
@@ -52,7 +56,9 @@ interface RegistrationContract {
 
         fun separateFullName(fullName: String?): Array<String>
 
-        fun isValidAge(age: Int): Boolean
+        fun checkBirthDateValid(birthDate: String): Boolean
+
+        fun isValidEmail(email: String): Boolean
 
         fun submitUserData(firstName: String, lastName: String, email: String, mobileNumber: String,
                            birthDate: Int)

@@ -1,8 +1,11 @@
 package com.xplore.account.registration
 
+import com.xplore.General
+import com.xplore.TimeManager
 import com.xplore.base.BasePresenterImpl
-import com.xplore.user.User
+import com.xplore.util.DateUtil
 import com.xplore.util.FirebaseUtil
+import com.xplore.util.FirebaseUtil.MIN_AGE
 
 /**
  * Created by Nika on 11/10/2017.
@@ -11,26 +14,13 @@ import com.xplore.util.FirebaseUtil
 
 class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         RegistrationContract.Presenter {
-    private lateinit var userId: String
 
-    private lateinit var userFullName: String
-    private lateinit var userEmail: String
-    private lateinit var userPhotoUrl: String
     override var mobileNumberReasonShown: Boolean = false
 
-    override fun onCreate() {
-        // TODO add newIntent and stuff here
-        // Retrieve passed data
-        view?.returnIntent()?.let {
-            userId = it.getStringExtra(RegistrationActivity.ARG_USER_ID)
-            userFullName = it.getStringExtra(RegistrationActivity.ARG_FULL_NAME)
-            userEmail = it.getStringExtra(RegistrationActivity.ARG_EMAIL)
-            userPhotoUrl = it.getStringExtra(RegistrationActivity.ARG_PHOTO_URL)
-        }
-
-        val names = separateFullName(userFullName)
-        view?.fillUserInfo(names[0], names[1], userEmail)
-        view?.initProfilePhoto(userPhotoUrl)
+    override fun onCreate(fullName: String, email: String, photoUrl: String) {
+        val names = separateFullName(fullName)
+        view?.fillUserInfo(names[0], names[1], email)
+        view?.initProfilePhoto(photoUrl)
     }
 
     override fun onBirthDateClicked() {
@@ -48,9 +38,7 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         if (fullName == null) {
             return emptyArray<String>()
         }
-
         val names = fullName.split(" ".toRegex(), 2).toTypedArray()
-
         if (names.size == 1) {
             return arrayOf(names[0], "")
         }
@@ -58,11 +46,29 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         return names
     }
 
-    override fun isValidAge(age: Int): Boolean = age >= FirebaseUtil.MIN_AGE
+    override fun checkBirthDateValid(birthDate: String): Boolean {
+        val year = DateUtil.getYear(birthDate)
+        val month = DateUtil.getMonth(birthDate)
+        val day = DateUtil.getDay(birthDate)
+
+        if (DateUtil.calculateAge(year, month, day) >= MIN_AGE) {
+            val displayBirthDate = DateUtil.putSlashesInDate(birthDate)
+            view?.fillBirthDateField(displayBirthDate)
+            return true
+        } else {
+            view?.displayBirthDateRestrictionError(MIN_AGE)
+            return false
+        }
+    }
+
+    override fun isValidEmail(email: String): Boolean {
+        // TODO check here?
+        return General.isValidEmail(email)
+    }
 
     override fun submitUserData(firstName: String, lastName: String, email: String,
                                 mobileNumber: String, birthDate: Int) {
         // TODO change userPhotoUrl
-        val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
+        //val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
     }
 }

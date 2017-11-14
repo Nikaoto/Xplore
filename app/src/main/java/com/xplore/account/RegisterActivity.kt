@@ -32,8 +32,8 @@ import com.xplore.ApiManager
 import com.xplore.General
 import com.xplore.util.ImageUtil
 import com.xplore.R
-import com.xplore.TimeManager.Companion.globalTimeStamp
-import com.xplore.TimeManager.Companion.refreshGlobalTimeStamp
+import com.xplore.TimeManager.globalTimeStamp
+import com.xplore.TimeManager.refreshGlobalTimeStamp
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.user.UploadUser
 import com.xplore.util.FirebaseUtil.DEFAULT_IMAGE_URL
