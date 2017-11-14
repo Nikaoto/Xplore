@@ -21,7 +21,6 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     open var currentQuery: String = ""
 
     override var shouldRefreshOnResume: Boolean = false
-    private var allowRefresh = false
 
     fun isCurrentQueryEmpty(): Boolean = currentQuery.trim().isEmpty()
 
@@ -82,6 +81,7 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText == null || newText.trim().isEmpty()) {
             onReset()
+            return false
         }
         return false
     }
@@ -89,35 +89,17 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query == null || query.trim().isEmpty()) {
             return false
-        } else {
-            currentQuery = query
-            return onSearch(query)
         }
-    }
-
-    open fun onSearch(query: String): Boolean {
-        // Here we write searching logic
+        currentQuery = query
+        onSearch(query)
         return false
     }
 
-    open fun onReset(): Boolean {
-        // This is called when the query text is cleared/deleted
-        return false
-    }
+    // Called when query searched
+    open fun onSearch(query: String) { }
 
-    override fun onResume() {
-        super.onResume()
-        if (shouldRefreshOnResume) {
-            refreshOnResume()
-        }
-    }
-
-    override fun refreshOnResume() {
-        if (allowRefresh) {
-            allowRefresh = false
-            onRefreshed()
-        } else {
-            allowRefresh = true
-        }
+    // Called when the query text is cleared/deleted
+    open fun onReset() {
+        currentQuery = ""
     }
 }

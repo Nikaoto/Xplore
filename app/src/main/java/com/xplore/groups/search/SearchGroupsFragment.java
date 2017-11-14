@@ -58,16 +58,11 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     private static int FAB_HIDE_SCROLL_DY = 2;
 
-    private boolean firstLoad;
-
     private RecyclerView resultsRV;
     private FloatingActionButton fab;
 
     private ArrayList<GroupCard> groupCards = new ArrayList<>();
     private ArrayList<GroupCard> displayCards = new ArrayList<>();
-
-    // Used to refreshData the whole fragment in onResume to update cards
-    private boolean allowRefresh = false;
 
     // Determines whether the data should reload when user clears search text
     private boolean canReset = false;
@@ -136,7 +131,6 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     private void prepareToLoadData() {
         groupCards.clear();
         displayCards.clear();
-        firstLoad = true;
 
         //Displaying list already (empty)
         resultsRV.setAdapter(new GroupCardRecyclerViewAdapter(displayCards, getActivity()));
@@ -246,8 +240,11 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
         });
     }
 
+
+
     @Override
-    public boolean onSearch(@NonNull String query) {
+    public void onSearch(@NonNull String query) {
+        super.onSearch(query);
         fab.show();
         canReset = true;
         prepareToLoadData();
@@ -292,16 +289,14 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
                     @Override
                     public void onCancelled(DatabaseError databaseError) { }
                 });
-
-        return super.onSearch(query);
     }
 
     @Override
-    public boolean onReset() {
+    public void onReset() {
+        super.onReset();
         if (canReset) {
             firstLoadData();
         }
-        return super.onReset();
     }
 
     private void nothingFound() {
@@ -310,17 +305,8 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     private void onFinishedLoading() {
         setLoading(false);
-        firstLoad = false;
         if (displayCards.isEmpty()) {
             nothingFound();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(!firstLoad) {
-            onFinishedLoading();
         }
     }
 
@@ -328,7 +314,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     public void onRefreshed() {
         super.onRefreshed();
 
-        // Reloads with current query or if empty, loads anew
+        // Reload with or without query
         if (!isCurrentQueryEmpty()) {
             onSearch(getCurrentQuery());
         } else {
