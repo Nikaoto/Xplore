@@ -58,7 +58,7 @@ interface RegistrationContract {
 
         fun separateFullName(fullName: String?): Array<String>
 
-        fun isBirthDateValid(birthDate: String): Boolean
+        fun isBirthDateValid(year: Int, month: Int, day: Int): Boolean
 
         fun isValidEmail(email: String): Boolean
 

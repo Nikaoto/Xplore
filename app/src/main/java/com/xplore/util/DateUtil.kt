@@ -85,4 +85,14 @@ object DateUtil {
 
         return tempAge;
     }
+
+    // Adds zero to Day or Month number if needed
+    fun addZero(num: Int) = if(num < 10) "0$num" else "$num"
+
+    // Returns displayable date string with slashes
+    @JvmStatic
+    fun formatDate(year: Int, month: Int, day: Int): String {
+        val temp = year.toString() + addZero(month) + addZero(day)
+        return putSlashesInDate(temp)
+    }
 }

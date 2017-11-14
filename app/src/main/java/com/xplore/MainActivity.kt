@@ -1,6 +1,5 @@
 package com.xplore
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.FragmentTransaction
 import android.content.Context
@@ -9,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
@@ -20,16 +18,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import com.xplore.account.RegisterActivity
 import com.xplore.account.SignInActivity
+import com.xplore.account.registration.RegistrationActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
@@ -41,7 +36,6 @@ import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
 import com.xplore.user.UserCard
-import com.xplore.util.FirebaseUtil.usersRef
 import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -187,7 +181,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             startActivity(SignInActivity.getStartIntent(this, true))
         }
 
-        // Clears user related content whe logged out
+        // Clears user related content when logged out
         if (!General.isUserSignedIn()) {
             userFullNameTextView.visibility = View.GONE
             Picasso.with(this)
@@ -200,6 +194,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             appJustLaunched = false
             openHomePage()
         }
+
+        //RegistrationActivity.newIntent(this, General.currentUserId, "Nika Oto", "nikaoto999@gmail.com", "https://firebasestorage.googleapis.com/v0/b/xplore-a4aa3.appspot.com/o/users%2FMhNYTmLzuEanTbOTWK8m0Ju6Yf33%2Fprofile_picture.jpg?alt=media&token=5cc495d0-a194-4ec0-be46-0ddf1fba588b")
     }
 
     private fun refreshUserProfileViews(context: Context?) {

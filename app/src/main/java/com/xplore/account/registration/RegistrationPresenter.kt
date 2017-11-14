@@ -1,10 +1,11 @@
 package com.xplore.account.registration
 
+import android.util.Log
+import com.google.gson.Gson
 import com.xplore.General
-import com.xplore.TimeManager
 import com.xplore.base.BasePresenterImpl
+import com.xplore.user.UploadUser
 import com.xplore.util.DateUtil
-import com.xplore.util.FirebaseUtil
 import com.xplore.util.FirebaseUtil.MIN_AGE
 
 /**
@@ -23,8 +24,19 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         view?.initProfilePhoto(photoUrl)
     }
 
-    override fun onBirthDateClicked() {
-        // TODO open guga's datepicker
+    override fun onBirthDateSet(year: Int, receivedMonth: Int, day: Int) {
+        val month = receivedMonth + 1 // Necessary because 0 is January
+
+        if (General.isNetConnected(view?.getContext())) {
+            if (isBirthDateValid(year, month, day)) {
+                val displayBirthDate = DateUtil.formatDate(year, month, day)
+                view?.fillBirthDateField(displayBirthDate)
+            } else {
+                view?.showBirthDateRestrictionError(MIN_AGE)
+            }
+        } else {
+            view?.showNetError()
+        }
     }
 
     override fun onMobileNumberTouched() {
@@ -46,19 +58,8 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         return names
     }
 
-    override fun checkBirthDateValid(birthDate: String): Boolean {
-        val year = DateUtil.getYear(birthDate)
-        val month = DateUtil.getMonth(birthDate)
-        val day = DateUtil.getDay(birthDate)
-
-        if (DateUtil.calculateAge(year, month, day) >= MIN_AGE) {
-            val displayBirthDate = DateUtil.putSlashesInDate(birthDate)
-            view?.fillBirthDateField(displayBirthDate)
-            return true
-        } else {
-            view?.displayBirthDateRestrictionError(MIN_AGE)
-            return false
-        }
+    override fun isBirthDateValid(year: Int, month: Int, day: Int): Boolean {
+        return DateUtil.calculateAge(year, month, day) >= MIN_AGE
     }
 
     override fun isValidEmail(email: String): Boolean {
@@ -68,6 +69,10 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
 
     override fun submitUserData(firstName: String, lastName: String, email: String,
                                 mobileNumber: String, birthDate: Int) {
+        view?.showMessage("uploading user; check log.i for info")
+        val tempuser = UploadUser(General.currentUserId, firstName, lastName, mobileNumber, email, "asd", 0, birthDate)
+
+        Log.i("regact - user:", Gson().toJson(tempuser.toMap()))
         // TODO change userPhotoUrl
         //val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
     }
