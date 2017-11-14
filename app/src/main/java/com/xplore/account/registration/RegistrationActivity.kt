@@ -166,7 +166,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun displayBirthDateRestrictionError(ageLimit: Int) {
-
+        showLongMessage(resources.getString(R.string.you_must_be_at_least) + " " + ageLimit + " " + resources.getString(R.string.years_to_use_xplore))
     }
 
     override fun scrollToView(v: View) {
