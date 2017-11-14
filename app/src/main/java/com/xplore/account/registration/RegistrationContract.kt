@@ -39,7 +39,9 @@ interface RegistrationContract {
 
         fun fillBirthDateField(birthDate: String)
 
-        fun displayBirthDateRestrictionError(ageLimit: Int)
+        fun showBirthDateRestrictionError(ageLimit: Int)
+
+        fun showNetError()
 
         fun fieldsValid(): Boolean
     }
@@ -50,13 +52,13 @@ interface RegistrationContract {
 
         var mobileNumberReasonShown: Boolean
 
-        fun onBirthDateClicked()
+        fun onBirthDateSet(year: Int, month: Int, day: Int)
 
         fun onMobileNumberTouched()
 
         fun separateFullName(fullName: String?): Array<String>
 
-        fun checkBirthDateValid(birthDate: String): Boolean
+        fun isBirthDateValid(birthDate: String): Boolean
 
         fun isValidEmail(email: String): Boolean
 

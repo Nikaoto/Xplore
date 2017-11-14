@@ -4,15 +4,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import com.xplore.General
+import com.xplore.BirthDatePickerFragment
 import com.xplore.R
 import com.xplore.base.BaseAct
-import com.xplore.user.User
 import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.register_layout.*
 
@@ -91,7 +91,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
     override fun initClickEvents() {
         birthDateTextView.setOnClickListener {
-            presenter.onBirthDateClicked()
+            onBirthDateSelected()
         }
 
         mobileNumberEditText.setOnTouchListener { _, motionEvent ->
@@ -108,7 +108,8 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun onBirthDateSelected() {
-        // TODO add date picker by Guga
+        BirthDatePickerFragment { dp, y, m, d -> presenter.onBirthDateSet(y, m, d) }
+                .show(fragmentManager, "dp")
     }
 
     override fun fillBirthDateField(birthDate: String) {
@@ -135,8 +136,6 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
             return fieldError(birthDateTextView)
         }
 
-        presenter.checkBirthDateValid(birthDate)
-
         return true
     }
 
@@ -152,6 +151,16 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
 
     /* Messages and Errors */
+    override fun showNetError() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.wifi_connect_dialog)
+                .setTitle(R.string.unable_to_connect)
+                .setCancelable(false)
+                .setPositiveButton(R.string.action_settings, {_,_ ->
+                    startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))})
+                .setNegativeButton(R.string.cancel, null)
+                .create().show()
+    }
 
     override fun showLoadingMessage() {
         showLongMessage(R.string.loading)
@@ -165,7 +174,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
                 .create().show()
     }
 
-    override fun displayBirthDateRestrictionError(ageLimit: Int) {
+    override fun showBirthDateRestrictionError(ageLimit: Int) {
         showLongMessage(resources.getString(R.string.you_must_be_at_least) + " " + ageLimit + " " + resources.getString(R.string.years_to_use_xplore))
     }
 
