@@ -1,14 +1,12 @@
 package com.xplore.account.registration
 
-import android.util.Log
-import com.google.firebase.storage.UploadTask
-import com.google.gson.Gson
 import com.xplore.General
 import com.xplore.base.BasePresenterImpl
 import com.xplore.user.UploadUser
 import com.xplore.util.DateUtil
 import com.xplore.util.FirebaseUtil
 import com.xplore.util.FirebaseUtil.MIN_AGE
+import java.sql.Time
 
 /**
  * Created by Nika on 11/10/2017.
@@ -33,8 +31,10 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
 
         if (General.isNetConnected(view?.getContext())) {
             if (isBirthDateValid(year, month, day)) {
+                val birthDateInt = General.getDateInt(year, month, day)
                 val displayBirthDate = DateUtil.formatDate(year, month, day)
-                view?.fillBirthDateField(displayBirthDate)
+
+                view?.fillBirthDateField(birthDateInt, displayBirthDate)
             } else {
                 view?.showBirthDateRestrictionError(MIN_AGE)
             }
@@ -73,10 +73,18 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
 
     override fun submitUserData(firstName: String, lastName: String, email: String,
                                 mobileNumber: String, birthDate: Int, photoUri: String?) {
+        if (!General.isNetConnected(view?.getContext())) {
+            view?.showNetError()
+            return
+        }
+
+        view?.showLoadingMessage()
+
         // Create user with default image url
         val tempUser = UploadUser(General.currentUserId, firstName, lastName, mobileNumber, email,
                 FirebaseUtil.DEFAULT_IMAGE_URL, 0, birthDate)
-        if (photoUri != null && photoUri.isNotEmpty()) {
+        if (photoUri != null && photoUri.isNotEmpty() && photoUri != FirebaseUtil.DEFAULT_IMAGE_URL
+                && view?.profilePicChanged()!!) { // TODO fix this !!
             uploadProfilePic(tempUser, photoUri, { user -> addUserEntryToDataBase(user) })
         } else {
             addUserEntryToDataBase(tempUser)
@@ -89,8 +97,8 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
         FirebaseUtil.uploadProfilePic(user.id, input,
                 { taskSnapshot ->
                     user.profile_picture_url = taskSnapshot.downloadUrl.toString()
-                    onFinishUpload(user) },
-                {view?.showProfilePicUploadError()}
+                    onFinishUpload(user)},
+                { view?.showProfilePicUploadError() }
         )
     }
 

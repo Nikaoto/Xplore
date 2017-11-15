@@ -15,6 +15,7 @@ import com.xplore.TimeManager
 import com.xplore.user.UploadUser
 import com.xplore.user.User
 import com.xplore.util.FirebaseUtil
+import com.xplore.util.FirebaseUtil.MIN_AGE
 import kotlinx.android.synthetic.main.register_layout.*
 
 /**
@@ -81,7 +82,7 @@ class EditProfileActivity : RegisterActivity() {
     }
 
     override fun onBirthDateSelected(timeStamp: Long, offSet: Int) {
-        super.onBirthDateSelected(General.convertIntDateToTimeStamp(currentUser.birth_date), 0)
+        super.onBirthDateSelected(General.convertIntDateToTimeStamp(currentUser.birth_date), MIN_AGE) // TODO fix thiisss!
     }
 
     override fun onDoneButtonClick() {

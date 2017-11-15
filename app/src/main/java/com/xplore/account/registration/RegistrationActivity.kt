@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
@@ -15,6 +14,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.BirthDatePickerFragment
 import com.xplore.R
 import com.xplore.base.BaseAct
+import com.xplore.util.FirebaseUtil
 import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.register_layout.*
 
@@ -53,7 +53,8 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     private lateinit var userId: String
-    private lateinit var userPhotoUrl: String
+    private lateinit var startingPhotoUrl: String
+    private lateinit var newPhotoUrl: String
     private var birthDate: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,14 +67,15 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
         // Retrieve passed data
         userId = intent.getStringExtra(ARG_USER_ID)
-        userPhotoUrl = intent.getStringExtra(ARG_PHOTO_URL)
+        startingPhotoUrl = intent.getStringExtra(ARG_PHOTO_URL)
+        newPhotoUrl = startingPhotoUrl
         val userFullName = intent.getStringExtra(ARG_FULL_NAME)
         val userEmail = intent.getStringExtra(ARG_EMAIL)
 
         // Display data
         val names = presenter.separateFullName(userFullName)
         fillUserInfo(names[0], names[1], userEmail)
-        initProfilePhoto(userPhotoUrl)
+        initProfilePhoto(startingPhotoUrl)
 
         initClickEvents()
     }
@@ -108,17 +110,18 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         doneButton.setOnClickListener {
             if (fieldsValid()) {
                 presenter.submitUserData(fnameEditText.str(), lnameEditText.str(), emailEditText.str(),
-                        mobileNumberEditText.str(), birthDate, userPhotoUrl)
+                        mobileNumberEditText.str(), birthDate, newPhotoUrl)
             }
         }
     }
 
     override fun onBirthDateSelected() {
-        BirthDatePickerFragment({ dp, y, m, d -> presenter.onBirthDateSet(y, m, d) })
+        BirthDatePickerFragment({ dp, y, m, d -> presenter.onBirthDateSet(y, m, d) }, -FirebaseUtil.MIN_AGE)
                 .show(fragmentManager, "dp")
     }
 
-    override fun fillBirthDateField(birthDate: String) {
+    override fun fillBirthDateField(birthDateInt: Int, birthDate: String) {
+        this.birthDate = birthDateInt
         birthDateTextView.text = birthDate
     }
 
@@ -146,6 +149,8 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
         return true
     }
+
+    override fun profilePicChanged() = newPhotoUrl != startingPhotoUrl || newPhotoUrl.isEmpty()
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         onBackPressed()

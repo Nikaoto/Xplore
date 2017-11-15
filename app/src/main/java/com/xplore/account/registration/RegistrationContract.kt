@@ -38,7 +38,7 @@ interface RegistrationContract {
 
         fun onBirthDateSelected()
 
-        fun fillBirthDateField(birthDate: String)
+        fun fillBirthDateField(birthDateInt: Int, birthDate: String)
 
         fun showBirthDateRestrictionError(ageLimit: Int)
 
@@ -47,6 +47,8 @@ interface RegistrationContract {
         fun showProfilePicUploadError()
 
         fun fieldsValid(): Boolean
+
+        fun profilePicChanged(): Boolean
 
         fun finishOk()
 

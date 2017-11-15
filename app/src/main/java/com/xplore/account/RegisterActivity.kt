@@ -28,10 +28,12 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.soundcloud.android.crop.Crop
 import com.squareup.picasso.Picasso
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder
 import com.xplore.ApiManager
 import com.xplore.General
 import com.xplore.util.ImageUtil
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.TimeManager.globalTimeStamp
 import com.xplore.TimeManager.refreshGlobalTimeStamp
 import com.xplore.base.BaseAppCompatActivity
@@ -54,7 +56,7 @@ import java.util.*
 *
 */
 
-open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
+open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatepicker.DatePickerDialog.OnDateSetListener {
 
     /* Request Codes */
     private val NONE = 0
@@ -199,8 +201,21 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
     }
 
     open fun onBirthDateSelected(timeStamp: Long, offSet: Int = MIN_AGE) {
-        val fragment = com.xplore.DatePickerFragment(this, timeStamp, offSet)
-        fragment.show(fragmentManager, "datePicker")
+        val c = Calendar.getInstance()
+        c.time = Date(TimeManager.globalTimeStamp)
+        val year = c.get(Calendar.YEAR) - offSet
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        SpinnerDatePickerDialogBuilder()
+                .context(this)
+                .callback(this)
+                .spinnerTheme(R.style.NumberPickerStyle)
+                .year(year)
+                .monthOfYear(month)
+                .dayOfMonth(day)
+                .build()
+                .show();
     }
 
     open fun initProfileImage(userProfilePicUrl: String?) {
@@ -267,7 +282,9 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
     // Adds zero to Day or Month number if needed
     fun addZero(num: Int) = if(num < 10) "0$num" else "$num"
 
-    override fun onDateSet(datePicker: DatePicker, year: Int, receivedMonth: Int, day: Int) {
+    override fun onDateSet(view: com.tsongkha.spinnerdatepicker.DatePicker?, year: Int,
+                           receivedMonth: Int, day: Int) {
+
         val month  = receivedMonth + 1 //+1 is necessary because 0 is January
         if (General.isNetConnected(this@RegisterActivity)) {
 
@@ -284,8 +301,9 @@ open class RegisterActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSe
                         " " + MIN_AGE + " " + res.getString(R.string.years_to_use_xplore),
                         Toast.LENGTH_SHORT).show()
             }
-        } else
+        } else {
             General.createNetErrorDialog(this@RegisterActivity)
+        }
     }
 
     // Uploads all textual user data to Firebase
