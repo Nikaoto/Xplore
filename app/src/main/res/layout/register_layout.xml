@@ -157,11 +157,10 @@
             android:layout_marginTop="@dimen/reg_text_margin_top">
 
             <TextView
-                android:id="@+id/bdateLabelTextView"
+                android:id="@+id/birthDateLabelTextView"
                 android:text="@string/birth_date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20sp"
-                android:layout_alignBaseline="@+id/birthDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -172,8 +171,10 @@
                 android:paddingRight="5dp"
                 android:minEms="6"
                 android:maxEms="12"
+                android:layout_below="@id/birthDateLabelTextView"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/reg_text_margin_left"
-                android:layout_toRightOf="@id/bdateLabelTextView"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_border"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -186,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/birthDateTextView"
-                android:layout_alignRight="@id/birthDateTextView"
+                android:layout_alignStart="@id/birthDateTextView"
                 android:textSize="14sp" />
         </RelativeLayout>
 
