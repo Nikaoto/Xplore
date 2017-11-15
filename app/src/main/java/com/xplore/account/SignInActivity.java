@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,7 +44,7 @@ import com.xplore.ApiManager;
 import com.xplore.General;
 import com.xplore.MainActivity;
 import com.xplore.R;
-import com.xplore.account.registration.RegistrationActivity;
+import com.xplore.TimeManager;
 import com.xplore.base.BaseAppCompatActivity;
 import com.xplore.util.FirebaseUtil;
 
@@ -104,6 +103,8 @@ public class SignInActivity extends BaseAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
+
+        TimeManager.refreshGlobalTimeStamp();
 
         boolean shouldShowBackBtn = !getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false);
         if (shouldShowBackBtn) {
@@ -294,7 +295,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                             + "/picture?height=" + FB_PROFILE_PIC_HEIGHT
                             + "&width=" + FB_PROFILE_PIC_WIDTH;
                     startActivityForResult(
-                            RegistrationActivity.newIntent(
+                            RegisterActivity.getStartIntent(
                                     SignInActivity.this,
                                     user.getUid(),
                                     user.getDisplayName(),
@@ -312,7 +313,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             }
 
             startActivityForResult(
-                    RegistrationActivity.newIntent(
+                    RegisterActivity.getStartIntent(
                             SignInActivity.this,
                             user.getUid(),
                             user.getDisplayName(),
@@ -473,7 +474,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             makeBorderRed(emailEditText);
             Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show();
             return false;
-        } else if (passwordEditText.length() < FirebaseUtil.MIN_PASS_LENGTH) {
+        } else if (passwordEditText.length() < FirebaseUtil.MIN_PASSWORD_LENGTH) {
             makeBorderRed(passwordEditText);
             Toast.makeText(this, R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
             return false;
