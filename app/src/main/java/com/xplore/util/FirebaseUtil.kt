@@ -36,7 +36,7 @@ object FirebaseUtil {
     const val FB_PROFILE_PIC_HEIGHT = 300
     const val FB_PROFILE_PIC_WIDTH = 300
     const val MIN_AGE = 15
-    const val MIN_PASS_LENGTH = 6
+    const val MIN_PASSWORD_LENGTH = 6
 
     // Firebase Storage
     const val FS_PROFILE_PIC_KB_LIMIT = 25
