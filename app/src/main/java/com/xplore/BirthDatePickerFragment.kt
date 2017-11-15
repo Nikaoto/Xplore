@@ -9,7 +9,9 @@ import android.os.Bundle
 import java.util.*
 
 @SuppressLint("ValidFragment")
-class BirthDatePickerFragment(private val onDataSet: (view: DatePicker, year: Int, month: Int, day: Int) -> Unit)
+class BirthDatePickerFragment(
+        private val onDataSet: (view: DatePicker, year: Int, month: Int, day: Int) -> Unit,
+        private val offset: Int)
     : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -17,7 +19,7 @@ class BirthDatePickerFragment(private val onDataSet: (view: DatePicker, year: In
         TimeManager.refreshGlobalTimeStamp()
         val c = Calendar.getInstance()
         c.time = Date(TimeManager.globalTimeStamp)
-        val year = c.get(Calendar.YEAR)
+        val year = c.get(Calendar.YEAR) + offset
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
