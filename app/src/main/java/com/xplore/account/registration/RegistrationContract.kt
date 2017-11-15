@@ -47,6 +47,10 @@ interface RegistrationContract {
         fun showProfilePicUploadError()
 
         fun fieldsValid(): Boolean
+
+        fun finishOk()
+
+        fun finishCancelled()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -67,6 +71,6 @@ interface RegistrationContract {
 
         // TODO check if this is appropriate
         fun submitUserData(firstName: String, lastName: String, email: String, mobileNumber: String,
-                           birthDate: Int, photoUri: Uri?)
+                           birthDate: Int, photoUri: String?)
     }
 }

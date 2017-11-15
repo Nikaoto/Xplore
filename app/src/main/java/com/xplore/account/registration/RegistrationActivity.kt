@@ -1,8 +1,10 @@
 package com.xplore.account.registration
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
@@ -151,10 +153,19 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        // TODO Log user out
+        finishCancelled()
     }
 
+    override fun finishOk() {
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    override fun finishCancelled() {
+        // TODO Log user out
+        setResult(Activity.RESULT_CANCELED)
+        finish()
+    }
 
     /* Messages and Errors */
     override fun showNetError() {

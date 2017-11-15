@@ -45,6 +45,7 @@ import com.xplore.ApiManager;
 import com.xplore.General;
 import com.xplore.MainActivity;
 import com.xplore.R;
+import com.xplore.account.registration.RegistrationActivity;
 import com.xplore.base.BaseAppCompatActivity;
 import com.xplore.util.FirebaseUtil;
 
@@ -293,7 +294,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                             + "/picture?height=" + FB_PROFILE_PIC_HEIGHT
                             + "&width=" + FB_PROFILE_PIC_WIDTH;
                     startActivityForResult(
-                            RegisterActivity.getStartIntent(
+                            RegistrationActivity.newIntent(
                                     SignInActivity.this,
                                     user.getUid(),
                                     user.getDisplayName(),
@@ -311,7 +312,7 @@ public class SignInActivity extends BaseAppCompatActivity {
             }
 
             startActivityForResult(
-                    RegisterActivity.getStartIntent(
+                    RegistrationActivity.newIntent(
                             SignInActivity.this,
                             user.getUid(),
                             user.getDisplayName(),

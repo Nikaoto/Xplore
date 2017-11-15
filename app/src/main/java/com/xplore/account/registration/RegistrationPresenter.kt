@@ -1,6 +1,5 @@
 package com.xplore.account.registration
 
-import android.net.Uri
 import android.util.Log
 import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
@@ -73,15 +72,11 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
     }
 
     override fun submitUserData(firstName: String, lastName: String, email: String,
-                                mobileNumber: String, birthDate: Int, photoUri: Uri?) {
-        view?.showMessage("uploading user; check log.i for info")
+                                mobileNumber: String, birthDate: Int, photoUri: String?) {
+        // Create user with default image url
         val tempUser = UploadUser(General.currentUserId, firstName, lastName, mobileNumber, email,
-                "OLD", 0, birthDate)
-
-        Log.i(TAG, Gson().toJson(tempUser.toMap()))
-        // TODO change userPhotoUrl
-        //val tempUser = User(userId, firstName, lastName, mobileNumber, email, userPhotoUrl, 0, birthDate)
-        if (photoUri != null) {
+                FirebaseUtil.DEFAULT_IMAGE_URL, 0, birthDate)
+        if (photoUri != null && photoUri.isNotEmpty()) {
             uploadProfilePic(tempUser, photoUri, { user -> addUserEntryToDataBase(user) })
         } else {
             addUserEntryToDataBase(tempUser)
@@ -89,27 +84,19 @@ class RegistrationPresenter : BasePresenterImpl<RegistrationContract.View>(),
     }
 
     // Uploads user profile pic and saves new link
-    private fun uploadProfilePic(user: UploadUser, input: Uri, onFinishUpload: (user: UploadUser) -> Unit) {
-        FirebaseUtil.getUserProfilePicRef(user.id).putFile(input)
-                .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
-                    // Update download url
+    private fun uploadProfilePic(user: UploadUser, input: String,
+                                 onFinishUpload: (user: UploadUser) -> Unit) {
+        FirebaseUtil.uploadProfilePic(user.id, input,
+                { taskSnapshot ->
                     user.profile_picture_url = taskSnapshot.downloadUrl.toString()
-
-                    onFinishUpload(user)
-                }
-                .addOnFailureListener {
-                    view?.showProfilePicUploadError()
-                }
+                    onFinishUpload(user) },
+                {view?.showProfilePicUploadError()}
+        )
     }
 
     // Uploads all textual user data to Firebase
-    open fun addUserEntryToDataBase(user: UploadUser) {
-        val userData = user.toMap()
-        //TODO abstract this in FirebaseUtil
-        val childUpdates = HashMap<String, Any>()
-        childUpdates.put("/users/" + user.id, userData)
-        DBref.updateChildren(childUpdates)
-        setResult(Activity.RESULT_OK)
-        finish()
+    private fun addUserEntryToDataBase(user: UploadUser) {
+        FirebaseUtil.uploadUserData(user.id, user.toMap())
+        view?.finishOk()
     }
 }

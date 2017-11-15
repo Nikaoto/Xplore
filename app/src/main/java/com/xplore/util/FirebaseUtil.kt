@@ -1,6 +1,7 @@
 package com.xplore.util
 
 import android.app.Activity
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.facebook.login.LoginManager
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.xplore.General
 import com.xplore.R
 
@@ -75,6 +77,56 @@ object FirebaseUtil {
     const val F_MEMBER_IDS = "member_ids"
     const val F_INVITED_MEMBER_IDS = "invited_member_ids"
 
+    @JvmField
+    val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)
+
+    @JvmField
+    val groupsRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_GROUPS)
+
+    @JvmStatic
+    fun getGroupRef(groupId: String): DatabaseReference = groupsRef.child(groupId)
+
+    @JvmStatic
+    fun getUserRef(userId: String): DatabaseReference = usersRef.child(userId)
+
+    @JvmStatic
+    fun getCurrentUserRef() = getUserRef(General.currentUserId)
+
+    @JvmStatic
+    private fun uploadData(parentId: String, data: Map<String, Any>, ref: DatabaseReference) {
+        val update = HashMap<String, Any>()
+        update.put(parentId, data)
+        ref.updateChildren(update)
+    }
+
+    @JvmStatic
+    fun uploadUserData(userId: String, userData: Map<String, Any>) {
+        uploadData(userId, userData, usersRef)
+    }
+
+    @JvmStatic
+    fun grantReputation(userId: String, reputationAmount: Int) {
+        if (reputationAmount != 0) {
+            val repRef = getUserRef(userId).child(F_REPUTATION)
+            repRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                    if (dataSnapshot != null) {
+                        val currentRep = dataSnapshot.getValue(Int::class.java)
+                        if (currentRep != null) {
+                            repRef.setValue(reputationAmount + currentRep)
+                        } else {
+                            Log.i(TAG, "grantReputation($userId,$reputationAmount): currentRep null")
+                        }
+                    } else {
+                        Log.i(TAG, "grantReputation($userId,$reputationAmount): dataSnapshot null")
+                    }
+                }
+
+                override fun onCancelled(p0: DatabaseError?) {}
+            })
+        }
+    }
+
     @JvmStatic
     fun logOut(act: Activity, googleApiClient: GoogleApiClient) {
         if(General.accountStatus == General.LOGGED_IN){
@@ -100,44 +152,6 @@ object FirebaseUtil {
         Toast.makeText(act, R.string.logged_out, Toast.LENGTH_SHORT).show()
     }
 
-    @JvmField
-    val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)
-
-    @JvmField
-    val groupsRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_GROUPS)
-
-    @JvmStatic
-    fun getGroupRef(groupId: String): DatabaseReference = groupsRef.child(groupId)
-
-    @JvmStatic
-    fun getUserRef(userId: String): DatabaseReference = usersRef.child(userId)
-
-    @JvmStatic
-    fun getCurrentUserRef() = getUserRef(General.currentUserId)
-
-    @JvmStatic
-    fun grantReputation(userId: String, reputationAmount: Int) {
-        if (reputationAmount != 0) {
-            val repRef = getUserRef(userId).child(F_REPUTATION)
-            repRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                    if (dataSnapshot != null) {
-                        val currentRep = dataSnapshot.getValue(Int::class.java)
-                        if (currentRep != null) {
-                            repRef.setValue(reputationAmount + currentRep)
-                        } else {
-                            Log.i(TAG, "grantReputation($userId,$reputationAmount): currentRep null")
-                        }
-                    } else {
-                        Log.i(TAG, "grantReputation($userId,$reputationAmount): dataSnapshot null")
-                    }
-                }
-
-                override fun onCancelled(p0: DatabaseError?) {}
-            })
-        }
-    }
-
 
     /*
     * Firebase Storage
@@ -152,6 +166,14 @@ object FirebaseUtil {
     @JvmStatic
     fun getUserProfilePicRef(userId: String) = getUserStorageRef(userId).child(FS_PROFILE_PIC_FULL_NAME)
 
+    @JvmStatic
+    fun uploadProfilePic(userId: String, input: String,
+                         onSuccess: (taskSnapshot: UploadTask.TaskSnapshot) -> Unit,
+                         onFail: () -> Unit) {
+        getUserProfilePicRef(userId).putFile(Uri.parse(input))
+                .addOnSuccessListener { taskSnapshot -> onSuccess(taskSnapshot) }
+                .addOnFailureListener { onFail() }
+    }
 
     /*
     *
