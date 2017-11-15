@@ -253,7 +253,7 @@ public class General {
                 .setPositiveButton(R.string.action_settings,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                Intent i = new Intent(Settings.ACTION_WIFI_SETTINGS);
                                 context.startActivity(i);
                             }
                         }
