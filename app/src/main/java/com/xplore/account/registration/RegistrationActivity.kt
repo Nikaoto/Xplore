@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -73,6 +72,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         val names = presenter.separateFullName(userFullName)
         fillUserInfo(names[0], names[1], userEmail)
         initProfilePhoto(userPhotoUrl)
+
         initClickEvents()
     }
 
@@ -106,7 +106,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         doneButton.setOnClickListener {
             if (fieldsValid()) {
                 presenter.submitUserData(fnameEditText.str(), lnameEditText.str(), emailEditText.str(),
-                        mobileNumberEditText.str(), birthDate)
+                        mobileNumberEditText.str(), birthDate, userPhotoUrl)
             }
         }
     }
@@ -184,6 +184,10 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
         showLongMessage(resources.getString(R.string.you_must_be_at_least) + " " + ageLimit + " " + resources.getString(R.string.years_to_use_xplore))
     }
 
+    override fun showProfilePicUploadError() {
+        showMessage(R.string.fail_profile_picture_upload)
+    }
+
     override fun scrollToView(v: View) {
         scrollView.post {
             scrollView.smoothScrollTo(0, v.bottom)
@@ -217,7 +221,7 @@ class RegistrationActivity : BaseAct<RegistrationContract.View, RegistrationCont
 
     private fun TextView.str() = this.text.trim().toString()
 
-    private fun TextView.isEmpty() = this.text.isEmpty()
+    private fun TextView.isEmpty() = this.text.trim().isEmpty()
 
     private fun TextView.safeSetText(s: String?) {
         if (s != null) {

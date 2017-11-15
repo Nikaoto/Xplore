@@ -9,6 +9,8 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.xplore.General
 import com.xplore.R
 
@@ -35,9 +37,11 @@ object FirebaseUtil {
     const val MIN_PASS_LENGTH = 6
 
     // Firebase Storage
-    const val PROFILE_PIC_KB_LIMIT = 25
-    const val PROFILE_PIC_NAME_PREFIX = "profile_pic_"
-    const val PROFILE_PIC_EXTENSION = ".jpg"
+    const val FS_PROFILE_PIC_KB_LIMIT = 25
+    const val FS_PROFILE_PIC_NAME_PREFIX = "profile_picture"
+    const val FS_PROFILE_PIC_EXTENSION = ".jpg"
+    const val FS_PROFILE_PIC_FULL_NAME = "$FS_PROFILE_PIC_NAME_PREFIX$FS_PROFILE_PIC_EXTENSION"
+    const val FS_USERS = "users"
 
     // Main Nodes
     const val F_date = "date"
@@ -122,10 +126,10 @@ object FirebaseUtil {
                         if (currentRep != null) {
                             repRef.setValue(reputationAmount + currentRep)
                         } else {
-                            Log.i(TAG, "grantReputation($userId,$reputationAmount): currentRep is null")
+                            Log.i(TAG, "grantReputation($userId,$reputationAmount): currentRep null")
                         }
                     } else {
-                        Log.i(TAG, "grantReputation($userId,$reputationAmount): dataSnapshot is null")
+                        Log.i(TAG, "grantReputation($userId,$reputationAmount): dataSnapshot null")
                     }
                 }
 
@@ -133,6 +137,20 @@ object FirebaseUtil {
             })
         }
     }
+
+
+    /*
+    * Firebase Storage
+    */
+
+    @JvmField
+    val storageRef: StorageReference = FirebaseStorage.getInstance().reference
+
+    @JvmStatic
+    fun getUserStorageRef(userId: String) = storageRef.child("$FS_USERS/$userId")
+
+    @JvmStatic
+    fun getUserProfilePicRef(userId: String) = getUserStorageRef(userId).child(FS_PROFILE_PIC_FULL_NAME)
 
 
     /*

@@ -8,9 +8,9 @@ import android.net.Uri
 import android.os.Environment
 import com.xplore.CircleTransformation
 import com.xplore.R
-import com.xplore.util.FirebaseUtil.PROFILE_PIC_EXTENSION
-import com.xplore.util.FirebaseUtil.PROFILE_PIC_KB_LIMIT
-import com.xplore.util.FirebaseUtil.PROFILE_PIC_NAME_PREFIX
+import com.xplore.util.FirebaseUtil.FS_PROFILE_PIC_EXTENSION
+import com.xplore.util.FirebaseUtil.FS_PROFILE_PIC_KB_LIMIT
+import com.xplore.util.FirebaseUtil.FS_PROFILE_PIC_NAME_PREFIX
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -62,7 +62,7 @@ object ImageUtil {
     // Returns new path of resized and compressed image
     @JvmStatic
     fun resizeAndCompressImage(context: Context, filePath: String): String {
-        val maxImageSize = PROFILE_PIC_KB_LIMIT * 1024 // Kilobytes
+        val maxImageSize = FS_PROFILE_PIC_KB_LIMIT * 1024 // Kilobytes
 
         // Decode with inJustDecodeBounds so we can resize it first
         val options = BitmapFactory.Options()
@@ -121,9 +121,9 @@ object ImageUtil {
     @Throws(IOException::class)
     @JvmStatic
     fun createImageFile(context: Context): File {
-        val imageFileName = PROFILE_PIC_NAME_PREFIX
+        val imageFileName = FS_PROFILE_PIC_NAME_PREFIX
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val imageFile = File.createTempFile(imageFileName, PROFILE_PIC_EXTENSION, storageDir)
+        val imageFile = File.createTempFile(imageFileName, FS_PROFILE_PIC_EXTENSION, storageDir)
         return imageFile
     }
 }

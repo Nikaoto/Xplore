@@ -1,5 +1,6 @@
 package com.xplore.account.registration
 
+import android.net.Uri
 import com.xplore.base.BasePresenter
 import com.xplore.base.BaseView
 import com.xplore.user.User
@@ -43,6 +44,8 @@ interface RegistrationContract {
 
         fun showNetError()
 
+        fun showProfilePicUploadError()
+
         fun fieldsValid(): Boolean
     }
 
@@ -62,7 +65,8 @@ interface RegistrationContract {
 
         fun isValidEmail(email: String): Boolean
 
+        // TODO check if this is appropriate
         fun submitUserData(firstName: String, lastName: String, email: String, mobileNumber: String,
-                           birthDate: Int)
+                           birthDate: Int, photoUri: Uri?)
     }
 }
