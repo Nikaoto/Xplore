@@ -1,3 +1,10 @@
+/*
+*
+* NOTICE: When importing dependencies, first implement them in build.gradle, sync project and
+* complete imports, remove them from build.gradle and add them here.
+*
+*/
+
 def ui = {
 	// Android Support
 	dependencies.implementation 'com.android.support:appcompat-v7:26.1.0'
