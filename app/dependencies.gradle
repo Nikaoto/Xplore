@@ -1,0 +1,66 @@
+def ui = {
+	// Android Support
+	dependencies.implementation 'com.android.support:appcompat-v7:26.1.0'
+    dependencies.implementation 'com.android.support:design:26.1.0'
+    dependencies.implementation 'com.android.support:cardview-v7:26.1.0'
+    dependencies.implementation 'com.android.support:recyclerview-v7:26.1.0'
+    dependencies.implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // Picasso
+    dependencies.implementation 'com.squareup.picasso:picasso:2.5.2'
+    dependencies.implementation 'jp.wasabeef:picasso-transformations:2.1.0'
+
+    // Crop
+    dependencies.implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+
+    // Material Intro
+    dependencies.implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
+
+    // About
+    dependencies.implementation 'com.github.medyo:android-about-page:1.2.2'
+}
+
+def playServices = {
+    //NOTE: INCLUDE GOOGLE PLAY SERVICES SEPARATELY (:app:dependencies.implementationDebugKotlin error arises)
+    dependencies.implementation 'com.google.android.gms:play-services-location:11.4.2'
+    dependencies.implementation 'com.google.android.gms:play-services-maps:11.4.2'
+    dependencies.implementation 'com.google.android.gms:play-services-auth:11.4.2'
+}
+
+def maps = {
+    dependencies.implementation 'com.google.maps.android:android-maps-utils:0.5'
+}
+
+def anko = {
+	// Used for async (maybe remove in the future)
+    dependencies.implementation "org.jetbrains.anko:anko-sqlite:0.10.1"
+}
+
+def firebase = {
+	dependencies.implementation 'com.google.firebase:firebase-auth:11.4.2'
+    dependencies.implementation 'com.google.firebase:firebase-database:11.4.2'
+    dependencies.implementation 'com.google.firebase:firebase-storage:11.4.2'
+}
+
+def facebook = {
+    dependencies.implementation 'com.facebook.android:facebook-android-sdk:4.27.0'
+}
+
+def gson = {
+    dependencies.implementation 'com.google.code.gson:gson:2.8.0'
+}
+
+def multidex = {
+    dependencies.implementation 'com.android.support:multidex:1.0.2'
+}
+
+dependencies {
+  ui()
+  playServices()
+  maps()
+  anko()
+  firebase()
+  facebook()
+  gson()
+  multidex()
+}
