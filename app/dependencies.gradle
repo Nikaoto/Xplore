@@ -32,9 +32,9 @@ def ui = {
 
 def playServices = {
     //NOTE: INCLUDE GOOGLE PLAY SERVICES SEPARATELY (:app:dependencies.implementationDebugKotlin error arises)
-    dependencies.implementation 'com.google.android.gms:play-services-location:11.4.2'
-    dependencies.implementation 'com.google.android.gms:play-services-maps:11.4.2'
-    dependencies.implementation 'com.google.android.gms:play-services-auth:11.4.2'
+    dependencies.implementation 'com.google.android.gms:play-services-location:11.6.0'
+    dependencies.implementation 'com.google.android.gms:play-services-maps:11.6.0'
+    dependencies.implementation 'com.google.android.gms:play-services-auth:11.6.0'
 }
 
 def maps = {
@@ -47,9 +47,9 @@ def anko = {
 }
 
 def firebase = {
-	dependencies.implementation 'com.google.firebase:firebase-auth:11.4.2'
-    dependencies.implementation 'com.google.firebase:firebase-database:11.4.2'
-    dependencies.implementation 'com.google.firebase:firebase-storage:11.4.2'
+    dependencies.implementation 'com.google.firebase:firebase-auth:11.6.0'
+    dependencies.implementation 'com.google.firebase:firebase-database:11.6.0'
+    dependencies.implementation 'com.google.firebase:firebase-storage:11.6.0'
 }
 
 def facebook = {

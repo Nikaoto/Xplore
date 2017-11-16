@@ -65,7 +65,6 @@ import static com.xplore.util.FirebaseUtil.usersRef;
  *
  */
 
-
 public class SignInActivity extends BaseAppCompatActivity {
 
     public static String ARG_SHOULD_LAUNCH_MAIN_ACT = "shouldLaunchMainAct";
@@ -74,7 +73,7 @@ public class SignInActivity extends BaseAppCompatActivity {
                 .putExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, shouldLaunchMainAct);
     }
 
-    private static String TAG = "brejk";
+    private static String TAG = "signin-act";
 
     // TODO: upload bare user before starting registration act so if that fails, users can change info with 'edit profile'
 
