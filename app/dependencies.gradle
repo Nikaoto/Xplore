@@ -10,6 +10,9 @@ def ui = {
     dependencies.implementation 'com.squareup.picasso:picasso:2.5.2'
     dependencies.implementation 'jp.wasabeef:picasso-transformations:2.1.0'
 
+    // DatePicker
+    dependencies.implementation 'com.github.drawers:SpinnerDatePicker:0.0.8'
+
     // Crop
     dependencies.implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
 
