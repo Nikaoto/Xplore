@@ -21,7 +21,6 @@ class StartingActivity : AppCompatActivity() {
         const val PREFS_BOOT = "prefs_boot"
         const val PREFS_BOOLEAN_FIRST_BOOT = "first_boot"
 
-
         // Returns true if first ever app boot
         @JvmStatic
         fun shouldShowWelcomeScreen(context: Context) =
@@ -33,10 +32,10 @@ class StartingActivity : AppCompatActivity() {
                  context.getSharedPreferences(StartingActivity.PREFS_BOOT, 0)
                          .edit()
                          .putBoolean(PREFS_BOOLEAN_FIRST_BOOT, false)
-                         .commit()
+                         .apply()
     }
 
-    val TAG = "jiga"
+    val TAG = "starting-act"
 
     private fun start(intent: Intent) {
         startActivity(intent)
@@ -59,10 +58,10 @@ class StartingActivity : AppCompatActivity() {
         }
 
         // Sign In
-        if (!General.isUserLoggedIn() || !General.isNetConnected(this)) {
+        if (!General.isUserLoggedIn() || !General.isUserFullyRegistered(this)) {
             Log.i(TAG, "NOT first boot; user NOT signed in, starting signin act")
 
-            start(SignInActivity.getStartIntent(this, true))
+            start(SignInActivity.newIntent(this, true));
             return
         }
 

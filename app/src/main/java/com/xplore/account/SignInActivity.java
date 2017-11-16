@@ -68,7 +68,7 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 public class SignInActivity extends BaseAppCompatActivity {
 
     public static String ARG_SHOULD_LAUNCH_MAIN_ACT = "shouldLaunchMainAct";
-    public static Intent getStartIntent(Context context, boolean shouldLaunchMainAct) {
+    public static Intent newIntent(Context context, boolean shouldLaunchMainAct) {
         return new Intent(context, SignInActivity.class)
                 .putExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, shouldLaunchMainAct);
     }
@@ -103,16 +103,11 @@ public class SignInActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
-        TimeManager.refreshGlobalTimeStamp();
-
-        boolean shouldShowBackBtn = !getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false);
-        if (shouldShowBackBtn) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
-
         setTitle(R.string.activity_authorization_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        TimeManager.refreshGlobalTimeStamp();
 
         // Building Google Api Client
         googleApiClient = ApiManager.getGoogleAuthApiClient(this);
@@ -261,6 +256,7 @@ public class SignInActivity extends BaseAppCompatActivity {
         Toast.makeText(SignInActivity.this, R.string.loading, Toast.LENGTH_LONG).show();
     }
 
+    // TODO rebuild this method
     // If user doesn't exist -> start RegisterAct
     // If user exists -> confirm log in and finish
     private void checkUserExists(final FirebaseUser user) {
@@ -269,13 +265,16 @@ public class SignInActivity extends BaseAppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()) {
-                    startUserRegistration(user);
+                if(dataSnapshot.exists()) {
+                    // Sign In
+                    General.setRegistrationFinished(SignInActivity.this, true);
+                    accountStatus = JUST_LOGGED_IN;
+                    Toast.makeText(SignInActivity.this, R.string.logged_in,
+                            Toast.LENGTH_SHORT).show();
+                    finishActivity();
                 }
                 else {
-                    accountStatus = JUST_LOGGED_IN;
-                    Toast.makeText(SignInActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
-                    finishActivity();
+                    startUserRegistration(user);
                 }
             }
 
@@ -327,6 +326,8 @@ public class SignInActivity extends BaseAppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Toast.makeText(SignInActivity.this, R.string.loading, Toast.LENGTH_SHORT).show();
+
         switch (requestCode) {
             case REQ_GOOGLE_SIGN_IN:  {
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -344,9 +345,12 @@ public class SignInActivity extends BaseAppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_SHORT).show();
                     General.accountStatus = General.JUST_LOGGED_IN;
+                    General.setRegistrationFinished(SignInActivity.this, true);
                     finishActivity();
                 } else {
                     shouldCheckUserExists = false;
+                    General.setRegistrationFinished(SignInActivity.this, false);
+                    auth.removeAuthStateListener(authListener);
                     googleApiClient.connect();
                     googleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                         @Override
@@ -483,11 +487,10 @@ public class SignInActivity extends BaseAppCompatActivity {
     }
 
     private void finishActivity() {
-        General.setRegistrationFinished(this, true);
-        finish();
         if (getIntent().getBooleanExtra(ARG_SHOULD_LAUNCH_MAIN_ACT, false)) {
             startActivity(new Intent(this, MainActivity.class));
         }
+        finish();
     }
 
     private void makeBorderRed(EditText et) {

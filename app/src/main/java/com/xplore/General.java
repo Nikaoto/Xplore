@@ -69,7 +69,13 @@ public class General {
         context.getSharedPreferences(PREFS_REGISTRATION, 0)
                 .edit()
                 .putBoolean(PREFS_FULLY_REGISTERED, finished)
-                .apply();
+                .commit();
+    }
+
+    // TODO account
+    public static boolean isUserFullyRegistered(Context context) {
+        return context.getSharedPreferences(PREFS_REGISTRATION, 0)
+                .getBoolean(PREFS_FULLY_REGISTERED, false);
     }
 
     public static void initDisplayMetrics(Activity activity) {
@@ -134,7 +140,7 @@ public class General {
     }
 
     public static boolean isUserLoggedIn() {
-        return accountStatus != NOT_LOGGED_IN;
+        return accountStatus != NOT_LOGGED_IN && !currentUserId.isEmpty();
     }
 
     // DOES NOT REURN CORRECT ANSWER, USED FOR SOMETHING ELSE

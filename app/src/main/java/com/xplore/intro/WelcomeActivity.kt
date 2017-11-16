@@ -1,7 +1,6 @@
 package com.xplore.intro
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.util.Log
@@ -97,7 +96,7 @@ class WelcomeActivity : IntroActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (shouldOpenSignInAct) {
-            startActivity(SignInActivity.getStartIntent(this, true))
+            startActivity(SignInActivity.newIntent(this, true))
         }
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -24,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.xplore.account.SignInActivity
-import com.xplore.account.registration.RegistrationActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
@@ -174,11 +172,11 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             General.accountStatus = General.LOGGED_IN
         }
 
-        // Disables notification manager and opens homepage if logged out / not logged in
+        // Disables notification manager and opens homepage if logged out from settings
         if (General.accountStatus == General.NOT_LOGGED_IN && !appJustLaunched) {
             notificationManager.disable()
             finish()
-            startActivity(SignInActivity.getStartIntent(this, true))
+            startActivity(SignInActivity.newIntent(this, true))
         }
 
         // Clears user related content when logged out

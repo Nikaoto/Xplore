@@ -135,7 +135,6 @@ open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatep
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        General.setRegistrationFinished(this, false);
 
         initLayout()
         fillFields()
@@ -155,7 +154,6 @@ open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatep
 
     override fun onBackPressed() {
         setResult(Activity.RESULT_CANCELED)
-        //FirebaseUtil.logOut(this, googleApiClient)
         finish()
     }
 
