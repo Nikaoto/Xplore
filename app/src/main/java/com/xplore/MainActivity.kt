@@ -236,6 +236,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                         -1)
 
                 if (resultCode == Activity.RESULT_OK) {
+                    navigationView.setCheckedItem(R.id.nav_find_create_groups)
                     fragmentManager.beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .replace(R.id.fragment_container,
@@ -259,7 +260,6 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             R.id.nav_map -> startActivity(Intent(this, BaseMapActivity::class.java))
 
             R.id.nav_library -> {
-
                 navigationView.setCheckedItem(R.id.nav_library)
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

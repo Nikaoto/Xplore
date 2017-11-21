@@ -65,7 +65,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     }
 
     // USE ONLY IN DEMO
-    private fun configureKmlButton(map: GoogleMap) {
+/*    private fun configureKmlButton(map: GoogleMap) {
         KMLButton.setOnClickListener {
             if (kmlLayer == null) {
                 // Add Layer
@@ -77,7 +77,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                 kmlLayer = null
             }
         }
-    }
+    }*/
 
     private fun initMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
