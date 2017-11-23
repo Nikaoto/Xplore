@@ -249,11 +249,8 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                         -1)
 
                 if (resultCode == Activity.RESULT_OK) {
-                    navigationView.setCheckedItem(R.id.nav_find_create_groups)
-                    fragmentManager.beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .replace(R.id.fragment_container,
-                                    SearchGroupsFragment.newInstance(searchDestId)).commit()
+                    openFragment(SearchGroupsFragment.newInstance(searchDestId),
+                            R.id.nav_find_create_groups)
                 }
             }
         }
