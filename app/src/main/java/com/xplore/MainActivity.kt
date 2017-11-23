@@ -1,6 +1,7 @@
 package com.xplore
 
 import android.app.Activity
+import android.app.Fragment
 import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
@@ -146,10 +147,22 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     private fun openHomePage() {
-        navigationView.setCheckedItem(R.id.nav_find_create_groups)
+        openFragment(SearchGroupsFragment(), R.id.nav_find_create_groups)
+    }
+
+    private fun doIfAuthorized(func: () -> Unit) {
+        if (General.isUserSignedIn()) {
+            return func()
+        } else {
+            return popLoginMenu()
+        }
+    }
+
+    private fun openFragment(f: Fragment, navId: Int) {
+        navigationView.setCheckedItem(navId)
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fragment_container, SearchGroupsFragment()).commit()
+                .replace(R.id.fragment_container, f).commit()
     }
 
     override fun onResume() {
@@ -250,39 +263,21 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         val id = item.itemId
 
         when (id) {
-            R.id.nav_profile ->
-                if (General.isUserSignedIn()) {
-                    General.openUserProfile(this@MainActivity, General.currentUserId)
-                } else {
-                    popLoginMenu()
-                }
+            R.id.nav_profile -> doIfAuthorized {
+                General.openUserProfile(this@MainActivity, General.currentUserId)
+            }
 
             R.id.nav_map -> startActivity(Intent(this, BaseMapActivity::class.java))
 
-            R.id.nav_library -> {
-                navigationView.setCheckedItem(R.id.nav_library)
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .replace(R.id.fragment_container, LibraryFragment()).commit()
+            R.id.nav_library -> openFragment(LibraryFragment(), R.id.nav_library)
+
+            R.id.nav_my_groups -> doIfAuthorized {
+                openFragment(LoadingMyGroupsFragment(), R.id.nav_my_groups)
             }
 
-            R.id.nav_my_groups ->
-                if(General.isUserSignedIn()) {
-                    fragmentManager.beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .replace(R.id.fragment_container, LoadingMyGroupsFragment()).commit()
-                } else {
-                    popLoginMenu()
-                }
-
-            R.id.nav_find_create_groups ->
-                if (General.isUserSignedIn()) {
-                    fragmentManager.beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .replace(R.id.fragment_container, SearchGroupsFragment()).commit()
-                } else {
-                    popLoginMenu()
-                }
+            R.id.nav_find_create_groups -> doIfAuthorized {
+                openFragment(SearchGroupsFragment(), R.id.nav_find_create_groups)
+            }
 
             R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
 

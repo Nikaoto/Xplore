@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.xplore.R
 import com.xplore.base.SearchFragment
 import com.xplore.database.DBManager
-import com.xplore.groups.search.SearchGroupsFragment
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
