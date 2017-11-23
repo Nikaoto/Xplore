@@ -80,7 +80,7 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
 
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText == null || newText.trim().isEmpty()) {
-            onReset()
+            onResetSearch()
             return false
         }
         return false
@@ -99,7 +99,7 @@ abstract class RefreshableSearchFragment : RefreshableFragment(),
     open fun onSearch(query: String) { }
 
     // Called when the query text is cleared/deleted
-    open fun onReset() {
+    open fun onResetSearch() {
         currentQuery = ""
     }
 }
