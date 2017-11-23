@@ -95,4 +95,11 @@ object DateUtil {
         val temp = year.toString() + addZero(month) + addZero(day)
         return putSlashesInDate(temp)
     }
+
+    // TODO do this
+    @JvmStatic
+    fun getDifferenceInDays(y1: Int, m1: Int, d1: Int, y2: Int, m2: Int, d2: Int): Int {
+        var ans = Math.abs(y1 - y2)
+        return y1 - y2
+    }
 }

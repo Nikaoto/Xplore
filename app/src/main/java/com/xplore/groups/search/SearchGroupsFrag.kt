@@ -142,7 +142,7 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
                             if (dataSnapshot != null) {
-                                loadDataFromSnapshot(dataSnapshot)
+                                loadDataFromSnapshot(dataSnapshot, {group -> group.name == "ექსკურსია ჯავახეთში"})
                             }
                         }
 
@@ -167,22 +167,28 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
                 })
     }
 
+    // TODO add satisfyCondition higher function to this
+
     // Loads group info from passed snapshot
-    private fun loadDataFromSnapshot(dataSnapshot: DataSnapshot) {
+    private fun loadDataFromSnapshot(dataSnapshot: DataSnapshot,
+                                     filterCondition: ((GroupCard) -> Boolean)? = null) {
         dataSnapshot.children.forEach {
             val tempCard = it.getValue(GroupCard::class.java)
 
-            tempCard?.id = it.key
-            tempCard?.memberCount = getMemberCount(it)
+            if (tempCard != null) {
+                tempCard.id = it.key
+                tempCard.memberCount = getMemberCount(it)
 
-            //TODO change when multiple leaders are added
-            it.child(F_MEMBER_IDS).children.forEach {
-                if (it.getValue(Boolean::class.java)!!) {
-                    tempCard?.leaderId = it.key
+                //TODO change when multiple leaders are added
+                it.child(F_MEMBER_IDS).children.forEach {
+                    if (it.getValue(Boolean::class.java)!!) {
+                        tempCard.leaderId = it.key
+                    }
+                }
+                if (filterCondition == null || !filterCondition(tempCard)) {
+                    groupCards.add(tempCard)
                 }
             }
-
-            groupCards.add(tempCard!!)
         }
         if (activity != null) {
             sortLeaderInfo()

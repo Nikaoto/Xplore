@@ -45,6 +45,8 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 
 public class SearchGroupsFragment extends RefreshableSearchFragment {
 
+    public static int HIKE_SHOW_DAY_LIMIT = 100;
+
     private static String ARG_DESTINATION_ID = "query";
     private static int ARG_DESTINATION_ID_DEFAULT_VALUE = -1;
 
@@ -196,7 +198,7 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     // Loads groups from snapshot
     private void loadDataFromSnapshot(DataSnapshot dataSnapshot) {
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            //Geting group info
+            //Get group info
             GroupCard tempCard = snapshot.getValue(GroupCard.class);
             //group id
             tempCard.setId(snapshot.getKey());
@@ -310,8 +312,8 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     }
 
     @Override
-    public void onReset() {
-        super.onReset();
+    public void onResetSearch() {
+        super.onResetSearch();
         if (canReset) {
             firstLoadData();
         }
