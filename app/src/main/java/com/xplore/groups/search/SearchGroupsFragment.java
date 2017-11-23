@@ -46,6 +46,7 @@ import static com.xplore.util.FirebaseUtil.usersRef;
 public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     private static String ARG_DESTINATION_ID = "query";
+    private static int ARG_DESTINATION_ID_DEFAULT_VALUE = -1;
 
     // Used to search for groups by destination (from ReserveInfoAct->Find Groups w/ This Dest)
     public static SearchGroupsFragment newInstance(int destId) {
@@ -66,6 +67,9 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
 
     // Determines whether the data should reload when user clears search text
     private boolean canReset = false;
+
+    // Used to firstLoadData when searching by reserve (sent from ReserveInfoAct)
+    private boolean shouldClearSearchOnRefresh = false;
 
     @Nullable
     @Override
@@ -141,26 +145,40 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
         return (int) groupSnapshot.child(F_MEMBER_IDS).getChildrenCount();
     }
 
-    // Loads all groups (with searching by destination or just viewing)
-    private void loadData() {
-        // Check if searching from reserve
+    private boolean shouldSearchByDestination() {
+        int searchByDest = ARG_DESTINATION_ID_DEFAULT_VALUE;
         Bundle b = getArguments();
-        if (b != null && b.getInt(ARG_DESTINATION_ID, -1) != -1) {
-            int destId = b.getInt(ARG_DESTINATION_ID, -1);
+        if (b != null) {
+            searchByDest = b.getInt(ARG_DESTINATION_ID, ARG_DESTINATION_ID_DEFAULT_VALUE);
+        }
+        return !shouldClearSearchOnRefresh && searchByDest != ARG_DESTINATION_ID_DEFAULT_VALUE;
+    }
 
-            // TODO add some sign that the user searched with the reserve
+    private void searchByDestination(int destId) {
+        shouldClearSearchOnRefresh = true;
+        canReset = true;
 
-            groupsRef.orderByChild(F_DESTINATION_ID).equalTo(destId).limitToFirst(100)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            loadDataFromSnapshot(dataSnapshot);
-                        }
+        groupsRef.orderByChild(F_DESTINATION_ID).equalTo(destId).limitToFirst(100)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        loadDataFromSnapshot(dataSnapshot);
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
+
+    // Loads all groups
+    private void loadData() {
+        if (shouldSearchByDestination()) {
+            // TODO very hacky, fix searching by destination, but for now, leave it for readability
+            int destId = getArguments().getInt(ARG_DESTINATION_ID, ARG_DESTINATION_ID_DEFAULT_VALUE);
+            searchByDestination(destId);
+
         } else {
+            // Search by nothing, just load all hikes
 
             //TODO change this after adding sort by options
             groupsRef.orderByChild(F_START_DATE).limitToFirst(100)
