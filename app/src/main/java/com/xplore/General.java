@@ -85,7 +85,7 @@ public class General {
         appHeight = dm.heightPixels;
     }
 
-    //Refreshes currentUserId and the account status
+    // Refreshes currentUserId and the account status
     public static void refreshAccountStatus() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -128,7 +128,7 @@ public class General {
     }
 
     //TODO remove this after switching to UNIX time
-    //Gets long date from unix long milliseconds
+    // Gets long date from unix long milliseconds
     public static int getDateInt(Long timeStamp) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(timeStamp));
@@ -143,7 +143,7 @@ public class General {
         return accountStatus != NOT_LOGGED_IN && !currentUserId.isEmpty();
     }
 
-    // DOES NOT REURN CORRECT ANSWER, USED FOR SOMETHING ELSE
+    // DOES NOT RETURN CORRECT ANSWER, USED FOR SOMETHING ELSE
     public static boolean isUserSignedIn() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -155,16 +155,16 @@ public class General {
         }
     }
 
-    //Returns the age of a person
+    // Returns the age of a person
     public static int calculateAge(Long timeStamp, int bYear, int bMonth, int bDay) {
-        //Getting current date
+        // Get current date
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date(timeStamp));
         int nowYear = cal.get(Calendar.YEAR);
         int nowMonth = cal.get(Calendar.MONTH) + 1;
         int nowDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        //Calculating age
+        // Calculate age
         int tempAge = nowYear - bYear;
         if(nowMonth > bMonth)
             tempAge++;
@@ -176,15 +176,15 @@ public class General {
         return tempAge;
     }
 
-    //Returns the age of a person, takes string instead of dates
+    // Returns the age of a person, takes string instead of dates
     private static int calculateAge(Long timeStamp, String birthDate) {
-        //Check if format is correct
+        // Check if format is correct
         if(birthDate.length() != 8) {
             Log.println(Log.INFO, "calculateAge", "length != 8");
             return 0;
         }
 
-        //Getting birth date
+        // Get birth date
         int bYear = Integer.valueOf(birthDate.substring(0,4));
         int bMonth = Integer.valueOf(birthDate.substring(4,6));
         int bDay = Integer.valueOf(birthDate.substring(6));
@@ -192,23 +192,23 @@ public class General {
         return calculateAge(timeStamp, bYear, bMonth, bDay);
     }
 
-    //The same, but takes integer as birth date instead
+    // The same, but takes integer as birth date instead
     public static int calculateAge(Long timeStamp, int birthDate) {
         return calculateAge(timeStamp, String.valueOf(birthDate));
     }
 
-    //Gets the difference of given dates in days (doesn't need to be accurate)
+    // Gets the difference of given dates in days (doesn't need to be accurate)
     public static int getDateDiffInDays(int now, int then) {
         if (now == then) {
             return 0;
         }
-        //Now dates
+        // Now dates
         final int nowYear = Integer.valueOf(String.valueOf(now).substring(0, 4));
         final int nowMonth = Integer.valueOf(String.valueOf(now).substring(4, 6));
         final int nowDay = Integer.valueOf(String.valueOf(now).substring(6));
         final int nowInDays = nowDay + nowMonth * 30 + nowYear * 365;
 
-        //Then dates
+        // Then dates
         final int thenYear = Integer.valueOf(String.valueOf(then).substring(0, 4));
         final int thenMonth = Integer.valueOf(String.valueOf(then).substring(4, 6));
         final int thenDay = Integer.valueOf(String.valueOf(then).substring(6));
