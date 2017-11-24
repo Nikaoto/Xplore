@@ -56,6 +56,7 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
         }
     }
 
+    private lateinit var resultsRecyclerView: RecyclerView
     private val groupCards = ArrayList<GroupCard>()
     private val displayCards = ArrayList<GroupCard>()
 
@@ -68,7 +69,7 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, instState: Bundle?)
             : View = inflater.inflate(R.layout.search_layout3, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         TimeManager.refreshGlobalTimeStamp()
@@ -79,8 +80,9 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
 
         initRefreshLayout(refreshLayout, true)
 
-        resultsRV.layoutManager = LinearLayoutManager(activity)
-        resultsRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        resultsRecyclerView = view.findViewById(R.id.resultsRV)
+        resultsRecyclerView.layoutManager = LinearLayoutManager(activity)
+        resultsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -119,7 +121,7 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
         groupCards.clear()
         displayCards.clear()
         // Displays list
-        resultsRV.adapter = GroupCardRecyclerViewAdapter(displayCards, activity)
+        resultsRecyclerView.adapter = GroupCardRecyclerViewAdapter(displayCards, activity)
     }
 
     private fun shouldSearchByDestination(): Boolean {
@@ -219,10 +221,11 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
                                 groupCard.leaderImageUrl = it.profile_picture_url
 
                                 displayCards.add(groupCard)
-                                resultsRV.adapter.notifyDataSetChanged()
                             }
                         }
                     }
+
+                    resultsRecyclerView.adapter.notifyDataSetChanged()
                 }
 
                 if (activity != null) {
