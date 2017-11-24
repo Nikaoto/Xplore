@@ -65,8 +65,8 @@ class SetDestinationMapActivity : BaseMapActivity() {
 
         setTitle(R.string.activity_choose_destination_title)
 
-        KMLButton.visibility = View.GONE
-        KMLButton.isEnabled = false
+        //KMLButton.visibility = View.GONE
+        //KMLButton.isEnabled = false
 
         configureDestination()
         showPinDropHelp()

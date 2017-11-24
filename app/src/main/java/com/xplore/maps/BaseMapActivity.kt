@@ -16,10 +16,8 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.maps.android.data.kml.KmlLayer
 import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
-import kotlinx.android.synthetic.main.activity_maps.*
 
 /**
  * Created by Nika on 8/20/2017.
@@ -28,27 +26,35 @@ import kotlinx.android.synthetic.main.activity_maps.*
 
 open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
-    private val TAG = "bmap"
+    private val TAG = "base-map-act"
 
     open val ZOOM_AMOUNT = 15f
     open val UPDATE_INTERVAL = 5000L
     open val FASTEST_UPDATE_INTERVAL = 1000L
     open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
-    open val REQUEST_PERMISSION_REQ_CODE = 1
+    open val REQ_CODE_REQUEST_PERMISSION = 1
     open val REQUEST_CHECK_SETTINGS = 0x1
 
+
+    open lateinit var map: GoogleMap
     // KML
     // private var kmlEnabled = false
     // private var kmlLayer: KmlLayer? = null
 
     // Location
-    private var updatingLocation = false
-    private val locationRequest: LocationRequest by lazy { createLocationRequest() }
-    private val locationSettingsRequest: LocationSettingsRequest by lazy {
-        buildLocationSettingsRequest()
+    private val locationRequest: LocationRequest by lazy {
+        LocationRequest().setInterval(UPDATE_INTERVAL).setFastestInterval(FASTEST_UPDATE_INTERVAL)
+                .setPriority(LOCATION_PRIORITY)
     }
 
-    //Clients
+    private val locationSettingsRequest: LocationSettingsRequest by lazy {
+        LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
+    }
+
+    private var updatingLocation = false
+
+
+    // Clients
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(this)
     }
@@ -64,21 +70,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         initMap()
     }
 
-    // USE ONLY IN DEMO
-/*    private fun configureKmlButton(map: GoogleMap) {
-        KMLButton.setOnClickListener {
-            if (kmlLayer == null) {
-                // Add Layer
-                kmlLayer = KmlLayer(map, R.raw.testeroni, this)
-                kmlLayer?.addLayerToMap()
-            } else {
-                // Remove Layer
-                kmlLayer?.removeLayerFromMap()
-                kmlLayer = null
-            }
-        }
-    }*/
-
     private fun initMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -86,64 +77,32 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        map = googleMap
 
-        if (checkPermissions()) {
-            configureMap(googleMap)
+
+        if (permissionsGranted()) {
+            configureMap(map)
         } else {
             requestPermissions()
         }
 
-        // DEMO ONLY
         //configureKmlButton(googleMap)
     }
 
+    private fun permissionsGranted(permission: String = Manifest.permission.ACCESS_FINE_LOCATION)
+            = ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
     // Does things to map; override this instead of onMapReady
     open fun configureMap(googleMap: GoogleMap) {
-        startLocationUpdates()
         googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener {
-            if (!checkPermissions()) {
+            if (!permissionsGranted()) {
                 requestPermissions()
             }
             checkLocationEnabled()
             false
         }
-    }
-
-    private fun createLocationRequest(): LocationRequest {
-        val temp = LocationRequest()
-        temp.interval = UPDATE_INTERVAL
-        temp.fastestInterval = FASTEST_UPDATE_INTERVAL
-        temp.priority = LOCATION_PRIORITY
-        return temp
-    }
-
-    private fun buildLocationSettingsRequest(): LocationSettingsRequest {
-        val builder = LocationSettingsRequest.Builder()
-        builder.addLocationRequest(locationRequest)
-        return builder.build()
-    }
-
-    // Does whatever is inside when current location is changed
-    open val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult?.let {
-                super.onLocationResult(locationResult)
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!checkPermissions()) {
-            requestPermissions()
-        }
-    }
-
-    private fun checkPermissions(): Boolean {
-        val permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-        return permissionState == PackageManager.PERMISSION_GRANTED
+        startLocationUpdates()
     }
 
     private fun requestPermissions() {
@@ -157,26 +116,39 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             //Requests permission
             ActivityCompat.requestPermissions(this@BaseMapActivity,
                     arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSION_REQ_CODE)
+                    REQ_CODE_REQUEST_PERMISSION)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>,
+                                            grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_PERMISSION_REQ_CODE) {
-            if (grantResults.isEmpty()) {
-                //If interaction canelled
-                Log.i(TAG, "user interaction cancelled")
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                //Permission granted
 
-                startLocationUpdates()
-            } else {
-                //Permission denied
+        if (requestCode == REQ_CODE_REQUEST_PERMISSION) {
+            when {
+                grantResults.isEmpty() -> Log.i(TAG, "user interaction cancelled")
 
-                //TODO explain why you need to track their location
-                //finish()
+                grantResults[0] == PackageManager.PERMISSION_GRANTED -> configureMap(map)
+
+                else -> onBackPressed() //TODO explain here why you need to track their location
             }
+        }
+    }
+
+    // Does whatever is inside when current location is changed
+    open val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            locationResult?.let {
+                super.onLocationResult(locationResult)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!permissionsGranted()) {
+            requestPermissions()
         }
     }
 
@@ -225,20 +197,16 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         data?.let {
             super.onActivityResult(requestCode, resultCode, data)
 
-            when (requestCode) {
-                REQUEST_CHECK_SETTINGS -> {
-                    if (resultCode == Activity.RESULT_OK) {
-                        Log.i(TAG, "user agreed to enable location")
+            if (requestCode == REQUEST_CHECK_SETTINGS) {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.i(TAG, "user agreed to enable location")
 
-                        startLocationUpdates()
-                    } else {
-                        Log.i(TAG, "user chose not to enable location")
-                    }
+                    startLocationUpdates()
+                } else {
+                    Log.i(TAG, "user chose not to enable location")
                 }
-                else -> Log.i(TAG, "This message should never show up lol wtf did you do to my code *cryinglaughingemoji* 1!!!11!exclamationmark!")
             }
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -252,7 +220,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             Log.i(TAG, "stopping loc updates")
 
             fusedLocationClient.removeLocationUpdates(locationCallback)
-                    .addOnCompleteListener { updatingLocation = false
+                    .addOnCompleteListener {
+                        updatingLocation = false
                         Log.i(TAG, "stopped loc updates")
                     }
         }
@@ -271,4 +240,19 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             fragmentManager.beginTransaction().remove(f).commit()
         }
     }
+
+    // USE ONLY IN DEMO
+/*    private fun configureKmlButton(map: GoogleMap) {
+        KMLButton.setOnClickListener {
+            if (kmlLayer == null) {
+                // Add Layer
+                kmlLayer = KmlLayer(map, R.raw.testeroni, this)
+                kmlLayer?.addLayerToMap()
+            } else {
+                // Remove Layer
+                kmlLayer?.removeLayerFromMap()
+                kmlLayer = null
+            }
+        }
+    }*/
 }
