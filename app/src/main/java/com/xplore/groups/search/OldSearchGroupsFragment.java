@@ -43,7 +43,7 @@ import static com.xplore.util.FirebaseUtil.usersRef;
  *
  */
 
-public class SearchGroupsFragment extends RefreshableSearchFragment {
+public class OldSearchGroupsFragment extends RefreshableSearchFragment {
 
     public static int HIKE_SHOW_DAY_LIMIT = 100;
 
@@ -51,12 +51,12 @@ public class SearchGroupsFragment extends RefreshableSearchFragment {
     private static int ARG_DESTINATION_ID_DEFAULT_VALUE = -1;
 
     // Used to search for groups by destination (from ReserveInfoAct->Find Groups w/ This Dest)
-    public static SearchGroupsFragment newInstance(int destId) {
-        Fragment f = new SearchGroupsFragment();
+    public static OldSearchGroupsFragment newInstance(int destId) {
+        Fragment f = new OldSearchGroupsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_DESTINATION_ID, destId);
         f.setArguments(args);
-        return (SearchGroupsFragment) f;
+        return (OldSearchGroupsFragment) f;
     }
 
     private static int FAB_HIDE_SCROLL_DY = 2;

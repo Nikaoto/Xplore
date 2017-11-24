@@ -27,7 +27,7 @@ import com.xplore.account.SignInActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
-import com.xplore.groups.search.SearchGroupsFrag
+import com.xplore.groups.search.SearchGroupsFragment
 import com.xplore.maps.BaseMapActivity
 import com.xplore.notifications.BadgeDrawerArrowDrawable
 import com.xplore.notifications.NotificationManager
@@ -147,7 +147,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     private fun openHomePage() {
-        openFragment(SearchGroupsFrag(), R.id.nav_find_create_groups)
+        openFragment(SearchGroupsFragment(), R.id.nav_find_create_groups)
     }
 
     private fun doIfAuthorized(func: () -> Unit) {
@@ -249,7 +249,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
                         -1)
 
                 if (resultCode == Activity.RESULT_OK) {
-                    openFragment(SearchGroupsFrag.newInstance(searchDestId),
+                    openFragment(SearchGroupsFragment.newInstance(searchDestId),
                             R.id.nav_find_create_groups)
                 }
             }
@@ -273,7 +273,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
             }
 
             R.id.nav_find_create_groups -> doIfAuthorized {
-                openFragment(SearchGroupsFrag(), R.id.nav_find_create_groups)
+                openFragment(SearchGroupsFragment(), R.id.nav_find_create_groups)
             }
 
             R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))

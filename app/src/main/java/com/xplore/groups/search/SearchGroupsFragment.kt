@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.search_layout3.*
  *
  */
 
-class SearchGroupsFrag : RefreshableSearchFragment() {
+class SearchGroupsFragment : RefreshableSearchFragment() {
 
     private val TAG = "search-groups-frag"
 
@@ -47,8 +47,8 @@ class SearchGroupsFrag : RefreshableSearchFragment() {
         private const val ARG_DESTINATION_ID_DEFAULT_VALUE = -1
 
         @JvmStatic
-        fun newInstance(destId: Int): SearchGroupsFrag {
-            val f = SearchGroupsFrag()
+        fun newInstance(destId: Int): SearchGroupsFragment {
+            val f = SearchGroupsFragment()
             val bundle = Bundle()
             bundle.putInt(ARG_DESTINATION_ID, destId)
             f.arguments = bundle
