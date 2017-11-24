@@ -1,6 +1,7 @@
 package com.xplore.maps
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
@@ -93,6 +94,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             = ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
     // Does things to map; override this instead of onMapReady
+    @SuppressLint("MissingPermission")
     open fun configureMap(googleMap: GoogleMap) {
         googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener {
@@ -163,6 +165,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun checkLocationEnabled() {
         settingsClient.checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener {
