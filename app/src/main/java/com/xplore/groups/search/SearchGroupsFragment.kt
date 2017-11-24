@@ -40,8 +40,8 @@ class SearchGroupsFragment : RefreshableSearchFragment() {
     private val TAG = "search-groups-frag"
 
     companion object {
-        private const val HIKE_SHOW_DAY_LIMIT = 100
-        private const val FAB_HIDE_SCROLL_DY = 5;
+        private const val HIKE_SHOW_LIMIT = 10000
+        private const val FAB_HIDE_SCROLL_DY = 4;
 
         private const val ARG_DESTINATION_ID = "destId"
         private const val ARG_DESTINATION_ID_DEFAULT_VALUE = -1
@@ -144,7 +144,9 @@ class SearchGroupsFragment : RefreshableSearchFragment() {
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
                             if (dataSnapshot != null) {
-                                loadDataFromSnapshot(dataSnapshot, {group -> group.name == "ექსკურსია ჯავახეთში"})
+                                loadDataFromSnapshot(dataSnapshot, { group ->
+                                    group.start_date > TimeManager.intTimeStamp - HIKE_SHOW_LIMIT
+                                })
                             }
                         }
 
@@ -169,11 +171,9 @@ class SearchGroupsFragment : RefreshableSearchFragment() {
                 })
     }
 
-    // TODO add satisfyCondition higher function to this
-
     // Loads group info from passed snapshot
     private fun loadDataFromSnapshot(dataSnapshot: DataSnapshot,
-                                     filterCondition: ((GroupCard) -> Boolean)? = null) {
+                                     satisfyCondition: ((GroupCard) -> Boolean)? = null) {
         dataSnapshot.children.forEach {
             val tempCard = it.getValue(GroupCard::class.java)
 
@@ -187,7 +187,8 @@ class SearchGroupsFragment : RefreshableSearchFragment() {
                         tempCard.leaderId = it.key
                     }
                 }
-                if (filterCondition == null || !filterCondition(tempCard)) {
+
+                if (satisfyCondition == null || satisfyCondition(tempCard)) {
                     groupCards.add(tempCard)
                 }
             }
