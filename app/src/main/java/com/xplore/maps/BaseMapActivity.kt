@@ -38,8 +38,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val REQUEST_CHECK_SETTINGS = 0x1
 
     // KML
-    //private var kmlEnabled = false
-    private var kmlLayer: KmlLayer? = null
+    // private var kmlEnabled = false
+    // private var kmlLayer: KmlLayer? = null
 
     // Location
     private var updatingLocation = false
