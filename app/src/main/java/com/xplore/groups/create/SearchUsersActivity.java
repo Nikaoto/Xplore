@@ -81,7 +81,7 @@ public class SearchUsersActivity extends BaseAppCompatActivity implements EditTe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
-        setTitle(R.string.activity_search_users_title);
+        setTitle(R.string.invite_members);
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -276,6 +276,7 @@ public class SearchUsersActivity extends BaseAppCompatActivity implements EditTe
 
     @Override
     public void onBackPressed() {
+        General.hideKeyboard(this);
         if (memberAdded) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra(ARG_INVITED_MEMBER_IDS, invitedMemberIds);
@@ -327,7 +328,6 @@ public class SearchUsersActivity extends BaseAppCompatActivity implements EditTe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
-        General.hideKeyboard(this);
         return super.onOptionsItemSelected(item);
     }
 }
