@@ -48,7 +48,7 @@
     <string name="activity_authorization_title">ავტორიზაცია</string>
     <string name="activity_create_group_title">შექმენი ჯგუფი</string>
     <string name="activity_choose_destination_title">ამოირჩიეთ მიმართულება</string>
-    <string name="activity_search_users_title">მოძებნეთ მომხმარებლები</string>
+    <string name="activity_search_users_title">მოძებნეთ ხალხი</string>
     <string name="activity_register_title">დარეგისტრირება</string>
 
     <!-- Basic Buttons and Actions-->

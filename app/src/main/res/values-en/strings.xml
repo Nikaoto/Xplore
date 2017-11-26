@@ -119,7 +119,7 @@
     <string name="date_past_invalid">
         The start or end dates can\'t be in the past.\n\nPlease correct the mistake.
     </string>
-    <string name="activity_search_users_title">Search Users</string>
+    <string name="activity_search_users_title">Search People</string>
     <string name="member_already_added">Member is already in group</string>
     <string name="user">User</string>
     <string name="member_added">Member added</string>
