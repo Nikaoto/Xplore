@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.xplore.General;
+import com.xplore.base.BaseAppCompatActivity;
 import com.xplore.user.UserCard;
 import com.xplore.util.ImageUtil;
 import com.xplore.R;
@@ -52,7 +55,7 @@ import static com.xplore.util.FirebaseUtil.F_USERS;
 
 //TODO replace the adapter with one used when ONLY inviting members through leaderControls
 
-public class SearchUsersActivity extends BaseActivity implements EditText.OnEditorActionListener{
+public class SearchUsersActivity extends BaseAppCompatActivity implements EditText.OnEditorActionListener{
 
     public static final String ARG_INVITED_MEMBER_IDS = "invitedMemberIds";
 
@@ -78,6 +81,12 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
+        setTitle(R.string.activity_search_users_title);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         if (getIntent().getStringArrayListExtra(ARG_INVITED_MEMBER_IDS) != null) {
             invitedMemberIds = getIntent().getStringArrayListExtra(ARG_INVITED_MEMBER_IDS);
@@ -313,5 +322,12 @@ public class SearchUsersActivity extends BaseActivity implements EditText.OnEdit
         }
 
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        General.hideKeyboard(this);
+        return super.onOptionsItemSelected(item);
     }
 }
