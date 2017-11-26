@@ -9,13 +9,14 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.xplore.General
 import com.xplore.R
-import com.xplore.base.BaseActivity
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveCard
@@ -29,7 +30,7 @@ import java.util.*
 */
 
 
-class SearchDestinationActivity : BaseActivity() {
+class SearchDestinationActivity : BaseAppCompatActivity() {
 
     private val dbManager: DBManager by lazy { DBManager(this) }
 
@@ -45,12 +46,15 @@ class SearchDestinationActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_layout2)
+        setTitle(R.string.choose_destination)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         init()
         firstDisplayData()
     }
 
-    fun init(){
+    private fun init(){
         //Starting the loading animation
         progressBar.visibility = View.GONE
 
@@ -75,7 +79,7 @@ class SearchDestinationActivity : BaseActivity() {
         resultsRV.layoutManager = LinearLayoutManager(this)
     }
 
-    fun firstDisplayData() {
+    private fun firstDisplayData() {
         dbManager.openDataBase()
 
         resultsRV.adapter = RVAdapter(answerCards, this, Icons.grey)
@@ -160,7 +164,13 @@ class SearchDestinationActivity : BaseActivity() {
         override fun getItemCount(): Int = results.size
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onBackPressed() {
+        General.hideKeyboard(this)
         val resultIntent = Intent()
 
         //Checking if destination was chosen
