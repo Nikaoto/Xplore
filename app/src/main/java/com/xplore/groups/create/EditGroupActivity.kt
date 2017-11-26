@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.DatePicker
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.R
 import com.xplore.base.BaseActivity
+import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
 import com.xplore.groups.create.CreateGroupActivity.Companion.E_INFO_CHAR_MAX
@@ -46,7 +48,7 @@ import kotlinx.android.synthetic.main.create_group.*
  * TODO write description of this class - what it does and why.
  */
 
-class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
+class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     //TODO extend CreateGroupActivity and just set every field in onCreate()
 
@@ -73,17 +75,18 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
 
     companion object {
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String)
+        fun getStartIntent(context: Context, groupId: String): Intent
                 = Intent(context, EditGroupActivity::class.java).putExtra("groupId", groupId)
-    }
-
-    init {
-        TimeManager.refreshGlobalTimeStamp()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_group)
+        setTitle(R.string.edit_group)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        TimeManager.refreshGlobalTimeStamp()
 
         groupId = intent.getStringExtra("groupId")
         currentGroupRef = FirebaseDatabase.getInstance().getReference("groups/$groupId")
@@ -613,9 +616,13 @@ class EditGroupActivity : BaseActivity(), DatePickerDialog.OnDateSetListener {
         alert.show()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        General.hideKeyboard(this)
+        super.onBackPressed()
+    }
 }
