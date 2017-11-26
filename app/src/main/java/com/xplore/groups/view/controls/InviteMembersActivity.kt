@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
+import com.xplore.General
 import com.xplore.R
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.FirebaseUserSearch
@@ -62,6 +63,10 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_layout)
+        setTitle(R.string.invite_members)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         loadExcludeList()
     }
 
@@ -84,7 +89,6 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
 
             override fun onCancelled(p0: DatabaseError?) {}
         })
-
     }
 
     private fun loadLayout() {
@@ -108,7 +112,6 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
 
             displayUserCards.clear()
 
-            //TODO search by..
             fUserSearch.prepareForSearch()
 
             if (searchQuery.contains(" ")) {
@@ -170,13 +173,14 @@ class InviteMembersActivity : BaseAppCompatActivity(), TextView.OnEditorActionLi
             sendInvitations(selectedMemberIds)
             finish()
         } else {
-            finish()
+            onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        finish()
+        General.hideKeyboard(this)
+        super.onBackPressed()
     }
 
     private fun firstLetterUpper(s: String): String {
