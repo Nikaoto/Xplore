@@ -31,7 +31,6 @@ import com.xplore.user.UserCard;
 import com.xplore.util.ImageUtil;
 import com.xplore.R;
 import com.xplore.TimeManager;
-import com.xplore.base.BaseActivity;
 
 import java.util.ArrayList;
 
