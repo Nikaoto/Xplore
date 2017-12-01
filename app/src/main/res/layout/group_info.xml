@@ -1,266 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation = "vertical">
-
-        <RelativeLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <RelativeLayout
-                android:id="@+id/leaderProfileLayout"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="12dp">
+                app:layout_scrollFlags="scroll|enterAlways">
 
-                <ImageView
-                    android:id="@+id/leaderImageView"
-                    android:scaleType="centerCrop"
-                    android:layout_width="@dimen/user_profile_image_large_size"
-                    android:layout_height="@dimen/user_profile_image_large_size"/>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/abc_ic_ab_back_material">
 
-                <TextView
-                    android:id="@+id/leaderRepTextView"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/groupNameTextView"
+                        android:gravity="fill"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorRepNumGrey"
-                    android:textSize="23sp"
-                    android:layout_below="@id/leaderImageView"
-                    android:layout_centerInParent="true"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/leaderRepLabel"
-                    android:text="@string/reputation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_below="@id/leaderRepTextView"
-                    android:layout_centerInParent="true"
-                    android:textAllCaps="true"
-                    android:fontFamily="sans-serif-medium" />
+                    <!-- Control buttons CardView; Changes depending on user -->
+                    <android.support.v7.widget.CardView
+                        style="@style/InfoCardView_noContentPadding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:contentPadding="5dp">
 
-                <ProgressBar
-                    android:id="@+id/groupProgressBar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="@dimen/user_profile_image_large_size"
-                    android:layout_height="@dimen/user_profile_image_large_size"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                        <FrameLayout
+                            android:id="@+id/controls_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-            </RelativeLayout>
+                    </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/leaderFnameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="First Name"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="21sp"
-                android:layout_toRightOf="@id/leaderProfileLayout"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="15dp" />
+                    <!-- Destination -->
+                    <include layout="@layout/reserve_card" />
 
-            <TextView
-                android:id="@+id/leaderLnameTextView"
-                tools:text="Last Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="21sp"
-                android:layout_toRightOf="@id/leaderProfileLayout"
-                android:layout_below="@id/leaderFnameTextView"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="6dp" />
+                    <!-- Show open map button -->
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/openMapButton"
+                        android:text="@string/see_on_map"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        app:backgroundTint="@color/orange"
+                        app:elevation="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="@dimen/controls_button_text_size"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/leaderAgeTextView"
-                tools:text="Age: 23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorDarkGrey"
-                android:textSize="21sp"
-                android:layout_toRightOf="@id/leaderProfileLayout"
-                android:layout_below="@id/leaderLnameTextView"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="6dp" />
+                    <!-- Group Description -->
+                    <android.support.v7.widget.CardView
+                        style="@style/InfoCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/leaderTelTextView"
-                tools:text="Tel: 599 42 09 69"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="21sp"
-                android:textColor="@color/colorDarkGrey"
-                android:layout_toRightOf="@id/leaderProfileLayout"
-                android:layout_below="@id/leaderAgeTextView"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="6dp" />
-        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/destinationLabel"
-                    android:text="@string/destination"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/main_text_margin_top"
-                    android:textColor="@color/black"/>
+                                <TextView
+                                    android:id="@+id/descriptionHeaderTextView"
+                                    style="@style/InfoCardViewHeader"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:minHeight="@dimen/group_info_single_card_header_min_height"
+                                    android:text="@string/description_header" />
 
-                <ImageView
-                    android:id="@+id/groupExpImageView"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@id/destinationLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp" />
+                                <ImageView
+                                    android:id="@+id/beenHereMark"
+                                    android:layout_width="26dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:src="@drawable/ic_mark_beenhere"
+                                    android:visibility="invisible"
+                                    tools:visibility="visible" />
 
-        </RelativeLayout>
+                            </RelativeLayout>
 
-        <include layout="@layout/reserve_card"/>
+                            <TextView
+                                android:id="@+id/descriptionTextView"
+                                style="@style/InfoCardViewTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="@string/about" />
 
-        <TextView
-            android:text="@string/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"
-            android:textColor="@color/black"/>
+                        </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/startDateTextView"
-                tools:text="10/02/2017"
-                android:textColor="@color/colorDarkGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="9dp"
-                android:layout_marginTop="5dp"
-                android:textSize="21sp"/>
+                    <!-- Dates and Times -->
+                    <android.support.v7.widget.CardView
+                        style="@style/InfoCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/dateSeparatorTextView"
-                android:text="-"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/startDateTextView"
-                android:layout_alignBaseline="@+id/startDateTextView"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:textSize="22sp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/endDateTextView"
-                tools:text="11/02/2017"
-                android:textColor="@color/colorDarkGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/dateSeparatorTextView"
-                android:layout_alignBaseline="@+id/dateSeparatorTextView"
-                android:textSize="21sp"/>
-        </RelativeLayout>
+                            <TextView
+                                style="@style/InfoCardViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date" />
 
-        <View style="@style/dashed_divider"
-            android:layout_marginTop="@dimen/main_text_margin_top"/>
+                            <TextView
+                                android:id="@+id/dateCombinedTextView"
+                                style="@style/InfoCardViewTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="27sp"
+                                tools:text="2017/08/29 - 2017/09/03" />
 
-        <TextView
-            android:text="@string/group_members"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"/>
+                        </LinearLayout>
 
-        <View style="@style/Divider"
-            android:layout_marginTop="6dp"/>
+                    </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/membersRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
-        </android.support.v7.widget.RecyclerView>
+                    <!-- Meetup Time and Place -->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/meetupCard"
+                        style="@style/InfoCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-        <View style="@style/Divider"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-        <TextView
-            android:text="@string/group_preferences"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"/>
+                            <TextView
+                                style="@style/InfoCardViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meetup" />
 
-        <TextView
-            android:id="@+id/groupPrefsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorDarkGrey"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="9dp"
-            android:textSize="15sp"/>
+                            <TextView
+                                android:id="@+id/meetupTimeTextView"
+                                style="@style/InfoCardViewTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="27sp"
+                                tools:text="13:45" />
 
-        <TextView
-            android:text="@string/extra_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/main_text_margin_top"/>
+                            <ImageView
+                                android:id="@+id/meetupLocationImageView"
+                                android:visibility="gone"
+                                tools:visibility="visible"
+                                tools:src="@color/colorGrey"
+                                android:scaleType="centerCrop"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp" />
 
-        <TextView
-            android:id="@+id/groupExtraInfoTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorDarkGrey"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="9dp"
-            android:textSize="15sp"/>
+                        </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/leaveGroupButton"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:padding="15dp"
-            android:text="@string/leave_group"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-medium"
-            app:backgroundTint="@color/colorAccent"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                    </android.support.v7.widget.CardView>
 
-    </LinearLayout>
-</ScrollView>
+                    <!-- Leader Info -->
+                    <android.support.v7.widget.CardView
+                        style="@style/InfoCardView_noContentPadding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:contentPaddingBottom="12dp"
+                        app:contentPaddingLeft="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/leaderHeader"
+                                style="@style/InfoCardViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/leader" />
+
+                            <include layout="@layout/leader_profile" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <!-- Member List -->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/memberListCardView"
+                        style="@style/InfoCardView_noContentPadding"
+                        android:layout_width="match_parent"
+                        android:layout_height="185dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/InfoCardViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:text="@string/group_members" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/membersRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/member_list_item_height"
+                                android:layout_marginTop="3dp" />
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <!-- Group Preferences -->
+                    <android.support.v7.widget.CardView
+                        style="@style/InfoCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/InfoCardViewHeader"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/group_preferences" />
+
+                            <TextView
+                                android:id="@+id/preferencesTextView"
+                                style="@style/InfoCardViewTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>
