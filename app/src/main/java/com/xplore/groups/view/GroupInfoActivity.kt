@@ -31,7 +31,7 @@ import com.xplore.util.FirebaseUtil.groupsRef
 import com.xplore.util.FirebaseUtil.usersRef
 import com.xplore.util.ImageUtil
 import com.xplore.util.MapUtil
-import kotlinx.android.synthetic.main.group_info2.*
+import kotlinx.android.synthetic.main.group_info.*
 import kotlinx.android.synthetic.main.leader_profile.*
 import kotlinx.android.synthetic.main.reserve_card.*
 import java.util.*
@@ -65,7 +65,7 @@ class GroupInfoActivity : RefreshableActivity() {
     private val groupId: String by lazy {
         intent.getStringExtra(ARG_GROUP_ID)
     }
-    private var memberCount = 1 // Min 1, the leader
+    private var memberCount = 1 // Can't have less than 1 (the leader)
     private val members = ArrayList<User>()
     private lateinit var leader: User
 
@@ -76,7 +76,7 @@ class GroupInfoActivity : RefreshableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.group_info2)
+        setContentView(R.layout.group_info)
         supportActionBar?.hide()
 
         initRefreshLayout(findViewById<SwipeRefreshLayout>(R.id.refreshLayout))
