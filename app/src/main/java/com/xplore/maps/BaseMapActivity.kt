@@ -36,6 +36,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val REQ_CODE_REQUEST_PERMISSION = 1
     open val REQUEST_CHECK_SETTINGS = 0x1
 
+    open var shouldStopLocationUpdatesOnDestroy = true
 
     open lateinit var map: GoogleMap
     // KML
@@ -217,6 +218,15 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (shouldStopLocationUpdatesOnDestroy) {
+            stopLocationUpdates()
+        }
+        destroyMap()
+    }
+
     private fun stopLocationUpdates() {
         Log.i(TAG, "stopLocationUpdates()")
         if (updatingLocation) {
@@ -228,13 +238,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                         Log.i(TAG, "stopped loc updates")
                     }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        stopLocationUpdates()
-        destroyMap()
     }
 
     private fun destroyMap() {
