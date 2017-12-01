@@ -40,7 +40,7 @@ class SearchGroupsFragment : RefreshableSearchFragment() {
     private val TAG = "search-groups-frag"
 
     companion object {
-        private const val HIKE_SHOW_LIMIT = 10000
+        private const val HIKE_SHOW_LIMIT = 200
         private const val FAB_HIDE_SCROLL_DY = 1;
 
         private const val ARG_DESTINATION_ID = "destId"
