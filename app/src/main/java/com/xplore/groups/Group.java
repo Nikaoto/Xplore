@@ -27,6 +27,7 @@ public class Group {
         //LEAVE EMPTY
     }
 
+    @Exclude
     public String getLeaderId() {
         for (String userId : member_ids.keySet()) {
             if (member_ids.get(userId)) {
