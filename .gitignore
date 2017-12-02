@@ -14,6 +14,7 @@ secrets.xml
 google-services.json
 google_maps_api.xml
 gradle/wrapper/gradle-wrapper.properties
+testing-google-services.json
 app/release
 
 # Built application files

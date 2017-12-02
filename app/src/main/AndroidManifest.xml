@@ -88,6 +88,20 @@
             android:name=".maps.SetDestinationMapActivity"
             android:label="@string/activity_choose_destination_title"/>
 
+        <service android:name=".maps.LocationUpdateService"
+            android:exported="false"/>
+
+        <service android:name=".maps.LocationUpdateIntentService"
+            android:exported="false"/>
+
+        <receiver android:name=".maps.LocationUpdateBroadcastReceiver"
+            android:exported="true"
+            android:permission="android.permission.ACCESS_FINE_LOCATION">
+            <intent-filter>
+                <action android:name="com.xplore.maps.LocationUpdateBroadcastReceiver.ACTION_PROCESS_UPDATES"/>
+            </intent-filter>
+        </receiver>
+
         <!-- Reserves -->
         <activity
             android:name=".reserve.ReserveInfoActivity"

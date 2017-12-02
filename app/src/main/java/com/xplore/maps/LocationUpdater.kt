@@ -1,7 +1,8 @@
 package com.xplore.maps
 
+import android.app.PendingIntent
 import android.content.Context
-import android.os.Looper
+import android.content.Intent
 import android.util.Log
 import com.google.android.gms.location.*
 
@@ -15,7 +16,8 @@ import com.google.android.gms.location.*
 
 class LocationUpdater(private val context: Context,
                       private var locationRequest: LocationRequest?,
-                      private val onLocationUpdate: (locationResult: LocationResult) -> Unit) {
+                      private var pendingIntent: PendingIntent?
+                      /*private val onLocationUpdate: (locationResult: LocationResult) -> Unit*/) {
 
     private val TAG = "location-updater"
     private fun log(s: String) = Log.i(TAG, s)
@@ -33,6 +35,10 @@ class LocationUpdater(private val context: Context,
                     .setFastestInterval(DEFAULT_FASTEST_UPDATE_INTERVAL)
                     .setPriority(DEFAULT_LOCATION_PRIORITY)
         }
+
+        if (pendingIntent == null) {
+            pendingIntent = getBroadcastReceiverPendingIntent()
+        }
     }
 
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
@@ -49,14 +55,28 @@ class LocationUpdater(private val context: Context,
                 |latitude: ${locationResult.lastLocation.latitude}
                 |longitude: ${locationResult.lastLocation.longitude}""".trimMargin())
 
-                onLocationUpdate(locationResult)
+                //onLocationUpdate(locationResult)
             }
         }
     }
 
+    private fun getIntentServicePendingIntent(): PendingIntent {
+        val intent = Intent(context, LocationUpdateIntentService::class.java)
+        intent.action = LocationUpdateIntentService.ACTION_PROCESS_UPDATES
+        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private fun getBroadcastReceiverPendingIntent(): PendingIntent {
+        val intent = Intent(context, LocationUpdateBroadcastReceiver::class.java)
+        intent.action = LocationUpdateBroadcastReceiver.ACTION_PROCESS_UPDATES
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
     fun start() {
         try {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+            log("start()")
+            //fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+            fusedLocationClient.requestLocationUpdates(locationRequest, pendingIntent)
             updatingLocation = true
         } catch (e: SecurityException) {
             log("start() - SecurityException")
@@ -64,7 +84,7 @@ class LocationUpdater(private val context: Context,
     }
 
     fun stop() {
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        fusedLocationClient.removeLocationUpdates(pendingIntent)
                 .addOnSuccessListener {
                     log("removeLocationUpdates - onSuccess")
                     updatingLocation = false

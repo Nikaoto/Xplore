@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -76,11 +79,6 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
-    // Markers for member tracking
-    private val mapMarkers = HashMap<String, Marker>()
-    // Holds references to each members' location so we can disable them OnDestroy()
-    private val listenerMap = HashMap<String, ChildEventListener>()
-
     // Passed variables
     private val groupId: String by lazy {
         getPassedGroupId()
@@ -113,6 +111,13 @@ class GroupMapActivity : BaseMapActivity() {
     private val currentUserLocationRef: DatabaseReference by lazy {
         groupLocationsRef.child(General.currentUserId)
     }
+
+    // Markers for member tracking
+    private val mapMarkers = HashMap<String, Marker>()
+    // Holds references to each members' location so we can disable them OnDestroy()
+    private val listenerMap = HashMap<String, ChildEventListener>()
+
+    override var shouldStopLocationUpdatesOnDestroy: Boolean = false //TODO : TESTING FOR NOW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,6 +195,14 @@ class GroupMapActivity : BaseMapActivity() {
                 uploadLocation(locationResult.lastLocation)
             }
         }
+    }
+
+    fun startRequestingLocationUpdates(client: FusedLocationProviderClient,
+                                                request: LocationRequest,
+                                                callback: LocationCallback,
+                                                looper: Looper) {
+        // TODO change this
+        startService(Intent(this, LocationUpdateService::class.java))
     }
 
     private fun uploadLocation(location: Location) {

@@ -33,7 +33,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val UPDATE_INTERVAL = 5000L
     open val FASTEST_UPDATE_INTERVAL = 1000L
     open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
-    open val REQ_CODE_REQUEST_PERMISSION = 1
+    open val REQ_CODE_REQUEST_PERMISSION = 2
     open val REQUEST_CHECK_SETTINGS = 0x1
 
     open var shouldStopLocationUpdatesOnDestroy = true
@@ -53,15 +53,17 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
     }
 
-    private var updatingLocation = false
-
-
-    // Clients
-    private val fusedLocationClient: FusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(this)
-    }
     private val settingsClient: SettingsClient by lazy {
         LocationServices.getSettingsClient(this)
+    }
+/*
+    private val locationUpdateServiceIntent: Intent by lazy {
+        Intent(this, LocationUpdateService::class.java)
+    }
+*/
+
+    private val locationUpdater: LocationUpdater by lazy {
+        LocationUpdater(this, locationRequest, null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,15 +157,11 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // Checks for permissions and enabled services
     private fun startLocationUpdates() {
         Log.i(TAG, "startLocationUpdates()")
 
-        if (!updatingLocation) {
-            Log.i(TAG, "setting updatingLocation to true")
-            updatingLocation = true
-
-            checkLocationEnabled()
-        }
+        checkLocationEnabled()
     }
 
     @SuppressLint("MissingPermission")
@@ -172,8 +170,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener {
                     Log.i(TAG, "all location settings are satisfied; starting location updates")
 
-                    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback,
-                            Looper.myLooper())
+                    locationUpdater.start()
+                    //startService(locationUpdateServiceIntent)
                 }
                 .addOnFailureListener { e ->
                     val statusCode = (e as ApiException).statusCode
@@ -229,15 +227,9 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     private fun stopLocationUpdates() {
         Log.i(TAG, "stopLocationUpdates()")
-        if (updatingLocation) {
-            Log.i(TAG, "stopping loc updates")
 
-            fusedLocationClient.removeLocationUpdates(locationCallback)
-                    .addOnCompleteListener {
-                        updatingLocation = false
-                        Log.i(TAG, "stopped loc updates")
-                    }
-        }
+        //stopService(locationUpdateServiceIntent)
+        locationUpdater.stop()
     }
 
     private fun destroyMap() {
