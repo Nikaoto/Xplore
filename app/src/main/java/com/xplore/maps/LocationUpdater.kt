@@ -29,7 +29,8 @@ class LocationUpdater(private val context: Context,
     }
 
     init {
-        // Set default location request if none given
+        // Set defaults
+
         if (locationRequest == null) {
             locationRequest = LocationRequest().setInterval(DEFAULT_UPDATE_INTERVAL)
                     .setFastestInterval(DEFAULT_FASTEST_UPDATE_INTERVAL)
@@ -58,12 +59,6 @@ class LocationUpdater(private val context: Context,
                 //onLocationUpdate(locationResult)
             }
         }
-    }
-
-    private fun getIntentServicePendingIntent(): PendingIntent {
-        val intent = Intent(context, LocationUpdateIntentService::class.java)
-        intent.action = LocationUpdateIntentService.ACTION_PROCESS_UPDATES
-        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun getBroadcastReceiverPendingIntent(): PendingIntent {

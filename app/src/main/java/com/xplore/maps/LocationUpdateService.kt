@@ -1,9 +1,13 @@
 package com.xplore.maps
 
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.IBinder
+import android.support.annotation.RequiresApi
+import android.support.v4.app.NotificationCompat
 import android.util.Log
 /**
  * Created by Nika on 12/2/2017.
@@ -14,6 +18,8 @@ class LocationUpdateService : Service() {
 
     private val TAG = "location-update-serv"
     private fun log(s: String) = Log.i(TAG, s)
+
+    private val id = 12
 
     private lateinit var locationUpdater: LocationUpdater
 
@@ -29,14 +35,39 @@ class LocationUpdateService : Service() {
         return START_STICKY
     }
 
+    private fun getBroadcastReceiverPendingIntent(): PendingIntent {
+        val intent = Intent(this, LocationUpdateBroadcastReceiver::class.java)
+        intent.action = LocationUpdateBroadcastReceiver.ACTION_PROCESS_UPDATES
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private fun getNotificationManager(): NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotifNew(channelId: String) {
+        val name = "Location Update"
+        val channel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_HIGH)
+        channel.lightColor = Color.GREEN
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+
+    }
+
+    private fun createNotifOld(channelId: String, name: String, description: String): Notification {
+        return NotificationCompat.Builder(this, channelId)
+                .setContentTitle(name)
+                .setContentText(description)
+                .build()
+    }
+
+
     override fun onCreate() {
         log("onCreate")
         super.onCreate()
 
-        val intent = Intent(this, LocationUpdateIntentService::class.java)
-        intent.action = LocationUpdateIntentService.ACTION_PROCESS_UPDATES
-        locationUpdater = LocationUpdater(this, null,
-                PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+        val name = "Location Update"
+        val channelId = "channelId-0"
+        val description = "description"
 
 /*
         locationUpdater = LocationUpdater(applicationContext, null, {locationResult ->
@@ -46,7 +77,9 @@ class LocationUpdateService : Service() {
         })
 */
 
+        locationUpdater = LocationUpdater(this, null, getBroadcastReceiverPendingIntent())
         locationUpdater.start()
+        startForeground(id, createNotifOld(channelId, name, description))
     }
 
     override fun onDestroy() {

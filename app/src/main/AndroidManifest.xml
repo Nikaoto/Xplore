@@ -91,9 +91,6 @@
         <service android:name=".maps.LocationUpdateService"
             android:exported="false"/>
 
-        <service android:name=".maps.LocationUpdateIntentService"
-            android:exported="false"/>
-
         <receiver android:name=".maps.LocationUpdateBroadcastReceiver"
             android:exported="true"
             android:permission="android.permission.ACCESS_FINE_LOCATION">

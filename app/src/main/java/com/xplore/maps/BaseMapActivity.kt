@@ -6,8 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.MenuItem
@@ -56,11 +56,10 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     private val settingsClient: SettingsClient by lazy {
         LocationServices.getSettingsClient(this)
     }
-/*
+
     private val locationUpdateServiceIntent: Intent by lazy {
         Intent(this, LocationUpdateService::class.java)
     }
-*/
 
     private val locationUpdater: LocationUpdater by lazy {
         LocationUpdater(this, locationRequest, null)
@@ -170,8 +169,18 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener {
                     Log.i(TAG, "all location settings are satisfied; starting location updates")
 
-                    locationUpdater.start()
-                    //startService(locationUpdateServiceIntent)
+                    // TODO revamp this :
+                    // 1) do active maps (including this one) with locationUpdater
+                    // 2) do passive location updates with locationUpdaterService
+                    // 3)
+
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(locationUpdateServiceIntent)
+                    } else {
+                        startService(locationUpdateServiceIntent)
+                    }
                 }
                 .addOnFailureListener { e ->
                     val statusCode = (e as ApiException).statusCode
@@ -229,7 +238,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         Log.i(TAG, "stopLocationUpdates()")
 
         //stopService(locationUpdateServiceIntent)
-        locationUpdater.stop()
+        //locationUpdater.stop()
     }
 
     private fun destroyMap() {
