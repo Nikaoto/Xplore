@@ -172,6 +172,8 @@
     </string>
     <string name="drop_pin_help">მიმართულების მისათითებლად რუკაზე დააჭირეთ თითი დიდი ხნით.
         უკვე დაგდებული პინის გადასაადგილებლად ასევე დააჭირეთ მას დიდი ხნით.</string>
+    <string name="live_hike">ლაივ ლაშქრობა</string>
+
 
     <!-- Library & Reserve -->
     <string name="lib_fauna_header">ფაუნა</string>

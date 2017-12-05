@@ -252,5 +252,6 @@
     <string name="mobile_number_reason_title">Mobile Number</string>
     <string name="mobile_number_reason_message">Required so your teammates can contact you</string>
     <string name="please_wait">Please wait...</string>
+    <string name="live_hike">Live Hike</string>
 
 </resources>
