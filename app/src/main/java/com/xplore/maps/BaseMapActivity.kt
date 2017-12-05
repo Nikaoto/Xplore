@@ -67,10 +67,16 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setupLayout()
+
         initMap()
+    }
+
+    open fun setupLayout() {
+        setContentView(R.layout.activity_maps)
+        setTitle(R.string.activity_maps_title)
     }
 
     private fun initMap() {
@@ -173,8 +179,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                     // 1) do active maps (including this one) with locationUpdater
                     // 2) do passive location updates with locationUpdaterService
                     // 3)
-
-
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(locationUpdateServiceIntent)

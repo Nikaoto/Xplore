@@ -63,13 +63,16 @@ class SetDestinationMapActivity : BaseMapActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setTitle(R.string.activity_choose_destination_title)
-
         //KMLButton.visibility = View.GONE
         //KMLButton.isEnabled = false
 
         configureDestination()
         showPinDropHelp()
+    }
+
+    override fun setupLayout() {
+        setContentView(R.layout.activity_maps)
+        setTitle(R.string.activity_choose_destination_title)
     }
 
     fun configureDestination() {

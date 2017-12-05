@@ -60,7 +60,6 @@ class LocationUpdateService : Service() {
                 .build()
     }
 
-
     override fun onCreate() {
         log("onCreate")
         super.onCreate()
