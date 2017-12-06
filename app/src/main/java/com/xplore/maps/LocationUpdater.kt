@@ -16,11 +16,8 @@ import com.google.android.gms.tasks.OnSuccessListener
  *
  */
 
-class LocationUpdater(private val context: Context,
-                      private var locationRequest: LocationRequest?) {
-                      //private val onLocationUpdate: (locationResult: LocationResult) -> Unit) {
-                      //private var pendingIntent: PendingIntent?
-                      //private val onLocationUpdate: (locationResult: LocationResult) -> Unit) {
+class LocationUpdater private constructor (private val context: Context,
+                                           private val locationRequest: LocationRequest?) {
 
     private val TAG = "location-updater"
     private fun log(s: String) = Log.i(TAG, s)
@@ -33,14 +30,14 @@ class LocationUpdater(private val context: Context,
     }
 
     private var locationCallback: LocationCallback? = null
-    //private var onLocationUpdate: ((locationResult: LocationResult) -> Unit?)? = null
+    private var onLocationUpdate: ((locationResult: LocationResult) -> Unit?)? = null
     private var pendingIntent: PendingIntent? = null
 
     // With LocationCallback
     constructor(context: Context, locationRequest: LocationRequest?,
-                onLocationUpdate: (locationResult: LocationResult) -> Unit)
-            : this(context, locationRequest) {
-        //this.onLocationUpdate = onLocationUpdate
+                onLocationUpdateArg: (locationResult: LocationResult) -> Unit)
+            : this(context, locationRequest){
+        this.onLocationUpdate = onLocationUpdateArg
         this.locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null) {
@@ -51,7 +48,7 @@ class LocationUpdater(private val context: Context,
                             |latitude: ${locationResult.lastLocation.latitude}
                             |longitude: ${locationResult.lastLocation.longitude}""".trimMargin())
 
-                    onLocationUpdate(locationResult)
+                    onLocationUpdate?.invoke(locationResult)
                 }
             }
         }
@@ -61,20 +58,6 @@ class LocationUpdater(private val context: Context,
     constructor(context: Context, locationRequest: LocationRequest?, pendingIntent: PendingIntent)
             : this(context, locationRequest) {
         this.pendingIntent = pendingIntent
-    }
-
-    init {
-        // Check callbacks
-        if (locationCallback == null || pendingIntent == null) {
-            throw NoCallbackException("LocationUpdater: location callbacks are null")
-        }
-
-        // Set default locationRequest
-        if (locationRequest == null) {
-            locationRequest = LocationRequest().setInterval(DEFAULT_UPDATE_INTERVAL)
-                    .setFastestInterval(DEFAULT_FASTEST_UPDATE_INTERVAL)
-                    .setPriority(DEFAULT_LOCATION_PRIORITY)
-        }
     }
 
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
@@ -91,11 +74,13 @@ class LocationUpdater(private val context: Context,
             when {
                 locationCallback != null -> {
                     log("starting with locationCallback")
+
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback,
                             Looper.myLooper())
                 }
                 pendingIntent != null -> {
                     log("starting with pendingIntent")
+
                     fusedLocationClient.requestLocationUpdates(locationRequest, pendingIntent)
                 }
                 else -> throw NoCallbackException("start(): pendingIntent and locationCallback are null")
