@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.util.Log
@@ -36,8 +35,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val REQ_CODE_REQUEST_PERMISSION = 2
     open val REQUEST_CHECK_SETTINGS = 0x1
 
-    open var shouldStopLocationUpdatesOnDestroy = true
-
     open lateinit var map: GoogleMap
     // KML
     // private var kmlEnabled = false
@@ -55,14 +52,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
 
     private val settingsClient: SettingsClient by lazy {
         LocationServices.getSettingsClient(this)
-    }
-
-    private val locationUpdateServiceIntent: Intent by lazy {
-        Intent(this, LocationUpdateService::class.java)
-    }
-
-    private val locationUpdater: LocationUpdater by lazy {
-        LocationUpdater(this, locationRequest, null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,7 +101,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             checkLocationEnabled()
             false
         }
-        startLocationUpdates()
+        checkLocationEnabled()
     }
 
     private fun requestPermissions() {
@@ -146,15 +135,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Does whatever is inside when current location is changed
-    open val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult?.let {
-                super.onLocationResult(locationResult)
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         if (!permissionsGranted()) {
@@ -162,30 +142,14 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Checks for permissions and enabled services
-    private fun startLocationUpdates() {
-        Log.i(TAG, "startLocationUpdates()")
-
-        checkLocationEnabled()
-    }
-
-    @SuppressLint("MissingPermission")
+    // Requests that the user turns on location services
     private fun checkLocationEnabled() {
         settingsClient.checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener {
                     Log.i(TAG, "all location settings are satisfied; starting location updates")
 
-                    // TODO revamp this :
-                    // 1) do active maps (including this one) with locationUpdater
-                    // 2) do passive location updates with locationUpdaterService
-                    // 3)
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(locationUpdateServiceIntent)
-                    } else {
-                        startService(locationUpdateServiceIntent)
-                    }
-                }
+                    startLocationUpdates()
+            }
                 .addOnFailureListener { e ->
                     val statusCode = (e as ApiException).statusCode
                     when (statusCode) {
@@ -216,7 +180,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                 if (resultCode == Activity.RESULT_OK) {
                     Log.i(TAG, "user agreed to enable location")
 
-                    startLocationUpdates()
+                    checkLocationEnabled()
                 } else {
                     Log.i(TAG, "user chose not to enable location")
                 }
@@ -229,20 +193,17 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        if (shouldStopLocationUpdatesOnDestroy) {
-            stopLocationUpdates()
-        }
-        destroyMap()
+    open fun startLocationUpdates() {
+        Log.i(TAG, "startLocationUpdates()")
     }
 
-    private fun stopLocationUpdates() {
+    open fun stopLocationUpdates() {
         Log.i(TAG, "stopLocationUpdates()")
+    }
 
-        //stopService(locationUpdateServiceIntent)
-        //locationUpdater.stop()
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyMap()
     }
 
     private fun destroyMap() {

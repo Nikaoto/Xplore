@@ -119,7 +119,7 @@ class IliauniMapActivity : BaseMapActivity() {
         })
     }
 
-    override val locationCallback = object : LocationCallback() {
+    val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult?.let {
                 super.onLocationResult(locationResult)

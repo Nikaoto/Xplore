@@ -117,8 +117,6 @@ class GroupMapActivity : BaseMapActivity() {
     // Holds references to each members' location so we can disable them OnDestroy()
     private val listenerMap = HashMap<String, ChildEventListener>()
 
-    override var shouldStopLocationUpdatesOnDestroy: Boolean = false //TODO : TESTING FOR NOW
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (groupId != NO_GROUP_ID) {
@@ -187,7 +185,7 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
-    override val locationCallback = object : LocationCallback() {
+    val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult?.let {
                 super.onLocationResult(locationResult)
@@ -195,14 +193,6 @@ class GroupMapActivity : BaseMapActivity() {
                 uploadLocation(locationResult.lastLocation)
             }
         }
-    }
-
-    fun startRequestingLocationUpdates(client: FusedLocationProviderClient,
-                                                request: LocationRequest,
-                                                callback: LocationCallback,
-                                                looper: Looper) {
-        // TODO change this
-        startService(Intent(this, LocationUpdateService::class.java))
     }
 
     private fun uploadLocation(location: Location) {
