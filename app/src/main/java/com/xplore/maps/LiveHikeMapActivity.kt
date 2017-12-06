@@ -1,5 +1,6 @@
 package com.xplore.maps
 
+import android.os.Build
 import android.os.Bundle
 import com.xplore.R
 
@@ -8,9 +9,24 @@ import com.xplore.R
  * TODO write description of this class - what it does and why.
  */
 
+/*
 class LiveHikeMapActivity : BaseMapActivity() {
 
     override fun setupLayout() {
         super.setupLayout()
     }
-}
+
+    private fun startLocationUpdates() {
+        // TODO revamp this :
+        // 1) do active maps (including this one) with locationUpdater
+        // 2) do passive location updates with locationUpdaterService
+        // 3)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(locationUpdateServiceIntent)
+        } else {
+            startService(locationUpdateServiceIntent)
+        }
+
+    }
+}*/
