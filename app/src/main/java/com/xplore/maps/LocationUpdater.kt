@@ -37,8 +37,9 @@ class LocationUpdater(private val context: Context,
     private var pendingIntent: PendingIntent? = null
 
     // With LocationCallback
-    constructor(c: Context, lr: LocationRequest?,
-                onLocationUpdate: (locationResult: LocationResult) -> Unit) : this(c, lr) {
+    constructor(context: Context, locationRequest: LocationRequest?,
+                onLocationUpdate: (locationResult: LocationResult) -> Unit)
+            : this(context, locationRequest) {
         //this.onLocationUpdate = onLocationUpdate
         this.locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
@@ -57,7 +58,8 @@ class LocationUpdater(private val context: Context,
     }
 
     // With PendingIntent of BroadcastReceiver
-    constructor(c: Context, lr: LocationRequest?, pendingIntent: PendingIntent) : this(c, lr) {
+    constructor(context: Context, locationRequest: LocationRequest?, pendingIntent: PendingIntent)
+            : this(context, locationRequest) {
         this.pendingIntent = pendingIntent
     }
 
