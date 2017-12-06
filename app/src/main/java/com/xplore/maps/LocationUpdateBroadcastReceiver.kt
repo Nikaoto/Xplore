@@ -1,5 +1,6 @@
 package com.xplore.maps
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -18,6 +19,13 @@ class LocationUpdateBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         const val ACTION_PROCESS_UPDATES = "com.xplore.maps.action.PROCESS_UPDATES"
+
+        @JvmStatic
+        fun getPendingIntent(context: Context): PendingIntent {
+            val intent = Intent(context, LocationUpdateBroadcastReceiver::class.java)
+            intent.action = ACTION_PROCESS_UPDATES
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
