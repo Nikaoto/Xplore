@@ -36,7 +36,6 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     open val REQUEST_CHECK_SETTINGS = 0x1
 
     open lateinit var map: GoogleMap
-    // KML
     // private var kmlEnabled = false
     // private var kmlLayer: KmlLayer? = null
 
@@ -148,7 +147,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener {
                     Log.i(TAG, "all location settings are satisfied; starting location updates")
 
-                    startLocationUpdates()
+                    onStartLocationUpdates()
             }
                 .addOnFailureListener { e ->
                     val statusCode = (e as ApiException).statusCode
@@ -193,8 +192,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         return super.onOptionsItemSelected(item)
     }
 
-    open fun startLocationUpdates() {
-        Log.i(TAG, "startLocationUpdates()")
+    open fun onStartLocationUpdates() {
+        Log.i(TAG, "onStartLocationUpdates()")
     }
 
     open fun stopLocationUpdates() {
