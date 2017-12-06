@@ -2,11 +2,9 @@ package com.xplore.maps
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnSuccessListener
 
 /*
  * Created by Nika on 12/2/2017.

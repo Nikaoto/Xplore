@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -15,9 +14,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.xplore.General
-import com.xplore.util.MapUtil
 import com.xplore.R
-import kotlinx.android.synthetic.main.activity_maps.*
+import com.xplore.util.MapUtil
 
 /**
  * Created by Nika on 9/4/2017.

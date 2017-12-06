@@ -16,7 +16,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
         super.setupLayout()
     }
 
-    private fun startLocationUpdates() {
+    private fun onStartLocationUpdates() {
         // TODO revamp this :
         // 1) do active maps (including this one) with locationUpdater
         // 2) do passive location updates with locationUpdaterService
