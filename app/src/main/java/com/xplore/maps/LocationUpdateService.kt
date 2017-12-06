@@ -35,10 +35,17 @@ class LocationUpdateService : Service() {
         return START_STICKY
     }
 
-    private fun getBroadcastReceiverPendingIntent(): PendingIntent {
-        val intent = Intent(this, LocationUpdateBroadcastReceiver::class.java)
-        intent.action = LocationUpdateBroadcastReceiver.ACTION_PROCESS_UPDATES
-        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    override fun onCreate() {
+        log("onCreate")
+        super.onCreate()
+
+        val name = "Location Update"
+        val channelId = "channelId-0"
+        val description = "description"
+
+        locationUpdater = LocationUpdater(this, null, LocationUpdateBroadcastReceiver.getPendingIntent(this))
+        locationUpdater.start()
+        startForeground(id, createNotifOld(channelId, name, description))
     }
 
     private fun getNotificationManager(): NotificationManager =
@@ -58,27 +65,6 @@ class LocationUpdateService : Service() {
                 .setContentTitle(name)
                 .setContentText(description)
                 .build()
-    }
-
-    override fun onCreate() {
-        log("onCreate")
-        super.onCreate()
-
-        val name = "Location Update"
-        val channelId = "channelId-0"
-        val description = "description"
-
-/*
-        locationUpdater = LocationUpdater(applicationContext, null, {locationResult ->
-            val lastLoc = locationResult.lastLocation
-            log("lat: " + lastLoc.latitude.toString())
-            log("lng: " + lastLoc.longitude.toString())
-        })
-*/
-
-        locationUpdater = LocationUpdater(this, null, getBroadcastReceiverPendingIntent())
-        locationUpdater.start()
-        startForeground(id, createNotifOld(channelId, name, description))
     }
 
     override fun onDestroy() {
