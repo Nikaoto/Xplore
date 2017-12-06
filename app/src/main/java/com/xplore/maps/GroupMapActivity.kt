@@ -4,12 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -19,8 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.util.FirebaseUtil.F_GROUP_NAME
-import com.xplore.util.FirebaseUtil.F_LOCATIONS
 import com.xplore.util.FirebaseUtil.F_LATITUDE
+import com.xplore.util.FirebaseUtil.F_LOCATIONS
 import com.xplore.util.FirebaseUtil.F_LONGITUDE
 import com.xplore.util.FirebaseUtil.getCurrentUserRef
 import com.xplore.util.FirebaseUtil.getGroupRef
@@ -112,6 +108,9 @@ class GroupMapActivity : BaseMapActivity() {
         groupLocationsRef.child(General.currentUserId)
     }
 
+    private lateinit var locationUpdater: LocationUpdater
+
+
     // Markers for member tracking
     private val mapMarkers = HashMap<String, Marker>()
     // Holds references to each members' location so we can disable them OnDestroy()
@@ -122,11 +121,24 @@ class GroupMapActivity : BaseMapActivity() {
         if (groupId != NO_GROUP_ID) {
             firstUploadData()
         }
+
+        locationUpdater = LocationUpdater(this,
+                LocationRequest().setInterval(5000L)
+                        .setFastestInterval(1000L)
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY),
+                { locationResult ->  uploadLocation(locationResult.lastLocation) }
+        )
+    }
+
+    override fun onStartLocationUpdates() {
+        super.onStartLocationUpdates()
+
+        locationUpdater.start()
     }
 
     /* Uploads a UserCard to this user's location node if it doesn't exist.
-       When a new user joins a group, a new node isn't created, so we upload a UserMarker in the
-       locations node for the first time */
+           When a new user joins a group, a new node isn't created, so we upload a UserMarker in the
+           locations node for the first time */
     private fun firstUploadData() {
         currentUserLocationRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(locationSnapshot: DataSnapshot?) {
@@ -182,16 +194,6 @@ class GroupMapActivity : BaseMapActivity() {
 
         if (groupId != NO_GROUP_ID) {
             startListeningForGroupLocations(googleMap)
-        }
-    }
-
-    val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult?.let {
-                super.onLocationResult(locationResult)
-
-                uploadLocation(locationResult.lastLocation)
-            }
         }
     }
 
@@ -286,8 +288,15 @@ class GroupMapActivity : BaseMapActivity() {
         }
     }
 
+    override fun stopLocationUpdates() {
+        super.stopLocationUpdates()
+
+        locationUpdater.stop()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopListeningForMemberLocations()
+        stopLocationUpdates()
     }
 }
