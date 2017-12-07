@@ -30,6 +30,7 @@ class LocationUpdateBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         log("onReceive")
+        // TODO use result.locations for snail trail func in the future
 
         if (intent != null) {
             if (intent.action == ACTION_PROCESS_UPDATES) {

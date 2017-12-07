@@ -23,7 +23,7 @@ object TimeManager {
     @JvmField
     var globalTimeStamp: Long = 0L
 
-    //Integer timestamp used for calculating age and simple things...
+    //Integer (datestamp) timestamp used for calculating age and simple things...
     @JvmField
     var intTimeStamp: Int = 0
 

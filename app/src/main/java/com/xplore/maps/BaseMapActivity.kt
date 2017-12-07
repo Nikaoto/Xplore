@@ -97,6 +97,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     // Does things to map; override this instead of onMapReady
     @SuppressLint("MissingPermission")
     open fun configureMap(googleMap: GoogleMap) {
+        Log.i(TAG, "configureMap")
+
         googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener {
             if (!permissionsGranted()) {
