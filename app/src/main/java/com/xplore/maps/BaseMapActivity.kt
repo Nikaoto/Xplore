@@ -29,20 +29,26 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     private val TAG = "base-map-act"
 
     open val ZOOM_AMOUNT = 15f
-    open val UPDATE_INTERVAL = 5000L
-    open val FASTEST_UPDATE_INTERVAL = 1000L
-    open val LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
-    open val REQ_CODE_REQUEST_PERMISSION = 2
-    open val REQUEST_CHECK_SETTINGS = 0x1
+    private val LOCATION_SETTINGS_REQUEST_UPDATE_INTERVAL = 5000L
+    private val LOCAITON_SETTINGS_REQUEST_FASTEST_UPDATE_INTERVAL = 1000L
+    private val LOCAITON_SETTINGS_REQUEST_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
+    private val REQ_CODE_REQUEST_PERMISSION = 2
+    private val REQUEST_CHECK_SETTINGS = 0x1
 
     open lateinit var map: GoogleMap
     // private var kmlEnabled = false
     // private var kmlLayer: KmlLayer? = null
 
+    companion object {
+        private var shouldAskLocationSettings = true
+    }
+
     // Location
     private val locationRequest: LocationRequest by lazy {
-        LocationRequest().setInterval(UPDATE_INTERVAL).setFastestInterval(FASTEST_UPDATE_INTERVAL)
-                .setPriority(LOCATION_PRIORITY)
+        LocationRequest()
+                .setInterval(LOCATION_SETTINGS_REQUEST_UPDATE_INTERVAL)
+                .setFastestInterval(LOCAITON_SETTINGS_REQUEST_FASTEST_UPDATE_INTERVAL)
+                .setPriority(LOCAITON_SETTINGS_REQUEST_PRIORITY)
     }
 
     private val locationSettingsRequest: LocationSettingsRequest by lazy {
@@ -53,6 +59,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         LocationServices.getSettingsClient(this)
     }
 
+    // Layout
     open val layoutId = R.layout.activity_maps
     open val mapFragmentId = R.id.mapFragment
     open val titleId = R.string.activity_maps_title
@@ -140,33 +147,37 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     }
 
     // Requests that the user turns on location services
-    private fun checkLocationEnabled() {
-        settingsClient.checkLocationSettings(locationSettingsRequest)
-                .addOnSuccessListener {
-                    Log.i(TAG, "all location settings are satisfied; starting location updates")
+    protected fun checkLocationEnabled() {
+        Log.i(TAG, "checking loc enabled")
+        if (shouldAskLocationSettings) {
+            settingsClient.checkLocationSettings(locationSettingsRequest)
+                    .addOnSuccessListener {
+                        Log.i(TAG, "all location settings are satisfied; starting location updates")
 
-                    onStartLocationUpdates()
-            }
-                .addOnFailureListener { e ->
-                    val statusCode = (e as ApiException).statusCode
-                    when (statusCode) {
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                            Log.i(TAG, "location settings not satisfied; attempting to upgrade")
+                        onStartLocationUpdates()
+                    }
+                    .addOnFailureListener { e ->
+                        val statusCode = (e as ApiException).statusCode
+                        when (statusCode) {
+                            LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                                Log.i(TAG, "location settings not satisfied; attempting to upgrade")
 
-                            try {
-                                val rae = e as ResolvableApiException
-                                rae.startResolutionForResult(this@BaseMapActivity,
-                                        REQUEST_CHECK_SETTINGS)
-                            } catch (sie: IntentSender.SendIntentException) {
-                                Log.i(TAG, "PendingIntent unable to execute request")
+                                try {
+                                    val rae = e as ResolvableApiException
+                                    rae.startResolutionForResult(this@BaseMapActivity,
+                                            REQUEST_CHECK_SETTINGS)
+                                    shouldAskLocationSettings = false
+                                } catch (sie: IntentSender.SendIntentException) {
+                                    Log.i(TAG, "PendingIntent unable to execute request")
+                                }
+                            }
+
+                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                                Log.i(TAG, "location settings can't be fixed; fix in settings")
                             }
                         }
-
-                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                            Log.i(TAG, "location settings can't be fixed; fix in settings")
-                        }
                     }
-                }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -174,6 +185,8 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             super.onActivityResult(requestCode, resultCode, data)
 
             if (requestCode == REQUEST_CHECK_SETTINGS) {
+                shouldAskLocationSettings = true
+
                 if (resultCode == Activity.RESULT_OK) {
                     Log.i(TAG, "user agreed to enable location")
 
