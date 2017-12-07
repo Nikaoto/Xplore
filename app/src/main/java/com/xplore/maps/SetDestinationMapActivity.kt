@@ -25,8 +25,8 @@ import com.xplore.util.MapUtil
 class SetDestinationMapActivity : BaseMapActivity() {
 
     companion object {
-        const val RESULT_DEST_LAT = "destinationLat";
-        const val RESULT_DEST_LNG = "destinationLng";
+        const val RESULT_DEST_LAT = "destinationLat"
+        const val RESULT_DEST_LNG = "destinationLng"
 
         private const val DEST_NAME_ARG = "destinationName"
         private const val DEST_LAT_ARG = "destinationLat"
@@ -70,7 +70,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
         showPinDropHelp()
     }
 
-    fun configureDestination() {
+    private fun configureDestination() {
         if (intent.getStringExtra(DEST_LAT_ARG) != null) {
             editingGroup = true
         }
@@ -92,7 +92,7 @@ class SetDestinationMapActivity : BaseMapActivity() {
             val destLocation = LatLng(intent.getDoubleExtra(DEST_LAT_ARG, 0.0),
                     intent.getDoubleExtra(DEST_LNG_ARG, 0.0))
 
-            // Display marker at destinaiton
+            // Display marker at destination
             destinationMarker = googleMap.addMarker(buildMarker(destLocation, destName))
 
             // Move camera to destination
