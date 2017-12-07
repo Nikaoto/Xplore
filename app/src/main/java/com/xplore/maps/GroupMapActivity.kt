@@ -30,7 +30,6 @@ import com.xplore.util.MapUtil
  * hashmap. Creates markers from member location data and puts them in a separate hashmap (each
  * marker has the same key as its listener). Enables each listener and removes them in onDestroy()
  *
- *
  */
 
 class GroupMapActivity : BaseMapActivity() {
@@ -209,7 +208,7 @@ class GroupMapActivity : BaseMapActivity() {
         groupLocationsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 dataSnapshot?.let {
-                    for (markerSnapshot in it.children) {
+                    it.children.forEach { markerSnapshot ->
                         val key = markerSnapshot.key
 
                         if (key != General.currentUserId) {
@@ -282,21 +281,21 @@ class GroupMapActivity : BaseMapActivity() {
 
     private fun stopListeningForMemberLocations() {
         if (listenerMap.isNotEmpty()) {
-            for (entry in listenerMap) {
+            listenerMap.forEach { entry ->
                 groupLocationsRef.child(entry.key).removeEventListener(entry.value)
             }
         }
-    }
-
-    override fun stopLocationUpdates() {
-        super.stopLocationUpdates()
-
-        locationUpdater.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         stopListeningForMemberLocations()
         stopLocationUpdates()
+    }
+
+    override fun stopLocationUpdates() {
+        super.stopLocationUpdates()
+
+        locationUpdater.stop()
     }
 }
