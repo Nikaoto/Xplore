@@ -2,6 +2,7 @@ package com.xplore.maps
 
 import android.app.PendingIntent
 import android.content.Context
+import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
@@ -21,12 +22,6 @@ class LocationUpdater private constructor (private val context: Context,
     private fun log(s: String) = Log.i(TAG, s)
     private inner class NoCallbackException(override var message: String): Exception()
 
-    companion object {
-        const val DEFAULT_UPDATE_INTERVAL = 5000L
-        const val DEFAULT_FASTEST_UPDATE_INTERVAL = 1000L
-        const val DEFAULT_LOCATION_PRIORITY = LocationRequest.PRIORITY_HIGH_ACCURACY
-    }
-
     private var locationCallback: LocationCallback? = null
     private var onLocationUpdate: ((locationResult: LocationResult) -> Unit?)? = null
     private var pendingIntent: PendingIntent? = null
@@ -40,6 +35,9 @@ class LocationUpdater private constructor (private val context: Context,
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null) {
                     super.onLocationResult(locationResult)
+
+                    // Update last location
+                    lastLocation = locationResult.lastLocation
 
                     // TODO remove this log
                     log("""onLocationUpdate:
@@ -62,7 +60,19 @@ class LocationUpdater private constructor (private val context: Context,
         LocationServices.getFusedLocationProviderClient(context)
     }
 
+    var lastLocation: Location? = null
     var updatingLocation = false
+
+    init {
+        // Get last known location
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                lastLocation = location
+            }
+        } catch (e: SecurityException) {
+            log("init: SecurityException")
+        }
+    }
 
     fun start() {
         log("start()")
@@ -86,6 +96,10 @@ class LocationUpdater private constructor (private val context: Context,
         } catch (e: SecurityException) {
             log("start(): SecurityException")
         }
+    }
+
+    fun updateLocationRequest() {
+        TODO("change locationCallback or pendingIntent and call start() if updating location already")
     }
 
     fun stop() {
