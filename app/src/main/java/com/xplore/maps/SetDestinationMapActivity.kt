@@ -58,6 +58,8 @@ class SetDestinationMapActivity : BaseMapActivity() {
     private var destinationMarker: Marker? = null
     private var editingGroup = false
 
+    override val titleId = R.string.activity_choose_destination_title
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,11 +68,6 @@ class SetDestinationMapActivity : BaseMapActivity() {
 
         configureDestination()
         showPinDropHelp()
-    }
-
-    override fun setupLayout() {
-        setContentView(R.layout.activity_maps)
-        setTitle(R.string.activity_choose_destination_title)
     }
 
     fun configureDestination() {

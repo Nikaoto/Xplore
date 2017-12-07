@@ -53,22 +53,20 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         LocationServices.getSettingsClient(this)
     }
 
+    open val layoutId = R.layout.activity_maps
+    open val mapFragmentId = R.id.mapFragment
+    open val titleId = R.string.activity_maps_title
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Setup Layout
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setContentView(layoutId)
+        setTitle(titleId)
 
-        setupLayout()
-
-        initMap()
-    }
-
-    open fun setupLayout() {
-        setContentView(R.layout.activity_maps)
-        setTitle(R.string.activity_maps_title)
-    }
-
-    private fun initMap() {
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        // Init map
+        val mapFragment = supportFragmentManager.findFragmentById(mapFragmentId) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
