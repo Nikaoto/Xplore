@@ -154,7 +154,7 @@ class GroupInfoActivity : RefreshableActivity() {
         }
     }
 
-    //Shows map button if now hiking
+    //Shows map button if now hiking TODO change name to live hike
     private fun configureShowOnMapButton() {
         if (TimeManager.intTimeStamp >= currentGroup.start_date
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
@@ -401,26 +401,19 @@ class GroupInfoActivity : RefreshableActivity() {
                             putUserMarker(locations, it.key)
                         }
                     }
-                    startActivity(GroupMapActivity.getStartIntent(this@GroupInfoActivity, true,
+                    TODO("open livehikeact here")
+/*                    startActivity(GroupMapActivity.getStartIntent(this@GroupInfoActivity, true,
                             groupId, getString(R.string.destination),
                             currentGroup.destination_latitude, currentGroup.destination_longitude)
-                    )
-                    // Create hashmap of markers with keys as uids and values as 'locat ion objects'
-                    // Location object has lat, lng, displayName, and color hue
-                    // in maps activity set listeners for each child node and change location depending on data change
+                    )*/
                 }
             }
 
             override fun onCancelled(p0: DatabaseError?) {}
         })
-        //Check if locations node exists, if not
-        //create locations node
-        //add all user locations with default latlng
-        //each child node has uid as key with latitude, longitude, display anem, and a random marker color hue (0f - 310f)
-        //After creating locations node (or if it's already present)
     }
 
-    // Puts a UserMarker locations object into the given hashmap with given uId
+    // Puts a UserMarker location object into the given hashmap with given uId
     private fun putUserMarker(locations: HashMap<String, UserMarker>, uId: String) {
         usersRef.child(uId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
