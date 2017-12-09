@@ -20,6 +20,7 @@ import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
 import com.xplore.maps.GroupMapActivity
+import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.maps.UserMarker
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
@@ -160,7 +161,7 @@ class GroupInfoActivity : RefreshableActivity() {
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
 
             openMapButton.visibility = View.VISIBLE
-            openMapButton.setOnClickListener { showTripOnMap() }
+            openMapButton.setOnClickListener { startLiveHike() }
         }
     }
 
@@ -388,24 +389,26 @@ class GroupInfoActivity : RefreshableActivity() {
 
     private var counter = 0
 
-    /* Opens the map, displaying users and their locations.
-       Creates a 'locations' node in firebase if it doesn't exist */
-    private fun showTripOnMap() {
+    private fun startLiveHike() {
         counter = currentGroup.member_ids.size
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 dataSnapshot?.let {
+                    // Create 'locations' node in firebase if it doesn't exist
                     if (!dataSnapshot.hasChild(F_LOCATIONS)) {
                         val locations = HashMap<String, UserMarker>(currentGroup.member_ids.size)
                         currentGroup.member_ids.forEach {
                             putUserMarker(locations, it.key)
                         }
                     }
-                    TODO("open livehikeact here")
-/*                    startActivity(GroupMapActivity.getStartIntent(this@GroupInfoActivity, true,
-                            groupId, getString(R.string.destination),
-                            currentGroup.destination_latitude, currentGroup.destination_longitude)
-                    )*/
+
+                    startActivity(
+                            LiveHikeMapActivity.newIntent(this@GroupInfoActivity,
+                                    groupId,
+                                    getString(R.string.destination),
+                                    currentGroup.destination_latitude,
+                                    currentGroup.destination_longitude)
+                    )
                 }
             }
 
@@ -413,7 +416,8 @@ class GroupInfoActivity : RefreshableActivity() {
         })
     }
 
-    // Puts a UserMarker location object into the given hashmap with given uId
+    /* Puts a UserMarker location object into the given hashmap with given uId
+    Used to create a HashMap of member locations to upload to firebase before startLiveHike() */
     private fun putUserMarker(locations: HashMap<String, UserMarker>, uId: String) {
         usersRef.child(uId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
