@@ -19,7 +19,9 @@ import com.xplore.util.MapUtil
 
 /**
  * Created by Nika on 9/4/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Allows leader to set meetup/destination markers when planning hike
+ *
  */
 
 class SetDestinationMapActivity : BaseMapActivity() {
