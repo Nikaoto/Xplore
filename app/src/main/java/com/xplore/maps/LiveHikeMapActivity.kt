@@ -243,15 +243,18 @@ class LiveHikeMapActivity : BaseMapActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Allows us to renew/resume location updates
+        checkLocationEnabled()
+    }
+
     override fun onStartLocationUpdates() {
         super.onStartLocationUpdates()
 
+        //stopPassiveLocationUpdates()
         startActiveLocationUpdates()
-
-        // TODO revamp this :
-        // 1) do active maps (including this one) with locationUpdater
-        // 2) do passive location updates with locationUpdaterService
-        // 3)
     }
 
     private fun startActiveLocationUpdates() {
@@ -272,19 +275,13 @@ class LiveHikeMapActivity : BaseMapActivity() {
     }
 
     private fun stopPassiveLocationUpdates() {
-        TODO("implement this")
+        return
+        //TODO("implement this")
     }
 
     private fun passiveLocationUpdatesEnabled(): Boolean {
-        TODO("check if auto live hike switch is on")
-        return true
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Allows us to renew/resume location updates
-        checkLocationEnabled()
+        return false
+        //TODO("check if auto live hike switch is on")
     }
 
     override fun onPause() {
