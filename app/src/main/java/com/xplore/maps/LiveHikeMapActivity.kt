@@ -102,7 +102,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     // Layout
     override val layoutId = R.layout.activity_maps // TODO replace with live_hike
-    override val titleId = R.string.live_hike // TODO add activity title separately in strings
+    override val titleId = R.string.activity_live_hike_title
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -9,7 +9,7 @@
     <string name="slide2_title">ჯგუფები</string>
     <string name="slide2_text">ასე გამოიყურება დაგეგმილი ლაშქრობა, დააჭირეთ რომ გუნდის გვერდი გახსნათ</string>
     <string name="slide2_example_group_leader_name">დათო ჩხეიძე</string>
-    <string name="slide2_example_group_leader_reputation">100 რეპუტაცია</string>
+    <string name="slide2_example_group_leader_reputationasdasdasd">100 რეპუტაცია</string>
     <string name="slide2_example_group_destination_name">დარიალის ხეობა</string>
     <string name="slide2_example_group_days_left">მაზეგ</string>
     <string name="slide2_example_group_duration">2 დღე</string>
@@ -45,6 +45,7 @@
     <!-- Activity Titles -->
     <string name="activity_library_title">ბიბლიოთეკა</string>
     <string name="activity_maps_title">რუკა</string>
+    <string name="activity_live_hike_title">ლაივ ლაშქრობა</string>
     <string name="activity_authorization_title">ავტორიზაცია</string>
     <string name="activity_create_group_title">შექმენი ჯგუფი</string>
     <string name="activity_choose_destination_title">ამოირჩიეთ მიმართულება</string>

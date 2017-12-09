@@ -42,7 +42,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/colorGreyText"
                     android:textSize="13sp"
-                    android:text="@string/slide2_example_group_leader_reputation" />
+                    android:text="@string/slide2_example_group_leader_reputationasdasdasd" />
 
                 <TextView
                     android:layout_width="wrap_content"

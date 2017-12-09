@@ -9,7 +9,7 @@
     <string name="slide2_title">Groups</string>
     <string name="slide2_text">This is what a planned hike looks like, press it to open its page</string>
     <string name="slide2_example_group_leader_name">David Smith</string>
-    <string name="slide2_example_group_leader_reputation">100 reputation</string>
+    <string name="slide2_example_group_leader_reputationasdasdasd">100 reputation</string>
     <string name="slide2_example_group_destination_name">Dariali Gorge</string>
     <string name="slide2_example_group_days_left">in 1 month</string>
     <string name="slide2_example_group_duration">2 days</string>
@@ -253,5 +253,6 @@
     <string name="mobile_number_reason_message">Required so your teammates can contact you</string>
     <string name="please_wait">Please wait...</string>
     <string name="live_hike">Live Hike</string>
+    <string name="activity_live_hike_title">Live Hike</string>
 
 </resources>
