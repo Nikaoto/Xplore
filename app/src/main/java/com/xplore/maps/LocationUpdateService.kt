@@ -15,7 +15,10 @@ import android.util.Log
 
 /**
  * Created by Nika on 12/2/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * A Service wrapper for the LocationUpdater. Allows use of LocationUpdater in the background with
+ * PendingIntent and LocationUpdateBroadcastReceiver receiving callbacks
+ *
  */
 
 class LocationUpdateService : Service() {
