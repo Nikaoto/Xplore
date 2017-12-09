@@ -16,7 +16,7 @@ import com.google.android.gms.location.*
  */
 
 class LocationUpdater private constructor (private val context: Context,
-                                           private val locationRequest: LocationRequest?) {
+                                           private var locationRequest: LocationRequest?) {
 
     private val TAG = "location-updater"
     private fun log(s: String) = Log.i(TAG, s)
@@ -98,8 +98,11 @@ class LocationUpdater private constructor (private val context: Context,
         }
     }
 
-    fun updateLocationRequest() {
-        TODO("change locationCallback or pendingIntent and call start() if updating location already")
+    fun updateLocationRequest(locationRequest: LocationRequest) {
+        this.locationRequest = locationRequest
+        if (updatingLocation) {
+            start()
+        }
     }
 
     fun stop() {
