@@ -12,6 +12,8 @@ import android.os.IBinder
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.util.Log
+import com.google.android.gms.location.LocationRequest
+import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
 
 /**
  * Created by Nika on 12/2/2017.
@@ -28,7 +30,18 @@ class LocationUpdateService : Service() {
 
     private val id = 12
 
+    companion object {
+
+        const val ARG_LOCATION_REQUEST = "locationRequest"
+        @JvmStatic
+        fun newIntent(context: Context, locationRequest: LocationRequest): Intent {
+            return Intent(context, LocationUpdateService::class.java)
+                    .putExtra(ARG_LOCATION_REQUEST, locationRequest)
+        }
+    }
+
     private lateinit var locationUpdater: LocationUpdater
+    private lateinit var locationRequest: LocationRequest
 
     override fun onBind(intent: Intent?): IBinder? {
         log("onBind")
@@ -39,8 +52,17 @@ class LocationUpdateService : Service() {
         log("onStartCommand")
         super.onStartCommand(intent, flags, startId)
 
+        locationRequest = intent?.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
+
+
+        locationUpdater = LocationUpdater(this, locationRequest,
+                LiveHikeBroadcastReceiver.newPendingIntent(this))
+        locationUpdater.start()
+
         return START_STICKY
     }
+
+
 
     override fun onCreate() {
         log("onCreate")
@@ -50,8 +72,6 @@ class LocationUpdateService : Service() {
         val channelId = "channelId-0"
         val description = "description"
 
-        locationUpdater = LocationUpdater(this, null, LocationUpdateBroadcastReceiver.getPendingIntent(this))
-        locationUpdater.start()
         startForeground(id, createNotifOld(channelId, name, description))
     }
 
