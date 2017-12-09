@@ -88,13 +88,13 @@
             android:name=".maps.SetDestinationMapActivity"
             android:label="@string/activity_choose_destination_title"/>
 
-        <activity android:name=".maps.LiveHikeMapActivity"
+        <activity android:name=".maps.live_hike.LiveHikeMapActivity"
             android:label="@string/live_hike"/>
 
         <service android:name=".maps.LocationUpdateService"
             android:exported="false"/>
 
-        <receiver android:name=".maps.LocationUpdateBroadcastReceiver"
+        <receiver android:name=".maps.live_hike.LiveHikeBroadcastReceiver"
             android:exported="true"
             android:permission="android.permission.ACCESS_FINE_LOCATION">
             <intent-filter>

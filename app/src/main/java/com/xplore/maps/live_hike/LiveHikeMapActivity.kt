@@ -1,4 +1,4 @@
-package com.xplore.maps
+package com.xplore.maps.live_hike
 
 import android.content.Context
 import android.content.Intent
@@ -16,6 +16,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
+import com.xplore.maps.BaseMapActivity
+import com.xplore.maps.LocationUpdateService
+import com.xplore.maps.LocationUpdater
+import com.xplore.maps.UserMarker
 import com.xplore.util.FirebaseUtil
 
 /**
@@ -45,8 +49,8 @@ class LiveHikeMapActivity : BaseMapActivity() {
         }
     }
 
-    private val PASSIVE_LOCAITON_REQUEST_INTERVAL = 1000L * 60 * 2
-    private val PASSIVE_LOCAITON_REQUEST_FASTEST_INTERVAL = 1000L * 30
+    private val PASSIVE_LOCAITON_REQUEST_INTERVAL = 2000L //* 60 * 2
+    private val PASSIVE_LOCAITON_REQUEST_FASTEST_INTERVAL = 1000L //* 30
     private val PASSIVE_LOCAITON_REQUEST_PRIORITY = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
     private val ACTIVE_LOCAITON_REQUEST_INTERVAL = 5000L
@@ -68,10 +72,19 @@ class LiveHikeMapActivity : BaseMapActivity() {
     }
 
     // Location Requests
+    private fun uploadLocation(location: Location) {
+        currentUserLocationRef.child(FirebaseUtil.F_LATITUDE).setValue(location.latitude)
+        currentUserLocationRef.child(FirebaseUtil.F_LONGITUDE).setValue(location.longitude)
+    }
+
     private val passiveLocationRequest = LocationRequest()
             .setInterval(PASSIVE_LOCAITON_REQUEST_INTERVAL)
             .setFastestInterval(PASSIVE_LOCAITON_REQUEST_FASTEST_INTERVAL)
             .setPriority(PASSIVE_LOCAITON_REQUEST_PRIORITY)
+
+    private val locationUpdateServiceIntent: Intent by lazy {
+        LocationUpdateService.newIntent(this, passiveLocationRequest)
+    }
 
     private val activeLocationRequest = LocationRequest()
             .setInterval(ACTIVE_LOCAITON_REQUEST_INTERVAL)
@@ -80,11 +93,6 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     private val locationUpdater: LocationUpdater by lazy {
         LocationUpdater(this, activeLocationRequest, { lr -> uploadLocation(lr.lastLocation) })
-    }
-
-    private fun uploadLocation(location: Location) {
-        currentUserLocationRef.child(FirebaseUtil.F_LATITUDE).setValue(location.latitude)
-        currentUserLocationRef.child(FirebaseUtil.F_LONGITUDE).setValue(location.longitude)
     }
 
     // Markers for member tracking
@@ -106,7 +114,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        log("oncreate")
         firstUploadData()
     }
 
@@ -254,7 +262,8 @@ class LiveHikeMapActivity : BaseMapActivity() {
         super.onStartLocationUpdates()
 
         //stopPassiveLocationUpdates()
-        startActiveLocationUpdates()
+        startPassiveLocationUpdates()
+        //startActiveLocationUpdates()
     }
 
     private fun startActiveLocationUpdates() {
@@ -266,12 +275,11 @@ class LiveHikeMapActivity : BaseMapActivity() {
     }
 
     private fun startPassiveLocationUpdates() {
-        TODO("implement this")
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(locationUpdateServiceIntent)
         } else {
             startService(locationUpdateServiceIntent)
-        }*/
+        }
     }
 
     private fun stopPassiveLocationUpdates() {
