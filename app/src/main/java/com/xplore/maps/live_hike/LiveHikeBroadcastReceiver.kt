@@ -7,7 +7,7 @@ import android.content.Intent
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.location.LocationResult
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 import com.xplore.util.FirebaseUtil
 
 /**
@@ -16,54 +16,51 @@ import com.xplore.util.FirebaseUtil
  * BroadcastReceiver class for background location updates during a Live Hike.
  * Uploads Location data to given firebase node.
  *
+ * TODO add interface OnLocationReceivedListener in the future
+ *
  */
 
 class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
 
-    private val TAG = "LU-broadcast-receiver"
+    private val TAG = "live-hike-broadcast-rec"
     private fun log(s: String) = Log.i(TAG, s)
 
     companion object {
         const val ACTION_PROCESS_UPDATES = "com.xplore.maps.action.PROCESS_UPDATES"
 
         @JvmStatic
-        fun newPendingIntent(context: Context): PendingIntent {
+        fun newPendingIntent(context: Context, uploadRef: DatabaseReference): PendingIntent {
+            this.uploadRef = uploadRef
             val intent = Intent(context, LiveHikeBroadcastReceiver::class.java)
             intent.action = ACTION_PROCESS_UPDATES
             return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-    }
 
+        @JvmField
+        var uploadRef: DatabaseReference? = null
 
-
-    override fun onReceive(context: Context?, intent: Intent?) {
-        log("onReceive")
-        // TODO use result.locations for snail trail func in the future
-
-        if (intent != null) {
-            if (intent.action == ACTION_PROCESS_UPDATES) {
-                val result = LocationResult.extractResult(intent)
-                if (result != null) {
-                    val locations = result.locations
-
-
-                    locations.forEach { loc ->
-                        log("lat: " + loc.latitude)
-                        log("lng: " + loc.longitude)
-                    }
-
-                   /* val userId = intent.getStringExtra("userId")
-                    val groupId = intent.getStringExtra("groupId")
-                    val ref = "/groups/$groupId/locations/$userId"
-
-                    uploadLocation(ref, result.lastLocation)*/
-                }
+        @JvmStatic
+        fun uploadLocation(location: Location) {
+            uploadRef?.let {
+                it.child(FirebaseUtil.F_LATITUDE).setValue(location.latitude)
+                it.child(FirebaseUtil.F_LONGITUDE).setValue(location.longitude)
             }
         }
     }
 
-    private fun uploadLocation(locationRef: String, location: Location) {
-        FirebaseDatabase.getInstance().getReference(locationRef).child("latitude").setValue(location.latitude)
-        FirebaseDatabase.getInstance().getReference(locationRef).child("longitude").setValue(location.longitude)
+    // TODO use EventBus? : https://stackoverflow.com/questions/38954261/how-to-pass-data-from-broadcastreceiver-to-activity-without-in-oncreate
+    override fun onReceive(context: Context?, intent: Intent?) {
+        log("onReceive")
+        if (intent != null) {
+            if (intent.action == ACTION_PROCESS_UPDATES) {
+                val locationResult = LocationResult.extractResult(intent)
+                if (locationResult != null) {
+                    // TODO use result.locations for snail trail func in the future
+                    // val locations = locationResult.locations
+
+                    uploadLocation(locationResult.lastLocation)
+                }
+            }
+        }
     }
 }
