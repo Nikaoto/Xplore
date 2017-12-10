@@ -83,7 +83,8 @@ class LiveHikeMapActivity : BaseMapActivity() {
             .setPriority(PASSIVE_LOCAITON_REQUEST_PRIORITY)
 
     private val locationUpdateServiceIntent: Intent by lazy {
-        LocationUpdateService.newIntent(this, passiveLocationRequest)
+        LocationUpdateService.newIntent(this, passiveLocationRequest,
+                FirebaseUtil.getUserLocationRefString(groupId, General.currentUserId))
     }
 
     private val activeLocationRequest = LocationRequest()
