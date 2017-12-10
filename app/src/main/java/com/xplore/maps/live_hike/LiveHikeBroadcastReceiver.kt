@@ -36,6 +36,8 @@ class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
             return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
+        // TODO use EventBus? : https://stackoverflow.com/questions/38954261/how-to-pass-data-from-broadcastreceiver-to-activity-without-in-oncreate
+        // TODO remove these statics when Google updates fusedLocationProviderClient api
         @JvmField
         var uploadRef: DatabaseReference? = null
 
@@ -48,7 +50,6 @@ class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
         }
     }
 
-    // TODO use EventBus? : https://stackoverflow.com/questions/38954261/how-to-pass-data-from-broadcastreceiver-to-activity-without-in-oncreate
     override fun onReceive(context: Context?, intent: Intent?) {
         log("onReceive")
         if (intent != null) {
