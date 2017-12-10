@@ -58,6 +58,10 @@ class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
                     // TODO use result.locations for snail trail func in the future
                     // val locations = locationResult.locations
 
+                    // Log
+                    log("lat : ${locationResult.lastLocation.latitude}")
+                    log("lng : ${locationResult.lastLocation.longitude}")
+
                     uploadLocation(locationResult.lastLocation)
                 }
             }
