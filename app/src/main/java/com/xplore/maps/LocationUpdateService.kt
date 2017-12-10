@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.google.android.gms.location.LocationRequest
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
+import com.xplore.util.FirebaseUtil
 
 /**
  * Created by Nika on 12/2/2017.
@@ -31,12 +32,20 @@ class LocationUpdateService : Service() {
     private val id = 12
 
     companion object {
-
         const val ARG_LOCATION_REQUEST = "locationRequest"
+        const val ARG_UPLOAD_LOCATION = "uploadLocation"
+
         @JvmStatic
         fun newIntent(context: Context, locationRequest: LocationRequest): Intent {
             return Intent(context, LocationUpdateService::class.java)
                     .putExtra(ARG_LOCATION_REQUEST, locationRequest)
+        }
+
+        @JvmStatic
+        fun newIntent(context: Context, locationRequest: LocationRequest, uploadLocaiton: String): Intent {
+            return Intent(context, LocationUpdateService::class.java)
+                    .putExtra(ARG_LOCATION_REQUEST, locationRequest)
+                    .putExtra(ARG_UPLOAD_LOCATION, uploadLocaiton)
         }
     }
 
@@ -53,16 +62,14 @@ class LocationUpdateService : Service() {
         super.onStartCommand(intent, flags, startId)
 
         locationRequest = intent?.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
+        val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(this,
+                FirebaseUtil.getRef(intent.getStringExtra(ARG_UPLOAD_LOCATION)))
 
-
-        locationUpdater = LocationUpdater(this, locationRequest,
-                LiveHikeBroadcastReceiver.newPendingIntent(this))
+        locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
         locationUpdater.start()
 
         return START_STICKY
     }
-
-
 
     override fun onCreate() {
         log("onCreate")
