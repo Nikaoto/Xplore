@@ -6,13 +6,14 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.google.android.gms.location.LocationRequest
+import com.xplore.R
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
 import com.xplore.util.FirebaseUtil
 
@@ -29,11 +30,12 @@ class LocationUpdateService : Service() {
     private val TAG = "location-update-serv"
     private fun log(s: String) = Log.i(TAG, s)
 
-    private val id = 12
+    private val id = 1
 
     companion object {
         const val ARG_LOCATION_REQUEST = "locationRequest"
         const val ARG_UPLOAD_LOCATION = "uploadLocation"
+        const val CHANNEL_ID = "xplore-live-hike-01"
 
         @JvmStatic
         fun newIntent(context: Context, locationRequest: LocationRequest): Intent {
@@ -75,29 +77,41 @@ class LocationUpdateService : Service() {
         log("onCreate")
         super.onCreate()
 
-        val name = "Location Update"
-        val channelId = "channelId-0"
+        val name = "Xplore Location Update"
         val description = "description"
+        val notifColorId = R.color.colorPrimary
 
-        startForeground(id, createNotifOld(channelId, name, description))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(id, createNotifNew(CHANNEL_ID, name, description, notifColorId))
+        } else {
+            startForeground(id, createNotifOld(CHANNEL_ID, name, description, notifColorId))
+        }
     }
 
     private fun getNotificationManager(): NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotifNew(channelId: String) {
-        val name = "Location Update"
+    private fun createNotifNew(channelId: String, name: String, description: String, colorId: Int)
+            : Notification {
         val channel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_HIGH)
-        channel.lightColor = Color.GREEN
+        channel.lightColor = colorId
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        getNotificationManager().createNotificationChannel(channel)
 
+        return createNotifOld(channelId, name, description, colorId)
     }
 
-    private fun createNotifOld(channelId: String, name: String, description: String): Notification {
+    private fun createNotifOld(channelId: String, name: String, description: String, colorId: Int)
+            : Notification {
         return NotificationCompat.Builder(this, channelId)
                 .setContentTitle(name)
                 .setContentText(description)
+                //.setContentIntent()
+                //.setDeleteIntent()
+                .setSmallIcon(R.drawable.ic_xplore_tiny)
+                .setColor(ContextCompat.getColor(this, colorId))
+                .setColorized(true)
                 .build()
     }
 
