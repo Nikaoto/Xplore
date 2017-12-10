@@ -77,6 +77,9 @@ object FirebaseUtil {
     const val F_MEMBER_IDS = "member_ids"
     const val F_INVITED_MEMBER_IDS = "invited_member_ids"
 
+    @JvmStatic
+    fun getRef(s: String) = FirebaseDatabase.getInstance().getReference(s)
+
     @JvmField
     val usersRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(F_USERS)
 
@@ -91,6 +94,9 @@ object FirebaseUtil {
 
     @JvmStatic
     fun getCurrentUserRef() = getUserRef(General.currentUserId)
+
+    @JvmStatic
+    fun getUserLocationRefString(groupId: String, userId: String) = "/$F_GROUPS/$groupId/$F_LOCATIONS/$userId/"
 
     @JvmStatic
     private fun uploadData(parentId: String, data: Map<String, Any>, ref: DatabaseReference) {
