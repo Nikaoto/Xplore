@@ -149,7 +149,7 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
                 startActivity(ReserveInfoActivity.getStartIntent(this, chosenDestId))
             } else if (groupImageUrl.isNotEmpty()) {
                 if (destinationLat != 0.0) {
-                    GroupMapActivity.getStartIntent(
+                    GroupMapActivity.newIntent(
                             this@CreateGroupActivity,
                             true,
                             resources.getString(R.string.destination),

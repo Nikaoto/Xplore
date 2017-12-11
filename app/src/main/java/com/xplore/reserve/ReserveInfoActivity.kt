@@ -126,7 +126,7 @@ class ReserveInfoActivity() : BaseActivity(), AppBarLayout.OnOffsetChangedListen
         } else {
             showonmapButton.setOnClickListener {
                 mActivity.startActivity(
-                        GroupMapActivity.getStartIntent(
+                        GroupMapActivity.newIntent(
                                 mActivity,
                                 true,
                                 reserve.name,

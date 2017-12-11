@@ -148,7 +148,7 @@ class GroupInfoActivity : RefreshableActivity() {
 
             // Onclick
             meetupLocationImageView.setOnClickListener {
-                startActivity(GroupMapActivity.getStartIntent(this, true,
+                startActivity(GroupMapActivity.newIntent(this, true,
                         getString(R.string.meetup_location), currentGroup.meetup_latitude,
                         currentGroup.meetup_longitude, MapUtil.MEETUP_MARKER_HUE))
             }
@@ -216,7 +216,7 @@ class GroupInfoActivity : RefreshableActivity() {
             //Destination image
             Picasso.with(this).load(currentGroup.group_image_url).into(reserveImageView)
             reserveCardView.setOnClickListener {
-                startActivity(GroupMapActivity.getStartIntent(this, true,
+                startActivity(GroupMapActivity.newIntent(this, true,
                         getString(R.string.destination), currentGroup.destination_latitude,
                         currentGroup.destination_longitude))
             }

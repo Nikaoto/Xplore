@@ -17,7 +17,6 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.xplore.*
 import com.xplore.R
-import com.xplore.base.BaseActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
@@ -242,7 +241,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
             dbManager.close()
         } else if (currentGroup.hasDestinationLocation()) {
             groupImageView.setOnClickListener {
-                startActivity(GroupMapActivity.getStartIntent(this, true,
+                startActivity(GroupMapActivity.newIntent(this, true,
                         getString(R.string.destination), currentGroup.destination_latitude,
                         currentGroup.destination_longitude))
             }
@@ -330,7 +329,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         }
 
         meetupLocationImageView.setOnClickListener {
-            startActivity(GroupMapActivity.getStartIntent(this, true,
+            startActivity(GroupMapActivity.newIntent(this, true,
                     getString(R.string.meetup_location), currentGroup.meetup_latitude,
                     currentGroup.meetup_longitude, MapUtil.MEETUP_MARKER_HUE))
         }
