@@ -8,10 +8,15 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import com.xplore.*
+import com.xplore.General
+import com.xplore.MemberListAdapter
 import com.xplore.R
+import com.xplore.TimeManager
 import com.xplore.base.refreshable.RefreshableActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.Group
@@ -20,8 +25,8 @@ import com.xplore.groups.view.controls.LeaderControls
 import com.xplore.groups.view.controls.MemberControls
 import com.xplore.groups.view.controls.OutsiderControls
 import com.xplore.maps.GroupMapActivity
-import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.maps.UserMarker
+import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.reserve.Icons
 import com.xplore.reserve.ReserveInfoActivity
 import com.xplore.user.User

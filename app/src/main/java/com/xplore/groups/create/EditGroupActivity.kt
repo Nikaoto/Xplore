@@ -35,11 +35,10 @@ import com.xplore.maps.GroupMapActivity
 import com.xplore.maps.SetDestinationMapActivity
 import com.xplore.user.User
 import com.xplore.util.DateUtil
-import com.xplore.util.FirebaseUtil.getUserRef
 import com.xplore.util.FirebaseUtil.F_GROUP_IDS
 import com.xplore.util.FirebaseUtil.F_INVITED_GROUP_IDS
+import com.xplore.util.FirebaseUtil.getUserRef
 import com.xplore.util.MapUtil
-
 import kotlinx.android.synthetic.main.create_group.*
 
 /**
