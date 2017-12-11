@@ -64,7 +64,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
     }
 
     private val PASSIVE_LOCAITON_REQUEST_INTERVAL = 2000L //* 60 * 2
-    private val PASSIVE_LOCAITON_REQUEST_FASTEST_INTERVAL = 1000L //* 30
+    private val PASSIVE_LOCAITON_REQUEST_FASTEST_INTERVAL = 1000L //* 60
     private val PASSIVE_LOCAITON_REQUEST_PRIORITY = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
     private val ACTIVE_LOCAITON_REQUEST_INTERVAL = 5000L
@@ -294,13 +294,6 @@ class LiveHikeMapActivity : BaseMapActivity() {
         listenerMap.clear()
     }
 
-    override fun onStartLocationUpdates() {
-        super.onStartLocationUpdates()
-
-        //stopPassiveLocationUpdates()
-        //startActiveLocationUpdates()
-    }
-
     private fun startActiveLocationUpdates() {
         locationUpdater.start()
     }
@@ -328,7 +321,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
         if (permissionsGranted()) {
             stopListeningForGroupLocations()
             stopActiveLocationUpdates()
-            if (passiveLocationUpdatesEnabled() && isFinishing) {
+            if (passiveLocationUpdatesEnabled() && !isChangingConfigurations) {
                 startPassiveLocationUpdates()
             }
         }
