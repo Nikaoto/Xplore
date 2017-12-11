@@ -30,7 +30,7 @@ import com.xplore.groups.my.LoadingMyGroupsFragment
 import com.xplore.groups.search.SearchGroupsFragment
 import com.xplore.maps.BaseMapActivity
 import com.xplore.notifications.BadgeDrawerArrowDrawable
-import com.xplore.notifications.NotificationManager
+import com.xplore.notifications.NotificationUtil
 import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
@@ -59,7 +59,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var userImageView: ImageView
     private lateinit var userFullNameTextView: TextView
 
-    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationUtil: NotificationUtil
 
     private val TAG = " main-act"
 
@@ -111,7 +111,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         // Badge for notifications
         val drawerBadge = BadgeDrawerArrowDrawable(toolbar.context)
 
-        notificationManager = NotificationManager(
+        notificationUtil = NotificationUtil(
                 drawerBadge,
                 navigationView.menu.findItem(R.id.nav_my_groups)
                         .actionView.findViewById<TextView>(R.id.myGroupsBadge) as TextView // TODO test this possible fix
@@ -180,14 +180,14 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         // Reloads user related content when new login occurs
         if (General.accountStatus == General.JUST_LOGGED_IN) {
-            notificationManager.reset()
+            notificationUtil.reset()
             refreshUserProfileViews(this)
             General.accountStatus = General.LOGGED_IN
         }
 
         // Disables notification manager and opens homepage if logged out from settings
         if (General.accountStatus == General.NOT_LOGGED_IN && !appJustLaunched) {
-            notificationManager.disable()
+            notificationUtil.disable()
             finish()
             startActivity(SignInActivity.newIntent(this, true))
         }

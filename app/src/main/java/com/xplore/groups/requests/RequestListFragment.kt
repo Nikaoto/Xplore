@@ -33,7 +33,9 @@ open class RequestListFragment : Fragment() {
     // TODO: integrate with FirebaseUtil
 
     companion object {
+        @JvmStatic
         protected val ARG_GROUP_ID = "groupId"
+        @JvmStatic
         protected val ARG_USER_IDS = "userIds"
     }
 
