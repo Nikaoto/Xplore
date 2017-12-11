@@ -3,6 +3,7 @@ package com.xplore.maps
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Build
 import android.os.IBinder
 import android.support.annotation.RequiresApi
@@ -10,10 +11,12 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.model.LatLng
 import com.xplore.General
 import com.xplore.MainActivity
 import com.xplore.R
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
+import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.util.FirebaseUtil
 
 /**
@@ -33,6 +36,8 @@ class LocationUpdateService : Service() {
         private const val ARG_LOCATION_REQUEST = "locationRequest"
         private const val ARG_GROUP_ID = "groupId"
         private const val ARG_USER_ID = "userId"
+        private const val ARG_DEST_NAME = "destName"
+        private const val ARG_DEST_LAT_LNG = "destLatLng"
         private const val NOTIFICATION_CHANNEL_ID = "xplore-live-hike-01"
         private const val FOREGROUND_ID = 1
 
@@ -43,11 +48,14 @@ class LocationUpdateService : Service() {
         }
 
         @JvmStatic
-        fun newIntent(context: Context, locationRequest: LocationRequest, groupId: String): Intent {
+        fun newIntent(context: Context, locationRequest: LocationRequest, groupId: String,
+                      destName: String, destLatLng: LatLng): Intent {
             return Intent(context, LocationUpdateService::class.java)
                     .putExtra(ARG_LOCATION_REQUEST, locationRequest)
                     .putExtra(ARG_GROUP_ID, groupId)
                     .putExtra(ARG_USER_ID, General.currentUserId)
+                    .putExtra(ARG_DEST_NAME, destName)
+                    .putExtra(ARG_DEST_LAT_LNG, destLatLng)
         }
     }
 
@@ -56,6 +64,8 @@ class LocationUpdateService : Service() {
 
     private lateinit var groupId: String
     private lateinit var userId: String
+    private lateinit var destName: String
+    private lateinit var destLatLng: LatLng
 
     override fun onBind(intent: Intent?): IBinder? {
         log("onBind")
@@ -69,6 +79,8 @@ class LocationUpdateService : Service() {
         // Get passed data
         userId = intent.getStringExtra(ARG_USER_ID)
         groupId = intent.getStringExtra(ARG_GROUP_ID)
+        destName = intent.getStringExtra(ARG_DEST_NAME)
+        destLatLng = intent.getParcelableExtra(ARG_DEST_LAT_LNG) as LatLng
         locationRequest = intent.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
 
 
@@ -82,16 +94,10 @@ class LocationUpdateService : Service() {
         locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
         locationUpdater.start()
 
-        return START_STICKY
-    }
-
-    override fun onCreate() {
-        log("onCreate")
-        super.onCreate()
 
         val dist = 167
         val notificationName = "Xplore - Live Hike"
-        val notificationDescription = "${dist}m to destination"
+        val notificationDescription = "Updating Location"
         val notificationColorId = R.color.colorPrimary
 
         val newNotification = createNotification(
@@ -102,6 +108,13 @@ class LocationUpdateService : Service() {
         )
 
         startForeground(FOREGROUND_ID, newNotification)
+
+        return START_STICKY
+    }
+
+    override fun onCreate() {
+        log("onCreate")
+        super.onCreate()
     }
 
     private fun createNotification(channelId: String, name: String, description: String,
@@ -134,7 +147,10 @@ class LocationUpdateService : Service() {
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(MainActivity::class.java)
         stackBuilder.addNextIntent(mainActIntent)
+        stackBuilder.addNextIntent(LiveHikeMapActivity.newIntent(this, groupId, destName,
+                destLatLng.latitude, destLatLng.longitude))
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
 
         return NotificationCompat.Builder(this, channelId)
                 .setContentTitle(name)

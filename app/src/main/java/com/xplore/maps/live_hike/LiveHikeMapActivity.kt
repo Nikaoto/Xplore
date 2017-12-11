@@ -32,6 +32,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
     private val TAG = "live-hike-act"
     private fun log(s: String) = Log.i(TAG, s)
 
+    // TODO change lat and lng args to latlng
     companion object {
         private const val ARG_GROUP_ID = "groupId"
         private const val ARG_DEST_NAME = "destName"
@@ -83,7 +84,8 @@ class LiveHikeMapActivity : BaseMapActivity() {
             .setPriority(PASSIVE_LOCAITON_REQUEST_PRIORITY)
 
     private val locationUpdateServiceIntent: Intent by lazy {
-        LocationUpdateService.newIntent(this, passiveLocationRequest, groupId)
+        LocationUpdateService.newIntent(this, passiveLocationRequest, groupId,
+                destinationName, destinationLocation)
     }
 
     private val activeLocationRequest = LocationRequest()
