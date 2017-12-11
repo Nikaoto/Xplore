@@ -94,7 +94,6 @@ class LocationUpdateService : Service() {
         locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
         locationUpdater.start()
 
-
         val dist = 167
         val notificationName = "Xplore - Live Hike"
         val notificationDescription = "Updating Location"

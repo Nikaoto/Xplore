@@ -166,11 +166,13 @@ class LiveHikeMapActivity : BaseMapActivity() {
         log("onResume")
         super.onResume()
 
-        //stopPassiveLocationUpdates()
-        if (!listeningForGroupLocations() && map != null) {
-            startListeningForGroupLocations(map!!)
+        if (permissionsGranted()) {
+            if (!listeningForGroupLocations() && map != null) {
+                startListeningForGroupLocations(map!!)
+            }
+            stopPassiveLocationUpdates()
+            startActiveLocationUpdates()
         }
-        startActiveLocationUpdates()
     }
 
     private fun buildDestinationMarker(): MarkerOptions {
@@ -272,7 +274,6 @@ class LiveHikeMapActivity : BaseMapActivity() {
         super.onStartLocationUpdates()
 
         //stopPassiveLocationUpdates()
-        startPassiveLocationUpdates()
         //startActiveLocationUpdates()
     }
 
@@ -304,12 +305,12 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     override fun onPause() {
         super.onPause()
-
-        stopListeningForGroupLocations()
-        stopActiveLocationUpdates()
-
-        if (passiveLocationUpdatesEnabled()) {
-            startPassiveLocationUpdates()
+        if (permissionsGranted()) {
+            stopListeningForGroupLocations()
+            stopActiveLocationUpdates()
+            if (passiveLocationUpdatesEnabled()) {
+                startPassiveLocationUpdates()
+            }
         }
     }
 
