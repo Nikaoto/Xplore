@@ -85,16 +85,7 @@ class LocationUpdateService : Service() {
         locationRequest = intent.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
 
 
-        // Create Pending Intent
-        val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(
-                this,
-                FirebaseUtil.getRef(FirebaseUtil.getUserLocationRefString(groupId, userId))
-        )
-
-        // Create and start LocationUpdater
-        locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
-        locationUpdater.start()
-
+        // Create and show notification
         val dist = 167
         val notificationName = "Xplore - Live Hike"
         val notificationDescription = "Updating Location"
@@ -106,8 +97,17 @@ class LocationUpdateService : Service() {
                 notificationDescription,
                 notificationColorId
         )
-
         startForeground(FOREGROUND_ID, newNotification)
+
+        // Create Pending Intent
+        val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(
+                this,
+                FirebaseUtil.getRef(FirebaseUtil.getUserLocationRefString(groupId, userId))
+        )
+
+        // Create and start LocationUpdater
+        locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
+        locationUpdater.start()
 
         return START_STICKY
     }
