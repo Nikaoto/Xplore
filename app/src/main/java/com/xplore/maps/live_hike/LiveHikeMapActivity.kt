@@ -2,6 +2,7 @@ package com.xplore.maps.live_hike
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.xplore.maps.LocationUpdateService
 import com.xplore.maps.LocationUpdater
 import com.xplore.maps.UserMarker
 import com.xplore.util.FirebaseUtil
+import kotlinx.android.synthetic.main.live_hike.*
 
 /**
  * Created by Nik on 12/5/2017.
@@ -38,6 +40,9 @@ class LiveHikeMapActivity : BaseMapActivity() {
         private const val ARG_DEST_NAME = "destName"
         private const val ARG_DEST_LAT = "destLat"
         private const val ARG_DEST_LNG = "destLng"
+
+        private const val PREFS_NAME = "com.xplore.maps.LiveHikeMapAct"
+        private const val PREFS_AUTO_LIVE_HIKE_ENABLED = "auto-live-hike-enabled"
 
         @JvmStatic
         fun newIntent(context: Context, groupId: String, destinationName: String,
@@ -110,6 +115,11 @@ class LiveHikeMapActivity : BaseMapActivity() {
         groupLocationsRef.child(General.currentUserId)
     }
 
+    // Prefs
+    private val prefs: SharedPreferences by lazy {
+        this@LiveHikeMapActivity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
     // Layout
     override val layoutId = R.layout.live_hike
     override val titleId = R.string.activity_live_hike_title
@@ -117,6 +127,12 @@ class LiveHikeMapActivity : BaseMapActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         log("onCreate")
+
+        autoLiveHikeSwitch.isChecked = prefs.getBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, false)
+        autoLiveHikeSwitch.setOnCheckedChangeListener { _, isEnabled ->
+            prefs.edit().putBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, isEnabled).apply()
+        }
+
         firstUploadData()
     }
 
@@ -297,11 +313,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
         stopService(locationUpdateServiceIntent)
     }
 
-    // If auto live hike is on
-    private fun passiveLocationUpdatesEnabled(): Boolean {
-        return false
-        //TODO("check if auto live hike switch is on")
-    }
+    private fun passiveLocationUpdatesEnabled() = prefs.getBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, false)
 
     override fun onPause() {
         super.onPause()
