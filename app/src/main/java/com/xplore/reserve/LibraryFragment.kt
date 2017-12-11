@@ -24,6 +24,8 @@ import java.util.*
 
 class LibraryFragment : SearchFragment() {
 
+    //TODO add description and revamp companion obj- add newInstance
+
     companion object {
         const val REQ_CODE_RESERVE_INFO = 1
         const val ARG_GROUP_SEARCH_DESTINATION_ID = "search_dest_id"
