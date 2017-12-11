@@ -97,6 +97,14 @@ object FirebaseUtil {
     @JvmStatic
     fun getUserLocationRefString(groupId: String, userId: String) = "/$F_GROUPS/$groupId/$F_LOCATIONS/$userId/"
 
+    // Gets 'invited group ids' node reference for given user
+    @JvmStatic fun getInvitedGroupIdsRef(userId: String): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+                .child(F_USERS)
+                .child(userId)
+                .child(F_INVITED_GROUP_IDS)
+    }
+
     @JvmStatic
     private fun uploadData(parentId: String, data: Map<String, Any>, ref: DatabaseReference) {
         val update = HashMap<String, Any>()
