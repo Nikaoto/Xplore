@@ -26,7 +26,15 @@ import kotlinx.android.synthetic.main.live_hike.*
 
 /**
  * Created by Nik on 12/5/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Used for Live Hikes.
+ *
+ * When active -> uses locationCallback for active (quick) location updates; also listens for member
+ * location changes and displays their locations on map
+ *
+ * When auto live hike enabled and in background -> uses LiveHikeLocationService with
+ * LiveHikeBroadcastReceiver for background (slow) locaiton updates
+ *
  */
 
 class LiveHikeMapActivity : BaseMapActivity() {
@@ -320,14 +328,17 @@ class LiveHikeMapActivity : BaseMapActivity() {
         if (permissionsGranted()) {
             stopListeningForGroupLocations()
             stopActiveLocationUpdates()
-            if (passiveLocationUpdatesEnabled()) {
+            if (passiveLocationUpdatesEnabled() && isFinishing) {
                 startPassiveLocationUpdates()
             }
         }
     }
 
     override fun onDestroy() {
+        log("onDestroy")
         super.onDestroy()
+
+        stopActiveLocationUpdates()
 
         if (!passiveLocationUpdatesEnabled()) {
             stopPassiveLocationUpdates()
