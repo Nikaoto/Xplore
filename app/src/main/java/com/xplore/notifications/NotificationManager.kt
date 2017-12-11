@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import com.google.firebase.database.*
 import com.xplore.General
-
+import com.xplore.util.FirebaseUtil.getInvitedGroupIdsRef
 
 /**
  * Created by Nik on 7/22/2017.
@@ -21,16 +21,7 @@ class NotificationManager(
         private val drawerBadge: BadgeDrawerArrowDrawable,
         private val myGroupsBadge: TextView) {
 
-    //Firebase
-    private val F_USERS = "users"
-    private val F_INVITED_GROUP_IDS = "invited_group_ids"
-    private fun getInvitedGroupIdsFirebaseReference(userId: String): DatabaseReference {
-        return FirebaseDatabase.getInstance().reference
-                .child(F_USERS)
-                .child(userId)
-                .child(F_INVITED_GROUP_IDS)
-    }
-    private var invitedGroupIdsRef = getInvitedGroupIdsFirebaseReference(General.currentUserId)
+    private var invitedGroupIdsRef = getInvitedGroupIdsRef(General.currentUserId)
 
     //Listener for tracking changes in invites
     private val inviteListener = object : ChildEventListener {
@@ -107,7 +98,7 @@ class NotificationManager(
 
     fun reset() {
         invitedGroupIdsRef.removeEventListener(inviteListener)
-        invitedGroupIdsRef = getInvitedGroupIdsFirebaseReference(General.currentUserId)
+        invitedGroupIdsRef = getInvitedGroupIdsRef(General.currentUserId)
         init()
     }
 
