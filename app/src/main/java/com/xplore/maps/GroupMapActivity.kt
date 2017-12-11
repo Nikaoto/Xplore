@@ -2,10 +2,6 @@ package com.xplore.maps
 
 import android.content.Context
 import android.content.Intent
-import android.location.Location
-import android.os.Bundle
-import android.util.Log
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -13,22 +9,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
-import com.xplore.General
-import com.xplore.util.FirebaseUtil.F_GROUP_NAME
-import com.xplore.util.FirebaseUtil.F_LATITUDE
-import com.xplore.util.FirebaseUtil.F_LOCATIONS
-import com.xplore.util.FirebaseUtil.F_LONGITUDE
-import com.xplore.util.FirebaseUtil.getCurrentUserRef
-import com.xplore.util.FirebaseUtil.getGroupRef
 import com.xplore.util.MapUtil
 
 /**
  * Created by Nikaoto on 8/20/2017.
  *
- * When viewing reserve or destination -> opens map with marker at reserve
- * When viewing live hike -> opens map and creates listeners for each member and puts them in a
- * hashmap. Creates markers from member location data and puts them in a separate hashmap (each
- * marker has the same key as its listener). Enables each listener and removes them in onDestroy()
+ * When viewing reserve -> Opens map with marker at reserve
+ * When viewing destination -> Opens map with markers at destination and stops (incl. meetup) TODO add stops
  *
  */
 
@@ -44,10 +31,10 @@ class GroupMapActivity : BaseMapActivity() {
         private const val ARG_ZOOM_TO_DESTINATION = "zoomToDestination"
         private const val ARG_MARKER_HUE = "markerHue"
 
-        //When opening reserve
+        //When viewing reserve or marker
         @JvmStatic
-        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
-                           destinationLat: Double, destinationLng: Double): Intent {
+        fun newIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
+                      destinationLat: Double, destinationLng: Double): Intent {
             return Intent(context, GroupMapActivity::class.java)
                     .putExtra(ARG_ZOOM_TO_DESTINATION, zoomToDestination)
                     .putExtra(ARG_DESTINATION_NAME, destinationName)
@@ -55,10 +42,11 @@ class GroupMapActivity : BaseMapActivity() {
                     .putExtra(ARG_DESTINATION_LNG, destinationLng)
         }
 
+        // When marking location on map
         @JvmStatic
-        fun getStartIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
-                           destinationLat: Double, destinationLng: Double, markerHue: Float)
-                : Intent = getStartIntent(context, zoomToDestination, destinationName,
+        fun newIntent(context: Context, zoomToDestination: Boolean, destinationName: String,
+                      destinationLat: Double, destinationLng: Double, markerHue: Float)
+                : Intent = newIntent(context, zoomToDestination, destinationName,
                 destinationLat, destinationLng).putExtra(ARG_MARKER_HUE, markerHue)
     }
 
@@ -74,19 +62,6 @@ class GroupMapActivity : BaseMapActivity() {
     }
     private val markerHue: Float by lazy {
         intent.getFloatExtra(ARG_MARKER_HUE, MapUtil.DEFAULT_MARKER_HUE)
-    }
-
-    private lateinit var locationUpdater: LocationUpdater
-
-    // Markers for member tracking
-    private val mapMarkers = HashMap<String, Marker>()
-    // Holds references to each members' location so we can disable them OnDestroy()
-    private val listenerMap = HashMap<String, ChildEventListener>()
-
-    override fun onStartLocationUpdates() {
-        super.onStartLocationUpdates()
-
-        locationUpdater.start()
     }
 
     private fun buildDestinationMarker(): MarkerOptions {
@@ -116,16 +91,5 @@ class GroupMapActivity : BaseMapActivity() {
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(destinationLocation, ZOOM_AMOUNT)
             googleMap.animateCamera(cameraUpdate)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopLocationUpdates()
-    }
-
-    override fun stopLocationUpdates() {
-        super.stopLocationUpdates()
-
-        locationUpdater.stop()
     }
 }
