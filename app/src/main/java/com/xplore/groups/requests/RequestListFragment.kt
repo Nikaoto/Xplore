@@ -30,10 +30,11 @@ import kotlinx.android.synthetic.main.request_list.*
 
 open class RequestListFragment : Fragment() {
 
+    // TODO: integrate with FirebaseUtil
+
     companion object {
-        //Arguments
-        val ARG_GROUP_ID = "groupId"
-        val ARG_USER_IDS = "userIds"
+        protected val ARG_GROUP_ID = "groupId"
+        protected val ARG_USER_IDS = "userIds"
     }
 
     //Firebase
