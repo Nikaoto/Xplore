@@ -17,9 +17,8 @@ import com.xplore.util.FirebaseUtil.getInvitedGroupIdsRef
  *
  */
 
-class NotificationManager(
-        private val drawerBadge: BadgeDrawerArrowDrawable,
-        private val myGroupsBadge: TextView) {
+class NotificationUtil(private val drawerBadge: BadgeDrawerArrowDrawable,
+                           private val myGroupsBadge: TextView) {
 
     private var invitedGroupIdsRef = getInvitedGroupIdsRef(General.currentUserId)
 

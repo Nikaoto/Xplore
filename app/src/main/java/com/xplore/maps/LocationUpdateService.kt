@@ -1,9 +1,6 @@
 package com.xplore.maps
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -13,6 +10,8 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.google.android.gms.location.LocationRequest
+import com.xplore.General
+import com.xplore.MainActivity
 import com.xplore.R
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
 import com.xplore.util.FirebaseUtil
@@ -21,7 +20,7 @@ import com.xplore.util.FirebaseUtil
  * Created by Nika on 12/2/2017.
  *
  * A Service wrapper for the LocationUpdater. Allows use of LocationUpdater in the background with
- * PendingIntent and LocationUpdateBroadcastReceiver receiving callbacks
+ * PendingIntent and a BroadcastReceiver receiving callbacks
  *
  */
 
@@ -30,12 +29,12 @@ class LocationUpdateService : Service() {
     private val TAG = "location-update-serv"
     private fun log(s: String) = Log.i(TAG, s)
 
-    private val id = 1
-
     companion object {
-        const val ARG_LOCATION_REQUEST = "locationRequest"
-        const val ARG_UPLOAD_LOCATION = "uploadLocation"
-        const val CHANNEL_ID = "xplore-live-hike-01"
+        private const val ARG_LOCATION_REQUEST = "locationRequest"
+        private const val ARG_GROUP_ID = "groupId"
+        private const val ARG_USER_ID = "userId"
+        private const val NOTIFICATION_CHANNEL_ID = "xplore-live-hike-01"
+        private const val FOREGROUND_ID = 1
 
         @JvmStatic
         fun newIntent(context: Context, locationRequest: LocationRequest): Intent {
@@ -44,29 +43,42 @@ class LocationUpdateService : Service() {
         }
 
         @JvmStatic
-        fun newIntent(context: Context, locationRequest: LocationRequest, uploadLocaiton: String): Intent {
+        fun newIntent(context: Context, locationRequest: LocationRequest, groupId: String): Intent {
             return Intent(context, LocationUpdateService::class.java)
                     .putExtra(ARG_LOCATION_REQUEST, locationRequest)
-                    .putExtra(ARG_UPLOAD_LOCATION, uploadLocaiton)
+                    .putExtra(ARG_GROUP_ID, groupId)
+                    .putExtra(ARG_USER_ID, General.currentUserId)
         }
     }
 
     private lateinit var locationUpdater: LocationUpdater
     private lateinit var locationRequest: LocationRequest
 
+    private lateinit var groupId: String
+    private lateinit var userId: String
+
     override fun onBind(intent: Intent?): IBinder? {
         log("onBind")
         return null
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         log("onStartCommand")
         super.onStartCommand(intent, flags, startId)
 
-        locationRequest = intent?.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
-        val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(this,
-                FirebaseUtil.getRef(intent.getStringExtra(ARG_UPLOAD_LOCATION)))
+        // Get passed data
+        userId = intent.getStringExtra(ARG_USER_ID)
+        groupId = intent.getStringExtra(ARG_GROUP_ID)
+        locationRequest = intent.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
 
+
+        // Create Pending Intent
+        val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(
+                this,
+                FirebaseUtil.getRef(FirebaseUtil.getUserLocationRefString(groupId, userId))
+        )
+
+        // Create and start LocationUpdater
         locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
         locationUpdater.start()
 
@@ -77,14 +89,27 @@ class LocationUpdateService : Service() {
         log("onCreate")
         super.onCreate()
 
-        val name = "Xplore Location Update"
-        val description = "description"
-        val notifColorId = R.color.colorPrimary
+        val dist = 167
+        val notificationName = "Xplore - Live Hike"
+        val notificationDescription = "${dist}m to destination"
+        val notificationColorId = R.color.colorPrimary
 
+        val newNotification = createNotification(
+                NOTIFICATION_CHANNEL_ID,
+                notificationName,
+                notificationDescription,
+                notificationColorId
+        )
+
+        startForeground(FOREGROUND_ID, newNotification)
+    }
+
+    private fun createNotification(channelId: String, name: String, description: String,
+                                   colorId: Int): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(id, createNotifNew(CHANNEL_ID, name, description, notifColorId))
+            return createNotifNew(channelId, name, description, colorId)
         } else {
-            startForeground(id, createNotifOld(CHANNEL_ID, name, description, notifColorId))
+            return createNotifOld(NOTIFICATION_CHANNEL_ID, name, description, colorId)
         }
     }
 
@@ -104,10 +129,17 @@ class LocationUpdateService : Service() {
 
     private fun createNotifOld(channelId: String, name: String, description: String, colorId: Int)
             : Notification {
+
+        val mainActIntent = Intent(this, MainActivity::class.java)
+        val stackBuilder = TaskStackBuilder.create(this)
+        stackBuilder.addParentStack(MainActivity::class.java)
+        stackBuilder.addNextIntent(mainActIntent)
+        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
         return NotificationCompat.Builder(this, channelId)
                 .setContentTitle(name)
                 .setContentText(description)
-                //.setContentIntent()
+                .setContentIntent(pendingIntent)
                 //.setDeleteIntent()
                 .setSmallIcon(R.drawable.ic_xplore_tiny)
                 .setColor(ContextCompat.getColor(this, colorId))
