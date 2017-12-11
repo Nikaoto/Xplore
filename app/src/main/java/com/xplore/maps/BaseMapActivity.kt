@@ -35,7 +35,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     private val REQ_CODE_REQUEST_PERMISSION = 2
     private val REQUEST_CHECK_SETTINGS = 0x1
 
-    open lateinit var map: GoogleMap
+    open var map: GoogleMap? = null
     // private var kmlEnabled = false
     // private var kmlLayer: KmlLayer? = null
 
@@ -77,13 +77,13 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    // Called once after onCreate
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
         map = googleMap
 
-
         if (permissionsGranted()) {
-            configureMap(map)
+            configureMap(map!!)
         } else {
             requestPermissions()
         }
@@ -134,7 +134,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
             when {
                 grantResults.isEmpty() -> Log.i(TAG, "user interaction cancelled")
 
-                grantResults[0] == PackageManager.PERMISSION_GRANTED -> configureMap(map)
+                grantResults[0] == PackageManager.PERMISSION_GRANTED -> configureMap(map!!)
 
                 else -> onBackPressed() //TODO explain here why you need to track their location
             }
@@ -142,7 +142,9 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onResume() {
+        Log.i(TAG, "onResume")
         super.onResume()
+
         if (!permissionsGranted()) {
             requestPermissions()
         }

@@ -116,7 +116,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        log("oncreate")
+        log("onCreate")
         firstUploadData()
     }
 
@@ -162,6 +162,17 @@ class LiveHikeMapActivity : BaseMapActivity() {
         startListeningForGroupLocations(googleMap)
     }
 
+    override fun onResume() {
+        log("onResume")
+        super.onResume()
+
+        //stopPassiveLocationUpdates()
+        if (!listeningForGroupLocations() && map != null) {
+            startListeningForGroupLocations(map!!)
+        }
+        startActiveLocationUpdates()
+    }
+
     private fun buildDestinationMarker(): MarkerOptions {
         // TODO add meetup location marker
         val markerOptions = MarkerOptions()
@@ -173,6 +184,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
 
     // Sets up listeners for member locations
     private fun startListeningForGroupLocations(googleMap: GoogleMap) {
+        log("startListeningForGroupLocations")
         groupLocationsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 dataSnapshot?.let {
@@ -247,17 +259,13 @@ class LiveHikeMapActivity : BaseMapActivity() {
          argument) */
     }
 
-    private fun stopListeningForMemberLocations() {
+    private fun listeningForGroupLocations() = listenerMap.isNotEmpty()
+
+    private fun stopListeningForGroupLocations() {
         listenerMap.forEach { entry ->
             groupLocationsRef.child(entry.key).removeEventListener(entry.value)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Allows us to renew/resume location updates
-        checkLocationEnabled()
+        listenerMap.clear()
     }
 
     override fun onStartLocationUpdates() {
@@ -285,10 +293,10 @@ class LiveHikeMapActivity : BaseMapActivity() {
     }
 
     private fun stopPassiveLocationUpdates() {
-        return
-        //TODO("implement this")
+        stopService(locationUpdateServiceIntent)
     }
 
+    // If auto live hike is on
     private fun passiveLocationUpdatesEnabled(): Boolean {
         return false
         //TODO("check if auto live hike switch is on")
@@ -297,7 +305,7 @@ class LiveHikeMapActivity : BaseMapActivity() {
     override fun onPause() {
         super.onPause()
 
-        stopListeningForMemberLocations()
+        stopListeningForGroupLocations()
         stopActiveLocationUpdates()
 
         if (passiveLocationUpdatesEnabled()) {
