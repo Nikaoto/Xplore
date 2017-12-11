@@ -72,6 +72,10 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         setContentView(layoutId)
         setTitle(titleId)
 
+        if (!permissionsGranted()) {
+            requestPermissions()
+        }
+
         // Init map
         val mapFragment = supportFragmentManager.findFragmentById(mapFragmentId) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -91,7 +95,7 @@ open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {
         //configureKmlButton(googleMap)
     }
 
-    private fun permissionsGranted(permission: String = Manifest.permission.ACCESS_FINE_LOCATION)
+    fun permissionsGranted(permission: String = Manifest.permission.ACCESS_FINE_LOCATION)
             = ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
     // Does things to map; override this instead of onMapReady
