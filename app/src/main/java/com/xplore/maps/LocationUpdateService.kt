@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.xplore.General
 import com.xplore.MainActivity
 import com.xplore.R
+import com.xplore.groups.view.GroupInfoActivity
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
 import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.util.FirebaseUtil
@@ -146,6 +147,7 @@ class LocationUpdateService : Service() {
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(MainActivity::class.java)
         stackBuilder.addNextIntent(mainActIntent)
+        stackBuilder.addNextIntent(GroupInfoActivity.getStartIntent(this, groupId))
         stackBuilder.addNextIntent(LiveHikeMapActivity.newIntent(this, groupId, destName,
                 destLatLng.latitude, destLatLng.longitude))
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
