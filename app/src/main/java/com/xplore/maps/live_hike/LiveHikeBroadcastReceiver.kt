@@ -16,8 +16,6 @@ import com.xplore.util.FirebaseUtil
  * BroadcastReceiver class for background location updates during a Live Hike.
  * Uploads Location data to given firebase node.
  *
- * TODO add interface OnLocationReceivedListener in the future
- *
  */
 
 class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
@@ -36,7 +34,6 @@ class LiveHikeBroadcastReceiver(): BroadcastReceiver() {
             return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        // TODO use EventBus? : https://stackoverflow.com/questions/38954261/how-to-pass-data-from-broadcastreceiver-to-activity-without-in-oncreate
         // TODO remove these statics when Google updates fusedLocationProviderClient api
         @JvmField
         var uploadRef: DatabaseReference? = null

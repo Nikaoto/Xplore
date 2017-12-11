@@ -16,10 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="8dp"
         android:layout_alignParentBottom="true">
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/autoLiveHikeSwitch"/>
+            android:layout_toStartOf="@id/autoLiveHikeSwitch"/>
 
         <Switch
             android:id="@+id/autoLiveHikeSwitch"

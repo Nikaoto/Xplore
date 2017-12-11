@@ -21,7 +21,10 @@ import com.xplore.base.BaseAppCompatActivity
 
 /**
  * Created by Nika on 8/20/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Used as a base activity for all activities using a map fragment.
+ * Handles location permissions, map configuration and user location map tracking.
+ *
  */
 
 open class BaseMapActivity : BaseAppCompatActivity(), OnMapReadyCallback {

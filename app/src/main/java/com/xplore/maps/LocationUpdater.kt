@@ -39,11 +39,6 @@ class LocationUpdater private constructor (private val context: Context,
                     // Update last location
                     lastLocation = locationResult.lastLocation
 
-                    // TODO remove this log
-                    log("""onLocationUpdate:
-                            |latitude: ${locationResult.lastLocation.latitude}
-                            |longitude: ${locationResult.lastLocation.longitude}""".trimMargin())
-
                     onLocationUpdate?.invoke(locationResult)
                 }
             }
