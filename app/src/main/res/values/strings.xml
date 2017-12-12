@@ -123,7 +123,7 @@
     <string name="end_time">დასასრულის დრო</string>
     <string name="cancel_join_request">გაწევრიანების თხოვნის გაუქმება</string>
     <string name="open_discussion">დისკუსიის ნახვა</string>
-    <string name="see_on_map">ლაივ ლაშქრობის ნახვა</string>
+    <string name="open_live_hike">ლაივ ლაშქრობის ნახვა</string>
     <string name="finish_hike_question">დასრულდა ლაშქრობა</string>
     <string name="finish_hike_text">გსურთ გუნდის დახურვა?</string>
 
@@ -174,7 +174,8 @@
     <string name="drop_pin_help">მიმართულების მისათითებლად რუკაზე დააჭირეთ თითი დიდი ხნით.
         უკვე დაგდებული პინის გადასაადგილებლად ასევე დააჭირეთ მას დიდი ხნით.</string>
     <string name="live_hike">ლაივ ლაშქრობა</string>
-
+    <string name="live_hike_notification_name">Xplore - ლაივ ლაშქრობა</string>
+    <string name="live_hike_notification_description">მიმდინარეობს ადგილმდებარეობის განახლება</string>
 
     <!-- Library & Reserve -->
     <string name="lib_fauna_header">ფაუნა</string>

@@ -188,7 +188,7 @@
     <string name="drop_pin_help">"Чтобы выбрать местоположение, нажмите на карту подольше. Продолжительном нажатии вы также можете перемещать передвинуть пина. "</string>
     <string name="error">Произошла ошибка</string>
     <string name="open_discussion">Открыть Дискуссию</string>
-    <string name="see_on_map">Посмотреть на карте</string>
+    <string name="open_live_hike">Посмотреть на Живой Поход</string>
     <string name="to_remove">Удалить</string>
     <string name="remove_member_question">Хотите ли вы удалить этого участника из группы?</string>
     <string name="logged_in">Авторизация совершенно</string>
@@ -242,9 +242,11 @@
     <string name="find_hikes_with_this_destination">Найдите походы</string>
     <string name="mobile_number_reason_title">Мобильный Номер</string>
     <string name="mobile_number_reason_message">Требуется только для того, чтобы ваши друзья могли с вами связаться</string>
-    <string name="please_wait">Пожалуйста, подождите...</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
     <string name="live_hike">Живой Поход</string>
     <string name="activity_live_hike_title">Живой Поход</string>
+    <string name="live_hike_notification_name">Xplore - Живой Поход</string>
+    <string name="live_hike_notification_description">Обновляется Местонахождение</string>
 
     <!-- -->
 </resources>

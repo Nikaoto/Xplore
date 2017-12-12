@@ -187,7 +187,7 @@
     <string name="drop_pin_help">To choose a destination just long press on the map. Dropped pins can be selected with a long press as well.</string>
     <string name="error">Error</string>
     <string name="open_discussion">Open Discussion</string>
-    <string name="see_on_map">See live hike</string>
+    <string name="open_live_hike">See Live Hike</string>
     <string name="to_remove">Remove</string>
     <string name="remove_member_question">Do you wish to remove this member from your group?</string>
     <string name="logged_in">Logged In</string>
@@ -254,5 +254,7 @@
     <string name="please_wait">Please wait...</string>
     <string name="live_hike">Live Hike</string>
     <string name="activity_live_hike_title">Live Hike</string>
+    <string name="live_hike_notification_name">Xplore - Live Hike</string>
+    <string name="live_hike_notification_description">Updating Location</string>
 
 </resources>

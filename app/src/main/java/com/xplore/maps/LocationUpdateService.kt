@@ -84,10 +84,9 @@ class LocationUpdateService : Service() {
         locationRequest = intent.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
 
 
-        // Create and show notification
-        val dist = 167
-        val notificationName = "Xplore - Live Hike"
-        val notificationDescription = "Updating Location"
+        // Create and show notification TODO add distance calculation
+        val notificationName = getString(R.string.live_hike_notification_name)
+        val notificationDescription = getString(R.string.live_hike_notification_description)
         val notificationColorId = R.color.colorPrimary
 
         val newNotification = createNotification(
