@@ -7,6 +7,8 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.widget.Switch
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +24,6 @@ import com.xplore.maps.LocationUpdateService
 import com.xplore.maps.LocationUpdater
 import com.xplore.maps.UserMarker
 import com.xplore.util.FirebaseUtil
-import kotlinx.android.synthetic.main.live_hike.*
 
 /**
  * Created by Nik on 12/5/2017.
@@ -131,22 +132,32 @@ class LiveHikeMapActivity : BaseMapActivity() {
     // Layout
     override val layoutId = R.layout.live_hike
     override val titleId = R.string.activity_live_hike_title
+    private lateinit var liveHikeSwitch: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         log("onCreate")
 
-        autoLiveHikeSwitch.isChecked = prefs.getBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, false)
-        autoLiveHikeSwitch.setOnCheckedChangeListener { _, isEnabled ->
-            prefs.edit().putBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, isEnabled).apply()
-        }
-
         firstUploadData()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.live_hike_menu, menu)
+
+        // Set up switch
+        liveHikeSwitch = menu?.findItem(R.id.liveHikeSwitch)
+                ?.actionView?.findViewById(R.id.actionBarSwitch) as Switch
+        liveHikeSwitch.isChecked = prefs.getBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, false)
+        liveHikeSwitch.setOnCheckedChangeListener { _, isEnabled ->
+            prefs.edit().putBoolean(PREFS_AUTO_LIVE_HIKE_ENABLED, isEnabled).apply()
+        }
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
     /* Uploads a UserCard to this user's location node if it doesn't exist.
-    When a new user joins a group, a new location node won't be created, so we upload a UserMarker
-    in the locations node with default location (0,0)*/
+        When a new user joins a group, a new location node won't be created, so we upload a UserMarker
+        in the locations node with default location (0,0)*/
     private fun firstUploadData() {
         currentUserLocationRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(locationSnapshot: DataSnapshot?) {
