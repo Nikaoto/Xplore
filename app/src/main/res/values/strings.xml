@@ -175,7 +175,7 @@
         უკვე დაგდებული პინის გადასაადგილებლად ასევე დააჭირეთ მას დიდი ხნით.</string>
     <string name="live_hike">ლაივ ლაშქრობა</string>
     <string name="live_hike_notification_name">Xplore - ლაივ ლაშქრობა</string>
-    <string name="live_hike_notification_description">მიმდინარეობს ადგილმდებარეობის განახლება</string>
+    <string name="live_hike_notification_description">ახლდება ადგილმდებარეობა</string>
 
     <!-- Library & Reserve -->
     <string name="lib_fauna_header">ფაუნა</string>
