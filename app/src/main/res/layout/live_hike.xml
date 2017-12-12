@@ -9,35 +9,5 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
-        <!-- android:layout_above="@id/mapControls"/> -->
-
-<!--    <RelativeLayout
-        android:id="@+id/mapControls"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:id="@+id/autoLiveHikeTextView"
-            android:text="Auto Live Hike"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/autoLiveHikeSwitch"/>
-
-        <Switch
-            android:id="@+id/autoLiveHikeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
-
-    </RelativeLayout>-->
 
 </RelativeLayout>
