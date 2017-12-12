@@ -76,8 +76,8 @@
 
                     <!-- Show open map button -->
                     <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/openMapButton"
-                        android:text="@string/see_on_map"
+                        android:id="@+id/openLiveHikeButton"
+                        android:text="@string/open_live_hike"
                         android:visibility="gone"
                         tools:visibility="visible"
                         app:backgroundTint="@color/orange"

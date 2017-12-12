@@ -165,8 +165,8 @@ class GroupInfoActivity : RefreshableActivity() {
         if (TimeManager.intTimeStamp >= currentGroup.start_date
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
 
-            openMapButton.visibility = View.VISIBLE
-            openMapButton.setOnClickListener { startLiveHike() }
+            openLiveHikeButton.visibility = View.VISIBLE
+            openLiveHikeButton.setOnClickListener { startLiveHike() }
         }
     }
 
