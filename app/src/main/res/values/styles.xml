@@ -138,4 +138,8 @@
         <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
 
+    <style name="LiveHikeActionBarSwitchStyle">
+        <item name="colorControlActivated">#00fafa</item>
+    </style>
+
 </resources>
