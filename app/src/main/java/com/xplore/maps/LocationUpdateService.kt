@@ -38,18 +38,19 @@ class LocationUpdateService : Service() {
         private const val ARG_USER_ID = "userId"
         private const val ARG_DEST_NAME = "destName"
         private const val ARG_DEST_LAT_LNG = "destLatLng"
-        private const val NOTIFICATION_CHANNEL_ID = "xplore-live-hike-01"
         private const val FOREGROUND_ID = 1
-
-        @JvmStatic
-        fun newIntent(context: Context, locationRequest: LocationRequest): Intent {
-            return Intent(context, LocationUpdateService::class.java)
-                    .putExtra(ARG_LOCATION_REQUEST, locationRequest)
-        }
+        private const val NOTIFICATION_CHANNEL_ID = "xplore-live-hike-01"
+        private lateinit var NOTIFICATION_NAME: String
+        private lateinit var NOTIFICATION_DESCRIPTION: String
 
         @JvmStatic
         fun newIntent(context: Context, locationRequest: LocationRequest, groupId: String,
                       destName: String, destLatLng: LatLng): Intent {
+
+            // TODO remove this hack?
+            NOTIFICATION_NAME = context.getString(R.string.live_hike_notification_name)
+            NOTIFICATION_DESCRIPTION = context.getString(R.string.live_hike_notification_description)
+
             return Intent(context, LocationUpdateService::class.java)
                     .putExtra(ARG_LOCATION_REQUEST, locationRequest)
                     .putExtra(ARG_GROUP_ID, groupId)
@@ -85,8 +86,8 @@ class LocationUpdateService : Service() {
 
 
         // Create and show notification TODO add distance calculation
-        val notificationName = getString(R.string.live_hike_notification_name)
-        val notificationDescription = getString(R.string.live_hike_notification_description)
+        val notificationName = NOTIFICATION_NAME
+        val notificationDescription = NOTIFICATION_DESCRIPTION
         val notificationColorId = R.color.colorPrimary
 
         val newNotification = createNotification(
