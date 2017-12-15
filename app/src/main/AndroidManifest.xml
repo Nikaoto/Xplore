@@ -91,6 +91,13 @@
         <activity android:name=".maps.live_hike.LiveHikeMapActivity"
             android:label="@string/live_hike"/>
 
+<<<<<<< Updated upstream
+=======
+        <activity android:name=".event.LocationMarkerAct"
+            android:label="Marking Location Debug"
+            android:screenOrientation="portrait"/>
+
+>>>>>>> Stashed changes
         <service android:name=".maps.LocationUpdateService"
             android:exported="false"/>
 
@@ -180,11 +187,11 @@
 
         <!-- TODO remove this later -->
         <!-- Stand info for Iliauni Science Picnic 2017(temporary) -->
-        <activity android:name=".iliauni.StandInfoActivity"
+        <activity android:name=".event.StandInfoActivity"
             android:screenOrientation="portrait" />
 
         <!-- Shows stands and check-ins for Iliauni Science Picnic -->
-        <activity android:name=".iliauni.IliauniMapActivity"
+        <activity android:name=".event.EventMapActivity"
             android:label="@string/nav_map"/>
 
         <meta-data

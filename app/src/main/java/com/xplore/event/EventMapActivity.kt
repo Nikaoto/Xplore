@@ -1,51 +1,32 @@
-package com.xplore.iliauni
+package com.xplore.event
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 import com.xplore.General
 import com.xplore.R
 import com.xplore.maps.BaseMapActivity
+import com.xplore.maps.LocationUpdater
 import com.xplore.util.FirebaseUtil
-import com.xplore.util.MapUtil
 
 /**
  * Created by Nika on 9/29/2017.
- * TODO write description of this class - what it does and why.
+ *
+ * Used for temporary expos and events.
+ *
  */
 
-class IliauniMapActivity : BaseMapActivity() {
-
-    companion object {
-        private const val ARG_ZOOM_LAT = "zoom_latitude"
-        private const val ARG_ZOOM_LNG = "zoom_longitude"
-
-        @JvmStatic
-        fun getStartIntent(context: Context, zoomLat: Double, zoomLng: Double): Intent =
-                Intent(context, IliauniMapActivity::class.java)
-                        .putExtra(ARG_ZOOM_LAT, zoomLat)
-                        .putExtra(ARG_ZOOM_LNG, zoomLng)
-    }
-
-    private val zoomLat by lazy {
-        intent.getDoubleExtra(ARG_ZOOM_LAT, ZOOM_LATITUDE)
-    }
-
-    private val zoomLng by lazy {
-        intent.getDoubleExtra(ARG_ZOOM_LNG, ZOOM_LONGITUDE)
-    }
+class EventMapActivity : BaseMapActivity() {
 
     // Used to measure checkin
     private val CHECK_IN_DISTANCE = 0.00025
@@ -55,13 +36,27 @@ class IliauniMapActivity : BaseMapActivity() {
     private val ZOOM_LONGITUDE = 44.750900
     override val ZOOM_AMOUNT = 17.8f
 
-    private val TAG = "iliauniMap"
+    private val zoomLatLng = LatLng(0.0, 0.0)
+
+    private val TAG = "startup-market"
 
     private var standMarkers = HashMap<String, StandMarker>()
+    private var currentLocation = Location("")
+
+    private val locationRequest = LocationRequest()
+            .setInterval(3000L)
+            .setFastestInterval(1000L)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+
+    private val locationUpdater: LocationUpdater by lazy {
+        LocationUpdater(this, locationRequest) { locationResult ->
+            onLocationUpdate(locationResult)
+        }
+    }
 
     private fun buildStandMarkerOptions(title: String, standMarker: StandMarker): MarkerOptions {
         val markerOptions = MarkerOptions()
-        markerOptions.position(standMarker.getLocation())
+        markerOptions.position(standMarker.getLatLng())
         markerOptions.title(title)
         if (standMarker.checkedIn) {
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag))
@@ -75,9 +70,8 @@ class IliauniMapActivity : BaseMapActivity() {
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         super.configureMap(googleMap)
 
-        // Move camera to destination
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                LatLng(zoomLat, zoomLng), ZOOM_AMOUNT)
+        // Zoom camera to event location
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(zoomLatLng, ZOOM_AMOUNT)
         googleMap.animateCamera(cameraUpdate)
 
         // Get all stand info
@@ -95,7 +89,7 @@ class IliauniMapActivity : BaseMapActivity() {
 
                         if (checkedIn != null && checkedIn) {
                             standMarkers[standId]?.checkedIn = true
-                            Log.i(TAG, "Stand $standId checkedIn = true")
+                            Log.i(TAG, "Stand $standId checkedIn == true")
                         } else {
                             Log.i(TAG, "Stand $standId checkedIn == false")
                         }
@@ -103,8 +97,6 @@ class IliauniMapActivity : BaseMapActivity() {
                         // Add marker to map
                         standMarkers[standId]!!.mapMarker = googleMap.addMarker(
                                 buildStandMarkerOptions(standId, standMarkers[standId]!!))
-
-
                     } else {
                         Log.i(TAG, "standMarkers == null")
                         finish()
@@ -119,20 +111,47 @@ class IliauniMapActivity : BaseMapActivity() {
         })
     }
 
-    val locationCallback = object : LocationCallback() {
+    private fun onLocationUpdate(locationResult: LocationResult?) {
+        locationResult?.let {
+            Log.i(TAG, "Current location: lat:${it.lastLocation.latitude}; lng:${it.lastLocation.longitude}")
+            for ((key, standMarker) in standMarkers) {
+                val dist = standMarker.getDistanceFrom(it.lastLocation)
+                Log.i(TAG, "Distance from $key is $dist")
+
+                if (!standMarker.checkedIn && dist <= CHECK_IN_DISTANCE) {
+                    // Upload checkin to Firebase
+                    FirebaseUtil.checkIn(key)
+
+                    Toast.makeText(this@EventMapActivity, "თქვენ დაჩეკინდით $key-ში!",
+                            Toast.LENGTH_SHORT).show()
+
+                    // Place flag instead of pin
+                    standMarker.mapMarker?.setIcon(
+                            BitmapDescriptorFactory.fromResource(R.drawable.ic_flag))
+
+                    standMarker.checkedIn = true
+
+                    if (everyStandCheckedIn()) {
+                        showVictoryMessage()
+                    }
+                }
+            }
+        }
+    }
+
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult?.let {
-                super.onLocationResult(locationResult)
-                Log.i(TAG, "Current location: lat:${locationResult.lastLocation.latitude}; lng:${locationResult.lastLocation.longitude}")
+                Log.i(TAG, "Current location: lat:${it.lastLocation.latitude}; lng:${it.lastLocation.longitude}")
                 for ((key, value) in standMarkers) {
-                    val dist = value.getDistanceFrom(locationResult.lastLocation)
+                    val dist = value.getDistanceFrom(it.lastLocation)
                     Log.i(TAG, "Distance from $key is $dist")
 
                     if (!value.checkedIn && dist <= CHECK_IN_DISTANCE) {
                         // Upload checkin to Firebase
                         FirebaseUtil.checkIn(key)
 
-                        Toast.makeText(this@IliauniMapActivity, "Checked Into $key!",
+                        Toast.makeText(this@EventMapActivity, "Checked Into $key!",
                                 Toast.LENGTH_SHORT).show()
 
                         // Place flag instead of pin
@@ -160,37 +179,13 @@ class IliauniMapActivity : BaseMapActivity() {
     }
 
     private fun showVictoryMessage() {
-        AlertDialog.Builder(this@IliauniMapActivity)
+        AlertDialog.Builder(this@EventMapActivity)
                 .setTitle("ყოჩაღ!")
-                .setMessage("თქვენ დაჩექინდით ყველა მონიშნულ სტენდში. " +
-                        "დაბრუნდით Xplore-ის სტენდთან და მიიღეთ საჩუქარი " +
-                        "ჩვენგან! გვანახეთ ეს შეტყობინება, ამის სქრინი ან " +
-                        "შემდეგი კოდი ${General.currentUserId} თქვენი " +
-                        "გმარჯვების დასტურად!")
-                .setPositiveButton(R.string.okay, null)
+                .setMessage("შენ დაჩექინდი ყველა მონიშნულ სტენდში. " +
+                        "დაბრუნდი Xplore-ის სტენდთან რომ მიიღო ექსპლორის მაისურის " +
+                        "მოგების შანსი!")
+                .setPositiveButton("ორ წამში მანდ ვარ!", null)
+                .setNegativeButton("კაი რა მაისური, ყველაფერს გაფიცებ", null)
                 .create().show()
-    }
-
-    private class StandMarker (val latitude: Double = MapUtil.DEFAULT_LAT_LNG,
-                               val longitude: Double = MapUtil.DEFAULT_LAT_LNG,
-                               val hue: Float = MapUtil.getRandomMarkerHue(),
-                               var checkedIn: Boolean = false,
-                               var mapMarker: Marker? = null) {
-        @Exclude
-        fun getLocation() = LatLng(latitude, longitude)
-
-        @Exclude
-        fun getDistanceFrom(latLng: LatLng): Double {
-            return Math.sqrt(
-                    Math.pow(latitude - latLng.latitude, 2.0)
-                            + Math.pow(longitude - latLng.longitude, 2.0))
-        }
-
-        @Exclude
-        fun getDistanceFrom(location: Location): Double {
-            return Math.sqrt(
-                    Math.pow(latitude - location.latitude, 2.0)
-                            + Math.pow(longitude - location.longitude, 2.0))
-        }
     }
 }

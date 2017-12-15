@@ -1,4 +1,4 @@
-package com.xplore.iliauni
+package com.xplore.event
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
@@ -7,7 +7,7 @@ import com.xplore.util.MapUtil
 /**
  * Created by Nika on 9/25/2017.
  *
- * Used for Firebase ORM in Iliauni update
+ * Used for Firebase ORM for events
  *
  */
 
@@ -26,7 +26,6 @@ data class Stand(val id: Int, val name: String, val description: String, val ima
         val COLUMN_LNG = "longitude"
     }
 }*/
-
 
 data class Stand(var id: String = "",
                  val show_title: Boolean = false,

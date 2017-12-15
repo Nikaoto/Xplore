@@ -1,4 +1,4 @@
-package com.xplore.iliauni
+package com.xplore.event
 
 import android.content.Context
 import android.content.Intent
@@ -121,13 +121,13 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             // Show on map
             showonmapButton.setOnClickListener {
                 startActivity(
-                        IliauniMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
+                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
             }
 
             // FAB also shows on map
             reserveIconFAB.setOnClickListener {
                 startActivity(
-                        IliauniMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
+                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
             }
         }
     }

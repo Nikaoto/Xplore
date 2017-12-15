@@ -1,4 +1,4 @@
-package com.xplore.iliauni
+package com.xplore.event
 
 import android.app.Fragment
 import android.content.Intent
@@ -43,7 +43,7 @@ class IliauniFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_open_map) {
-            activity.startActivity(Intent(activity, IliauniMapActivity::class.java))
+            activity.startActivity(Intent(activity, EventMapActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
