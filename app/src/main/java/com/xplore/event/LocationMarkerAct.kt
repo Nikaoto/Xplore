@@ -29,17 +29,17 @@ private class LocationMarkerAct : BaseMapActivity() {
         LocationUpdater(this, activeLocationRequest, { lr -> last_loc = lr.lastLocation })
     }
 
-    override val layoutId = R.layout.location_mark
+    //override val layoutId = R.layout.location_mark
     private lateinit var markLocationButton: ImageButton
     private var last_loc = Location("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        markLocationButton = findViewById<ImageButton>(R.id.markLocationButton)
+/*        markLocationButton = findViewById<ImageButton>(R.id.markLocationButton)
         markLocationButton.setOnClickListener {
             uploadLocation(last_loc)
-        }
+        }*/
     }
 
     // Location Requests

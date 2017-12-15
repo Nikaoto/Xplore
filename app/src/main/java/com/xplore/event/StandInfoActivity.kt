@@ -120,14 +120,14 @@ class StandInfoActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         } else {
             // Show on map
             showonmapButton.setOnClickListener {
-                startActivity(
-                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
+                /*startActivity(
+                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))*/
             }
 
             // FAB also shows on map
             reserveIconFAB.setOnClickListener {
-                startActivity(
-                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))
+                /*startActivity(
+                        EventMapActivity.getStartIntent(this, stand.latitude, stand.longitude))*/
             }
         }
     }

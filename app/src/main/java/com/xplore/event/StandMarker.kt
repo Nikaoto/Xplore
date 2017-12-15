@@ -13,11 +13,11 @@ import com.xplore.util.MapUtil
  *
  */
 
-class StandMarker (val latitude: Double = MapUtil.DEFAULT_LAT_LNG,
-                           val longitude: Double = MapUtil.DEFAULT_LAT_LNG,
-                           val hue: Float = MapUtil.getRandomMarkerHue(),
-                           var checkedIn: Boolean = false,
-                           var mapMarker: Marker? = null) {
+class StandMarker (var latitude: Double = MapUtil.DEFAULT_LAT_LNG,
+                   var longitude: Double = MapUtil.DEFAULT_LAT_LNG,
+                   val hue: Float = MapUtil.getRandomMarkerHue(),
+                   var checkedIn: Boolean = false,
+                   var mapMarker: Marker? = null) {
     @Exclude
     fun getLatLng() = LatLng(latitude, longitude)
 

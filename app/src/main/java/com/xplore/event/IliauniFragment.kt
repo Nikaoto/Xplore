@@ -58,7 +58,7 @@ class IliauniFragment : Fragment() {
         standsRecyclerView.adapter = StandRecyclerViewAdapter()
 
         // Loading stand info from db
-        FirebaseUtil.getOrderedStandsRef().addListenerForSingleValueEvent(
+/*        FirebaseUtil.getOrderedStandsRef().addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         if (dataSnapshot != null) {
@@ -77,7 +77,7 @@ class IliauniFragment : Fragment() {
                     }
 
             override fun onCancelled(p0: DatabaseError?) { }
-        })
+        })*/
     }
 
     private inner class StandRecyclerViewAdapter

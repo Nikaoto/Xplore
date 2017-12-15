@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso
 import com.xplore.account.SignInActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
+import com.xplore.event.EventMapActivity
 import com.xplore.groups.my.LoadingMyGroupsFragment
 import com.xplore.groups.search.SearchGroupsFragment
 import com.xplore.maps.BaseMapActivity
