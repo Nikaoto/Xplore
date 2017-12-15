@@ -188,31 +188,29 @@ object FirebaseUtil {
                 .addOnFailureListener { onFail() }
     }
 
+
     /*
-    *
-    * Iliauni Science Picnic 2017 update stuff
+    * Stuff for events
     *
     * DO NOT DELETE, MIGHT USE THIS FOR FUTURE EVENTS
     *
     */
-
     const val F_CHECKINS = "checkins"
-    const val F_DESCRIPTION = "description"
-    const val F_SHOW_TITLE = "show_title"
-    const val F_IMAGE_URL = "image_url"
-    const val F_ORDER = "order"
-    const val F_ILIAUNI_STANDS = "iliauni_stands"
-    @JvmField val standsRef = FirebaseDatabase.getInstance().getReference(F_ILIAUNI_STANDS)
+    const val F_STANDS = "stands"
+    const val F_WINNERS = "winners"
+    @JvmField val standsRef = FirebaseDatabase.getInstance().getReference(F_STANDS)
 
     @JvmStatic
     fun getStandRef(standId: String): DatabaseReference = standsRef.child(standId)
 
     @JvmStatic
-    fun getOrderedStandsRef(): Query = standsRef.orderByChild(F_ORDER)
-
-    @JvmStatic
     fun checkIn(standId: String) {
         getStandRef(standId).child(F_CHECKINS).child(General.currentUserId).setValue(true)
+    }
+
+    @JvmStatic
+    fun uploadWinnerId(userId: String) {
+        standsRef.child(F_WINNERS).child(userId).setValue(true)
     }
     //
 }
