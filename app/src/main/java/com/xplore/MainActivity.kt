@@ -28,11 +28,7 @@ import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
 import com.xplore.groups.my.LoadingMyGroupsFragment
 import com.xplore.groups.search.SearchGroupsFragment
-<<<<<<< Updated upstream
 import com.xplore.maps.BaseMapActivity
-=======
-import com.xplore.event.LocationMarkerAct
->>>>>>> Stashed changes
 import com.xplore.notifications.BadgeDrawerArrowDrawable
 import com.xplore.notifications.NotificationUtil
 import com.xplore.reserve.LibraryFragment
