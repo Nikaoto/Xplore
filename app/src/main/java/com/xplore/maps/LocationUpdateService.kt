@@ -1,23 +1,14 @@
 package com.xplore.maps
 
-import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
 import com.xplore.General
-import com.xplore.MainActivity
-import com.xplore.R
 import com.xplore.base.BaseService
-import com.xplore.groups.view.GroupInfoActivity
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
-import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.util.FirebaseUtil
 import com.xplore.util.NotificationUtil
 

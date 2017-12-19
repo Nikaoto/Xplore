@@ -10,11 +10,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.xplore.General
-import com.xplore.util.ImageUtil
 import com.xplore.R
 import com.xplore.TimeManager
 import com.xplore.database.DBManager
 import com.xplore.groups.view.GroupInfoActivity
+import com.xplore.util.ImageUtil
 import kotlinx.android.synthetic.main.group_card.view.*
 import java.util.*
 
