@@ -63,7 +63,7 @@ class GroupInfoActivity : RefreshableActivity() {
                 = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
     }
 
-    //Firebase
+    // Firebase
     private val currentGroupRef: DatabaseReference by lazy {
         groupsRef.child(groupId)
     }
@@ -77,7 +77,7 @@ class GroupInfoActivity : RefreshableActivity() {
 
     private var allowRefresh = false
 
-    //The variables which contain the current group/member info
+    // The variables which contain the current group/member info
     private var currentGroup = Group()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,24 +117,21 @@ class GroupInfoActivity : RefreshableActivity() {
     }
 
     private fun configureControls(group: Group) {
-        if (this@GroupInfoActivity != null) {
-            //Conf depending on viewer type
-            if (group.leaderId == General.currentUserId) {
-                configureLeaderControls()
-            } else if (group.getMember_ids().contains(General.currentUserId)) {
-                configureMemberControls()
-            } else if (group.getInvited_member_ids() != null
-                    && group.getInvited_member_ids().get(General.currentUserId) != null) {
-                if (group.getInvited_member_ids().get(General.currentUserId) == true) {
-                    //Invited to group
-                    configureInvitedControls()
-                } else if (group.getInvited_member_ids().get(General.currentUserId) == false) {
-                    //Sent join request to group
-                    configureOutsiderControls(true)
-                }
-            } else {
-                configureOutsiderControls()
+        if (group.leaderId == General.currentUserId) {
+            configureLeaderControls()
+        } else if (group.getMember_ids().contains(General.currentUserId)) {
+            configureMemberControls()
+        } else if (group.getInvited_member_ids() != null
+                && group.getInvited_member_ids().get(General.currentUserId) != null) {
+            if (group.getInvited_member_ids().get(General.currentUserId) == true) {
+                //Invited to group
+                configureInvitedControls()
+            } else if (group.getInvited_member_ids().get(General.currentUserId) == false) {
+                //Sent join request to group
+                configureOutsiderControls(true)
             }
+        } else {
+            configureOutsiderControls()
         }
     }
 
@@ -160,8 +157,8 @@ class GroupInfoActivity : RefreshableActivity() {
         }
     }
 
-    //Shows map button if now hiking TODO change name to live hike
-    private fun configureShowOnMapButton() {
+    // Shows map button if now hiking
+    private fun configureLiveHikeButton() {
         if (TimeManager.intTimeStamp >= currentGroup.start_date
                 && TimeManager.intTimeStamp <= currentGroup.end_date) {
 
@@ -172,7 +169,7 @@ class GroupInfoActivity : RefreshableActivity() {
 
     private fun configureMemberControls() {
         configureMeetupCard()
-        configureShowOnMapButton()
+        configureLiveHikeButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, MemberControls.newInstance(groupId)).commit()
     }
@@ -194,7 +191,7 @@ class GroupInfoActivity : RefreshableActivity() {
     private fun configureLeaderControls() {
         configureMeetupCard()
         //configureFinishCard()
-        configureShowOnMapButton()
+        configureLiveHikeButton()
         fragmentManager.beginTransaction()
                 .replace(R.id.controls_container, LeaderControls.newInstance(groupId)).commit()
     }
@@ -215,10 +212,10 @@ class GroupInfoActivity : RefreshableActivity() {
             //groupImageView.setImageResource(tempReserveCard.imageId)
             reserveIconImageView.setImageResource(Icons.grey[tempReserveCard.iconId])
         } else {
-            //Destination name
+            // Destination name
             reserveNameTextView.text = currentGroup.name
 
-            //Destination image
+            // Destination image
             Picasso.with(this).load(currentGroup.group_image_url).into(reserveImageView)
             reserveCardView.setOnClickListener {
                 startActivity(GroupMapActivity.newIntent(this, true,
@@ -226,7 +223,7 @@ class GroupInfoActivity : RefreshableActivity() {
                         currentGroup.destination_longitude))
             }
 
-            //Remove reserve type
+            // Remove reserve type
             reserveIconImageView.visibility = View.INVISIBLE
         }
     }
@@ -240,9 +237,9 @@ class GroupInfoActivity : RefreshableActivity() {
     private fun loadGroupData() {
         currentGroupRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                //Checking if group exists
+                // Check if group exists
                 if (dataSnapshot != null) {
-                    //creating the temporary (current) group
+                    // Create the temporary (current) group
                     dataSnapshot.getValue(Group::class.java)?.let {
                         currentGroup = it
                         groupNameTextView.text = currentGroup.name
@@ -291,14 +288,14 @@ class GroupInfoActivity : RefreshableActivity() {
         })
     }
 
-    //Gets user info from Firebase using userId
+    // Gets user info from Firebase using userId
     private fun getUserInfo(userId: String) {
         usersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                //Checking if member exists
+                // Check if member exists
                 if (dataSnapshot != null) {
                     val tempMember = dataSnapshot.getValue(User::class.java)
-                    //Getting member info
+                    // Gett member info
                     tempMember?.let {
                         tempMember.id = userId //Setting user Id
                         members.add(tempMember) //Setting member info
@@ -338,21 +335,21 @@ class GroupInfoActivity : RefreshableActivity() {
             General.openUserProfile(this, leader.id)
         }
 
-        //Name
+        // Name
         leaderNameTextView.text = leader.getFullName()
 
-        //Age
+        // Age
         val age = General.calculateAge(TimeManager.globalTimeStamp, leader.birth_date)
         leaderAgeTextView.text = "${getString(R.string.age)}: $age"
 
-        //Telephone
+        // Telephone
         leaderTelTextView.text = "${getString(R.string.tel)}: ${leader.tel_num}"
 
-        //Reputation
+        // Reputation
         leaderRepCombinedTextView.text = "${leader.reputation} ${resources.getString(R.string.reputation)}"
         //
 
-        //Experienced
+        // Experienced
         if (currentGroup.experienced) {
             beenHereMark.visibility = View.VISIBLE
             beenHereMark.setOnClickListener {
@@ -360,23 +357,21 @@ class GroupInfoActivity : RefreshableActivity() {
             }
         }
 
-        //Dates
+        // Dates
         dateCombinedTextView.text = DateUtil.putSlashesInDate(currentGroup.getStart_date()) + " - " +
                 DateUtil.putSlashesInDate(currentGroup.getEnd_date())
 
-        //Meetup Time
+        // Meetup Time
         if (currentGroup.getStart_time().isEmpty()) {
             meetupTimeTextView.visibility = View.GONE
         } else {
             meetupTimeTextView.text = General.putColonInTime(currentGroup.getStart_time())
         }
 
-        //if (currentGroup.getEnd_time().isEmpty()) { }
-
         descriptionTextView.text = currentGroup.extra_info
         preferencesTextView.text = currentGroup.group_preferences
 
-        //Displaying members
+        // Displaying members
         if (members.isEmpty()) {
             memberListCardView.visibility = View.GONE
         } else {
