@@ -154,7 +154,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
         //Duration
         val durationInDays = group.getDurationInDays()
-        if (durationInDays == 0) {
+        if (durationInDays < 1) {
             holder.duration.setText(R.string.duration_zero_day)
         } else {
             holder.duration.text = "$durationInDays ${activity.resources.getString(R.string.duration_days)}"
