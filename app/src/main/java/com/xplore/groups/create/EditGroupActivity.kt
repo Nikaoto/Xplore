@@ -48,11 +48,9 @@ import kotlinx.android.synthetic.main.create_group.*
 
 class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    //TODO extend CreateGroupActivity and just set every field in onCreate()
-
     private val dbManager: DBManager by lazy { DBManager(this)}
 
-    //Firebase
+    // Firebase
     private lateinit var groupId: String
     private lateinit var currentGroupRef: DatabaseReference
 
@@ -67,6 +65,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
     private val initialMemberIds = ArrayList<String>()
     private val initialInvitedMemberIds = ArrayList<String>()
 
+    private val grantedReputation = ArrayList<String>()
 
     private val date = HikeDate()
     private var selecting = SELECTION_NONE
@@ -107,11 +106,11 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                 if (dataSnapshot != null) {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null) {
-                        //Getting group
+                        // Getting group
                         currentGroup = group
                         currentGroup.group_id = dataSnapshot.key
 
-                        //Getting members and setting initial member ids
+                        // Getting members and setting initial member ids
                         if (currentGroup.member_ids != null) {
                             initialMemberIds.addAll(currentGroup.member_ids.keys)
                         } else {
@@ -123,7 +122,10 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                             currentGroup.invited_member_ids = HashMap<String, Boolean>()
                         }
 
-                        //Displaying members
+                        // Granted reputation
+
+
+                        // Displaying members
                         populateJoinedMemberList()
                         populateInvitedMemberList()
 
