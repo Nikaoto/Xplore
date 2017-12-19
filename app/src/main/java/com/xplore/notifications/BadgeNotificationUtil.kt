@@ -7,7 +7,7 @@ import com.xplore.General
 import com.xplore.util.FirebaseUtil.getInvitedGroupIdsRef
 
 /**
- * Created by Nik on 7/22/2017.
+ * Created by Nikaoto on 7/22/2017.
  *
  * Description:
  * This class updates notifications and displays their number on the drawerBadge and textViews
@@ -17,8 +17,8 @@ import com.xplore.util.FirebaseUtil.getInvitedGroupIdsRef
  *
  */
 
-class NotificationUtil(private val drawerBadge: BadgeDrawerArrowDrawable,
-                           private val myGroupsBadge: TextView) {
+class BadgeNotificationUtil(private val drawerBadge: BadgeDrawerArrowDrawable,
+                            private val myGroupsBadge: TextView) {
 
     private var invitedGroupIdsRef = getInvitedGroupIdsRef(General.currentUserId)
 

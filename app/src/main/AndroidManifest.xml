@@ -95,6 +95,9 @@
             android:label="Marking Location Debug"
             android:screenOrientation="portrait"/>-->
 
+        <service android:name=".maps.LocationUpdateService"
+            android:exported="false"/>
+
         <receiver android:name=".maps.live_hike.LiveHikeBroadcastReceiver"
             android:exported="true"
             android:permission="android.permission.ACCESS_FINE_LOCATION">

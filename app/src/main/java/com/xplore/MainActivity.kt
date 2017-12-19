@@ -26,12 +26,11 @@ import com.squareup.picasso.Picasso
 import com.xplore.account.SignInActivity
 import com.xplore.base.BaseAppCompatActivity
 import com.xplore.database.DBManager
-import com.xplore.event.EventMapActivity
 import com.xplore.groups.my.LoadingMyGroupsFragment
 import com.xplore.groups.search.SearchGroupsFragment
 import com.xplore.maps.BaseMapActivity
 import com.xplore.notifications.BadgeDrawerArrowDrawable
-import com.xplore.notifications.NotificationUtil
+import com.xplore.notifications.BadgeNotificationUtil
 import com.xplore.reserve.LibraryFragment
 import com.xplore.settings.LanguageUtil
 import com.xplore.settings.SettingsActivity
@@ -60,7 +59,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var userImageView: ImageView
     private lateinit var userFullNameTextView: TextView
 
-    private lateinit var notificationUtil: NotificationUtil
+    private lateinit var badgeNotificationUtil: BadgeNotificationUtil
 
     private val TAG = " main-act"
 
@@ -112,7 +111,7 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
         // Badge for notifications
         val drawerBadge = BadgeDrawerArrowDrawable(toolbar.context)
 
-        notificationUtil = NotificationUtil(
+        badgeNotificationUtil = BadgeNotificationUtil(
                 drawerBadge,
                 navigationView.menu.findItem(R.id.nav_my_groups)
                         .actionView.findViewById<TextView>(R.id.myGroupsBadge) as TextView // TODO test this possible fix
@@ -181,14 +180,14 @@ class MainActivity : BaseAppCompatActivity(), NavigationView.OnNavigationItemSel
 
         // Reloads user related content when new login occurs
         if (General.accountStatus == General.JUST_LOGGED_IN) {
-            notificationUtil.reset()
+            badgeNotificationUtil.reset()
             refreshUserProfileViews(this)
             General.accountStatus = General.LOGGED_IN
         }
 
         // Disables notification manager and opens homepage if logged out from settings
         if (General.accountStatus == General.NOT_LOGGED_IN && !appJustLaunched) {
-            notificationUtil.disable()
+            badgeNotificationUtil.disable()
             finish()
             startActivity(SignInActivity.newIntent(this, true))
         }
