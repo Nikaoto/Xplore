@@ -98,7 +98,7 @@ class GroupCardRecyclerViewAdapter(private val groupCards: ArrayList<GroupCard>,
 
             //Starting intent
             activity.startActivity(
-                    GroupInfoActivity.getStartIntent(activity, group.id)
+                    GroupInfoActivity.newIntent(activity, group.id)
             )
         }
 

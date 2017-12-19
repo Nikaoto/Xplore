@@ -59,7 +59,7 @@ class GroupInfoActivity : RefreshableActivity() {
         private const val ARG_GROUP_ID = "groupId"
 
         @JvmStatic
-        fun getStartIntent(context: Context, groupId: String): Intent
+        fun newIntent(context: Context, groupId: String): Intent
                 = Intent(context, GroupInfoActivity::class.java).putExtra("groupId", groupId)
     }
 
