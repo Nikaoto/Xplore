@@ -65,8 +65,6 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
     private val initialMemberIds = ArrayList<String>()
     private val initialInvitedMemberIds = ArrayList<String>()
 
-    private val grantedReputation = ArrayList<String>()
-
     private val date = HikeDate()
     private var selecting = SELECTION_NONE
 
@@ -108,7 +106,6 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                     if (group != null) {
                         // Getting group
                         currentGroup = group
-                        currentGroup.group_id = dataSnapshot.key
 
                         // Getting members and setting initial member ids
                         if (currentGroup.member_ids != null) {
