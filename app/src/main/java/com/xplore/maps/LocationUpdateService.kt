@@ -14,10 +14,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.xplore.General
 import com.xplore.MainActivity
 import com.xplore.R
+import com.xplore.base.BaseService
 import com.xplore.groups.view.GroupInfoActivity
 import com.xplore.maps.live_hike.LiveHikeBroadcastReceiver
 import com.xplore.maps.live_hike.LiveHikeMapActivity
 import com.xplore.util.FirebaseUtil
+import com.xplore.util.NotificationUtil
 
 /**
  * Created by Nika on 12/2/2017.
@@ -27,7 +29,7 @@ import com.xplore.util.FirebaseUtil
  *
  */
 
-class LocationUpdateService : Service() {
+class LocationUpdateService : BaseService() {
 
     private val TAG = "location-update-serv"
     private fun log(s: String) = Log.i(TAG, s)
@@ -39,17 +41,10 @@ class LocationUpdateService : Service() {
         private const val ARG_DEST_NAME = "destName"
         private const val ARG_DEST_LAT_LNG = "destLatLng"
         private const val FOREGROUND_ID = 1
-        private const val NOTIFICATION_CHANNEL_ID = "xplore-live-hike-01"
-        private lateinit var NOTIFICATION_NAME: String
-        private lateinit var NOTIFICATION_DESCRIPTION: String
 
         @JvmStatic
         fun newIntent(context: Context, locationRequest: LocationRequest, groupId: String,
                       destName: String, destLatLng: LatLng): Intent {
-
-            // TODO remove this hack?
-            NOTIFICATION_NAME = context.getString(R.string.live_hike_notification_name)
-            NOTIFICATION_DESCRIPTION = context.getString(R.string.live_hike_notification_description)
 
             return Intent(context, LocationUpdateService::class.java)
                     .putExtra(ARG_LOCATION_REQUEST, locationRequest)
@@ -84,25 +79,14 @@ class LocationUpdateService : Service() {
         destLatLng = intent.getParcelableExtra(ARG_DEST_LAT_LNG) as LatLng
         locationRequest = intent.getParcelableExtra(ARG_LOCATION_REQUEST) as LocationRequest
 
+        startForeground(FOREGROUND_ID,
+                NotificationUtil.getInstance(this).createLiveHikeNotification(groupId,
+                        destName, destLatLng))
 
-        // Create and show notification TODO add distance calculation
-        val notificationName = NOTIFICATION_NAME
-        val notificationDescription = NOTIFICATION_DESCRIPTION
-        val notificationColorId = R.color.colorPrimary
-
-        val newNotification = createNotification(
-                NOTIFICATION_CHANNEL_ID,
-                notificationName,
-                notificationDescription,
-                notificationColorId
-        )
-        startForeground(FOREGROUND_ID, newNotification)
-
-        // Create Pending Intent
+        // Create Pending Intent for Broadcast Receiver
         val pendingIntent = LiveHikeBroadcastReceiver.newPendingIntent(
                 this,
-                FirebaseUtil.getRef(FirebaseUtil.getUserLocationRefString(groupId, userId))
-        )
+                FirebaseUtil.getRef(FirebaseUtil.getUserLocationRefString(groupId, userId)))
 
         // Create and start LocationUpdater
         locationUpdater = LocationUpdater(this, locationRequest, pendingIntent)
@@ -114,53 +98,6 @@ class LocationUpdateService : Service() {
     override fun onCreate() {
         log("onCreate")
         super.onCreate()
-    }
-
-    private fun createNotification(channelId: String, name: String, description: String,
-                                   colorId: Int): Notification {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return createNotifNew(channelId, name, description, colorId)
-        } else {
-            return createNotifOld(NOTIFICATION_CHANNEL_ID, name, description, colorId)
-        }
-    }
-
-    private fun getNotificationManager(): NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotifNew(channelId: String, name: String, description: String, colorId: Int)
-            : Notification {
-        val channel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_HIGH)
-        channel.lightColor = colorId
-        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-        getNotificationManager().createNotificationChannel(channel)
-
-        return createNotifOld(channelId, name, description, colorId)
-    }
-
-    private fun createNotifOld(channelId: String, name: String, description: String, colorId: Int)
-            : Notification {
-
-        val mainActIntent = Intent(this, MainActivity::class.java)
-        val stackBuilder = TaskStackBuilder.create(this)
-        stackBuilder.addParentStack(MainActivity::class.java)
-        stackBuilder.addNextIntent(mainActIntent)
-        stackBuilder.addNextIntent(GroupInfoActivity.getStartIntent(this, groupId))
-        stackBuilder.addNextIntent(LiveHikeMapActivity.newIntent(this, groupId, destName,
-                destLatLng.latitude, destLatLng.longitude))
-        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-        return NotificationCompat.Builder(this, channelId)
-                .setContentTitle(name)
-                .setContentText(description)
-                .setContentIntent(pendingIntent)
-                //.setDeleteIntent()
-                .setSmallIcon(R.drawable.ic_xplore_tiny)
-                .setColor(ContextCompat.getColor(this, colorId))
-                .setColorized(true)
-                .build()
     }
 
     override fun onDestroy() {
