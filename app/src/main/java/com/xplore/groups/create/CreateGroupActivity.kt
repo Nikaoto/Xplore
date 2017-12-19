@@ -141,7 +141,7 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
         }
 
         chooseDestinationButton.setOnClickListener {
-            showDestinationDialog()
+            showSetDestinationDialog()
         }
 
         groupImageView.setOnClickListener {
@@ -197,6 +197,14 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
             showHelp(R.string.extra_info, R.string.extra_info_help, R.string.okay)
         }
 
+        radioGroup.setOnCheckedChangeListener { _, i ->
+            if (i == R.id.yes_rb) {
+                experienceAns = EXPERIENCE_ANS_YES
+            } else if (i == R.id.no_rb) {
+                experienceAns = EXPERIENCE_ANS_NO
+            }
+        }
+
         doneButton.setOnClickListener {
             General.hideKeyboard(this)
             getDescriptions()
@@ -209,29 +217,9 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
                 finish()
             }
         }
-
-        radioGroup.setOnCheckedChangeListener { _, i ->
-            if (i == R.id.yes_rb)
-                experienceAns = EXPERIENCE_ANS_YES
-            else if (i == R.id.no_rb)
-                experienceAns = EXPERIENCE_ANS_NO
-        }
     }
 
-    private fun startSettingMeetupLocation() {
-        if (meetupLat != 0.0 && meetupLng != 0.0) {
-            startActivityForResult(
-                    SetDestinationMapActivity.getStartIntent(this,
-                            resources.getString(R.string.meetup_location),
-                            meetupLat, meetupLng),
-                    SET_MEETUP_LOCATION_REQ_CODE)
-        } else {
-            startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
-                    SET_MEETUP_LOCATION_REQ_CODE)
-        }
-    }
-
-    private fun showDestinationDialog() {
+    private fun showSetDestinationDialog() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.activity_choose_destination_title)
                 .setMessage(R.string.choose_from)
@@ -253,6 +241,19 @@ open class CreateGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDat
                     }
                 }
                 .create().show()
+    }
+
+    private fun startSettingMeetupLocation() {
+        if (meetupLat != 0.0 && meetupLng != 0.0) {
+            startActivityForResult(
+                    SetDestinationMapActivity.getStartIntent(this,
+                            resources.getString(R.string.meetup_location),
+                            meetupLat, meetupLng),
+                    SET_MEETUP_LOCATION_REQ_CODE)
+        } else {
+            startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
+                    SET_MEETUP_LOCATION_REQ_CODE)
+        }
     }
 
     private fun showDatePicker(code: String) {

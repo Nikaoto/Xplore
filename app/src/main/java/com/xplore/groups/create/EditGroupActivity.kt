@@ -48,6 +48,9 @@ import kotlinx.android.synthetic.main.create_group.*
 
 class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
+    // TODO extend CreateGroupAct
+    // TODO write in MVP
+
     private val dbManager: DBManager by lazy { DBManager(this)}
 
     // Firebase
@@ -89,7 +92,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         setTitle(R.string.edit_group)
         joinedMembersLayout.visibility = View.VISIBLE
 
-        //Setting up RecyclerViews
+        // Set up RecyclerViews
         joinedMemberList.layoutManager =
                 LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         invitedMemberList.layoutManager =
@@ -104,10 +107,10 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                 if (dataSnapshot != null) {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null) {
-                        // Getting group
+                        // Get group
                         currentGroup = group
 
-                        // Getting members and setting initial member ids
+                        // Get members and setting initial member ids
                         if (currentGroup.member_ids != null) {
                             initialMemberIds.addAll(currentGroup.member_ids.keys)
                         } else {
@@ -118,9 +121,6 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                         } else {
                             currentGroup.invited_member_ids = HashMap<String, Boolean>()
                         }
-
-                        // Granted reputation
-
 
                         // Displaying members
                         populateJoinedMemberList()
@@ -140,22 +140,14 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         })
     }
 
-    private fun ArrayList<String>.toMap(value: Boolean): HashMap<String, Boolean> {
-        val output = HashMap<String, Boolean>(this.size)
-        this.forEach {
-            output.put(it, value)
-        }
-        return output
-    }
-
     private fun populateJoinedMemberList() {
-        //Setting up RecyclerView
+        // Set up RecyclerView
         joinedMemberList.adapter = MemberListAdapter(this, joinedMembers, true, joinedMemberIds)
         if (joinedMemberIds.isEmpty()) {
             joinedMemberIds.addAll(currentGroup.member_ids.keys)
         }
 
-        //Getting member info
+        // Get member info
         for (mId in currentGroup.member_ids) {
             getUserRef(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -172,22 +164,22 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
                 override fun onCancelled(p0: DatabaseError?) {}
             })
         }
-        }
+    }
 
     private fun populateInvitedMemberList() {
-        //Setting up RecyclerView
+        // Set up RecyclerView
         invitedMemberList.adapter = MemberListAdapter(this, invitedMembers, true, invitedMemberIds)
 
         for (mId in invitedMemberIds) {
             currentGroup.invited_member_ids.put(mId, true)
         }
 
-        //Checking if empty
+        // Check if empty
         if (currentGroup.invited_member_ids != null
                 && currentGroup.invited_member_ids.isNotEmpty()) {
             invitedMemberIds.addAll(currentGroup.invited_member_ids.keys)
 
-            //Getting member info
+            // Get member info
             for (mId in currentGroup.invited_member_ids) {
                 getUserRef(mId.key).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -207,13 +199,13 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         }
     }
 
-    //Prints error and backs out
+    // Prints error and backs out
     private fun printError() {
         Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
         onBackPressed()
     }
 
-    //When the destination is a reserve
+    // When the destination is a reserve
     private val onReserveClickListener = View.OnClickListener {
         General.openReserveInfoFragment(currentGroup.destination_id, this@EditGroupActivity)
     }
@@ -229,7 +221,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
     private fun fillFields() {
         groupNameEditText.setText(currentGroup.name)
         // Configuring Image
-        if (currentGroup.isDestinationReserve()) {
+        if (currentGroup.isDestinationReserve) {
             groupImageView.setOnClickListener(onReserveClickListener)
             // Loading image
             dbManager.openDataBase()
@@ -251,12 +243,12 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
             finish()
         }
 
-        //Start date
+        // Start date
         startDateTextView.text = DateUtil.putSlashesInDate(currentGroup.start_date)
         date.setStartDate(currentGroup.start_date)
         Log.i("brejk", "startDate ${date.getStartDate()}")
 
-        //Start time
+        // Start time
         startTimeTextView.text = General.putColonInTime(currentGroup.start_time)
         date.startTime = currentGroup.start_time
         Log.i("brejk", "startTime ${date.startTime}")
@@ -287,31 +279,19 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
             radioGroup.check(R.id.no_rb)
         }
 
-        //Description
+        // Description
         descriptionEditText.setText(currentGroup.extra_info)
-        //Preferences
+        // Preferences
         preferencesEditText.setText(currentGroup.group_preferences)
     }
 
     private fun initClickEvents() {
+        groupNameHelpButton.setOnClickListener {
+            showHelp(R.string.group_name, R.string.group_name_help, R.string.okay)
+        }
+
         chooseDestinationButton.setOnClickListener {
-            //Opens choose destination dialog
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.activity_choose_destination_title)
-                    .setMessage(R.string.choose_from)
-                    .setPositiveButton(R.string.activity_library_title) {_, _ ->
-                        startActivityForResult(
-                                Intent(this@EditGroupActivity, SearchDestinationActivity::class.java),
-                                SEARCH_DESTINATION_REQ_CODE)
-                    }
-                    .setNegativeButton(R.string.activity_maps_title) {_, _ ->
-                        startActivityForResult(
-                                SetDestinationMapActivity.getStartIntent(this, currentGroup.name,
-                                        currentGroup.destination_latitude,
-                                        currentGroup.destination_longitude),
-                                SELECT_FROM_MAP_REQ_CODE)
-                    }
-                    .create().show()
+            showSetDestinationDialog()
         }
 
         startDateButton.setOnClickListener {
@@ -327,6 +307,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         }
 
         meetupLocationImageView.setOnClickListener {
+            // View meetup location
             startActivity(GroupMapActivity.newIntent(this, true,
                     getString(R.string.meetup_location), currentGroup.meetup_latitude,
                     currentGroup.meetup_longitude, MapUtil.MEETUP_MARKER_HUE))
@@ -338,6 +319,13 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
 
         endTimeButton.setOnClickListener {
             showTimePicker(SELECTION_END)
+        }
+
+        // Invite members
+        inviteButton.setOnClickListener {
+            invitedMemberIds.clear()
+            startActivityForResult(SearchUsersActivity.getStartIntent(this, invitedMemberIds),
+                    INVITE_USERS_REQ_CODE)
         }
 
         prefs_help.setOnClickListener {
@@ -352,14 +340,7 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
             _, i -> currentGroup.experienced = (i == R.id.yes_rb)
         }
 
-        //Invite members
-        inviteButton.setOnClickListener {
-            invitedMemberIds.clear()
-            startActivityForResult(SearchUsersActivity.getStartIntent(this, invitedMemberIds),
-                    INVITE_USERS_REQ_CODE)
-        }
-
-        //Done
+        // Done
         doneButton.setOnClickListener {
             if (fieldsValid()) {
                 gatherGroupData()
@@ -372,7 +353,32 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
         }
     }
 
-    fun startSettingMeetupLocation() {
+    private fun showSetDestinationDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.activity_choose_destination_title)
+                .setMessage(R.string.choose_from)
+                .setPositiveButton(R.string.activity_library_title) {_, _ ->
+                    startActivityForResult(
+                            Intent(this@EditGroupActivity, SearchDestinationActivity::class.java),
+                            SEARCH_DESTINATION_REQ_CODE)
+                }
+                .setNegativeButton(R.string.activity_maps_title) {_, _ ->
+                    if (currentGroup.destination_latitude != 0.0
+                            && currentGroup.destination_longitude != 0.0) {
+                        startActivityForResult(
+                                SetDestinationMapActivity.getStartIntent(this,
+                                        resources.getString(R.string.destination),
+                                        currentGroup.destination_latitude, currentGroup.destination_longitude),
+                                SELECT_FROM_MAP_REQ_CODE)
+                    } else {
+                        startActivityForResult(SetDestinationMapActivity.getStartIntent(this),
+                                SELECT_FROM_MAP_REQ_CODE)
+                    }
+                }
+                .create().show()
+    }
+
+    private fun startSettingMeetupLocation() {
         if (currentGroup.hasMeetupLocation()) {
             startActivityForResult(
                     SetDestinationMapActivity.getStartIntent(this,
@@ -554,6 +560,15 @@ class EditGroupActivity : BaseAppCompatActivity(), DatePickerDialog.OnDateSetLis
             return true
         }
     }
+
+    private fun ArrayList<String>.toMap(value: Boolean): HashMap<String, Boolean> {
+        val output = HashMap<String, Boolean>(this.size)
+        this.forEach {
+            output.put(it, value)
+        }
+        return output
+    }
+
 
     private fun gatherGroupData() {
         currentGroup.name = groupNameEditText.text.toString()
