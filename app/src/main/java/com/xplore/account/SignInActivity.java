@@ -272,8 +272,8 @@ public class SignInActivity extends BaseAppCompatActivity {
                     Toast.makeText(SignInActivity.this, R.string.logged_in,
                             Toast.LENGTH_SHORT).show();
                     finishActivity();
-                }
-                else {
+                } else {
+                    Log.i(TAG, "dataSnapshot doesn't exist");
                     startUserRegistration(user);
                 }
             }
@@ -289,15 +289,25 @@ public class SignInActivity extends BaseAppCompatActivity {
             for (UserInfo profile : user.getProviderData()) {
                 if (FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
                     fbId = profile.getUid();
+
+                    String userEmail = "";
+
+                    if (user.getEmail() != null) {
+                        userEmail = user.getEmail();
+                    } else if (user.getProviderData().get(0).getEmail() != null) {
+                        userEmail = user.getProviderData().get(0).getEmail();
+                    }
+
                     String photoUrl = "https://graph.facebook.com/" + fbId
                             + "/picture?height=" + FB_PROFILE_PIC_HEIGHT
                             + "&width=" + FB_PROFILE_PIC_WIDTH;
+
                     startActivityForResult(
                             RegisterActivity.getStartIntent(
                                     SignInActivity.this,
                                     user.getUid(),
                                     user.getDisplayName(),
-                                    user.getEmail(),
+                                    userEmail,
                                     photoUrl
                             ),
                             REQ_REGISTER);
@@ -440,13 +450,13 @@ public class SignInActivity extends BaseAppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null & shouldCheckUserExists) {
                     // User signed in
-                    Log.i("sign-in-act", "checking user exists");
+                    Log.i(TAG, "checking user exists");
                     currentUserId = user.getUid();
 
                     checkUserExists(user); // creates user in case it doesn't exist
                 } else {
                     // User signed out
-                    Log.d("SIGNED OUT", "onAuthStateChanged:signed_out");
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                     shouldCheckUserExists = true;
                     accountStatus = NOT_LOGGED_IN;
                 }
@@ -517,8 +527,9 @@ public class SignInActivity extends BaseAppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(authListener != null)
+        if(authListener != null) {
             auth.addAuthStateListener(authListener);
+        }
     }
 
     @Override

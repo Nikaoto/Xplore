@@ -171,6 +171,7 @@ open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatep
         fnameEditText.safeSetText(separateFullName(userFullName, 0))
         lnameEditText.safeSetText(separateFullName(userFullName, 1))
 
+        // Set email textview
         if (userEmail.isEmpty()) {
             emailEditText.isEnabled = true
         } else {
