@@ -161,9 +161,14 @@ open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatep
         // Loading data into views
         fnameEditText.safeSetText(separateFullName(userFullName, 0))
         lnameEditText.safeSetText(separateFullName(userFullName, 1))
-        emailEditText.safeSetText(userEmail)
-        emailEditText.isEnabled = false
-        emailEditText.isFocusable = false
+
+        if (userEmail.isEmpty()) {
+            emailEditText.isEnabled = true
+        } else {
+            emailEditText.safeSetText(userEmail)
+            emailEditText.isEnabled = false
+            emailEditText.isFocusable = false
+        }
     }
 
     open fun initClickEvents() {
