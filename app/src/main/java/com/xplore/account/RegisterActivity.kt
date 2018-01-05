@@ -74,12 +74,21 @@ open class RegisterActivity : BaseAppCompatActivity(), com.tsongkha.spinnerdatep
 
         @JvmStatic
         fun getStartIntent(context: Context, userId: String, fullName: String?, email: String?,
-                           photoUrl: String): Intent
-                = Intent(context, RegisterActivity::class.java)
-                .putExtra(ARG_USER_ID, userId)
-                .putExtra(ARG_FULL_NAME, fullName)
-                .putExtra(ARG_EMAIL, email)
-                .putExtra(ARG_PHOTO_URL, photoUrl)
+                           photoUrl: String): Intent {
+            val intent = Intent(context, RegisterActivity::class.java).putExtra(ARG_USER_ID, userId)
+                    .putExtra(ARG_PHOTO_URL, photoUrl)
+            if (fullName == null) {
+                intent.putExtra(ARG_FULL_NAME, "")
+            } else {
+                intent.putExtra(ARG_FULL_NAME, fullName)
+            }
+            if (email== null) {
+                intent.putExtra(ARG_EMAIL, "")
+            } else {
+                intent.putExtra(ARG_EMAIL, email)
+            }
+            return intent
+        }
     }
 
     /* Google Api Client stuff (for logout) */
