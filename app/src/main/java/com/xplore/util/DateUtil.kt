@@ -96,7 +96,7 @@ object DateUtil {
         return putSlashesInDate(temp)
     }
 
-    // TODO do this
+    // TODO finish this
     @JvmStatic
     fun getDifferenceInDays(y1: Int, m1: Int, d1: Int, y2: Int, m2: Int, d2: Int): Int {
         var ans = Math.abs(y1 - y2)
