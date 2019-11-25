@@ -2,6 +2,7 @@
 
 This is a repository of Xplore, an Android application that assists hikers with searching/creating/joining/organizing hiking trips with other hikers. It is old and no longer maintained due to Xplore's closure.
 
+![promo-screens.png](promo-screens.png)
 
 If you want to know more about Xplore and how it failed, check out my blog post: [Learning from your failed startup](https://nika.ninja/blog/learning-from-your-failed-startup/).
 
