@@ -6,11 +6,11 @@ This is a repository of Xplore, an Android application that assists hikers with 
 
 If you want to know more about Xplore and how it failed, check out my blog post: [Learning from your failed startup](https://nika.ninja/blog/learning-from-your-failed-startup/).
 
-Old Xplore landing page: ![](https://xplore.ge)
+Old Xplore landing page: [https://xplore.ge](https://xplore.ge)
 
-New Xplore landing page: https://xplore-landing.netlify.com
+New Xplore landing page: [https://xplore-landing.netlify.com](https://xplore-landing.netlify.com)
 
-Google Play link: https://play.google.com/store/apps/details?id=com.xplore
+Google Play link: [https://play.google.com/store/apps/details?id=com.xplore](https://play.google.com/store/apps/details?id=com.xplore)
 
 ### Notice
 
