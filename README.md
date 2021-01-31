@@ -4,7 +4,7 @@ This is a repository of Xplore, an Android application that assists hikers with 
 
 ![promo-screens.png](promo-screens.png)
 
-If you want to know more about Xplore and how it failed, check out my blog post: [Learning from your failed startup](https://nika.ninja/blog/learning-from-your-failed-startup/).
+If you want to know more about Xplore and how it failed, check out my blog post: [Learning from your failed startup](https://nikaoto.com/blog/learning-from-your-failed-startup).
 
 Old Xplore landing page: [https://xplore.ge](https://xplore.ge)
 
