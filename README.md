@@ -6,7 +6,7 @@ This is a repository of Xplore, an Android application that assists hikers with 
 
 If you want to know more about Xplore and how it failed, check out my blog post: [Learning from your failed startup](https://nikaoto.com/blog/learning-from-your-failed-startup).
 
-Old Xplore landing page: [https://xplore.ge](https://xplore.ge)
+Old Xplore landing page: [https://xploreapp.github.io](https://xploreapp.github.io)
 
 New Xplore landing page: [https://xplore-landing.netlify.com](https://xplore-landing.netlify.com)
 
